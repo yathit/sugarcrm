@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sugar panel test</title>
+    <link rel="stylesheet" type="text/css" href="../../../../css/inj.css">
+    <script type="text/javascript" src="../../../../lib/md5.js"></script>
+    <script type="text/javascript" src="../../../../lib/kinetic-v5.0.1.min.js"></script>
+    <script type="text/javascript" src="../../../../../closure-library/closure/goog/base.js"></script>
+    <script type="text/javascript" src="../../../../../ydn-base/src/deps.js"></script>
+    <script type="text/javascript" src="../../../../../ydn/src/deps.js"></script>
+    <script type="text/javascript" src="../../../../../ydn-api/js/deps.js"></script>
+    <script type="text/javascript" src="../../../../../ydn-db/src/deps.js"></script>
+    <script type="text/javascript" src="../../../../../ydn-db-sync/src/deps.js"></script>
+    <script type="text/javascript" src="../../../../../gdata/src/deps.js"></script>
+    <script type="text/javascript" src="../../../../../crm-ex/src/deps.js"></script>
+    <script type="text/javascript" src="../../../../../crm-ex/src/crm/test-include.js"></script>
+    <script type="text/javascript" src="../../../../js/option/model/sugarcrm.js"></script>
+
+</head>
+<body>
+    <h4>Cases to test:</h4>
+    <ol>
+        <li>Context is a gmail contact</li>
+        <li>Context is a not gmail contact</li>
+        <li>Gmail contact is associated (sync) with a module</li>
+        <li>Gmail contact is not associated with a module</li>
+        <li>Gmail contact is not associated with a module, but same email address exist in the module</li>
+    </ol>
+    <div>
+        <p>
+            Gmail inbox for <span id="gmail-account" style="font-weight: bold;"></span>
+        </p>
+        <label for="email">Gmail context</label>
+        <datalist id="id-list">
+            <option>test-1@gmail.com</option>
+            <option>kyawtuns@gmail.com</option>
+            <option>okisan@yathit.com</option>
+            <option>kyawtun@yathit.com</option>
+            <option>stevew@mechanobio.info</option>
+            <option>aysh@mechanobio.info</option>
+            <option>noreply@gmail.com</option>
+            <option>sugar.im.vegan@example.tv</option>
+        </datalist>
+        <input value="" placeholder="sugar.im.vegan@example.tv" id="email" list="id-list"/>
+        <button id="set">Set</button>
+    </div>
+    <div class="inj">
+        <div class="sugar">
+            <div id="sync-panel-root" ></div>
+        </div>
+    </div>
+    <div>
+        <h3>Create a new record</h3>
+        <datalist id="new-email-list">
+            <option>test-1@gmail.com</option>
+        </datalist>
+        <input value="test-1@gmail.com" placeholder="Email" id="new-email" list="new-email-list"/>
+        <input placeholder="First" value="First" id="first" />
+        <input placeholder="Last" value="Last" id="last" />
+        <select id="record-type">
+            <option value="Gmail" selected>Gmail</option>
+            <option value="Contacts">Contacts</option>
+            <option value="Leads">Leads</option>
+        </select>
+        <button id="create-new">Create</button>
+        <div>
+            <span id="new-msg"></span>
+        </div>
+    </div>
+    <script src="run-sugar-panel.js">
+
+
+    </script>
+</body>
+</html>
