@@ -1,4 +1,5 @@
-sugarcrm
-========
+## sugarcrm
 
-SugarCRM module
+SugarCRM module for Yathit CRMinInbox
+
+
