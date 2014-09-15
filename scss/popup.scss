@@ -1,0 +1,49 @@
+@import "base";
+
+
+body.popup {
+  min-height: 5em;
+  min-width: 20em;
+}
+
+#content {
+
+}
+
+#content > ul {
+  padding-left: 4px;
+  list-style: none;
+}
+
+footer {
+  right: 0;
+  left: 0;
+  clear: both;
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+}
+
+
+#status-bar {
+  clear: both;
+  height: 14px;
+  overflow: hidden;
+  border: solid thin #d3d3d3;
+  border-top: solid thin #ffffff;
+  background: #d3d3d3;
+  padding: 4px 2px;
+  margin: 0;
+  font-size: small;
+
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#status-bar-content span {
+  padding: 0 2px;
+}
+

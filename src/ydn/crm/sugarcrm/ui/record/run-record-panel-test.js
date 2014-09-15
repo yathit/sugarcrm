@@ -3,7 +3,7 @@
  */
 
 
-ydn.app.msg.Manager.addConsumer(new ydn.app.msg.ConsoleStatusBar());
+ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 
 var about = {
   "baseUrl": "https://qzihat7936.trial.sugarcrm.com",

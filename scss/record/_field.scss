@@ -1,0 +1,101 @@
+
+.field {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.field .value {
+  flex-grow: 1;
+}
+
+.field:hover > sup.name {
+    display: inline !important;
+}
+
+// display logic
+.record-body {
+  .field.empty {
+    display: none;
+  }
+}
+
+.record-body.edit {
+  .field.empty:not(.normally-hide) {
+    display: flex;
+  }
+}
+
+
+.record-body .field {
+  INPUT[type=text], INPUT[type=email], INPUT[type=tel], TEXTAREA {
+    padding: 1px 0px 1px 1px;
+    margin: 2px 0 2px 0px;
+    border: 1px transparent;
+  }
+}
+
+.record-body > .field > INPUT.enum {
+    width: 2em;
+    background: none repeat scroll 0 0 transparent;
+    border: 0;
+    color: #000000;
+}
+
+
+/*
+ * make input look like label. This setting is obtained from Gmail contact editor.
+*/
+.record-body .field > INPUT {
+    background-color: transparent;
+    vertical-align: text-top;
+}
+
+.record-body .field > * {
+    box-sizing: border-box;
+}
+
+.record-body.view .field TEXTAREA {
+    margin: 2px;
+    border: 0;
+    padding: 1px 2px;
+    background-color: transparent;
+    resize: none;
+}
+
+
+.record-body span.field ~ span.field {
+    padding-left: 4px;
+}
+
+
+.showonhover-field {
+  display: none;
+}
+
+.field:hover .showonhover-field {
+  display: inline-block;
+}
+
+.field-edit-dialog table {
+  padding: 20px 65px 10px 65px;
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+.field-edit-dialog td:first-child {
+  text-align: right;
+}
+
+.field-edit-dialog td:last-child {
+  text-align: left;
+}
+
+.record-body {
+
+}
+
+
+.field-edit-dialog .field {
+  display: table-row;
+}
+

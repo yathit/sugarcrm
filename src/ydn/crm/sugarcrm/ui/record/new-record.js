@@ -110,18 +110,18 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.socialFill = function(context) {
     return;
   }
   var email = context.getEmail();
-  var mid = ydn.app.msg.Manager.addStatus('Querying social data for ' + email);
+  var mid = ydn.crm.msg.Manager.addStatus('Querying social data for ' + email);
   ydn.social.MetaContact.fetchByEmail(context.getEmail()).addCallbacks(function(me) {
     if (me && me.hasData()) {
-      ydn.app.msg.Manager.setStatus(mid, 'Social data for ' + email + ' applied.');
+      ydn.crm.msg.Manager.setStatus(mid, 'Social data for ' + email + ' applied.');
       this.fillByMetaContact(me);
     } else {
-      ydn.app.msg.Manager.setStatus(mid, 'Social data for ' + email + ' not available, ' +
+      ydn.crm.msg.Manager.setStatus(mid, 'Social data for ' + email + ' not available, ' +
           'dispatching crawlers now.');
     }
   }, function(e) {
     var msg = e.message ? e.message : e;
-    ydn.app.msg.Manager.setStatus(mid, 'Fail request due to ' + msg);
+    ydn.crm.msg.Manager.setStatus(mid, 'Fail request due to ' + msg);
   }, this);
 };
 

@@ -1,0 +1,121 @@
+/* CSS related to specific modules */
+
+@import "module-color";
+
+.Accounts .icon {
+    background-color: $color-accounts;
+}
+
+.Bugs .icon {
+    background-color: $color-bugs;
+}
+
+.Calls .icon {
+    background-color: $color-calls;
+}
+
+.Calendar .icon {
+    background-color: $color-calendar;
+}
+
+.Campaigns .icon {
+    background-color: $color-campaigns;
+}
+
+.CampaignLog .icon {
+    background-color: $color-campaign-log;
+}
+
+.Cases .icon {
+    background-color: $color-cases;
+}
+
+.Contacts .icon {
+    background-color: $color-contacts;
+}
+
+.Documents .icon {
+    background-color: #81380f;
+}
+
+
+.Emails .icon, .EmailText .icon, .EmailTemplates .icon {
+    background-color: $color-emails;
+}
+
+.Employees .icon {
+    background-color: $color-employees;
+}
+
+.Files .icon {
+    background-color: $color-files;
+}
+
+.Forecasts .icon {
+    background-color: $color-forecasts;
+}
+
+.KBDocuments .icon {
+    background-color: $color-kb-documents;
+}
+
+.Leads .icon {
+    background-color: $color-leads;
+}
+
+.Meetings .icon {
+    background-color: $color-meetings;
+}
+
+.Notes .icon {
+    background-color: $color-notes;
+}
+
+.Opportunities .icon {
+    background-color: $color-opportunities;
+}
+
+.ProspectLists .icon, .Prospects .icon {
+    background-color: $color-prospects;
+}
+
+.Reports .icon {
+    background-color: $color-reports
+}
+
+.RevenueLineItems .icon {
+    background-color: $color-revenue-line-items;
+}
+
+.Quotes .icon {
+    background-color: $color-quotes;
+}
+
+.Targets .icon {
+    background-color: $color-targets;
+}
+
+.Tasks .icon {
+    background-color: $color-tasks;
+}
+
+.Users .icon {
+    background-color: $color-users;
+}
+
+.Workflow .icon {
+    background-color: $color-workflow;
+}
+
+
+.Contacts SVG.fill {
+  fill: $color-contacts;
+}
+
+.Leads SVG.fill {
+  fill: $color-leads;
+}
+
+.Accounts SVG.fill {
+  fill: $color-accounts;
+}

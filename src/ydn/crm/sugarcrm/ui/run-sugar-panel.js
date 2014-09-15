@@ -3,7 +3,7 @@
  */
 
 
-ydn.app.msg.Manager.addConsumer(new ydn.app.msg.ConsoleStatusBar());
+ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('dev');
 ydn.debug.log('ydn.crm', 'finer');
 ydn.debug.log('ydn.msg', 'finest');

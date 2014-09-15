@@ -1,0 +1,60 @@
+/**
+ * Created by kyawtun on 1/9/14.
+ */
+
+
+.more-menu {
+  position:relative;
+}
+
+.flyout-menu {
+  position:absolute ;
+  left: -98px;
+  width: 120px;
+  top: 18px;
+
+  .goog-menuitem:hover {
+    /* copy from goog-menuitem-highlight */
+    background-color: #d6e9f8;
+    border-color: #d6e9f8;
+    border-style: dotted;
+    border-width: 1px 0;
+    padding-bottom: 3px;
+    padding-top: 3px;
+  }
+
+  .icons.left-arrow {
+    position: absolute;
+    left: 4px;
+    vertical-align: middle;
+  }
+
+  > .goog-menuitem > .goog-menu {
+    width: 120px;
+    left: -121px;
+    margin-top: -20px;
+  }
+
+  > .goog-menuitem:not(:hover) > .goog-menu,
+      > .goog-menuitem.goog-menuitem-disabled > .goog-menu {
+    display: none;
+  }
+}
+
+.more-menu:not(:hover) .flyout-menu {
+  display: none;
+}
+
+.hover-button {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  width: 19px;
+  height: 19px;
+}
+
+
+*:not(:hover) > .hover-button {
+  display: none;
+}
+

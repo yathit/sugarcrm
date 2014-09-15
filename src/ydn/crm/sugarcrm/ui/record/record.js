@@ -25,7 +25,7 @@
 
 goog.provide('ydn.crm.sugarcrm.ui.record.Record');
 goog.require('goog.ui.Component');
-goog.require('ydn.app.msg.Manager');
+goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.sugarcrm');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.sugarcrm.ui.events');
@@ -272,15 +272,15 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) 
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.onSaveClick = function(e) {
   var patches = this.body_panel.collectData();
-  var mid = ydn.app.msg.Manager.addStatus('Saving...');
+  var mid = ydn.crm.msg.Manager.addStatus('Saving...');
   var model = this.getModel();
   this.patch(patches).addCallbacks(function(x) {
-    ydn.app.msg.Manager.setStatus(mid, model.getModuleName(), ' saved.');
+    ydn.crm.msg.Manager.setStatus(mid, model.getModuleName(), ' saved.');
     var href = /** @type {string} */ (model.getViewLink());
-    ydn.app.msg.Manager.setLink(mid, href, model.getLabel(), 'View in SugarCRM');
+    ydn.crm.msg.Manager.setLink(mid, href, model.getLabel(), 'View in SugarCRM');
     this.setDirty(false);
   }, function(e) {
-    ydn.app.msg.Manager.updateStatus(mid, e.message, ydn.app.msg.MessageType.ERROR);
+    ydn.crm.msg.Manager.updateStatus(mid, e.message, ydn.crm.msg.MessageType.ERROR);
   }, this);
 };
 
@@ -574,8 +574,8 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleContentClick = function(e) {
  * @return {number}
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.setMessage = function(s, opt_is_error) {
-  var type = opt_is_error ? ydn.app.msg.MessageType.ERROR : ydn.app.msg.MessageType.NORMAL;
-  return ydn.app.msg.Manager.addStatus(s, '', type);
+  var type = opt_is_error ? ydn.crm.msg.MessageType.ERROR : ydn.crm.msg.MessageType.NORMAL;
+  return ydn.crm.msg.Manager.addStatus(s, '', type);
 };
 
 
@@ -895,14 +895,14 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.removeSync = function() {
     }
 
     var gid = gdata.getSingleId();
-    var mid = ydn.app.msg.Manager.addStatus('Removing link from Gmail contact ' +
+    var mid = ydn.crm.msg.Manager.addStatus('Removing link from Gmail contact ' +
         gid);
     return sugar.unlinkGDataToRecord().addCallbacks(function() {
-      ydn.app.msg.Manager.setStatus(mid, 'Removed link from ' + gid);
+      ydn.crm.msg.Manager.setStatus(mid, 'Removed link from ' + gid);
     }, function(e) {
       window.console.error(e.stack || e);
-      ydn.app.msg.Manager.setStatus(mid, 'Removing link failed ' + (e.message || '.'),
-          ydn.app.msg.MessageType.ERROR);
+      ydn.crm.msg.Manager.setStatus(mid, 'Removing link failed ' + (e.message || '.'),
+          ydn.crm.msg.MessageType.ERROR);
     });
   } else {
     var msg = '';

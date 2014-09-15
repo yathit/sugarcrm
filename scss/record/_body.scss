@@ -1,0 +1,12 @@
+.record-body-header > * {
+  padding-left: 4px;
+}
+
+
+.record-body .normally-hide {
+  display: none;
+}
+
+.record.detail .record-body .normally-hide {
+  display: block;
+}

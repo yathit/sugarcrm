@@ -1,0 +1,69 @@
+/** Setup file CSS */
+@import 'base';
+
+body.setup {
+  font-size: 100%;
+}
+
+summary {
+  font-size: 120%;
+}
+
+details > * > .title {
+  padding-left: 20px;
+}
+
+details.success > * > .title {
+  background: url('chrome-extension://__MSG_@@extension_id__/image/tick.svg') left center no-repeat;
+}
+
+details {
+  padding: 8px;
+}
+
+#step-list summary > span {
+  cursor: pointer;
+}
+
+#li-host.success .deny {
+  display: none;
+}
+
+#li-host.fail .granted {
+  display: none;
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+summary > span {
+  padding-left: 4px;
+}
+
+details > div {
+  padding: 18px 8px 8px 8px;
+}
+
+summary:after {
+  border: thin solid lightgrey;
+  border-radius: 3px;
+  content: "+";
+
+  float: left;
+  font-weight: bold;
+  margin: 0 0 0 0;
+  padding: 0;
+  text-align: center;
+  width: 20px;
+  line-height: 1em;
+}
+
+summary:hover:after {
+  color: white;
+  background-color: black;
+}
+
+details[open] summary:after {
+  content: "-";
+}

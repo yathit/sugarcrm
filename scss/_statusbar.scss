@@ -1,0 +1,65 @@
+
+.status-base {
+  font-size: 90%;
+
+  A {
+    max-width: 4em;
+    text-overflow: ellipsis;
+    overflow-y: hidden;
+    max-height: 1.2em;
+    word-break: break-all;
+  }
+}
+
+.status-message {
+  height: 1.6em;
+  line-height: 1.6em;
+  background-color: #ffffff;
+  opacity: 1;
+}
+
+.status-bar {
+  padding: 2px 0;
+  box-sizing: border-box;
+  max-height: 1.6em;
+  overflow: hidden;
+  width: calc(100% - 20px);
+  display: inline-block;
+  word-break: break-all;
+
+}
+
+.status-detail-button {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0 4px;
+  float: right;
+}
+
+.status-message:not(:hover) .status-detail-button:not(.open) {
+  display: none;
+}
+
+
+.status-detail-button:hover {
+  // background-color: #d3d3d3;
+}
+
+.status-panel {
+  position: absolute;
+  background: white;
+  overflow: auto;
+  max-height: 150px;
+  opacity: 1;
+  width: 96%;
+  padding: 2px;
+  z-index: 1100;
+  border: 1px solid;
+  border-color: #DDD #FFFFFF #DDD #DDD;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.status-panel:not(.open) {
+  display: none;
+}

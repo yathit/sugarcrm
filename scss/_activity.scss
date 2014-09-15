@@ -1,0 +1,72 @@
+/*
+ * Activity panel (bar?) is horizontal panel showing upcoming activities.
+ */
+@import "record/module-color";
+
+.activity-panel {
+  .goog-tab-bar {
+
+  }
+
+  .goog-tab-bar-top {
+
+  }
+
+
+  .activity-search {
+
+  }
+
+  .activity-feed {
+
+  }
+
+  .goog-tab {
+    min-width: 16px;
+    text-decoration: none;
+  }
+
+  .goog-tab.Calls .activity-tab-label {
+
+  }
+
+  .goog-tab.Meetings .activity-tab-label {
+
+  }
+
+  .goog-tab.Opportunities .activity-tab-label {
+
+  }
+
+  .goog-tab.Tasks .activity-tab-label {
+
+  }
+
+  .goog-tab > * {
+    text-align: center;
+  }
+
+  .detail-panel, .search-panel, .new-record {
+    border-bottom: 1px solid lightblue;
+    border-left: 1px solid lightblue;
+    border-right: 1px solid lightblue;
+    padding: 1px;
+  }
+
+  .detail-panel .detail-item {
+    padding: 4px;
+  }
+
+  .detail-panel > .header > .close {
+    float: right;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .detail-panel > .content {
+    clear: both;
+    max-height: 200px;
+    overflow: auto;
+  }
+
+}

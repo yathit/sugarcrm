@@ -1,0 +1,50 @@
+
+.sidebar {
+    font-size: 13px;
+    font-family: arial,sans-serif;
+}
+
+.sidebar a {
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+#ydn-tabbar {
+}
+
+
+.tabbar-failback {
+    width: 156px;
+    padding: 4px;
+    z-index: 10; /* overlay */
+    position: fixed;
+    bottom: 0;
+    left: 4px;
+    height: 28px;
+}
+
+#ydn-tabbar > div:first-child {
+    /* this align UI, 16 px when debug button is not present. */
+    margin-left: 12px;
+}
+
+
+#btn-show-panel {
+    border: none;
+    cursor: pointer;
+    height: 17px;
+    float: none;
+    display: inline-block;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#btn-show-panel div {
+    padding-top: 7px;
+    width: 16px;
+    height: 18px;
+    background: url('chrome-extension://__MSG_@@extension_id__/image/logo.png') no-repeat center center;
+}

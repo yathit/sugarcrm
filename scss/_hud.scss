@@ -1,0 +1,122 @@
+
+$hud-button-left: 16px;
+$hud-button-width: 24px;
+$hud-button-height: 38px;
+
+#sticky-hud-base {
+  position: fixed;
+  right: 0;
+  top: 300px;
+  z-index: 1000;
+}
+
+.hud-button {
+  position: relative;
+  border-radius: 4px 0 0 4px;
+  cursor: pointer;
+  text-align: center;
+  width: $hud-button-width;
+  height: $hud-button-height;
+  outline: 0;
+  padding: 6px 0 0 2px;
+  border: 1px solid;
+  border-color: #DDD #FFFFFF #DDD #DDD;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  opacity: 1;
+
+}
+
+.hud-button .logo-small {
+  margin-top: 4px;
+}
+
+#sticky-hud-base.open .hud-button {
+  left: 26px - $gmail-sidebar-width - $hud-button-width;
+}
+
+#sticky-hud-base:not(.open) .hud-button:hover {
+  width: $hud-button-width + 4px;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+
+#sticky-hud-base.invalid:not(.open) .hud-button:not(:hover) {
+  left: 22px;
+}
+
+
+.hud-popup {
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 3px;
+  background-color: white;
+  margin-left: 30px - $gmail-sidebar-width;
+  width: $gmail-sidebar-width;
+  min-height: $hud-button-height + 2px;
+  max-height: 400px;
+  overflow: hidden;
+  display: none;
+  opacity: 1;
+  position: relative;
+}
+
+
+.popup-container {
+  display: flex;
+  flex-direction: column;
+
+  .popup-content {
+    flex-grow: 1;
+  }
+
+  .popup-footer {
+    align-self: flex-end;
+  }
+}
+
+
+#sticky-hud-base.open .hud-popup {
+  margin-top: - $hud-button-height - 10px;
+  display: inherit;
+}
+
+.popup-footer {
+  border-top: 8px;
+  font-size: 11px;
+  color: #767676;
+  width: 100%;
+
+  a:not(:hover) {
+    text-decoration: none;
+    color: #767676;
+  }
+
+}
+
+.popup-footer-bar {
+  padding-top: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  .center-item {
+    flex-grow: 1;
+  }
+  .right-item {
+    align-self: flex-end;
+  }
+}
+
+.arrow-box {
+  padding-top: 0;
+}
+
+.invalid-login-panel {
+  padding: 8px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: rgb(241, 241, 241);
+
+}
+

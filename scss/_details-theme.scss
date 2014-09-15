@@ -1,0 +1,32 @@
+/*
+ * Detail panel with + / - sign on right instead of default left arrow.
+ */
+
+.ydn-crm {
+  SUMMARY::-webkit-details-marker {
+    display: none
+  }
+
+  SUMMARY:after {
+    border: thin solid lightgrey;
+    border-radius: 3px;
+    content: "+";
+
+    float: right;
+    font-weight: bold;
+    margin: 0 0 0 0;
+    padding: 0;
+    text-align: center;
+    width: 14px;
+    line-height: 1em;
+  }
+
+  SUMMARY:hover:after {
+    color: white;
+    background-color: black;
+  }
+
+  DETAILS[open] > SUMMARY:after {
+    content: "-";
+  }
+}

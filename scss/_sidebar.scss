@@ -1,0 +1,18 @@
+
+.sugarcrm-link-panel, .no-sugar-panel {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.sugarcrm-link-panel > *, .no-sugar-panel > * {
+  margin: auto auto; // for center alignment
+}
+
+
+.context-sidebar {
+  border-bottom: 1px solid #d8d8d8;
+
+  .error .goog-custom-button-inner-box, .error .goog-custom-button-outer-box {
+    border-color: red !important;
+  }
+}

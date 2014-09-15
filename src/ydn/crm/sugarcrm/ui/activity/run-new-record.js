@@ -3,7 +3,7 @@
  */
 
 
-ydn.app.msg.Manager.addConsumer(new ydn.app.msg.ConsoleStatusBar());
+ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
 var panel, sugar;
@@ -13,9 +13,9 @@ inj.style.maxWidth = '20em';
 var div = document.getElementById('new-record');
 ydn.crm.shared.logger.info('activity panel test');
 
-var st = new ydn.app.msg.StatusBar();
+var st = new ydn.crm.msg.StatusBar();
 st.render(document.getElementById('status'));
-ydn.app.msg.Manager.addConsumer(st);
+ydn.crm.msg.Manager.addConsumer(st);
 
 ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
   for (var i = 0; i < models.length; i++) {
