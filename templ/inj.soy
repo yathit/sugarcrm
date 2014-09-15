@@ -2,62 +2,100 @@
 
 
 /**
- * Panel.
+ * Body HTML.
  */
-{template .debug}
-<div class="debug-panel">
+{template .body}
 
-    <div id="debug-channel">
-      <h4>Channel</h4>
-      <select>
-        <option value="guf">GOOGLE_USERINFO</option>
-        <option value="gdf">GDATA_FETCH</option>
-        <option value="gdls">GDATA_LINK_SUGAR</option>
-        <option value="gdcm">GDATA_CONTACT_MERGE</option>
-        <option value="gdce">GDATA_LIST_CONTACT_BY_EMAIL</option>
-        <option value="sd">SUGAR_DETAILS</option>
-        <option value="sl">SUGAR_LOGIN</option>
-        <option value="sfm">SUGAR_FETCH_MODULE</option>
-        <option value="sr">SUGAR_REST</option>
-        <option value="slm">SUGAR_LIST_MODULE</option>
-        <option value="sim">SUGAR_INFO_MODULE</option>
-        <option value="slem">SUGAR_FIND_BY_EMAIL</option>
-        <option value="sic">SUGAR_IMPORT_CONTACT</option>
-      </select>
-      <br />
-      <textarea cols="80" rows="6" name="params"></textarea>
-      <br />
-      <button>Send</button>
-
+<div class="app">
+  <section class="sidebar">
+    <div class="user-toolbar">
+       <div>
+         <a id="user-login">...</a>
+       </div>
+       <div>
+         <span id="user-name" style="display: none;"></span>
+       </div>
     </div>
-  <hr />
+  </section>
 
-  <details id="debug-sugar-rest">
-    <summary>REST call</summary>
-    <select class="sugar-rest-module">
-      <option value="Leads">Leads</option>
-      <option value="User">User</option>
-      <option value="Contacts" selected>Contacts</option>
-    </select>
-    <select class="sugar-rest-method">
-     <option value="get_module_fields">Retrieving a List of Fields From a Module</option>
-     <option value="get_entries">Retrieving Multiple Records by ID From a Module</option>
-     <option value="get_entry_list" selected>Retrieving a List of Records</option>
-    </select>
-    <div>
-      <textarea class="sugar-rest-params" cols="80" rows="6" name="params"></textarea>
-    </div>
-    <button class="sugar-rest-load">Load</button>
-  </details>
+ <ul>
+   <li>
+     <details>
+       <summary>
+         Debug
+       </summary>
+       <div id="section-debug">
+       </div>
+     </details>
+   </li>
+ </ul>
+ </div>
+{/template}
 
 
-  <span>
-    <button class="debug-sugar-nude">Nude</button>
-  </span>
-  <hr />
-   <textarea id="debug-status" cols="80" rows=10" ></textarea>
+
+/**
+ * Setting dialog box content.
+ */
+{template .setting}
+<div class="setting-dialog">
+<form class="basic-setting">
+<div>
+  <input type="checkbox" name="log-on-console"/> Log on console<br />
+</div>
+<div class="group-panel" style="display: none">
+  <div>
+    Gmail context panel location
+  </div>
+  <!-- see this value in ydn.crm.ui.ContextPanelPosition -->
+  <input type="radio" name="context-panel-position" value="in"/> Inline<br />
+  <input type="radio" name="context-panel-position" value="st"/> Stick on right side<br />
+  <input type="radio" name="context-panel-position" value="wg"/> Inside widget panel<br />
+</div>
+</form>
 </div>
 {/template}
+
+
+/**
+ * Edit name dialog box content.
+ */
+{template .nameEditor}
+  {@param fields: list<[name: string, label: string, value: string, type: string, listId: string|null]>}
+  <div class="field-edit-dialog">
+    <table>
+
+    <tbody>
+    {foreach $field in $fields}
+      <tr class="field" name="{$field.name}">
+        <td class="name">{$field.label}</td>
+        <td>
+          <input class="value"
+              type="{$field.type}"
+              {if $field.listId}list="{$field.listId}"{/if}
+              value="{$field.value}" />
+        </td>
+      </tr>
+    {/foreach}
+    </tbody>
+    </table>
+  </div>
+{/template}
+
+
+/**
+ * Edit name dialog box content.
+ * @param full_name
+ */
+{template .nameHeader}
+<div class="field" name="full_name">
+  <input class="value" type="text" value="{$full_name}" title="Full name"/>
+  <span class="showonhover-field">
+    <span class="dotdotdot" title="Details"></span>
+  </span>
+</div>
+{/template}
+
 
 
 /**

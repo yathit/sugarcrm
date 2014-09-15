@@ -50,7 +50,6 @@
         </sequential>
     </macrodef>
 
-
     <target name="jstd" description="print out jstd file for JS test driver">
 
         <jstd-gen base.dir="${sugarcrm.dir}"
