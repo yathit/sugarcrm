@@ -7,6 +7,58 @@ goog.provide('ydn.crm.sugarcrm');
 
 
 /**
+ * @define {boolean} running in raw mode.
+ */
+ydn.crm.sugarcrm.RAW = false;
+
+
+/**
+ * @define {string} version major.
+ */
+ydn.crm.sugarcrm.VERSION_MAJOR = '';
+
+
+/**
+ * @define {string} version minor.
+ */
+ydn.crm.sugarcrm.VERSION_MINOR = '';
+
+
+/**
+ * @define {string} version patch.
+ */
+ydn.crm.sugarcrm.VERSION_PATCH = '';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.sugarcrm.version = ydn.crm.sugarcrm.VERSION_MAJOR + '.' +
+    ydn.crm.sugarcrm.VERSION_MINOR + '.' +
+    ydn.crm.sugarcrm.VERSION_PATCH;
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.sugarcrm.VER = '0.12.0';
+
+
+/**
+ * @enum {string}
+ */
+ydn.crm.sugarcrm.Version = {
+  PREVIOUS: '0.10.17',
+  STABLE: ydn.crm.sugarcrm.VER,
+  RC: ydn.crm.sugarcrm.VER,
+  BETA: ydn.crm.sugarcrm.VER,
+  EDGE: 'edge'
+};
+
+
+/**
  * @enum {string}
  */
 ydn.crm.sugarcrm.ModuleName = {

@@ -1,0 +1,281 @@
+<project name="sugarcrm" basedir="." default="comp-crm">
+    <dirname property="sugarcrm.dir" file="${ant.file.sugarcrm}"/>
+    <property name="work.dir" location="${sugarcrm.dir}/.." />
+    <property name="home.dir" location="${user.home}"/>
+    <property name="db-work.dir" location="${work.dir}/../db-work"/>
+    <import file="${work.dir}/ydn-base/build.xml"/>
+    <import file="${work.dir}/ydn/build.xml"/>
+    <import file="${work.dir}/crm/build.xml"/>
+    <property name="sugarcrm-ver-major" value="0"/>
+    <property name="sugarcrm-ver-minor" value="12"/>
+    <property name="sugarcrm-ver-patch" value="0"/>
+    <property name="sugarcrm-ver-" value="${sugarcrm-ver-major}.${sugarcrm-ver-minor}.${sugarcrm-ver-patch}"/>
+    <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
+    <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
+    <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
+    <property name="src.bk" value="ydn-src-1" description="source code bucket"/>
+    <property name="lib.dir" location="${work.dir}/../lib"/>
+    <property name="jtidy.jar" value="${lib.dir}/jtidy/target/jtidy-r938.jar"/>
+    <condition property="gsutil" value="D:/opt/gsutil/gsutil"><os family="windows"/></condition>
+    <condition property="gsutil" value="/Users/kyawtun/opt/gsutil/gsutil"><os family="unix"/></condition>
+    <property name="closure-library.dir" value="${work.dir}/closure-library"/>
+    <property name="closure-compiler.dir" value="${lib.dir}/closure-compiler"/>
+    <property name="closure-compiler.jar" value="${closure-compiler.dir}/build/compiler.jar"/>
+    <property name="closure-templates.dir" value="${lib.dir}/closure-templates"/>
+    <property name="closure-stylesheets.dir" value="${lib.dir}/closure-stylesheets"/>
+    <property name="google-sites-liberation.jar" value="${lib.dir}/google-sites-liberation/target/google-sites-liberation-1.0.4-SNAPSHOT-jar-with-dependencies.jar"/>
+    <property name="js-test-driver.jar" value="${lib.dir}/js-test-driver/JsTestDriver.jar"/>
+    <property name="outputwrapper.norun" value="(function(){%output%})();"/>
+    <property name="outputwrapper.app" value="(function(){%output%})();app=runApp();"/>
+    <property name="sugarcrm-out.dir" location="${sugarcrm.dir}/jsc"/>
+    <property name="templ.dir" location="${sugarcrm.dir}/templ" />
+    <property name="css.dir" location="${sugarcrm.dir}/css" />
+    <property name="gss.dir" location="${sugarcrm.dir}/gss" />
+
+    <macrodef name="generate-wedget-template">
+        <attribute name="filename" />
+        <attribute name="input.dir" />
+        <attribute name="output.dir" default="@{input.dir}" />
+        <element name="templ-options" optional="true"/>
+        <sequential>
+            <java jar="${closure-templates.dir}/build/SoyToJsSrcCompiler.jar"
+                  fork="true" failonerror="true" logError="true" dir="@{input.dir}">
+                <arg line='--outputPathFormat "@{output.dir}/{INPUT_DIRECTORY}/{INPUT_FILE_NAME_NO_EXT}.soy.js"' />
+                <arg line="--cssHandlingScheme GOOG" />
+                <arg line="--shouldGenerateJsdoc" />
+                <templ-options/>
+                <arg line="--shouldProvideRequireSoyNamespaces" />
+                <arg line="'@{filename}'" />
+            </java>
+        </sequential>
+    </macrodef>
+
+
+    <target name="jstd" description="print out jstd file for JS test driver">
+
+        <jstd-gen base.dir="${sugarcrm.dir}"
+                  test.dir="${sugarcrm.dir}/src"
+                  input.fn="${sugarcrm.dir}/src/main_deps.js">
+            <deps-options>
+                <arg line='--path "${work.dir}/ydn-base/src"'/>
+                <arg line='--path "${work.dir}/ydn/src"'/>
+                <arg line='--path "${work.dir}/ydn-db/src"'/>
+                <arg line='--path "${work.dir}/ydn-db-sync/src"'/>
+                <arg line='--path "${work.dir}/gdata/src"'/>
+                <arg line='--path "${work.dir}/crm/src"'/>
+                <arg line='--path "${work.dir}/crm-ex/src"'/>
+                <arg line='--path "${sugarcrm.dir}/src"'/>
+            </deps-options>
+        </jstd-gen>
+    </target>
+    <target name="comp-crm" description="compile JS">
+
+        <comp-adved input.fn="${sugarcrm.dir}/src/crm/app/event-page.js"
+                    output.fn="ydn.crm.sugarcrm-${sugarcrm-ver-}.js"
+                    entrypoint="ydn.crm.app.EventPage">
+            <opt-arg>
+                <arg line='-f "--define=goog.DEBUG=true"'/>
+            </opt-arg>
+        </comp-adved>
+        <replace description="replace so with online repo path"
+                 file="${sugarcrm-out.dir}/ydn.crm.sugarcrm-${sugarcrm-ver-}.js"
+                 token="sourceMappingURL=ydn.crm.sugarcrm-${sugarcrm-ver-}.js.map"
+                 value="sourceMappingURL=https://${src.bk}.storage.googleapis.com/jsc/ydn.crm.sugarcrm-${sugarcrm-ver-}.js.map"/>
+
+    </target>
+
+    <target name="comp-msg-dev" description="compile JS">
+
+        <jscomp-msg input.fn="${work.dir}/ydn/src/msg/pipe.js"
+                    output.fn="ydn.msg.js"
+                    entrypoint="ydn.msg.Pipe">
+            <opt-arg>
+                <arg line='-i "${work.dir}/ydn/src/msg/exports.js"'/>
+            </opt-arg>
+        </jscomp-msg>
+
+    </target>
+    <target name="jsdoc" description="generate js doc">
+        <exec executable="jsdoc" failonerror="true" logerror="true" dir="${basedir}">
+            <arg value="src"/>
+            <arg line='--recurse'/>
+            <arg line='--verbose'/>
+            <arg line='-t "${lib.dir}/jaguarjs-jsdoc"'/>
+            <arg line='-c "jsdoc.json"'/>
+            <arg line='-d "doc"'/>
+        </exec>
+    </target>
+
+    <macrodef name="comp-adved" description="compile JS">
+       <attribute name="input.fn" />
+       <attribute name="output.fn" />
+       <attribute name="entrypoint"/>
+       <element name="opt-arg" optional="true"/>
+       <sequential>
+        <closure-compile compilationlevel="ADVANCED_OPTIMIZATIONS"
+                         input="@{input.fn}"
+                         input.dir="${sugarcrm.dir}/src"
+                         output.fn="${sugarcrm-out.dir}/@{output.fn}">
+            <options>
+                <opt-arg/>
+                <arg line='-i "${work.dir}/ydn/src/msg/exports.js"'/>
+                <arg line='-f "--source_map_format=V3"'/>
+                <arg line='-f "--create_source_map=${sugarcrm-out.dir}/@{output.fn}.map"'/>
+                <arg line='-p "${db-work.dir}/ydn-base/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
+                <arg line='-p "${db-work.dir}/ydn/src"'/>
+                <arg line='-p "${work.dir}/ydn-api/js"'/>
+                <arg line='-p "${work.dir}/sync-app/js"'/>
+                <arg line='--path "${work.dir}/crm/src"'/>
+                <arg line='--path "${work.dir}/sugarcrm/src"'/>
+                <arg line='-p "${db-work.dir}/gdata/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db-fulltext/src"'/>
+                <arg line='-p "${db-work.dir}/fullproof/js"'/>
+                <arg line='-p "${db-work.dir}/natural/js"'/>
+                <arg line='-f "--externs=${work.dir}/fullproof/externs/unicode.js"'/>
+                <arg line='-f "--flagfile=${flagfile}"'/>
+                <arg line='-f "--define=goog.json.USE_NATIVE_JSON=true"'/>
+                <arg line='-f "--define=ydn.crm.base.VERSION_MAJOR=${sugarcrm-ver-major}"'/>
+                <arg line='-f "--define=ydn.crm.base.VERSION_MINOR=${sugarcrm-ver-minor}"'/>
+                <arg line='-f "--define=ydn.crm.base.VERSION_PATCH=${sugarcrm-ver-patch}"'/>
+                <arg line='-f "--externs=${closure-compiler.dir}/contrib/externs/chrome_extensions.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/atom.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/gapi.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/aws.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/sugarcrm.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/opensocial.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/svg.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/kineticjs.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-api/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn/externs/ydn-server.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/schema.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/websql.js"'/>
+                <arg line='-f "--externs=${sugarcrm.dir}/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/gdata/externs/gdata.js"'/>
+                <arg line='-f "--output_wrapper=${outputwrapper.norun}"'/>
+            </options>
+        </closure-compile>
+        <concat destfile="${sugarcrm-out.dir}/@{output.fn}" append="true">
+            //# sourceMappingURL=@{output.fn}.map
+        </concat>
+        <replace description="replace so with online repo path"
+                 file="${sugarcrm-out.dir}/@{output.fn}.map"
+                 token="${work.dir}/"
+                 value="http://localhost/"/>
+       </sequential>
+    </macrodef>
+
+
+
+
+    <macrodef name="calc-deps" description="calculate dependency for testing">
+        <attribute name="output.fn"/>
+        <attribute name="input.dir"/>
+        <attribute name="output-mode" default="deps"/>
+        <element name="calc-options" optional="yes"/>
+        <sequential>
+            <exec executable="python" failonerror="true" logError="true">
+                <arg value="${closure-library.dir}/closure/bin/calcdeps.py"/>
+                <arg line='--dep "${closure-library.dir}"'/>
+                <arg line='--path "@{input.dir}"'/>
+                <arg line='--output_mode "@{output-mode}"'/>
+                <arg line='--output_file "@{output.fn}"'/>
+                <calc-options/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <target name="deps" description="list dependency files">
+        <delete file="${sugarcrm.dir}/src/deps.js"/>
+        <calc-deps
+                input.dir="${sugarcrm.dir}/src"
+                output.fn="${sugarcrm.dir}/src/deps.js">
+        </calc-deps>
+    </target>
+
+
+
+    <target name="templ" description="compile templates">
+
+
+        <fileset dir="${sugarcrm.dir}/templ" id="templ.files">
+            <include name="**/*.soy"/>
+        </fileset>
+        <pathconvert pathsep="' '"  property="templfiles" refid="templ.files" dirsep="/">
+            <map from="${sugarcrm.dir}/templ/" to=""/>
+        </pathconvert>
+        <generate-wedget-template filename="${templfiles}"
+                                  input.dir="${templ.dir}"
+                                  output.dir="${sugarcrm.dir}/src/templ/">
+
+        </generate-wedget-template>
+
+    </target>
+
+    <target name="goog-css" description="cancat css files for closure ui">
+        <sequential>
+            <concat destfile="${sugarcrm.dir}/scss/_goog.scss">
+                <header filtering="no" trimleading="yes">
+                    /*
+                    * Closure Library CSS
+                    */
+                </header>
+                <filelist dir="${closure-library.dir}/closure/goog/css">
+                    <file name="common.css"/>
+                    <file name="combobox.css"/>
+                    <file name="colormenubutton.css"/>
+                    <file name="css3button.css"/>
+                    <file name="css3menubutton.css"/>
+                    <file name="custombutton.css"/>
+                    <file name="dialog.css"/>
+                    <file name="menu.css"/>
+                    <file name="menuitem.css"/>
+                    <file name="menubutton.css"/>
+                    <file name="menuseparator.css"/>
+                    <file name="submenu.css"/>
+                    <file name="toolbar.css"/>
+                </filelist>
+            </concat>
+            <replace description="fix relative path to work in extension"
+                     file="${sugarcrm.dir}/scss/_goog.scss"
+                     token="//ssl.gstatic.com/"
+                     value="chrome-extension://__MSG_@@extension_id__/image/goog/"/>
+        </sequential>
+    </target>
+    <macrodef name="comp-sass">
+        <attribute name="name"/>
+        <sequential>
+            <exec executable="sass" failonerror="true" dir="${sugarcrm.dir}">
+                <arg line="--sourcemap"/>
+                <arg line="--load-path=${scss.dir}"/>
+                <arg value="${scss.dir}/@{name}.scss"/>
+                <arg value="${css.dir}/@{name}.css"/>
+            </exec>
+        </sequential>
+    </macrodef>
+    <macrodef name="watch-sass">
+        <attribute name="name"/>
+        <sequential>
+            <exec executable="sass" failonerror="true" dir="${sugarcrm.dir}">
+                <arg line="--watch"/>
+                <arg line="--sourcemap"/>
+                <arg line="--load-path=${scss.dir}"/>
+                <arg value="${scss.dir}/@{name}.scss:${css.dir}/@{name}.css"/>
+            </exec>
+        </sequential>
+    </macrodef>
+    <target name="scss" description="compile scss">
+        <comp-sass name="setup"/>
+        <comp-sass name="popup"/>
+        <comp-sass name="option"/>
+        <comp-sass name="inj"/>
+    </target>
+
+    <target name="build" description="build all distribution"
+            depends="comp-crm">
+
+    </target>
+</project>

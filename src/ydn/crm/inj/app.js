@@ -415,7 +415,7 @@ ydn.crm.inj.App.prototype.initData = function(user_info) {
  * Main entry script to run the app.
  * @return {ydn.crm.inj.App}
  */
-ydn.crm.inj.App.runApp = function() {
+ydn.crm.inj.App.runInjApp = function() {
   ydn.crm.shared.init();
 
   var app = new ydn.crm.inj.App();
@@ -437,8 +437,9 @@ goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.crm.sugarcrm.ui.SearchPanel');
 goog.require('ydn.crm.sugarcrm.ui.SyncPanel');
 
+goog.exportSymbol('ydn.crm.version', ydn.crm.version);
 
-
+goog.exportSymbol('runInjApp', ydn.crm.inj.App.runInjApp);
 
 goog.exportSymbol('ydn.crm.sugarcrm.model.Sugar', ydn.crm.sugarcrm.model.Sugar);
 goog.exportSymbol('ydn.crm.ui.SidebarPanel', ydn.crm.ui.SidebarPanel);
