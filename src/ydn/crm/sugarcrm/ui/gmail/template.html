@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Template</title>
+    <link rel="stylesheet" type="text/css" href="../../../../css/inj.css">
+    <script src="../../../../lib/md5.js"></script>
+    <script src="../../../../../closure-library/closure/goog/base.js"></script>
+    <script src="../../../../../ydn-base/src/deps.js"></script>
+    <script src="../../../../../ydn/src/deps.js"></script>
+    <script src="../../../../../ydn-api/js/deps.js"></script>
+    <script src="../../../../../ydn-db/src/deps.js"></script>
+    <script src="../../../../../ydn-db-sync/src/deps.js"></script>
+    <script src="../../../../../gdata/src/deps.js"></script>
+    <script src="../../../deps.js"></script>
+    <script src="../../test-include.js"></script>
+    <script src="../../../../js/option/model/sugarcrm.js"></script>
+</head>
+<body>
+<div class="inj">
+    <table>
+        <tbody>
+        <tr>
+            <td>
+
+                <form id="manual" enctype="multipart/form-data">
+                    <div>
+                        <span data-tooltip="Select Contacts">To</span>
+                        <span id="to-addrs"></span>
+                    </div>
+                    <textarea name="to" id="template-name" list="templates"></textarea>
+                    <button id="render">Render</button>
+                    <br/>
+                    <datalist id="id-list">
+                        <option>kyawtuns@gmail.com</option>
+                        <option>sugar.im.vegan@example.tv</option>
+                    </datalist>
+                    <input value="qa16@example.cn" id="email" list="id-list"/>
+                    <input name="subjectbox" />
+                </form>
+                <div></div>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div g_editable="true" role="textbox" contenteditable="true" aria-label="Message Body">
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <div>
+                                    <div>
+                                        <table id="toolbar">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <button>Send</button>
+                                                </td>
+                                                <td>Save</td>
+                                                <td>
+                                                    <div>
+                                                        <button>Delete</button>
+                                                        <button>Menu</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+    <div id="result"></div>
+    <datalist id="templates"></datalist>
+</div>
+<script src="run-template-dev.js">
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+{namespace templ.ydn.crm.sugarcrm}
+
+
+/**
+* Contact widget Panel.
+* This is render to child of table row.
+*/
+{template .mainPanel}
+<div class="widget sugar">
+  {call .modulePanel data="all"}
+    {param module: 'Contacts'/}
+  {/call}
+  <div class="sugar-import"></div>
+  <div class="widget-label message"></div>
+</div>
+{/template}
+
+
+
+/**
+* Import
+* @param module module name
+*/
+{template .modulePanel}
+<div class="task sugar-import {$module}" style="display: none">
+  <a class="task" href="#" style="display: none">Add to {$module}</a>
+  <span class="widget-label message"></span>
+</div>
+<div class="feeds"></div>
+<div class="details"></div>
+{/template}
+
+
+/**
+* Link
+* @param domain sugarcrm domain
+* @param sugar_contact entry
+* @param fields list of detail field to shown
+*/
+{template .details}
+
+<details>
+  <summary>
+    <a title="SugarCRM Contacts Record" target="sugarcrm" class="sugar-contact" data-id="{$sugar_contact['id']}" href="https://{$domain}/index.php?module=Contacts&amp;action=DetailView&amp;record={$sugar_contact['id']}">
+      {$sugar_contact['name']}
+    </a>
+    <a class="widget-task" href="#" style="display: none" title="Link above Gmail Contact to this SugarCRM Contact">Link</a>
+  </summary>
+  {foreach $field in $fields}
+    {if $sugar_contact[$field.name]}
+      <div class="field">
+        <span class="value" title="{$field.label}">{$sugar_contact[$field.name]}</span>
+      </div>
+    {/if}
+  {/foreach}
+</details>
+
+{/template}
+
+
+/**
+* Import
+*/
+{template .syncPanel}
+<div class="goog-toolbar">
+  <div title="Select base record type" class="goog-toolbar-select">
+    Base record
+    <div class="goog-menu" name="base-record">
+      <div class="goog-option" name="gmail-contact">Gmail Contacts</div>
+      <div class="goog-option" name="Contacts">Contacts</div>
+      <div class="goog-option" name="Leads">Leads</div>
+    </div>
+  </div>
+  <div title="Sort order" class="goog-toolbar-select">
+    Sort by
+    <div class="goog-menu" name="sort-by">
+      <div class="goog-option" name="modified">modified</div>
+      <div class="goog-option" name="id">id</div>
+      <div class="goog-option" name="name">name</div>
+    </div>
+  </div>
+</div>
+<div class="content"></div>
+{/template}
+
+
+
+/**
+* Import
+* @param first_name module name
+* @param last_name
+* @param email email
+* @param phone phone
+* @param company
+*/
+{template .freeTrialSugarCrm}
+<h3>Start your SugarCRM Pro 14-days free trial from <a href="http://www.sugarcrm.com">http://www.sugarcrm.com</a></h3>
+<form class="webform-client-form" enctype="multipart/form-data" action="/" method="post" accept-charset="UTF-8">
+<div><div class="form-item control-group form-type-textfield form-item-submitted-first-name">
+  <label for="edit-submitted-first-name">First Name <span class="form-required" title="This field is required.">*</span></label>
+ <div class="controls"><input type="text" id="edit-submitted-first-name" name="submitted[first_name]" value="{$first_name}" size="60" maxlength="128" class="form-text required"></div>
+</div>
+<div class="form-item control-group form-type-textfield form-item-submitted-last-name">
+  <label for="edit-submitted-last-name">Last Name <span class="form-required" title="This field is required.">*</span></label>
+ <div class="controls"><input type="text" id="edit-submitted-last-name" name="submitted[last_name]" value="{$last_name}" size="60" maxlength="128" class="form-text required"></div>
+</div>
+<div class="form-item control-group form-type-textfield form-item-submitted-email1">
+  <label for="edit-submitted-email1">Business Email <span class="form-required" title="This field is required.">*</span></label>
+ <div class="controls"><input class="email form-text required" type="text" id="edit-submitted-email1" name="submitted[email1]" value="{$email}" size="60" maxlength="128"></div>
+</div>
+<div class="form-item control-group form-type-textfield form-item-submitted-phone-work">
+  <label for="edit-submitted-phone-work">Phone <span class="form-required" title="This field is required.">*</span></label>
+ <div class="controls"><input type="text" id="edit-submitted-phone-work" name="submitted[phone_work]" value="{$phone}" size="60" maxlength="128" class="form-text required"></div>
+</div>
+<div class="form-item control-group form-type-textfield form-item-submitted-account-name">
+  <label for="edit-submitted-account-name">Company <span class="form-required" title="This field is required.">*</span></label>
+ <div class="controls"><input type="text" id="edit-submitted-account-name" name="submitted[account_name]" value="{$company}" size="60" maxlength="128" class="form-text required"></div>
+</div>
+<div class="form-item control-group form-type-select form-item-submitted-employee-qty-c">
+  <label for="edit-submitted-employee-qty-c">Employees <span class="form-required" title="This field is required.">*</span></label>
+ <div class="controls"><select id="edit-submitted-employee-qty-c" name="submitted[employee_qty_c]" class="form-select required"><option value="" >- Select -</option><option value="level1" selected="selected">1-4</option><option value="level2">5-49</option><option value="level3">50-100</option><option value="level4">101-499</option><option value="level5">500-2000</option><option value="level6">Over 2000</option></select></div>
+</div>
+<div class="form-item control-group form-type-select form-item-submitted-destination">
+  <label for="edit-submitted-destination">Deployment Region <span class="form-required" title="This field is required.">*</span></label>
+ <div class="controls"><select id="edit-submitted-destination" name="submitted[destination]" class="form-select required"><option value="" >- Select -</option><option value="us" selected="selected">North America</option><option value="eu">Europe</option></select></div>
+</div>
+<div class="form-item control-group form-type-hidden form-item-submitted-primary-address-country">
+  <div class="controls"><input type="hidden" name="submitted[primary_address_country]" value="SG">
+</div>
+</div>
+<div class="form-item control-group form-type-hidden form-item-submitted-primary-address-state">
+  <div class="controls"><input type="hidden" name="submitted[primary_address_state]" value="00">
+</div>
+</div>
+<input type="hidden" name="submitted[campaign_name]" value="65a283ea-4c75-88b1-bd61-4b01fe68fb74">
+<input type="hidden" name="submitted[lead_source_description]" value="Registered on sugarcrm.com">
+<input type="hidden" name="submitted[status]" value="New">
+<input type="hidden" name="submitted[lead_source]" value="Online Marketing">
+<input type="hidden" name="submitted[team_id]" value="1">
+<input type="hidden" name="submitted[registered_eval_c]" value="7_day_trial">
+<input type="hidden" name="submitted[pcampaign_name]" value="">
+<input type="hidden" name="submitted[edition]" value="PRO">
+<input type="hidden" name="submitted[pardot_action_url]" value="http://go.pardot.com/l/1512/2009-11-05/FMP4F">
+<input type="hidden" name="submitted[google_cpc]" value="">
+<input type="hidden" name="submitted[trial_name]" value="">
+<p id="termsAndCond-text">By clicking submit you agree&nbsp;to the <a href="http://www.sugarcrm.com/page/7-day-trial-license-agreement/en" target="_blank">Free Trial Agreement</a>.</p>
+
+
+<input type="hidden" name="details[sid]" value="">
+<input type="hidden" name="details[page_num]" value="1">
+<input type="hidden" name="details[page_count]" value="1">
+<input type="hidden" name="details[finished]" value="0">
+<input type="hidden" name="form_build_id" value="form-zicW9hoXXDXb0n7tyf2VD_8fuCcn4-D25awzBIIAF0A">
+<input type="hidden" name="form_id" value="webform_client_form_2963">
+<input type="hidden" name="honeypot_time" value="1395758111">
+<div class="honeypot-textfield" style="display: none"><div class="form-item control-group form-type-textfield form-item-about-you">
+  <label for="edit-about-you">Leave this field blank </label>
+ <div class="controls"><input type="text" id="edit-about-you" name="about_you" value="" size="20" maxlength="128" class="form-text"></div>
+</div>
+</div><div style="display: none" id="edit-actions--2"><input type="submit" id="edit-submit--2" name="op" value="Submit" class="form-submit btn-primary btn"></div></div></form>
+{/template}

@@ -1,0 +1,161 @@
+{namespace templ.ydn.crm.app}
+
+
+
+/**
+ * Body HTML.
+ */
+{template .body}
+
+<div class="app">
+  <section class="sidebar">
+    <div class="user-toolbar">
+       <div>
+         <a id="user-login">...</a>
+       </div>
+       <div>
+         <span id="user-name" style="display: none;"></span>
+       </div>
+    </div>
+  </section>
+
+ <ul>
+   <li>
+     <details>
+       <summary>
+         Debug
+       </summary>
+       <div id="section-debug">
+       </div>
+     </details>
+   </li>
+ </ul>
+ </div>
+{/template}
+
+
+/**
+* Home page
+* @param is_raw raw or not
+*/
+{template .page}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Background page</title>
+
+    {if $is_raw}
+
+      <script src="http://localhost/db-work/fullproof/js/tokenizer/categ_letters_numbers.js"></script>
+      <script src="http://localhost/db-work/fullproof/js/tokenizer/normalizer_lowercase.js"></script>
+      <script src="http://localhost/db-work/fullproof/js/tokenizer/normalizer_lowercase_nomark.js"></script>
+      <script src="http://localhost/db-work/crm-ex/src/define.js"></script>
+      <script src="http://localhost/db-work/crm-ex/lib/md5.js"></script>
+      <script src="http://localhost/db-work/crm-ex/lib/kinetic-v5.0.1.min.js"></script>
+      <script src="http://localhost/db-work/closure-library/closure/goog/base.js"></script>
+      <script src="http://localhost/db-work/ydn-base/src/deps.js"></script>
+      <script src="http://localhost/db-work/ydn/src/deps.js"></script>
+      <script src="http://localhost/db-work/ydn-api/js/deps.js"></script>
+      <script src="http://localhost/db-work/ydn-db/src/deps.js"></script>
+      <script src="http://localhost/db-work/ydn-db-fulltext/src/deps"></script>
+      <script src="http://localhost/db-work/fullproof/js/deps"></script>
+      <script src="http://localhost/db-work/natural/js/deps"></script>
+      <script src="http://localhost/db-work/ydn-db-sync/src/deps.js"></script>
+      <script src="http://localhost/db-work/gdata/src/deps.js"></script>
+      <script src="http://localhost/db-work/crm/src/deps.js"></script>
+      <script src="http://localhost/db-work/sugarcrm/src/deps.js"></script>
+      <script src="http://localhost/db-work/crm-ex/src/deps.js"></script>
+     <script src="http://localhost/db-work/crm-ex/src/crm/include.js"></script>
+    {else}
+
+     <script src="lib/categ_letters_numbers.js"></script>
+        <script src="lib/normalizer_lowercase.js"></script>
+        <script src="lib/normalizer_lowercase_nomark.js"></script>
+
+      <script src="lib/md5.js"></script>
+      <script src="lib/kinetic-v5.0.1.min.js"></script>
+          <script src="jsc/bootstrip.js"></script>
+    {/if}
+
+
+</head>
+<body>
+  <div id="canvas-19"></div>
+  {if $is_raw}
+     <script src="js/run-event-page-dev.js"></script>
+  {else}
+    <script src="js/run-event-page.js"></script>
+  {/if}
+</body>
+</html>
+
+{/template}
+
+
+
+/**
+ * Setting dialog box content.
+ */
+{template .setting}
+<div class="setting-dialog">
+<form class="basic-setting">
+<div>
+  <input type="checkbox" name="log-on-console"/> Log on console<br />
+</div>
+<div class="group-panel" style="display: none">
+  <div>
+    Gmail context panel location
+  </div>
+  <!-- see this value in ydn.crm.ui.ContextPanelPosition -->
+  <input type="radio" name="context-panel-position" value="in"/> Inline<br />
+  <input type="radio" name="context-panel-position" value="st"/> Stick on right side<br />
+  <input type="radio" name="context-panel-position" value="wg"/> Inside widget panel<br />
+</div>
+</form>
+</div>
+{/template}
+
+
+/**
+ * Edit name dialog box content.
+ */
+{template .nameEditor}
+  {@param fields: list<[name: string, label: string, value: string, type: string, listId: string|null]>}
+  <div class="field-edit-dialog">
+    <table>
+
+    <tbody>
+    {foreach $field in $fields}
+      <tr class="field" name="{$field.name}">
+        <td class="name">{$field.label}</td>
+        <td>
+          <input class="value"
+              type="{$field.type}"
+              {if $field.listId}list="{$field.listId}"{/if}
+              value="{$field.value}" />
+        </td>
+      </tr>
+    {/foreach}
+    </tbody>
+    </table>
+  </div>
+{/template}
+
+
+/**
+ * Edit name dialog box content.
+ * @param full_name
+ */
+{template .nameHeader}
+<div class="field" name="full_name">
+  <input class="value" type="text" value="{$full_name}" title="Full name"/>
+  <span class="showonhover-field">
+    <span class="dotdotdot" title="Details"></span>
+  </span>
+</div>
+{/template}
+
+
+

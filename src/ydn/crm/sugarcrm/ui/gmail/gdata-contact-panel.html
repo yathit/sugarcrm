@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HUD</title>
+    <title>Gmail context panel</title>
     <link rel="stylesheet" type="text/css" href="../../../../css/inj.css">
     <script type="text/javascript" src="../../../../lib/md5.js"></script>
     <script type="text/javascript" src="../../../../lib/kinetic-v5.0.1.min.js"></script>
@@ -11,19 +11,41 @@
     <script type="text/javascript" src="../../../../../ydn-api/js/deps.js"></script>
     <script type="text/javascript" src="../../../../../ydn-db/src/deps.js"></script>
     <script type="text/javascript" src="../../../../../ydn-db-sync/src/deps.js"></script>
-    <script type="text/javascript" src="../../../../../crm/src/deps.js"></script>
-    <script type="text/javascript" src="../../../../../crm-ex/src/deps.js"></script>
     <script type="text/javascript" src="../../../../../gdata/src/deps.js"></script>
     <script type="text/javascript" src="../../../deps.js"></script>
-    <script type="text/javascript" src="../../../test-include.js"></script>
+    <script type="text/javascript" src="../../test-include.js"></script>
+    <script type="text/javascript" src="../../../../js/option/model/sugarcrm.js"></script>
 
 </head>
 <body>
 <p>
-    Login: <span id="gmail-account" style="font-weight: bold;"></span>
+    Gmail inbox for <span id="gmail-account" style="font-weight: bold;"></span>
 </p>
+<div>
+  <input id="email" title="Gmail context email" list="email-list"/>
+  <input id="name" title="Gmail context name"/>
+  <datalist id="email-list">
+    <option value="kyawtun@yathit.com"></option>
+    <option value="some@newdomain.com"></option>
+    <option value="the.phone.kid@example.biz"></option>
+  </datalist>
+</div>
 
-    <script src="run-hud-panel.js">
+  <button id="render">Render</button>
+
+<p></p>
+<div class="ydn-crm">
+  <div class="inj">
+    <div class="sugar-panel">
+      <div class="sugar-header">
+        <div class="sugar-header-content">
+          <div id="record-root"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <script src="run-gdata-contact-panel.js">
 
 
     </script>

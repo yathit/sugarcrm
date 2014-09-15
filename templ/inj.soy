@@ -1,0 +1,363 @@
+{namespace templ.ydn.crm.inj}
+
+
+/**
+ * Panel.
+ */
+{template .debug}
+<div class="debug-panel">
+
+    <div id="debug-channel">
+      <h4>Channel</h4>
+      <select>
+        <option value="guf">GOOGLE_USERINFO</option>
+        <option value="gdf">GDATA_FETCH</option>
+        <option value="gdls">GDATA_LINK_SUGAR</option>
+        <option value="gdcm">GDATA_CONTACT_MERGE</option>
+        <option value="gdce">GDATA_LIST_CONTACT_BY_EMAIL</option>
+        <option value="sd">SUGAR_DETAILS</option>
+        <option value="sl">SUGAR_LOGIN</option>
+        <option value="sfm">SUGAR_FETCH_MODULE</option>
+        <option value="sr">SUGAR_REST</option>
+        <option value="slm">SUGAR_LIST_MODULE</option>
+        <option value="sim">SUGAR_INFO_MODULE</option>
+        <option value="slem">SUGAR_FIND_BY_EMAIL</option>
+        <option value="sic">SUGAR_IMPORT_CONTACT</option>
+      </select>
+      <br />
+      <textarea cols="80" rows="6" name="params"></textarea>
+      <br />
+      <button>Send</button>
+
+    </div>
+  <hr />
+
+  <details id="debug-sugar-rest">
+    <summary>REST call</summary>
+    <select class="sugar-rest-module">
+      <option value="Leads">Leads</option>
+      <option value="User">User</option>
+      <option value="Contacts" selected>Contacts</option>
+    </select>
+    <select class="sugar-rest-method">
+     <option value="get_module_fields">Retrieving a List of Fields From a Module</option>
+     <option value="get_entries">Retrieving Multiple Records by ID From a Module</option>
+     <option value="get_entry_list" selected>Retrieving a List of Records</option>
+    </select>
+    <div>
+      <textarea class="sugar-rest-params" cols="80" rows="6" name="params"></textarea>
+    </div>
+    <button class="sugar-rest-load">Load</button>
+  </details>
+
+
+  <span>
+    <button class="debug-sugar-nude">Nude</button>
+  </span>
+  <hr />
+   <textarea id="debug-status" cols="80" rows=10" ></textarea>
+</div>
+{/template}
+
+
+/**
+ * Docker to gmail UI.
+ * @param option_page
+ */
+{template .tabContent}
+<div id="tab-content-internal">
+  <div id="home-panel" style="display: none;">
+    // home panel
+
+    <div class="home-panel-greeting">
+      Welcome to YDN!
+    </div>
+    <div class="home-panel-message">
+      Welcome to YDN!
+    </div>
+    <div class="home-panel-more">
+
+    </div>
+  </div>
+  <div style="display: none;">
+    Search
+  </div>
+  <div  style="display: none;">
+    Feed
+  </div>
+  <div id="setting-panel">
+    {call .mainLoginPanel/}
+    <div>
+        <a href="{$option_page}">More settings</a>
+     </div>
+  </div>
+
+</div>
+
+{/template}
+
+/**
+ * Panel.
+ */
+{template .panel}
+
+<div id="ydn-tabbar" class="goog-tab-bar goog-tab-bar-top">
+  <div  class="goog-tab goog-tab-selected">
+    <div title="Home" class="home">
+
+    </div>
+  </div>
+
+    <div class="goog-tab">
+       <div title="Search" class="search">
+
+       </div>
+    </div>
+
+  <div class="goog-tab">
+     <div title="Feed" class="feed">
+
+     </div>
+  </div>
+
+   <div class="goog-tab">
+      <div title="Setting" class="setting">
+
+      </div>
+   </div>
+
+  <!-- Use goog-tab-bar-clear to separate the tabs from the content. -->
+  <div class="goog-tab-bar-clear"></div>
+  <div id="tabbar_content" class="goog-tab-content">
+
+  </div>
+
+</div>
+
+{/template}
+
+
+/**
+ * Body HTML.
+ */
+{template .mainLoginPanel}
+<div class="main-login">
+  <div>
+    <span id="user-name"></span>
+    <a id="user-login" target="crm-ex">login</a>
+  </div>
+  <p class="login-message">
+    Login to Yathit: Gmail-to-SugarCrm extension to get started.
+  </p>
+</div>
+{/template}
+
+
+/**
+ * Body HTML.
+ */
+{template .sugarLoginPanel}
+<div class="sugar-login">
+  <div>
+    <div>Enter your SugarCRM web site url</div>
+    <div><input name="domain" type="text" placeholder="https://tocahz5358.sugarcrm.com"/></div>
+  </div>
+  <div>
+    <div>Username</div>
+    <div><input name="username" type="text"/></div>
+  </div>
+  <div>
+    <div>Password</div>
+    <div><input name="password" type="password"/></div>
+  </div>
+  <div>
+    <div class="message"></div>
+  </div>
+  <div>
+    <button name="login">Login</button>
+  </div>
+</div>
+{/template}
+
+
+/**
+* Body HTML.
+*/
+{template .sugarSetupPanel}
+<details><summary>Setup SugarCRM</summary>
+<div class="sugar-setup">
+    <p class="domain">
+        <div><label>Enter your SugarCRM web site url</label></div>
+        <div><input name="domain" type="text" placeholder="https://test.sugarcrm.com/index.php" />
+        <span class="message"></span></div>
+    </p>
+    <p class="username">
+        <div><label>Username</label></div>
+        <div><input name="username" type="text"/></div>
+    </p>
+    <p class="password">
+        <div><label>Password</label></div>
+        <div><input name="password" type="password"/></div>
+    </p>
+    <p>
+        <div class="message"></div>
+    </p>
+    <p>
+        <button name="login">Login</button>
+    </p>
+</div>
+</details>
+{/template}
+
+
+/**
+ * Module record panel for SugarCRM
+ */
+{template .sugarBodyPanel}
+
+<div class="goog-tab-bar goog-tab-bar-top">
+  <div  class="goog-tab goog-tab-selected">
+    <div title="Recent activities" class="feed">
+    </div>
+  </div>
+  <div class="goog-tab">
+    <div title="Accounts" class="accounts">Ac
+    </div>
+  </div>
+  <div class="goog-tab">
+    <div title="Contacts" class="contacts">Co
+    </div>
+  </div>
+  <div class="goog-tab">
+    <div title="Notes" class="notes">Nt
+    </div>
+  </div>
+  <div class="goog-tab">
+    <div title="Tasks" class="tasks">Ts
+    </div>
+  </div>
+</div>
+<!-- Use goog-tab-bar-clear to separate the tabs from the content. -->
+<div class="goog-tab-bar-clear"></div>
+<div class="goog-tab-content">
+  <div name="feed">
+    Feed
+  </div>
+  <div name="accounts">
+  Accounts
+  </div>
+  <div name="contacts">
+  Contacts
+  </div>
+  <div name="notes">
+  Notes
+  </div>
+  <div name="tasks">
+  Tasks
+  </div>
+</div>
+
+
+{/template}
+
+
+/**
+ * Body HTML.
+ */
+{template .sugarNote}
+<div class="note">
+  <input type="text" name="name" class="name" title="Task name" placeholder="Something to do" speelcheck="false"/>
+  <input type="datetime-local" name="due-date" class="name" title="Due date"
+    placeholder="Due date" speelcheck="false"/>
+  <textarea name="description" name="description" title="Task description" placeholder="This task is ..."/>
+</div>
+{/template}
+
+
+/**
+ * Body HTML.
+ */
+{template .hub}
+  {@param optionPageUrl: string}
+<div id="sticky-hud-base">
+  <div class="hud-button">
+
+      <div class="logo-box"></div>
+      <div class="arrow-box">
+
+      </div>
+
+  </div>
+  <div class="hud-popup">
+    <div class="popup-container">
+      <div class="popup-content">
+
+      </div>
+      <div class="popup-footer">
+        <div class="popup-footer-bar">
+            <span class="left-item">
+              <a href="{$optionPageUrl}" title="Extension options" target="option-page">Options</a>
+            </span>
+            <span class="center-item"></span>
+            <span class="right-item">
+                <a href="https://yathit.uservoice.com/" target="yathit.uservoice.com">Feedback</a> |&nbsp;
+                <a href="https://sites.google.com/a/yathit.com/ydn-crm-wiki/" target="help">Help</a>
+            </span>
+        </div>
+        <div class="status-bar">
+           <span class="status-bar-message">
+
+           </span>
+        </div>
+      </div>
+  </div>
+</div>
+{/template}
+
+
+/**
+ * Wrong login message panel.
+ */
+{template .wrongLogin}
+  {@param ydn_login: string}
+<div>Current you are login as {print $ydn_login} to Yathit server.</div>
+{/template}
+
+
+/**
+ * Record field selection panel.
+ * @param group_infos module fields
+ * @param field_infos module fields
+ */
+{template .recordDetails}
+<table>
+<caption>Groups</caption>
+<thead>
+  <th>
+    <td>Show</td>
+    <td>Read Only</td>
+    <td>Name</td>
+  </th>
+</thead>
+<tbody>
+{foreach $group in $group_infos}
+  <tr>
+    <td>{$group[0]}</td>
+    <td>{$group[1]}</td>
+    <td>{$group[2]}</td>
+  </tr>
+{/foreach}
+</tbody>
+<caption>Fields</caption>
+<tbody>
+{foreach $field in $field_infos}
+  <tr>
+    <td>{$field[0]}</td>
+    <td>{$field[1]}</td>
+    <td>{$field[2]}</td>
+  </tr>
+{/foreach}
+</tbody>
+</table>
+{/template}
+

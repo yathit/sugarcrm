@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HUD</title>
+    <title>Context sidebar</title>
     <link rel="stylesheet" type="text/css" href="../../../../css/inj.css">
     <script type="text/javascript" src="../../../../lib/md5.js"></script>
     <script type="text/javascript" src="../../../../lib/kinetic-v5.0.1.min.js"></script>
@@ -11,19 +11,35 @@
     <script type="text/javascript" src="../../../../../ydn-api/js/deps.js"></script>
     <script type="text/javascript" src="../../../../../ydn-db/src/deps.js"></script>
     <script type="text/javascript" src="../../../../../ydn-db-sync/src/deps.js"></script>
-    <script type="text/javascript" src="../../../../../crm/src/deps.js"></script>
-    <script type="text/javascript" src="../../../../../crm-ex/src/deps.js"></script>
     <script type="text/javascript" src="../../../../../gdata/src/deps.js"></script>
     <script type="text/javascript" src="../../../deps.js"></script>
-    <script type="text/javascript" src="../../../test-include.js"></script>
+    <script type="text/javascript" src="../../test-include.js"></script>
+    <script type="text/javascript" src="../../../../js/option/model/sugarcrm.js"></script>
 
 </head>
 <body>
 <p>
-    Login: <span id="gmail-account" style="font-weight: bold;"></span>
-</p>
+    Gmail inbox for <span id="gmail-account" style="font-weight: bold;"></span>
 
-    <script src="run-hud-panel.js">
+</p>
+<div>
+  <span email="kyawtun@yathit.com"></span>
+  <span email="some@newdomain.com"></span>
+  <span email="the.phone.kid@example.biz"></span>
+  <span email="bart@fullcontact.com"></span>
+  <span email="kyawlwinoo73@gmail.com"></span>
+</div>
+
+  <button id="render">Render</button>
+
+<p></p>
+<div class="ydn-crm">
+  <div class="inj" style="max-width: 260px;">
+
+  </div>
+  <div>Gmail</div>
+</div>
+    <script src="run-context-sidebar.js">
 
 
     </script>

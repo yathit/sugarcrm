@@ -69,10 +69,9 @@
         </jstd-gen>
     </target>
     <target name="comp-crm" description="compile JS">
-
-        <comp-adved input.fn="${sugarcrm.dir}/src/crm/app/event-page.js"
+        <comp-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
                     output.fn="ydn.crm.sugarcrm-${sugarcrm-ver-}.js"
-                    entrypoint="ydn.crm.app.EventPage">
+                    entrypoint="ydn.crm.inj.App">
             <opt-arg>
                 <arg line='-f "--define=goog.DEBUG=true"'/>
             </opt-arg>
@@ -112,7 +111,8 @@
        <attribute name="entrypoint"/>
        <element name="opt-arg" optional="true"/>
        <sequential>
-        <closure-compile compilationlevel="ADVANCED_OPTIMIZATIONS"
+           <mkdir dir="${sugarcrm-out.dir}"/>
+           <closure-compile compilationlevel="ADVANCED_OPTIMIZATIONS"
                          input="@{input.fn}"
                          input.dir="${sugarcrm.dir}/src"
                          output.fn="${sugarcrm-out.dir}/@{output.fn}">
@@ -126,6 +126,7 @@
                 <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
                 <arg line='-p "${db-work.dir}/ydn/src"'/>
                 <arg line='-p "${work.dir}/ydn-api/js"'/>
+                <arg line='-p "${work.dir}/crm-ex/src"'/>
                 <arg line='-p "${work.dir}/sync-app/js"'/>
                 <arg line='--path "${work.dir}/crm/src"'/>
                 <arg line='--path "${work.dir}/sugarcrm/src"'/>
@@ -196,8 +197,6 @@
         </calc-deps>
     </target>
 
-
-
     <target name="templ" description="compile templates">
 
 
@@ -208,7 +207,7 @@
             <map from="${sugarcrm.dir}/templ/" to=""/>
         </pathconvert>
         <generate-wedget-template filename="${templfiles}"
-                                  input.dir="${templ.dir}"
+                                  input.dir="${sugarcrm.dir}/templ"
                                   output.dir="${sugarcrm.dir}/src/templ/">
 
         </generate-wedget-template>
