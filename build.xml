@@ -2,9 +2,9 @@
     <dirname property="sugarcrm.dir" file="${ant.file.sugarcrm}"/>
     <property name="work.dir" location="${sugarcrm.dir}/.." />
     <property name="home.dir" location="${user.home}"/>
-    <property name="db-work.dir" location="${work.dir}/../db-work"/>
-    <import file="${work.dir}/ydn-base/build.xml"/>
-    <import file="${work.dir}/ydn/build.xml"/>
+    <property name="db-work.dir" location="${home.dir}/db-work"/>
+    <import file="${db-work.dir}/ydn-base/build.xml"/>
+    <import file="${db-work.dir}/ydn/build.xml"/>
     <import file="${work.dir}/crm/build.xml"/>
     <property name="sugarcrm-ver-major" value="0"/>
     <property name="sugarcrm-ver-minor" value="12"/>
@@ -118,23 +118,23 @@
                          output.fn="${sugarcrm-out.dir}/@{output.fn}">
             <options>
                 <opt-arg/>
-                <arg line='-i "${work.dir}/ydn/src/msg/exports.js"'/>
+                <arg line='-i "${db-work.dir}/ydn/src/msg/exports.js"'/>
                 <arg line='-f "--source_map_format=V3"'/>
                 <arg line='-f "--create_source_map=${sugarcrm-out.dir}/@{output.fn}.map"'/>
                 <arg line='-p "${db-work.dir}/ydn-base/src"'/>
                 <arg line='-p "${db-work.dir}/ydn-db/src"'/>
                 <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
                 <arg line='-p "${db-work.dir}/ydn/src"'/>
-                <arg line='-p "${work.dir}/ydn-api/js"'/>
+                <arg line='-p "${db-work.dir}/ydn-api/js"'/>
                 <arg line='-p "${work.dir}/crm-ex/src"'/>
-                <arg line='-p "${work.dir}/sync-app/js"'/>
-                <arg line='--path "${work.dir}/crm/src"'/>
-                <arg line='--path "${work.dir}/sugarcrm/src"'/>
+                <arg line='-p "${db-work.dir}/sync-app/js"'/>
+                <arg line='-p "${work.dir}/crm/src"'/>
+                <arg line='-p "${work.dir}/sugarcrm/src"'/>
                 <arg line='-p "${db-work.dir}/gdata/src"'/>
                 <arg line='-p "${db-work.dir}/ydn-db-fulltext/src"'/>
                 <arg line='-p "${db-work.dir}/fullproof/js"'/>
                 <arg line='-p "${db-work.dir}/natural/js"'/>
-                <arg line='-f "--externs=${work.dir}/fullproof/externs/unicode.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/fullproof/externs/unicode.js"'/>
                 <arg line='-f "--flagfile=${flagfile}"'/>
                 <arg line='-f "--define=goog.json.USE_NATIVE_JSON=true"'/>
                 <arg line='-f "--define=ydn.crm.base.VERSION_MAJOR=${sugarcrm-ver-major}"'/>
