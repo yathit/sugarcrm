@@ -8,8 +8,8 @@
     <import file="${work.dir}/crm/build.xml"/>
     <property name="sugarcrm-ver-major" value="0"/>
     <property name="sugarcrm-ver-minor" value="12"/>
-    <property name="sugarcrm-ver-patch" value="0"/>
-    <property name="sugarcrm-ver-" value="${sugarcrm-ver-major}.${sugarcrm-ver-minor}.${sugarcrm-ver-patch}"/>
+    <property name="sugarcrm-ver-patch" value="1"/>
+    <property name="sugarcrm-ver" value="${sugarcrm-ver-major}.${sugarcrm-ver-minor}.${sugarcrm-ver-patch}"/>
     <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
     <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
     <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
@@ -69,19 +69,42 @@
     </target>
     <target name="comp-crm" description="compile JS">
         <comp-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
-                    output.fn="ydn.crm.sugarcrm-${sugarcrm-ver-}.js"
+                    output.fn="ydn.crm.sugarcrm-${sugarcrm-ver}.js"
                     entrypoint="ydn.crm.inj.App">
             <opt-arg>
                 <arg line='-f "--define=goog.DEBUG=true"'/>
             </opt-arg>
         </comp-adved>
         <replace description="replace so with online repo path"
-                 file="${sugarcrm-out.dir}/ydn.crm.sugarcrm-${sugarcrm-ver-}.js"
-                 token="sourceMappingURL=ydn.crm.sugarcrm-${sugarcrm-ver-}.js.map"
-                 value="sourceMappingURL=https://${src.bk}.storage.googleapis.com/jsc/ydn.crm.sugarcrm-${sugarcrm-ver-}.js.map"/>
+                 file="${sugarcrm-out.dir}/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
+                 token="sourceMappingURL=ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"
+                 value="sourceMappingURL=https://${src.bk}.storage.googleapis.com/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
 
     </target>
-
+    <target name="upload" description="upload files">
+        <apply executable="python" relative="yes">
+            <arg value="${gsutil}"/>
+            <arg value="cp"/>
+            <fileset dir="${sugarcrm.dir}/jsc">
+                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
+                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
+            </fileset>
+            <srcfile prefix="${sugarcrm.dir}/jsc/"/>
+            <targetfile prefix="gs://${src.bk}/jsc/"/>
+            <identitymapper/>
+        </apply>
+        <apply executable="python" verbose="true" relative="yes" parallel="no">
+            <arg value="${gsutil}"/>
+            <arg value="setmeta"/>
+            <arg value="-h"/>
+            <arg value="cache-control: public, max-age=2592000"/>
+            <fileset dir="${sugarcrm.dir}/jsc">
+                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
+                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
+            </fileset>
+            <srcfile prefix="gs://${src.bk}/jsc/"/>
+        </apply>
+    </target>
     <target name="comp-msg-dev" description="compile JS">
 
         <jscomp-msg input.fn="${work.dir}/ydn/src/msg/pipe.js"
@@ -270,6 +293,29 @@
         <comp-sass name="popup"/>
         <comp-sass name="option"/>
         <comp-sass name="inj"/>
+    </target>
+    <target name="push-edge" description="upload edge js html files">
+        <replace description="update sourceMappingURL reference"
+                 file="${sugarcrm.dir}/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
+                 token="ydn.crm.js.map"
+                 value="ydn.crm-edge.js.map"/>
+        <apply executable="python" relative="yes">
+            <arg value="${gsutil}"/>
+            <arg value="cp"/>
+            <fileset dir="${sugarcrm.dir}/jsc">
+                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
+                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
+            </fileset>
+            <srcfile prefix="${sugarcrm.dir}/jsc/"/>
+            <targetfile prefix="gs://${src.bk}/jsc/"/>
+            <filtermapper>
+                <replacestring from="${sugarcrm-ver}" to="edge"/>
+            </filtermapper>
+        </apply>
+        <replace description="replace baack sourceMappingURL reference"
+                 file="${sugarcrm.dir}/jsc/ydn.crm.js"
+                 value="ydn.crm.js.map"
+                 token="ydn.crm-edge.js.map"/>
     </target>
 
     <target name="build" description="build all distribution"
