@@ -105,6 +105,48 @@
             <srcfile prefix="gs://${src.bk}/jsc/"/>
         </apply>
     </target>
+    <macrodef name="jscomp-msg" description="compile JS">
+        <attribute name="input.fn" />
+        <attribute name="output.fn" />
+        <attribute name="entrypoint"/>
+        <attribute name="comp-level" default="ADVANCED_OPTIMIZATIONS"/>
+        <attribute name="wrapper" default="(function(){%output%})();"/>
+        <element name="opt-arg" optional="true"/>
+        <sequential>
+            <closure-compile compilationlevel="@{comp-level}"
+                             input="@{input.fn}"
+                             input.dir="${sugarcrm.dir}/src"
+                             output.fn="${sugarcrm-out.dir}/@{output.fn}">
+                <options>
+                    <opt-arg/>
+                    <arg line='-f "--source_map_format=V3"'/>
+                    <arg line='-f "--create_source_map=${sugarcrm-out.dir}/@{output.fn}.map"'/>
+                    <arg line='-p "${work.dir}/ydn-base/src"'/>
+                    <arg line='-p "${work.dir}/ydn/src"'/>
+                    <arg line='-f "--flagfile=${flagfile}"'/>
+                    <arg line='-f "--externs=${closure-compiler.dir}/contrib/externs/chrome_extensions.js"'/>
+                    <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/misc.js"'/>
+                    <arg line='-f "--externs=${db-work.dir}/ydn-api/externs/misc.js"'/>
+                    <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/gapi.js"'/>
+                    <arg line='-f "--externs=${db-work.dir}/ydn/externs/ydn-server.js"'/>
+                    <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/schema.js"'/>
+                    <arg line='-f "--output_wrapper=@{wrapper}"'/>
+                </options>
+            </closure-compile>
+            <concat destfile="${sugarcrm-out.dir}/${out.fn}" append="true">
+                //# sourceMappingURL=@{output.fn}.map
+            </concat>
+            <replace description="replace so with online repo path"
+                     file="${sugarcrm-out.dir}/@{output.fn}.map"
+                     token="${work.dir}/closure-library/"
+                     value="http://localhost/closure-library/"/>
+            <replace description="replace so with online repo path"
+                     file="${sugarcrm-out.dir}/@{output.fn}.map"
+                     token="${work.dir}/ydn/"
+                     value="http://localhost:8085/ydn/"/>
+        </sequential>
+    </macrodef>
+
     <target name="comp-msg-dev" description="compile JS">
 
         <jscomp-msg input.fn="${work.dir}/ydn/src/msg/pipe.js"

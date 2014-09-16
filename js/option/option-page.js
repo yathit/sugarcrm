@@ -167,8 +167,8 @@ OptionPage.openPageAsDialog_ = function(e) {
  */
 OptionPage.prototype.init = function() {
   var me = this;
-  ydn.app.msg.SimpleStatusBar.instance = new ydn.app.msg.SimpleStatusBar();
-  ydn.app.msg.SimpleStatusBar.instance.render(document.getElementById('statusbar'));
+  ydn.crm.msg.SimpleStatusBar.instance = new ydn.crm.msg.SimpleStatusBar();
+  ydn.crm.msg.SimpleStatusBar.instance.render(document.getElementById('statusbar'));
   var menu = document.getElementById('main-menu');
   window.addEventListener('popstate', function(e) {
     me.showPanel_(location.hash.replace('#', ''));

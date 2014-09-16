@@ -361,7 +361,7 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
 ydn.crm.inj.App.prototype.updateSugarPanels_ = function() {
   ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(
       function(sugars) {
-        if (ydn.crm.ui.SimpleSidebarPanel.DEBUG) {
+        if (ydn.crm.ui.SugarListPanel.DEBUG) {
           window.console.log(sugars);
         }
         this.sidebar.updateSugarPanels(sugars);
@@ -434,17 +434,17 @@ ydn.crm.inj.App.runInjApp = function() {
 
 goog.require('ydn.crm.ui.SidebarPanel');
 goog.require('ydn.crm.ui.UserSetting');
-goog.require('ydn.app.msg.SimpleStatusBar');
+goog.require('ydn.crm.msg.SimpleStatusBar');
 goog.require('ydn.crm.sugarcrm.ui.SearchPanel');
 goog.require('ydn.crm.sugarcrm.ui.SyncPanel');
 
 goog.exportSymbol('ydn.crm.version', ydn.crm.version);
 
 goog.exportSymbol('runInjApp', ydn.crm.inj.App.runInjApp);
-goog.exportSymbol('ydn.app.msg.SimpleStatusBar', ydn.app.msg.SimpleStatusBar);
+goog.exportSymbol('ydn.crm.msg.SimpleStatusBar', ydn.crm.msg.SimpleStatusBar);
 
-goog.exportProperty(ydn.app.msg.SimpleStatusBar, 'render',
-    ydn.app.msg.SimpleStatusBar.prototype.render);
+goog.exportProperty(ydn.crm.msg.SimpleStatusBar, 'render',
+    ydn.crm.msg.SimpleStatusBar.prototype.render);
 goog.exportSymbol('ydn.crm.sugarcrm.model.Sugar', ydn.crm.sugarcrm.model.Sugar);
 goog.exportSymbol('ydn.crm.ui.SidebarPanel', ydn.crm.ui.SidebarPanel);
 goog.exportSymbol('ydn.crm.sugarcrm.ui.SyncPanel', ydn.crm.sugarcrm.ui.SyncPanel);

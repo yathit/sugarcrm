@@ -26,7 +26,7 @@ goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuButton');
 goog.require('goog.ui.MenuItem');
 goog.require('goog.ui.Toolbar');
-goog.require('ydn.crm.ui.SimpleSidebarPanel');
+goog.require('ydn.crm.ui.SugarListPanel');
 goog.require('ydn.crm.sugarcrm.ui.ContextSugarPanel');
 goog.require('ydn.gmail.Utils');
 
@@ -37,7 +37,7 @@ goog.require('ydn.gmail.Utils');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.ui.SimpleSidebarPanel}
+ * @extends {ydn.crm.ui.SugarListPanel}
  */
 ydn.crm.ui.ContextSidebar = function(opt_dom) {
   goog.base(this, opt_dom);
@@ -50,7 +50,7 @@ ydn.crm.ui.ContextSidebar = function(opt_dom) {
 
   this.email_list_updator_ = new goog.async.Delay(this.updateEmailDataList, 500, this);
 };
-goog.inherits(ydn.crm.ui.ContextSidebar, ydn.crm.ui.SimpleSidebarPanel);
+goog.inherits(ydn.crm.ui.ContextSidebar, ydn.crm.ui.SugarListPanel);
 
 
 /**
@@ -94,7 +94,7 @@ ydn.crm.ui.ContextSidebar.prototype.createDom = function() {
   root.classList.add(ydn.crm.ui.ContextSidebar.CSS_CLASS);
   var header = root.querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD);
 
-  var status_el = dom.createDom('div', ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS_STATUS);
+  var status_el = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS);
   var status = new ydn.crm.msg.StatusBar(true);
   status.render(status_el);
   ydn.crm.msg.Manager.addConsumer(status);
@@ -195,7 +195,7 @@ ydn.crm.ui.ContextSidebar.prototype.disposeInternal = function() {
 ydn.crm.ui.ContextSidebar.prototype.addSugarPanel = function(sugar) {
   var panel = new ydn.crm.sugarcrm.ui.ContextSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
-  if (ydn.crm.ui.SimpleSidebarPanel.DEBUG) {
+  if (ydn.crm.ui.SugarListPanel.DEBUG) {
     window.console.info('context sugar panel ' + sugar.getDomain() + ' created, now ' +
         this.getChildCount() + ' panels');
   }
@@ -235,7 +235,7 @@ ydn.crm.ui.ContextSidebar.prototype.updateForNewContact = function(cm) {
        * @type {ydn.crm.sugarcrm.model.GDataSugar}
        */
       var sugar = child.getModel();
-      if (ydn.crm.ui.SimpleSidebarPanel.DEBUG) {
+      if (ydn.crm.ui.SugarListPanel.DEBUG) {
         window.console.log('updating new contact', cm);
       }
       sugar.update(cm);

@@ -9,7 +9,7 @@ ydn.msg.initPipe('dev');
 var user = ydn.crm.ui.UserSetting.getInstance();
 var inj = document.querySelector('.inj');
 
-var panel = new ydn.crm.ui.SimpleSidebarPanel();
+var panel = new ydn.crm.ui.SugarListPanel();
 panel.render(inj);
 
 user.onReady().addCallbacks(function() {

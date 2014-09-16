@@ -1,9 +1,13 @@
 /**
- * @fileoverview Contact sidebar panel.
+ * @fileoverview List of SugarCRM panels.
+ *
+ * Display list of sugarcrm panels. If no sugarcrm available, 'Setup SugarCRM'
+ * link is shown to bring Setup wizard. If no login or invalid login, panel
+ * is hide.
  */
 
 
-goog.provide('ydn.crm.ui.SimpleSidebarPanel');
+goog.provide('ydn.crm.ui.SugarListPanel');
 goog.require('goog.Timer');
 goog.require('goog.async.DeferredList');
 goog.require('goog.dom.classes');
@@ -22,69 +26,64 @@ goog.require('ydn.msg.Message');
 
 
 /**
- * Contact sidebar panel.
+ * List of SugarCRM panels.
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.ui.SimpleSidebarPanel = function(opt_dom) {
+ydn.crm.ui.SugarListPanel = function(opt_dom) {
   goog.base(this, opt_dom);
 
-  /**
-   * @type {ydn.crm.ui.UserSetting}
-   */
-  this.user_setting = ydn.crm.ui.UserSetting.getInstance();
-
 };
-goog.inherits(ydn.crm.ui.SimpleSidebarPanel, goog.ui.Component);
+goog.inherits(ydn.crm.ui.SugarListPanel, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.SimpleSidebarPanel.DEBUG = false;
+ydn.crm.ui.SugarListPanel.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS = 'sidebar';
+ydn.crm.ui.SugarListPanel.CSS_CLASS = 'sidebar';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS_STATUS = 'sidebar-status';
+ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS = 'sidebar-status';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS_SETUP = 'sugarcrm-link-panel';
+ydn.crm.ui.SugarListPanel.CSS_CLASS_SETUP = 'sugarcrm-link-panel';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS_NO_SUGAR_PANEL = 'no-sugar-panel';
+ydn.crm.ui.SugarListPanel.CSS_CLASS_NO_SUGAR_PANEL = 'no-sugar-panel';
 
 
 /** @return {string} */
-ydn.crm.ui.SimpleSidebarPanel.prototype.getCssClass = function() {
-  return ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS;
+ydn.crm.ui.SugarListPanel.prototype.getCssClass = function() {
+  return ydn.crm.ui.SugarListPanel.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.createDom = function() {
+ydn.crm.ui.SugarListPanel.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   var dom = this.getDomHelper();
@@ -95,7 +94,7 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.createDom = function() {
   root.appendChild(content);
 
   // render header
-  var link_panel = dom.createDom('div', ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS_SETUP);
+  var link_panel = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_SETUP);
   var a = dom.createElement('a');
   a.textContent = 'Setup';
   a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
@@ -105,7 +104,7 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.createDom = function() {
   link_panel.appendChild(a);
   goog.style.setElementShown(link_panel, false);
 
-  var no_sugar_login = dom.createDom('div', ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS_NO_SUGAR_PANEL);
+  var no_sugar_login = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_NO_SUGAR_PANEL);
   a = dom.createElement('a');
   a.textContent = 'Setup SugarCRM';
   a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
@@ -123,7 +122,7 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.getContentElement = function() {
+ydn.crm.ui.SugarListPanel.prototype.getContentElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
 };
 
@@ -131,7 +130,7 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.getContentElement = function() {
 /**
  * @return {Element}
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.getHeaderElement = function() {
+ydn.crm.ui.SugarListPanel.prototype.getHeaderElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD);
 };
 
@@ -139,12 +138,13 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.getHeaderElement = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.enterDocument = function() {
+ydn.crm.ui.SugarListPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var handler = this.getHandler();
 
-  var a_grant = this.getHeaderElement().querySelector('a.setup-link');
-  handler.listen(a_grant, 'click', ydn.crm.base.openPageAsDialog, true);
+  var a_grant = this.getHeaderElement().querySelectorAll('a.setup-link');
+  handler.listen(a_grant[0], 'click', ydn.crm.base.openPageAsDialog, true);
+  handler.listen(a_grant[1], 'click', ydn.crm.base.openPageAsDialog, true);
 };
 
 
@@ -154,7 +154,7 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.enterDocument = function() {
  * @protected
  * @param {Event} e
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.handleMsgPanelClick = function(e) {
+ydn.crm.ui.SugarListPanel.prototype.handleMsgPanelClick = function(e) {
   if (e.target.tagName == 'A') {
     e.target.removeAttribute('href'); // so that user cannot click again.
     ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGGED_OUT);
@@ -166,9 +166,9 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.handleMsgPanelClick = function(e) {
 /**
  * Update header panel.
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.updateHeader = function() {
+ydn.crm.ui.SugarListPanel.prototype.updateHeader = function() {
 
-  var setup = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS_SETUP);
+  var setup = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarListPanel.CSS_CLASS_SETUP);
 
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.isLogin()) {
@@ -186,8 +186,8 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.updateHeader = function() {
  * @protected
  * @type {goog.debug.Logger}
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.logger =
-    goog.log.getLogger('ydn.crm.ui.SimpleSidebarPanel');
+ydn.crm.ui.SugarListPanel.prototype.logger =
+    goog.log.getLogger('ydn.crm.ui.SugarListPanel');
 
 
 /**
@@ -196,22 +196,23 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.logger =
  * @private
  * @return {!goog.async.Deferred}
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.initSugar_ = function(name) {
+ydn.crm.ui.SugarListPanel.prototype.initSugar_ = function(name) {
 
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, name);
   var df = ch.send(ydn.crm.Ch.SReq.DETAILS);
+  var us = ydn.crm.ui.UserSetting.getInstance();
 
   return df.addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
-      this.user_setting.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+      us.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
-    var ac = this.user_setting.getLoginEmail();
+    var ac = us.getLoginEmail();
     var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     if (!this.hasSugarPanel(name)) {
       this.addSugarPanel(sugar);
-    } else if (ydn.crm.ui.SimpleSidebarPanel.DEBUG) {
+    } else if (ydn.crm.ui.SugarListPanel.DEBUG) {
       window.console.log('sugar panel ' + name + ' already exists.');
     }
   }, this);
@@ -223,10 +224,10 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.initSugar_ = function(name) {
  * @param {ydn.crm.sugarcrm.model.GDataSugar} sugar
  * @protected
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.addSugarPanel = function(sugar) {
+ydn.crm.ui.SugarListPanel.prototype.addSugarPanel = function(sugar) {
   var panel = new ydn.crm.sugarcrm.ui.SimpleSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
-  if (ydn.crm.ui.SimpleSidebarPanel.DEBUG) {
+  if (ydn.crm.ui.SugarListPanel.DEBUG) {
     window.console.info('simple sugar panel ' + sugar.getDomain() + ' created, now ' +
         this.getChildCount() + ' panels');
   }
@@ -238,7 +239,7 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.addSugarPanel = function(sugar) {
  * @param {string} name domain name
  * @return {boolean}
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.hasSugarPanel = function(name) {
+ydn.crm.ui.SugarListPanel.prototype.hasSugarPanel = function(name) {
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
     if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
@@ -256,9 +257,9 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.hasSugarPanel = function(name) {
  * @param {Array.<string>} sugars list of sugar domain.
  * @return {!goog.async.Deferred}
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.updateSugarPanels = function(sugars) {
+ydn.crm.ui.SugarListPanel.prototype.updateSugarPanels = function(sugars) {
   goog.asserts.assertArray(sugars, 'sugar domains');
-  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SimpleSidebarPanel.CSS_CLASS_NO_SUGAR_PANEL);
+  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarListPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var q = link_panel.querySelector('a');
   if (!ydn.crm.ui.UserSetting.getInstance().isLogin()) {
     goog.style.setElementShown(link_panel, false);
@@ -299,14 +300,14 @@ ydn.crm.ui.SimpleSidebarPanel.prototype.updateSugarPanels = function(sugars) {
  * @return {ydn.crm.inj.Context}
  * @override
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.getModel;
+ydn.crm.ui.SugarListPanel.prototype.getModel;
 
 
 /**
  * Show or hide this panel.
  * @param {boolean} val
  */
-ydn.crm.ui.SimpleSidebarPanel.prototype.setVisible = function(val) {
+ydn.crm.ui.SugarListPanel.prototype.setVisible = function(val) {
   goog.style.setElementShown(this.getElement(), val);
 };
 
