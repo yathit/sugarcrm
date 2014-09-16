@@ -1,4 +1,4 @@
-<project name="sugarcrm" basedir="." default="comp-crm">
+<project name="sugarcrm" basedir="." default="comp-crm-dev">
     <dirname property="sugarcrm.dir" file="${ant.file.sugarcrm}"/>
     <property name="work.dir" location="${sugarcrm.dir}/.." />
     <property name="home.dir" location="${user.home}"/>
@@ -66,6 +66,16 @@
                 <arg line='--path "${sugarcrm.dir}/src"'/>
             </deps-options>
         </jstd-gen>
+    </target>
+    <target name="comp-crm-dev" description="compile JS">
+        <comp-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
+                    output.fn="ydn.crm.sugarcrm-${sugarcrm-ver}.js"
+                    entrypoint="ydn.crm.inj.App">
+            <opt-arg>
+                <arg line='-f "--define=goog.DEBUG=true"'/>
+            </opt-arg>
+        </comp-adved>
+
     </target>
     <target name="comp-crm" description="compile JS">
         <comp-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"

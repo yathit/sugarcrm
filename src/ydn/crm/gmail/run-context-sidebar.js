@@ -11,7 +11,7 @@ var div = document.getElementById('activity-root');
 ydn.crm.shared.logger.info('record panel test');
 var results;
 
-panel = new ydn.crm.ui.ContextSidebar();
+panel = new ydn.crm.gmail.ContextSidebar();
 ydn.crm.msg.Manager.addStatus('Starting...');
 
 for (var idx = 0; idx < 50; idx++) {

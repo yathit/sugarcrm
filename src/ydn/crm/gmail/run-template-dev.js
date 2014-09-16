@@ -20,7 +20,7 @@ var sugar, template;
 ydn.crm.sugarcrm.model.Sugar.list().addCallbacks(function(sugars) {
   if (sugars[0]) {
     sugar = sugars[0];
-    template = new ydn.crm.ui.gmail.Template(sugar);
+    template = new ydn.crm.gmail.Template(sugar);
     var cm = new ydn.crm.inj.Context('sugar.im.vegan@example.tv');
     template.attach(cm);
 

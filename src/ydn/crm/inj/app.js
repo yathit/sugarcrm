@@ -41,7 +41,7 @@ goog.require('ydn.crm.inj.StickyRenderer');
 goog.require('ydn.crm.inj.WidgetRenderer');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
-goog.require('ydn.crm.ui.ContextSidebar');
+goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -68,9 +68,9 @@ ydn.crm.inj.App = function() {
 
   /**
    * @protected
-   * @type {ydn.crm.ui.ContextSidebar}
+   * @type {ydn.crm.gmail.ContextSidebar}
    */
-  this.sidebar = new ydn.crm.ui.ContextSidebar();
+  this.sidebar = new ydn.crm.gmail.ContextSidebar();
   this.sidebar.render(this.renderer.getContentElement());
 
   this.sniff_timer_ = new goog.Timer(400);
@@ -466,8 +466,8 @@ goog.exportProperty(ydn.crm.ui.UserSetting.prototype, 'getLoginEmail',
     ydn.crm.ui.UserSetting.prototype.getLoginEmail);
 goog.exportProperty(ydn.crm.sugarcrm.model.Sugar, 'list',
     ydn.crm.sugarcrm.model.Sugar.list);
-goog.exportProperty(ydn.crm.ui.ContextSidebar.prototype, 'update',
-    ydn.crm.ui.ContextSidebar.prototype.updateForNewContact);
+goog.exportProperty(ydn.crm.gmail.ContextSidebar.prototype, 'update',
+    ydn.crm.gmail.ContextSidebar.prototype.updateForNewContact);
 
 
 

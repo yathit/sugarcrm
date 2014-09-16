@@ -116,7 +116,7 @@ ydn.crm.ui.SidebarPanel.prototype.updateHeader = function() {
   goog.base(this, 'updateHeader');
 
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
-  var setup = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarListPanel.CSS_CLASS_SETUP);
+  var setup = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SidebarPanel.CSS_CLASS_SETUP);
 
   if (us.isLogin()) {
     goog.style.setElementShown(setup, false);

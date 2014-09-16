@@ -18,7 +18,7 @@
  */
 
 
-goog.provide('ydn.crm.ui.ContextSidebar');
+goog.provide('ydn.crm.gmail.ContextSidebar');
 goog.require('goog.async.Delay');
 goog.require('goog.ui.ComboBox');
 goog.require('goog.ui.Css3MenuButtonRenderer');
@@ -39,26 +39,26 @@ goog.require('ydn.gmail.Utils');
  * @struct
  * @extends {ydn.crm.ui.SugarListPanel}
  */
-ydn.crm.ui.ContextSidebar = function(opt_dom) {
+ydn.crm.gmail.ContextSidebar = function(opt_dom) {
   goog.base(this, opt_dom);
 
   /**
-   * @type {ydn.crm.ui.gmail.Template}
+   * @type {ydn.crm.gmail.Template}
    * @private
    */
   this.gmail_template_ = null;
 
   this.email_list_updator_ = new goog.async.Delay(this.updateEmailDataList, 500, this);
 };
-goog.inherits(ydn.crm.ui.ContextSidebar, ydn.crm.ui.SugarListPanel);
+goog.inherits(ydn.crm.gmail.ContextSidebar, ydn.crm.ui.SugarListPanel);
 
 
 /**
  * @protected
  * @type {goog.debug.Logger}
  */
-ydn.crm.ui.ContextSidebar.prototype.logger =
-    goog.log.getLogger('ydn.crm.ui.ContextSidebar');
+ydn.crm.gmail.ContextSidebar.prototype.logger =
+    goog.log.getLogger('ydn.crm.gmail.ContextSidebar');
 
 
 /**
@@ -66,32 +66,32 @@ ydn.crm.ui.ContextSidebar.prototype.logger =
  * @const
  * @type {string}
  */
-ydn.crm.ui.ContextSidebar.ID_EMAILS = 'all-emails';
+ydn.crm.gmail.ContextSidebar.ID_EMAILS = 'all-emails';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.ContextSidebar.CSS_CLASS_TRAGET = 'target-email';
+ydn.crm.gmail.ContextSidebar.CSS_CLASS_TRAGET = 'target-email';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.ContextSidebar.CSS_CLASS = 'context-sidebar';
+ydn.crm.gmail.ContextSidebar.CSS_CLASS = 'context-sidebar';
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.ui.ContextSidebar.prototype.createDom = function() {
+ydn.crm.gmail.ContextSidebar.prototype.createDom = function() {
   goog.base(this, 'createDom');
   // status bar
   var dom = this.getDomHelper();
   var root = this.getElement();
-  root.classList.add(ydn.crm.ui.ContextSidebar.CSS_CLASS);
+  root.classList.add(ydn.crm.gmail.ContextSidebar.CSS_CLASS);
   var header = root.querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD);
 
   var status_el = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS);
@@ -103,8 +103,8 @@ ydn.crm.ui.ContextSidebar.prototype.createDom = function() {
   // toolbar
   var toolbar = dom.createDom('div', 'toolbar flex-bar');
 
-  var emails_list = dom.createDom('input', ydn.crm.ui.ContextSidebar.CSS_CLASS_TRAGET);
-  emails_list.setAttribute('list', ydn.crm.ui.ContextSidebar.ID_EMAILS);
+  var emails_list = dom.createDom('input', ydn.crm.gmail.ContextSidebar.CSS_CLASS_TRAGET);
+  emails_list.setAttribute('list', ydn.crm.gmail.ContextSidebar.ID_EMAILS);
   toolbar.appendChild(emails_list);
 
   var svg_search = ydn.crm.ui.createSvgIcon('search');
@@ -113,9 +113,9 @@ ydn.crm.ui.ContextSidebar.prototype.createDom = function() {
   toolbar.appendChild(search);
   header.appendChild(toolbar);
 
-  if (!document.getElementById(ydn.crm.ui.ContextSidebar.ID_EMAILS)) {
+  if (!document.getElementById(ydn.crm.gmail.ContextSidebar.ID_EMAILS)) {
     var list = document.createElement('datalist');
-    list.id = ydn.crm.ui.ContextSidebar.ID_EMAILS;
+    list.id = ydn.crm.gmail.ContextSidebar.ID_EMAILS;
     document.body.appendChild(list);
   }
 };
@@ -124,7 +124,7 @@ ydn.crm.ui.ContextSidebar.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.ui.ContextSidebar.prototype.enterDocument = function() {
+ydn.crm.gmail.ContextSidebar.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var handler = this.getHandler();
   var head = this.getElement().querySelector('.toolbar');
@@ -141,7 +141,7 @@ ydn.crm.ui.ContextSidebar.prototype.enterDocument = function() {
  * @return {ydn.crm.sugarcrm.ui.ContextSugarPanel}
  * @private
  */
-ydn.crm.ui.ContextSidebar.prototype.getSugarPanel_ = function() {
+ydn.crm.gmail.ContextSidebar.prototype.getSugarPanel_ = function() {
   var sugar = this.getChildAt(1);
   goog.asserts.assertInstanceof(sugar, ydn.crm.sugarcrm.ui.ContextSugarPanel);
   return /** @type {ydn.crm.sugarcrm.ui.ContextSugarPanel} */ (sugar);
@@ -152,8 +152,8 @@ ydn.crm.ui.ContextSidebar.prototype.getSugarPanel_ = function() {
  * @param {goog.events.Event} e
  * @protected
  */
-ydn.crm.ui.ContextSidebar.prototype.onSearch = function(e) {
-  var target = this.getElement().querySelector('input.' + ydn.crm.ui.ContextSidebar.CSS_CLASS_TRAGET);
+ydn.crm.gmail.ContextSidebar.prototype.onSearch = function(e) {
+  var target = this.getElement().querySelector('input.' + ydn.crm.gmail.ContextSidebar.CSS_CLASS_TRAGET);
   var value = target.value;
   var email = value.indexOf('@') > 0 ? value : undefined;
   var name = !email ? value : undefined;
@@ -168,9 +168,9 @@ ydn.crm.ui.ContextSidebar.prototype.onSearch = function(e) {
 /**
  * @protected
  */
-ydn.crm.ui.ContextSidebar.prototype.updateEmailDataList = function() {
+ydn.crm.gmail.ContextSidebar.prototype.updateEmailDataList = function() {
   var emails = ydn.gmail.Utils.sniffAllEmailsInDocument();
-  var list = document.getElementById(ydn.crm.ui.ContextSidebar.ID_EMAILS);
+  var list = document.getElementById(ydn.crm.gmail.ContextSidebar.ID_EMAILS);
   list.innerHTML = '';
   for (var i = 0; i < emails.length; i++) {
     var option = document.createElement('option');
@@ -183,7 +183,7 @@ ydn.crm.ui.ContextSidebar.prototype.updateEmailDataList = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.ui.ContextSidebar.prototype.disposeInternal = function() {
+ydn.crm.gmail.ContextSidebar.prototype.disposeInternal = function() {
   this.email_list_updator_.dispose();
   this.email_list_updator_ = null;
   goog.base(this, 'disposeInternal');
@@ -193,7 +193,7 @@ ydn.crm.ui.ContextSidebar.prototype.disposeInternal = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.ui.ContextSidebar.prototype.addSugarPanel = function(sugar) {
+ydn.crm.gmail.ContextSidebar.prototype.addSugarPanel = function(sugar) {
   var panel = new ydn.crm.sugarcrm.ui.ContextSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
   if (ydn.crm.ui.SugarListPanel.DEBUG) {
@@ -203,7 +203,7 @@ ydn.crm.ui.ContextSidebar.prototype.addSugarPanel = function(sugar) {
 
   if (!this.gmail_template_ && sugar.isLogin()) {
     this.logger.finer('compose template initialized.');
-    this.gmail_template_ = new ydn.crm.ui.gmail.Template(sugar);
+    this.gmail_template_ = new ydn.crm.gmail.Template(sugar);
   }
 };
 
@@ -212,7 +212,7 @@ ydn.crm.ui.ContextSidebar.prototype.addSugarPanel = function(sugar) {
  * Inject template menu on Gmail compose panel.
  * @return {boolean} true if injected.
  */
-ydn.crm.ui.ContextSidebar.prototype.injectTemplateMenu = function() {
+ydn.crm.gmail.ContextSidebar.prototype.injectTemplateMenu = function() {
   if (this.gmail_template_) {
     return this.gmail_template_.attach();
   } else {
@@ -226,7 +226,7 @@ ydn.crm.ui.ContextSidebar.prototype.injectTemplateMenu = function() {
  * Update sniff contact data.
  * @param {ydn.crm.inj.Context} cm set `null` to flash out.
  */
-ydn.crm.ui.ContextSidebar.prototype.updateForNewContact = function(cm) {
+ydn.crm.gmail.ContextSidebar.prototype.updateForNewContact = function(cm) {
 
   var cn = this.getChildCount();
   for (var i = 0; i < cn; i++) {
@@ -249,7 +249,7 @@ ydn.crm.ui.ContextSidebar.prototype.updateForNewContact = function(cm) {
 /**
  * @override
  */
-ydn.crm.ui.ContextSidebar.prototype.updateHeader = function() {
+ydn.crm.gmail.ContextSidebar.prototype.updateHeader = function() {
   goog.base(this, 'updateHeader');
 
 };

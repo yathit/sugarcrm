@@ -18,7 +18,7 @@
  */
 
 
-goog.provide('ydn.crm.ui.gmail.Template');
+goog.provide('ydn.crm.gmail.Template');
 goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuButton');
 goog.require('goog.ui.MenuItem');
@@ -36,7 +36,7 @@ goog.require('ydn.crm.sugarcrm.model.GDataSugar');
  * @constructor
  * @struct
  */
-ydn.crm.ui.gmail.Template = function(sugar) {
+ydn.crm.gmail.Template = function(sugar) {
   /**
    * @type {ydn.crm.sugarcrm.model.GDataSugar}
    * @private
@@ -55,8 +55,8 @@ ydn.crm.ui.gmail.Template = function(sugar) {
  * @protected
  * @type {goog.debug.Logger}
  */
-ydn.crm.ui.gmail.Template.prototype.logger =
-    goog.log.getLogger('ydn.crm.ui.gmail.Template');
+ydn.crm.gmail.Template.prototype.logger =
+    goog.log.getLogger('ydn.crm.gmail.Template');
 
 
 /**
@@ -67,13 +67,13 @@ ydn.crm.ui.gmail.Template.prototype.logger =
  *   contactRequired: boolean
  * }}
  */
-ydn.crm.ui.gmail.Template.Info;
+ydn.crm.gmail.Template.Info;
 
 
 /**
  * @return {ydn.crm.sugarcrm.model.GDataSugar}
  */
-ydn.crm.ui.gmail.Template.prototype.getModel = function() {
+ydn.crm.gmail.Template.prototype.getModel = function() {
   return this.model_;
 };
 
@@ -81,7 +81,7 @@ ydn.crm.ui.gmail.Template.prototype.getModel = function() {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.gmail.Template.DEBUG = false;
+ydn.crm.gmail.Template.DEBUG = false;
 
 
 /**
@@ -89,9 +89,9 @@ ydn.crm.ui.gmail.Template.DEBUG = false;
  * @param {Element} form
  * @return {Element} Table element.
  */
-ydn.crm.ui.gmail.Template.form2BodyTable = function(form) {
+ydn.crm.gmail.Template.form2BodyTable = function(form) {
   if (form.tagName != goog.dom.TagName.FORM) {
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.warn('FORM element require');
     }
     return null;
@@ -113,16 +113,16 @@ ydn.crm.ui.gmail.Template.form2BodyTable = function(form) {
  * root element.
  * <pre>
  *   var form = document.querySelector('form[enctype="multipart/form-data"]');
- *   var last_td = ydn.crm.ui.gmail.Template.form2TDLastChild(form);
- *   var email = ydn.crm.ui.gmail.Template.extractRecipientEmail(last_td);
+ *   var last_td = ydn.crm.gmail.Template.form2TDLastChild(form);
+ *   var email = ydn.crm.gmail.Template.extractRecipientEmail(last_td);
  * </pre>
  * @param {Element} form
  * @return {?HTMLTableColElement}
  */
-ydn.crm.ui.gmail.Template.form2TDLastChild = function(form) {
-  var body_table = ydn.crm.ui.gmail.Template.form2BodyTable(form);
+ydn.crm.gmail.Template.form2TDLastChild = function(form) {
+  var body_table = ydn.crm.gmail.Template.form2BodyTable(form);
   if (!body_table) {
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.warn('Compose panel table not found');
     }
     return null;
@@ -133,7 +133,7 @@ ydn.crm.ui.gmail.Template.form2TDLastChild = function(form) {
   var last_div = toolbar_div.lastElementChild;
   var toolbar_table = last_div.querySelector('table');
   if (!toolbar_table) {
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.warn('Compose toolbar table not found');
     }
     return null;
@@ -145,7 +145,7 @@ ydn.crm.ui.gmail.Template.form2TDLastChild = function(form) {
 /**
  * Observe Gmail compose panel for template menu attachment.
  * <pre>
- *   var tm = new ydn.crm.ui.gmail.Template(sugar);
+ *   var tm = new ydn.crm.gmail.Template(sugar);
  *   tm.observeComposePanel(document.body);
  * </pre>
  * @param {Element} el
@@ -153,7 +153,7 @@ ydn.crm.ui.gmail.Template.form2TDLastChild = function(form) {
  * @deprecated no good way to detect element mutation for new compose panel
  * appearance, use url token changes instead.
  */
-ydn.crm.ui.gmail.Template.prototype.observeComposePanel = function(el) {
+ydn.crm.gmail.Template.prototype.observeComposePanel = function(el) {
   var config = /** @type {MutationObserverInit} */ (/** @type {Object} */ ({
     'childList': true,
     'attributes': false,
@@ -185,11 +185,11 @@ ydn.crm.ui.gmail.Template.prototype.observeComposePanel = function(el) {
  * @param {Element} el
  * @return {Element}
  */
-ydn.crm.ui.gmail.Template.cmdElement2LastTd = function(el) {
+ydn.crm.gmail.Template.cmdElement2LastTd = function(el) {
   var tr = goog.dom.getAncestorByTagNameAndClass(el, goog.dom.TagName.TR);
   var el_format = tr.querySelector('div[aria-label="Formatting options"]');
   if (!el_format) {
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log('Not a compose command', el);
     }
     return null;
@@ -203,7 +203,7 @@ ydn.crm.ui.gmail.Template.cmdElement2LastTd = function(el) {
  * it is attached and show template menu.
  * @param {Array.<MutationRecord>} mutations
  */
-ydn.crm.ui.gmail.Template.prototype.observerAndAttach = function(mutations) {
+ydn.crm.gmail.Template.prototype.observerAndAttach = function(mutations) {
   for (var i = 0; i < mutations.length; i++) {
     var mutation = mutations[i];
     /**
@@ -211,8 +211,8 @@ ydn.crm.ui.gmail.Template.prototype.observerAndAttach = function(mutations) {
      */
     var el = /** @type {Element} */ (mutation.target);
 
-    var last_td = ydn.crm.ui.gmail.Template.form2TDLastChild(el);
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    var last_td = ydn.crm.gmail.Template.form2TDLastChild(el);
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log(el, last_td);
     }
     if (last_td) {
@@ -227,11 +227,11 @@ ydn.crm.ui.gmail.Template.prototype.observerAndAttach = function(mutations) {
 /**
  * Render menu with template info.
  * @param {goog.ui.Menu} menu
- * @param {Array.<ydn.crm.ui.gmail.Template.Info>} templates
+ * @param {Array.<ydn.crm.gmail.Template.Info>} templates
  * @private
  */
-ydn.crm.ui.gmail.Template.prototype.renderMenu_ = function(menu, templates) {
-  if (ydn.crm.ui.gmail.Template.DEBUG) {
+ydn.crm.gmail.Template.prototype.renderMenu_ = function(menu, templates) {
+  if (ydn.crm.gmail.Template.DEBUG) {
     window.console.log(templates);
   }
   var types = [];
@@ -274,7 +274,7 @@ ydn.crm.ui.gmail.Template.prototype.renderMenu_ = function(menu, templates) {
  * panel.
  * @return {Element}
  */
-ydn.crm.ui.gmail.Template.lastTD2Form = function(last_td) {
+ydn.crm.gmail.Template.lastTD2Form = function(last_td) {
   var toolbar_table = goog.dom.getAncestorByTagNameAndClass(last_td, 'table');
   var content_table = goog.dom.getAncestorByTagNameAndClass(toolbar_table.parentElement, 'table');
   var panel_table = goog.dom.getAncestorByTagNameAndClass(content_table.parentElement, 'table');
@@ -287,7 +287,7 @@ ydn.crm.ui.gmail.Template.lastTD2Form = function(last_td) {
  * @param {Element} form
  * @return {Element}
  */
-ydn.crm.ui.gmail.Template.form2ToElement = function(form) {
+ydn.crm.gmail.Template.form2ToElement = function(form) {
   return form.querySelector('textarea[name="to"]');
 };
 
@@ -297,7 +297,7 @@ ydn.crm.ui.gmail.Template.form2ToElement = function(form) {
  * @param {Element} form
  * @return {Element}
  */
-ydn.crm.ui.gmail.Template.form2SubjectElement = function(form) {
+ydn.crm.gmail.Template.form2SubjectElement = function(form) {
   return form.querySelector('input[name="subjectbox"]');
 };
 
@@ -307,8 +307,8 @@ ydn.crm.ui.gmail.Template.form2SubjectElement = function(form) {
  * @param {Element} form
  * @return {Element}
  */
-ydn.crm.ui.gmail.Template.form2ComposeElement = function(form) {
-  var body_table = ydn.crm.ui.gmail.Template.form2BodyTable(form);
+ydn.crm.gmail.Template.form2ComposeElement = function(form) {
+  var body_table = ydn.crm.gmail.Template.form2BodyTable(form);
   // get compose body DIV element
   // here we have many option to query the DIV
   // <div id=":p8" class="Am Al editable LW-avf" hidefocus="true" aria-label="Message Body"
@@ -325,12 +325,12 @@ ydn.crm.ui.gmail.Template.form2ComposeElement = function(form) {
  * @param {goog.debug.Logger=} opt_logger
  * @return {string?}
  */
-ydn.crm.ui.gmail.Template.extractRecipientEmail = function(last_td, opt_logger) {
+ydn.crm.gmail.Template.extractRecipientEmail = function(last_td, opt_logger) {
   if (!last_td) {
     return null;
   }
   var logger = opt_logger || ydn.crm.shared.logger;
-  var form = ydn.crm.ui.gmail.Template.lastTD2Form(last_td);
+  var form = ydn.crm.gmail.Template.lastTD2Form(last_td);
   if (!form) {
     logger.warning('Gmail header FORM not found');
     return null;
@@ -359,8 +359,8 @@ ydn.crm.ui.gmail.Template.extractRecipientEmail = function(last_td, opt_logger) 
  * @return {?string}
  * @protected
  */
-ydn.crm.ui.gmail.Template.prototype.extractRecipientEmail = function() {
-  return ydn.crm.ui.gmail.Template.extractRecipientEmail(this.root_, this.logger);
+ydn.crm.gmail.Template.prototype.extractRecipientEmail = function() {
+  return ydn.crm.gmail.Template.extractRecipientEmail(this.root_, this.logger);
 };
 
 
@@ -368,11 +368,11 @@ ydn.crm.ui.gmail.Template.prototype.extractRecipientEmail = function() {
  * Handle menu click.
  * @param {Event} e
  */
-ydn.crm.ui.gmail.Template.prototype.handleMenuAction = function(e) {
+ydn.crm.gmail.Template.prototype.handleMenuAction = function(e) {
   if (e.target instanceof goog.ui.MenuItem) {
     var item = e.target;
-    var info = /** @type {ydn.crm.ui.gmail.Template.Info} */ (item.getModel());
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    var info = /** @type {ydn.crm.gmail.Template.Info} */ (item.getModel());
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log(info);
     }
     var sugar = this.getModel();
@@ -384,29 +384,29 @@ ydn.crm.ui.gmail.Template.prototype.handleMenuAction = function(e) {
       return;
     }
     var email = this.extractRecipientEmail();
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log(email);
     }
     var used_target_contact = false;
     if (!email) {
       email = sugar.getContextGmail();
       used_target_contact = !!email;
-      if (ydn.crm.ui.gmail.Template.DEBUG) {
+      if (ydn.crm.gmail.Template.DEBUG) {
         window.console.log('Using target email ' + email);
       }
     }
     if (email) {
       this.fillTemplate(info.id, email).addCallbacks(function(html) {
-        if (ydn.crm.ui.gmail.Template.DEBUG) {
+        if (ydn.crm.gmail.Template.DEBUG) {
           window.console.log(html);
         }
-        var form = ydn.crm.ui.gmail.Template.lastTD2Form(this.root_);
-        var subject_ele = ydn.crm.ui.gmail.Template.form2SubjectElement(form);
-        var compose_ele = ydn.crm.ui.gmail.Template.form2ComposeElement(form);
+        var form = ydn.crm.gmail.Template.lastTD2Form(this.root_);
+        var subject_ele = ydn.crm.gmail.Template.form2SubjectElement(form);
+        var compose_ele = ydn.crm.gmail.Template.form2ComposeElement(form);
 
         // fill email address if target contact is used
         if (used_target_contact) {
-          var to_ele = ydn.crm.ui.gmail.Template.form2ToElement(form);
+          var to_ele = ydn.crm.gmail.Template.form2ToElement(form);
           to_ele.value = email;
         }
 
@@ -441,14 +441,14 @@ ydn.crm.ui.gmail.Template.prototype.handleMenuAction = function(e) {
  * @const
  * @type {string}
  */
-ydn.crm.ui.gmail.Template.CSS_CLASS = 'ydn-crm crm-template inj';
+ydn.crm.gmail.Template.CSS_CLASS = 'ydn-crm crm-template inj';
 
 
 /**
  * Attach to compose panel.
  * @return {boolean} true if successfully attached.
  */
-ydn.crm.ui.gmail.Template.prototype.attach = function() {
+ydn.crm.gmail.Template.prototype.attach = function() {
 
   var form = document.querySelector('form[enctype="multipart/form-data"]');
 
@@ -456,12 +456,12 @@ ydn.crm.ui.gmail.Template.prototype.attach = function() {
     this.logger.warning('compose FORM element not found.');
     return false;
   }
-  if (ydn.crm.ui.gmail.Template.DEBUG) {
+  if (ydn.crm.gmail.Template.DEBUG) {
     var tag = 'tag' + goog.now();
     form.setAttribute('data-ydn-tag', tag);
     window.console.log('form tag with ' + tag);
   }
-  var last_td = ydn.crm.ui.gmail.Template.form2TDLastChild(form);
+  var last_td = ydn.crm.gmail.Template.form2TDLastChild(form);
   if (last_td) {
     this.renderMenu(last_td);
     return true;
@@ -477,7 +477,7 @@ ydn.crm.ui.gmail.Template.prototype.attach = function() {
  * @param {Element} last_td HTMLTableColElement
  * @protected
  */
-ydn.crm.ui.gmail.Template.prototype.renderMenu = function(last_td) {
+ydn.crm.gmail.Template.prototype.renderMenu = function(last_td) {
   var dom = new goog.dom.DomHelper(last_td.ownerDocument);
   if (!this.root_) {
     this.root_ = last_td;
@@ -488,11 +488,11 @@ ydn.crm.ui.gmail.Template.prototype.renderMenu = function(last_td) {
       this.renderMenu_(menu, templates);
     }, this);
     var span = dom.createDom('span');
-    span.className = ydn.crm.ui.gmail.Template.CSS_CLASS;
+    span.className = ydn.crm.gmail.Template.CSS_CLASS;
     last_td.insertBefore(span, last_td.firstElementChild);
     b1.render(span);
     goog.events.listen(menu, goog.ui.Component.EventType.ACTION, this.handleMenuAction, true, this);
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log('new template menu renderred', last_td);
     }
   } else if (this.root_.parentElement == last_td) {
@@ -502,10 +502,10 @@ ydn.crm.ui.gmail.Template.prototype.renderMenu = function(last_td) {
       this.root_.parentElement.removeChild(this.root_);
     }
     var span = dom.createDom('span');
-    span.className = ydn.crm.ui.gmail.Template.CSS_CLASS;
+    span.className = ydn.crm.gmail.Template.CSS_CLASS;
     span.appendChild(this.root_);
     last_td.insertBefore(span, last_td.firstElementChild);
-    if (ydn.crm.ui.gmail.Template.DEBUG) {
+    if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log('new template menu re-attached', last_td);
     }
   }
@@ -517,7 +517,7 @@ ydn.crm.ui.gmail.Template.prototype.renderMenu = function(last_td) {
  * @param {string} html
  * @return {boolean} return true if template has reference to contact field name.
  */
-ydn.crm.ui.gmail.Template.hasContactRef = function(html) {
+ydn.crm.gmail.Template.hasContactRef = function(html) {
   return html.indexOf('$contact_name') >= 0 ||
       html.indexOf('$contact_account_name') >= 0;
 };
@@ -526,12 +526,12 @@ ydn.crm.ui.gmail.Template.hasContactRef = function(html) {
 /**
  * List available templates.
  * Result eg: {'campaign': ["News from CRM"], '': ["Test"]}
- * @param {function(this: T, Array.<ydn.crm.ui.gmail.Template.Info>)} cb result is lists of template name
+ * @param {function(this: T, Array.<ydn.crm.gmail.Template.Info>)} cb result is lists of template name
  * for each template type.
  * @param {T} scope
  * @template T
  */
-ydn.crm.ui.gmail.Template.prototype.listTemplates = function(cb, scope) {
+ydn.crm.gmail.Template.prototype.listTemplates = function(cb, scope) {
 
   this.getModel().listRecords(ydn.crm.sugarcrm.ModuleName.EMAIL_TEMPLATES,
       undefined, undefined, undefined, 200).addCallbacks(function(x) {
@@ -544,7 +544,7 @@ ydn.crm.ui.gmail.Template.prototype.listTemplates = function(cb, scope) {
         id: record['id'],
         name: record['name'],
         type: type,
-        contactRequired: ydn.crm.ui.gmail.Template.hasContactRef(record['body_html'])
+        contactRequired: ydn.crm.gmail.Template.hasContactRef(record['body_html'])
       });
     }
     cb.call(scope, templates_);
@@ -561,7 +561,7 @@ ydn.crm.ui.gmail.Template.prototype.listTemplates = function(cb, scope) {
  * @param {ydn.crm.sugarcrm.model.Record=} opt_target contact record to fill in the tempalte.
  * @return {string} template HTML by supplementing fields from the record.
  */
-ydn.crm.ui.gmail.Template.prototype.renderTemplate = function(template, opt_target) {
+ydn.crm.gmail.Template.prototype.renderTemplate = function(template, opt_target) {
   // see parsing in SugarCE-Full-6.5/modules/EmailTemplates/EmailTemplate.php/parse_template_bean
 
   var user = this.getModel().getUser();
@@ -578,7 +578,7 @@ ydn.crm.ui.gmail.Template.prototype.renderTemplate = function(template, opt_targ
     this.logger.warning('Login user info not available');
   }
 
-  if (ydn.crm.ui.gmail.Template.DEBUG) {
+  if (ydn.crm.gmail.Template.DEBUG) {
     window.console.log(template);
   }
 
@@ -604,7 +604,7 @@ ydn.crm.ui.gmail.Template.prototype.renderTemplate = function(template, opt_targ
  * Leads, or Targets) module. If string, it is email of the record.
  * @return {!goog.async.Deferred} return HTML string of fulfill template.
  */
-ydn.crm.ui.gmail.Template.prototype.fillTemplate = function(id, opt_contact) {
+ydn.crm.gmail.Template.prototype.fillTemplate = function(id, opt_contact) {
   /**
    * @type {ydn.crm.sugarcrm.model.Sugar}
    */

@@ -21,7 +21,7 @@ GmailTemplateJsTest.prototype.createTempl1 = function(record) {
 GmailTemplateJsTest.prototype.test_label_full_name = function() {
   var sugar = ydn.crm.test.createGDataSugar();
   var record = ydn.crm.test.createContactRecord(sugar);
-  var template = new ydn.crm.ui.gmail.Template(sugar);
+  var template = new ydn.crm.gmail.Template(sugar);
   var templ = this.createTempl1(record);
   var html = template.renderTemplate(templ.original, record);
   assertEquals(templ.fill, html);
