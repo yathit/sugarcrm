@@ -64,7 +64,7 @@ ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS = 'sidebar-status';
  * @const
  * @type {string}
  */
-ydn.crm.ui.SugarListPanel.CSS_CLASS_SETUP = 'sugarcrm-link-panel';
+ydn.crm.ui.SugarListPanel.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
 
 
 /**
@@ -94,27 +94,17 @@ ydn.crm.ui.SugarListPanel.prototype.createDom = function() {
   root.appendChild(content);
 
   // render header
-  var link_panel = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_SETUP);
-  var a = dom.createElement('a');
-  a.textContent = 'Setup';
-  a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
-  a.className = 'setup-link maia-button blue';
-  a.setAttribute('data-window-height', '600');
-  a.setAttribute('data-window-width', '800');
-  link_panel.appendChild(a);
-  goog.style.setElementShown(link_panel, false);
 
   var no_sugar_login = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_NO_SUGAR_PANEL);
-  a = dom.createElement('a');
+  var a = dom.createElement('a');
   a.textContent = 'Setup SugarCRM';
   a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
-  a.className = 'setup-link maia-button blue';
+  a.className = ydn.crm.ui.SugarListPanel.CSS_CLASS_SUGAR_SETUP_LINK + ' maia-button blue';
   a.setAttribute('data-window-height', '600');
   a.setAttribute('data-window-width', '800');
   no_sugar_login.appendChild(a);
   goog.style.setElementShown(no_sugar_login, false);
 
-  header.appendChild(link_panel);
   header.appendChild(no_sugar_login);
 };
 
@@ -142,24 +132,9 @@ ydn.crm.ui.SugarListPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var handler = this.getHandler();
 
-  var a_grant = this.getHeaderElement().querySelectorAll('a.setup-link');
-  handler.listen(a_grant[0], 'click', ydn.crm.base.openPageAsDialog, true);
-  handler.listen(a_grant[1], 'click', ydn.crm.base.openPageAsDialog, true);
-};
-
-
-/**
- * Note: Previously we used to have multi login, but the workflow is not great,
- * because it logout gmail too.
- * @protected
- * @param {Event} e
- */
-ydn.crm.ui.SugarListPanel.prototype.handleMsgPanelClick = function(e) {
-  if (e.target.tagName == 'A') {
-    e.target.removeAttribute('href'); // so that user cannot click again.
-    ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGGED_OUT);
-    ydn.crm.base.openPageAsDialog(e);
-  }
+  var a_grant = this.getHeaderElement().querySelector('a.' +
+      ydn.crm.ui.SugarListPanel.CSS_CLASS_SUGAR_SETUP_LINK);
+  handler.listen(a_grant, 'click', ydn.crm.base.openPageAsDialog, true);
 };
 
 
@@ -168,15 +143,12 @@ ydn.crm.ui.SugarListPanel.prototype.handleMsgPanelClick = function(e) {
  */
 ydn.crm.ui.SugarListPanel.prototype.updateHeader = function() {
 
-  var setup = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarListPanel.CSS_CLASS_SETUP);
 
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.isLogin()) {
     goog.style.setElementShown(this.getContentElement(), true);
-    goog.style.setElementShown(setup, false);
   } else {
     goog.style.setElementShown(this.getContentElement(), false);
-    goog.style.setElementShown(setup, true);
   }
 
 };

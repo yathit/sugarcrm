@@ -36,6 +36,13 @@ ydn.crm.ui.SidebarPanel.CSS_CLASS_INVALID_LOGIN_PANEL = 'invalid-login-panel';
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ydn.crm.ui.SidebarPanel.CSS_CLASS_SETUP = 'setup-panel';
+
+
+/**
  * @protected
  * @type {goog.debug.Logger}
  */
@@ -53,7 +60,18 @@ ydn.crm.ui.SidebarPanel.prototype.createDom = function() {
   var root = this.getElement();
   var header = root.querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD);
 
+  var link_panel = dom.createDom('div', ydn.crm.ui.SidebarPanel.CSS_CLASS_SETUP);
+  var a = dom.createElement('a');
+  a.textContent = 'Setup';
+  a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
+  a.className = 'maia-button blue';
+  a.setAttribute('data-window-height', '600');
+  a.setAttribute('data-window-width', '800');
+  link_panel.appendChild(a);
+  goog.style.setElementShown(link_panel, false);
+
   var invalid_login = dom.createDom('div', ydn.crm.ui.SidebarPanel.CSS_CLASS_INVALID_LOGIN_PANEL);
+  header.appendChild(link_panel);
   header.appendChild(invalid_login);
 
   var status_el = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS);
@@ -62,6 +80,20 @@ ydn.crm.ui.SidebarPanel.prototype.createDom = function() {
   ydn.crm.msg.Manager.addConsumer(status);
   root.insertBefore(status_el, root.firstElementChild);
 };
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.ui.SidebarPanel.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  var handler = this.getHandler();
+
+  var a_grant = this.getHeaderElement().querySelector('div.' +
+      ydn.crm.ui.SidebarPanel.CSS_CLASS_SETUP + ' a');
+  handler.listen(a_grant, 'click', ydn.crm.base.openPageAsDialog, true);
+};
+
 
 
 /**
@@ -84,7 +116,10 @@ ydn.crm.ui.SidebarPanel.prototype.updateHeader = function() {
   goog.base(this, 'updateHeader');
 
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
+  var setup = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarListPanel.CSS_CLASS_SETUP);
+
   if (us.isLogin()) {
+    goog.style.setElementShown(setup, false);
     var msg_panel = this.getHeaderElement().querySelector('.' +
         ydn.crm.ui.SidebarPanel.CSS_CLASS_INVALID_LOGIN_PANEL);
 
@@ -97,6 +132,8 @@ ydn.crm.ui.SidebarPanel.prototype.updateHeader = function() {
     } else {
       goog.style.setElementShown(msg_panel, false);
     }
+  } else {
+    goog.style.setElementShown(setup, true);
   }
 
 };
