@@ -146,6 +146,62 @@
                      value="http://localhost:8085/ydn/"/>
         </sequential>
     </macrodef>
+    <target name="copy-files" description="copy files">
+        <copy todir="${publish.dir}/image">
+            <fileset dir="image">
+                <include name="logo.png"/>
+                <include name="logo-16.svg"/>
+                <include name="logo-bw-19.png"/>
+                <include name="logo-19.png"/>
+                <include name="logo-38.png"/>
+                <include name="logo-bw-38.png"/>
+                <include name="logo-128.png"/>
+            </fileset>
+        </copy>
+        <copy todir="${publish.dir}/css">
+            <fileset dir="${sugarcrm.dir}/css">
+                <include name="base.css"/>
+                <include name="inj.css"/>
+                <include name="option.css"/>
+                <include name="popup.css"/>
+                <include name="setup.css"/>
+            </fileset>
+
+        </copy>
+        <copy todir="${publish.dir}">
+            <fileset dir="${sugarcrm.dir}">
+                <include name="setup.html"/>
+                <include name="popup.html"/>
+                <include name="option-page.html"/>
+                <include name="host-permission.html"/>
+                <include name="inj-template.html"/>
+            </fileset>
+            <fileset dir="${work.dir}/crm-ex">
+                <include name="event-page.html"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${publish.dir}/jsc">
+            <fileset dir="${sugarcrm.dir}/jsc">
+                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
+                <include name="ydn.msg.js"/>
+            </fileset>
+            <fileset dir="${work.dir}/crm-ex/jsc">
+                <include name="ydn.crm-${crm-app-ver}.js"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${publish.dir}/js" >
+            <fileset dir="js">
+                <exclude name="*-dev.js"/>
+            </fileset>
+        </copy>
+
+        <replaceregexp file="${publish.dir}/manifest.json"
+                       match='"version": ".+"'
+                       replace='"version": "${sugarcrm-ver}"'
+                />
+    </target>
 
     <target name="comp-msg-dev" description="compile JS">
 
