@@ -299,9 +299,6 @@
        </sequential>
     </macrodef>
 
-
-
-
     <macrodef name="calc-deps" description="calculate dependency for testing">
         <attribute name="output.fn"/>
         <attribute name="input.dir"/>
