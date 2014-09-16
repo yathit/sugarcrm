@@ -131,8 +131,8 @@ ydn.crm.ui.ContextSidebar.prototype.enterDocument = function() {
   var email_input = head.querySelector('input');
   var search = head.querySelector('.search');
 
-  handler.listen(email_input, 'change', this.onTargetChange);
-  handler.listen(search, 'click', this.onTargetChange);
+  handler.listen(email_input, 'change', this.onSearch);
+  handler.listen(search, 'click', this.onSearch);
 
 };
 
@@ -152,13 +152,14 @@ ydn.crm.ui.ContextSidebar.prototype.getSugarPanel_ = function() {
  * @param {goog.events.Event} e
  * @protected
  */
-ydn.crm.ui.ContextSidebar.prototype.onTargetChange = function(e) {
+ydn.crm.ui.ContextSidebar.prototype.onSearch = function(e) {
   var target = this.getElement().querySelector('input.' + ydn.crm.ui.ContextSidebar.CSS_CLASS_TRAGET);
   var value = target.value;
   var email = value.indexOf('@') > 0 ? value : undefined;
   var name = !email ? value : undefined;
   var account = ydn.crm.ui.UserSetting.getInstance().getLoginEmail();
   var cm = new ydn.crm.inj.Context(account, email, name);
+  cm.kind = ydn.crm.inj.Context.Kind.SEARCH;
   // console.log('update for ' + cm);
   this.updateForNewContact(cm);
 };

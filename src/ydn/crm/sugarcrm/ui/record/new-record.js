@@ -90,12 +90,20 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.onContextChange_ = function(e) {
     model.setRecord(record);
     this.setEditMode(true);
     if (e.context) {
-      var patch = {
-        'email1': e.context.getEmail() || '',
-        'full_name': e.context.getFullName() || ''
-      };
-      this.simulateEdit(patch);
-      this.socialFill(e.context);
+      if (e.context.kind == ydn.crm.inj.Context.Kind.SEARCH) {
+        var email = e.context.getEmail() || '';
+        var ful_name = e.context.getFullName() || '';
+        var patch = {
+          'email1': email,
+          'full_name': ful_name
+        };
+        this.simulateEdit(patch);
+        this.socialFill(e.context);
+      }
+    } else {
+      // when context come from sniffing gmail, we don't want to show creating
+      // new record.
+      goog.style.setElementShown(this.getElement(), false);
     }
   }
 };
