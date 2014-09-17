@@ -10,7 +10,7 @@ goog.require('ydn.crm.sugarcrm.utils');
 goog.require('ydn.crm.ui.GmailCmdInjector');
 goog.require('ydn.crm.ui.SidebarPanel');
 goog.require('ydn.crm.ui.StatusBar');
-goog.require('ydn.crm.ui.gmail.Template');
+goog.require('ydn.crm.gmail.Template');
 goog.require('ydn.crm.sugarcrm.ui.SearchPanel');
 goog.require('ydn.crm.sugarcrm.ui.SyncPanel');
 goog.require('ydn.crm.sugarcrm.ui.activity.NewRecord');

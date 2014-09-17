@@ -19,6 +19,7 @@ user.onReady().addCallbacks(function() {
   document.getElementById('gmail-account').textContent = user.getLoginEmail();
   hud.updateHeader();
   ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(function(sugars) {
+    console.log(sugars);
         hud.updateSugarPanels(sugars);
       }, this);
 }, function(e) {
