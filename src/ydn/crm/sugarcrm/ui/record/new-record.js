@@ -44,7 +44,7 @@ goog.inherits(ydn.crm.sugarcrm.ui.NewRecord, ydn.crm.sugarcrm.ui.record.Record);
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.NewRecord.DEBUG = false;
+ydn.crm.sugarcrm.ui.NewRecord.DEBUG = true;
 
 
 /**
@@ -83,29 +83,41 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.onContextChange_ = function(e) {
   if (e.record || e.gdata) {
     // hide this new record creation panel.
     goog.style.setElementShown(this.getElement(), false);
+    if (ydn.crm.sugarcrm.ui.NewRecord.DEBUG) {
+      var ms = e.record ? ' record' : ' ';
+      if (e.gdata) {
+        ms += ' gdata'
+      }
+      window.console.info(this + ' hiding on context change since ' + ms + ' exists');
+    }
   } else {
-    goog.style.setElementShown(this.getElement(), true);
 
     var record = new ydn.crm.sugarcrm.Record(model.getDomain(), model.getModuleName());
     model.setRecord(record);
     this.setEditMode(true);
-    if (e.context) {
-      if (e.context.kind == ydn.crm.inj.Context.Kind.SEARCH) {
-        var email = e.context.getEmail() || '';
-        var ful_name = e.context.getFullName() || '';
-        var patch = {
-          'email1': email,
-          'full_name': ful_name
-        };
-        this.simulateEdit(patch);
-        this.socialFill(e.context);
-      } else {
-        // when context come from sniffing gmail, we don't want to show creating
-        // new record.
-        goog.style.setElementShown(this.getElement(), false);
+    if (e.context && e.context.kind == ydn.crm.inj.Context.Kind.SEARCH) {
+      var email = e.context.getEmail() || '';
+      var full_name = e.context.getFullName() || '';
+      var patch = {
+        'email1': email,
+        'full_name': full_name
+      };
+      this.simulateEdit(patch);
+      this.socialFill(e.context);
+      goog.style.setElementShown(this.getElement(), true);
+      if (ydn.crm.sugarcrm.ui.NewRecord.DEBUG) {
+        window.console.info(this + ' show on context change for ' +
+            (email || full_name));
       }
     } else {
       goog.style.setElementShown(this.getElement(), false);
+      if (ydn.crm.sugarcrm.ui.NewRecord.DEBUG) {
+        if (!e.context) {
+          window.console.info(this + ' hiding on context change for null context');
+        } else {
+          window.console.info(this + ' hiding on context change on none-search');
+        }
+      }
     }
   }
 };
@@ -158,3 +170,12 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.getDuplicateModuleList = function() {
 ydn.crm.sugarcrm.ui.NewRecord.prototype.setEditMode = function(val) {
   goog.base(this, 'setEditMode', true);
 };
+
+if (goog.DEBUG) {
+  /**
+   * @override
+   */
+  ydn.crm.sugarcrm.ui.NewRecord.prototype.toString = function() {
+    return 'NewRecordPanel';
+  };
+}

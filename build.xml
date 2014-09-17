@@ -6,10 +6,6 @@
     <import file="${db-work.dir}/ydn-base/build.xml"/>
     <import file="${db-work.dir}/ydn/build.xml"/>
     <import file="${work.dir}/crm/build.xml"/>
-    <property name="sugarcrm-ver-major" value="0"/>
-    <property name="sugarcrm-ver-minor" value="12"/>
-    <property name="sugarcrm-ver-patch" value="3"/>
-    <property name="sugarcrm-ver" value="${sugarcrm-ver-major}.${sugarcrm-ver-minor}.${sugarcrm-ver-patch}"/>
     <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
     <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
     <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
