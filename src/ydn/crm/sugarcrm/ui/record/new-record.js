@@ -99,10 +99,12 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.onContextChange_ = function(e) {
         };
         this.simulateEdit(patch);
         this.socialFill(e.context);
+      } else {
+        // when context come from sniffing gmail, we don't want to show creating
+        // new record.
+        goog.style.setElementShown(this.getElement(), false);
       }
     } else {
-      // when context come from sniffing gmail, we don't want to show creating
-      // new record.
       goog.style.setElementShown(this.getElement(), false);
     }
   }
