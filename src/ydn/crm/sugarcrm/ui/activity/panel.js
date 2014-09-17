@@ -321,7 +321,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
  * @param {Date} since
  */
 ydn.crm.sugarcrm.ui.activity.Panel.prototype.setActivityCount = function(cnt, since) {
-  var tab = /** @type {goog.ui.Tab} */ (this.tabbar.getChildAt(1));
+  var tab = /** @type {goog.ui.Tab} */ (this.tabbar.getChildAt(2));
   var ele = tab.getContentElement().firstElementChild;
   if (cnt > 0) {
     var t = goog.date.relative.format(since.getTime()) || since.toLocaleDateString();
@@ -338,7 +338,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.setActivityCount = function(cnt, si
  */
 ydn.crm.sugarcrm.ui.activity.Panel.prototype.setCount = function(name, cnt) {
   var idx = ydn.crm.sugarcrm.ACTIVITY_MODULES.indexOf(name);
-  var tab = /** @type {goog.ui.Tab} */ (this.tabbar.getChildAt(idx + 2));
+  var tab = /** @type {goog.ui.Tab} */ (this.tabbar.getChildAt(idx + 3));
   var ele = tab.getContentElement().querySelector('.' +
       ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_TAB_LABEL);
   if (cnt) {
