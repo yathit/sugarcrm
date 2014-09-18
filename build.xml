@@ -7,7 +7,6 @@
     <import file="${db-work.dir}/ydn/build.xml"/>
     <import file="${work.dir}/crm/build.xml"/>
     <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
-    <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
     <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
     <property name="src.bk" value="ydn-src-1" description="source code bucket"/>
     <property name="lib.dir" location="${work.dir}/../lib"/>

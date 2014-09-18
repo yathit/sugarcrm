@@ -244,6 +244,15 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.enterDocument = function() {
 
 
 /**
+ * Delete record.
+ */
+ydn.crm.sugarcrm.ui.record.Record.prototype.deleteRecord = function() {
+  var record = this.getModel();
+  record.deleteRecord();
+};
+
+
+/**
  * @protected
  * @param {goog.events.BrowserEvent} e
  */
@@ -252,6 +261,8 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) 
   var dp_ = ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE + '-';
   if (cmd == 'edit') {
     this.setEditMode(!this.getEditMode());
+  } else if (cmd == 'delete') {
+    this.deleteRecord();
   } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.FIELDS_OPTION) {
     this.showFieldDisplayDialog();
   } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.DETAILS) {
@@ -832,6 +843,9 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getMenuItems = function() {
     items.push({
       name: 'edit',
       label: 'Edit'
+    }, {
+      name: 'delete',
+      label: 'Delete'
     }, null);
   }
   var new_list = this.getNewModuleList();

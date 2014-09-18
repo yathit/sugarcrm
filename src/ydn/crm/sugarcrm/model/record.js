@@ -257,6 +257,23 @@ ydn.crm.sugarcrm.model.Record.prototype.patch = function(patches) {
 
 
 /**
+ * Delete a record.
+ * @returns {!goog.async.Deferred}
+ */
+ydn.crm.sugarcrm.model.Record.prototype.deleteRecord = function() {
+  if (!this.hasRecord()) {
+    return goog.async.Deferred.fail(new Error('record not defined.'));
+  }
+  var data = {
+    'module': this.getModuleName(),
+    'id': this.getId()
+  };
+  var ch = this.getChannel();
+  return ch.send(ydn.crm.Ch.SReq.DELETE_RECORD, data);
+};
+
+
+/**
  * @override
  * @protected
  */

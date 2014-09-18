@@ -44,6 +44,7 @@ goog.require('ydn.crm.sugarcrm.ui.setting.Field');
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
+ * @deprecated Render in Record itself.
  */
 ydn.crm.sugarcrm.ui.record.Head = function(model, opt_dom) {
   goog.base(this, opt_dom);
