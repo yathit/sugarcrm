@@ -245,10 +245,20 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.enterDocument = function() {
 
 /**
  * Delete record.
+ * @param {*} e
  */
-ydn.crm.sugarcrm.ui.record.Record.prototype.deleteRecord = function() {
+ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
   var record = this.getModel();
+
   record.deleteRecord();
+
+  var mid = ydn.crm.msg.Manager.addStatus('Deleting', '...');
+  ydn.crm.msg.Manager.setLink(mid, record.getViewLink(), record.getLabel());
+  record.deleteRecord().addCallbacks(function(x) {
+    ydn.crm.msg.Manager.setStatus(mid, record.getLabel(), ' deleted.');
+  }, function(e) {
+    ydn.crm.msg.Manager.updateStatus(mid, e.message, ydn.crm.msg.MessageType.ERROR);
+  }, this);
 };
 
 
@@ -261,8 +271,8 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) 
   var dp_ = ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE + '-';
   if (cmd == 'edit') {
     this.setEditMode(!this.getEditMode());
-  } else if (cmd == 'delete') {
-    this.deleteRecord();
+  } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.DELETE) {
+    this.handleRecordDelete(e);
   } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.FIELDS_OPTION) {
     this.showFieldDisplayDialog();
   } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.DETAILS) {
@@ -796,10 +806,11 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.onNewRecord = function(e) {
  * @enum {string}
  */
 ydn.crm.sugarcrm.ui.record.Record.MenuName = {
+  DELETE: 'delete',
+  DETAILS: 'record-detail',
   DUPLICATE: 'duplicate',
   NEW: 'new',
   UNSYNC: 'unsync',
-  DETAILS: 'record-detail',
   FIELDS_OPTION: 'field-option'
 };
 
@@ -844,7 +855,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getMenuItems = function() {
       name: 'edit',
       label: 'Edit'
     }, {
-      name: 'delete',
+      name: ydn.crm.sugarcrm.ui.record.Record.MenuName.DELETE,
       label: 'Delete'
     }, null);
   }
