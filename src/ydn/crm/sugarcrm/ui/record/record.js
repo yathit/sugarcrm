@@ -257,13 +257,13 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
   record_link.textContent =  record.getLabel();
   var type = dialog.querySelector('span.type');
   type.textContent = record.getModuleName();
-  dialog.showModal();
+  dialog.showModal(document.getElementById('sticky-hud-base'));
 
-  var cancel_btn = dialog.querySelector('button.cancel');
+  var cancel_btn = dialog.querySelector('button[name=cancel]');
   cancel_btn.onclick = function() {
     dialog.close('cancel');
   };
-  var ok_btn = dialog.querySelector('button.ok');
+  var ok_btn = dialog.querySelector('button[name=ok]');
   ok_btn.onclick = function() {
     dialog.close('ok');
   };

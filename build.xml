@@ -70,7 +70,10 @@
                 <arg line='-f "--define=goog.DEBUG=true"'/>
             </opt-arg>
         </comp-adved>
-
+        <replace description="update sourceMappingURL reference"
+                 file="${sugarcrm.dir}/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
+                 token="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"
+                 value="https://${src.bk}/jsc/ydn.crm.sugarcrm-edge.js.map"/>
     </target>
     <target name="comp-crm" description="compile JS">
         <comp-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
@@ -395,10 +398,7 @@
         <comp-sass name="inj"/>
     </target>
     <target name="push-edge" description="upload edge js html files">
-        <replace description="update sourceMappingURL reference"
-                 file="${sugarcrm.dir}/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
-                 token="ydn.crm.js.map"
-                 value="ydn.crm-edge.js.map"/>
+
         <apply executable="python" relative="yes">
             <arg value="${gsutil}"/>
             <arg value="cp"/>
@@ -413,9 +413,9 @@
             </filtermapper>
         </apply>
         <replace description="replace baack sourceMappingURL reference"
-                 file="${sugarcrm.dir}/jsc/ydn.crm.js"
-                 value="ydn.crm.js.map"
-                 token="ydn.crm-edge.js.map"/>
+                 file="${sugarcrm.dir}/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
+                 value="ydn.crm.sugarcrm-edge.js.map"
+                 token="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
     </target>
 
     <target name="build" description="build all distribution"
