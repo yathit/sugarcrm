@@ -24,6 +24,7 @@
     <property name="outputwrapper.app" value="(function(){%output%})();app=runApp();"/>
     <property name="sugarcrm-out.dir" location="${sugarcrm.dir}/jsc"/>
     <property name="templ.dir" location="${sugarcrm.dir}/templ" />
+    <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
     <property name="css.dir" location="${sugarcrm.dir}/css" />
     <property name="gss.dir" location="${sugarcrm.dir}/gss" />
 
@@ -373,7 +374,7 @@
         <attribute name="name"/>
         <sequential>
             <exec executable="sass" failonerror="true" dir="${sugarcrm.dir}">
-                <arg line="--sourcemap"/>
+                <arg line="--sourcemap=auto"/>
                 <arg line="--load-path=${scss.dir}"/>
                 <arg value="${scss.dir}/@{name}.scss"/>
                 <arg value="${css.dir}/@{name}.css"/>
