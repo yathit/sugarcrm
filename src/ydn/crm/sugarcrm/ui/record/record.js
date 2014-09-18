@@ -244,21 +244,45 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.enterDocument = function() {
 
 
 /**
- * Delete record.
+ * Handle delete record event.
  * @param {*} e
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
   var record = this.getModel();
 
-  record.deleteRecord();
+  var dialog = /** @type {HTMLDialogElement} */ (ydn.crm.ui.getTemplateElement('record-delete-dialog'));
 
-  var mid = ydn.crm.msg.Manager.addStatus('Deleting', '...');
-  ydn.crm.msg.Manager.setLink(mid, record.getViewLink(), record.getLabel());
-  record.deleteRecord().addCallbacks(function(x) {
-    ydn.crm.msg.Manager.setStatus(mid, record.getLabel(), ' deleted.');
-  }, function(e) {
-    ydn.crm.msg.Manager.updateStatus(mid, e.message, ydn.crm.msg.MessageType.ERROR);
-  }, this);
+  var record_link = dialog.querySelector('a.record');
+  record_link.href = record.getViewLink();
+  record_link.textContent =  record.getLabel();
+  var type = dialog.querySelector('span.type');
+  type.textContent = record.getModuleName();
+  dialog.showModal();
+
+  var cancel_btn = dialog.querySelector('button.cancel');
+  cancel_btn.onclick = function() {
+    dialog.close('cancel');
+  };
+  var ok_btn = dialog.querySelector('button.ok');
+  ok_btn.onclick = function() {
+    dialog.close('ok');
+  };
+  ok_btn.focus();
+
+  dialog.onclose = function(e) {
+    var dialog = /** @type {HTMLDialogElement} */ (e.target);
+    if (dialog.returnValue == 'ok') {
+      var mid = ydn.crm.msg.Manager.addStatus('Deleting', '...');
+      ydn.crm.msg.Manager.setLink(mid, record.getViewLink(), record.getLabel());
+      record.deleteRecord().addCallbacks(function(x) {
+        ydn.crm.msg.Manager.setStatus(mid, record.getLabel(), ' deleted.');
+      }, function(e) {
+        ydn.crm.msg.Manager.updateStatus(mid, e.message, ydn.crm.msg.MessageType.ERROR);
+      }, this);
+    }
+  }
+
+
 };
 
 
