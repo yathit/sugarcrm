@@ -64,26 +64,26 @@
         </jstd-gen>
     </target>
     <target name="comp-crm-dev" description="compile JS">
-        <comp-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
+        <comp-sugar-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
                     output.fn="ydn.crm.sugarcrm-${sugarcrm-ver}.js"
                     entrypoint="ydn.crm.inj.App">
             <opt-arg>
                 <arg line='-f "--define=goog.DEBUG=true"'/>
             </opt-arg>
-        </comp-adved>
+        </comp-sugar-adved>
         <replace description="update sourceMappingURL reference"
                  file="${sugarcrm.dir}/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
                  token="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"
                  value="https://${src.bk}/jsc/ydn.crm.sugarcrm-edge.js.map"/>
     </target>
     <target name="comp-crm" description="compile JS">
-        <comp-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
+        <comp-sugar-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
                     output.fn="ydn.crm.sugarcrm-${sugarcrm-ver}.js"
                     entrypoint="ydn.crm.inj.App">
             <opt-arg>
                 <arg line='-f "--define=goog.DEBUG=true"'/>
             </opt-arg>
-        </comp-adved>
+        </comp-sugar-adved>
         <replace description="replace so with online repo path"
                  file="${sugarcrm-out.dir}/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
                  token="sourceMappingURL=ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"
@@ -155,62 +155,6 @@
                      value="http://localhost:8085/ydn/"/>
         </sequential>
     </macrodef>
-    <target name="copy-files" description="copy files">
-        <copy todir="${publish.dir}/image">
-            <fileset dir="image">
-                <include name="logo.png"/>
-                <include name="logo-16.svg"/>
-                <include name="logo-bw-19.png"/>
-                <include name="logo-19.png"/>
-                <include name="logo-38.png"/>
-                <include name="logo-bw-38.png"/>
-                <include name="logo-128.png"/>
-            </fileset>
-        </copy>
-        <copy todir="${publish.dir}/css">
-            <fileset dir="${sugarcrm.dir}/css">
-                <include name="base.css"/>
-                <include name="inj.css"/>
-                <include name="option.css"/>
-                <include name="popup.css"/>
-                <include name="setup.css"/>
-            </fileset>
-
-        </copy>
-        <copy todir="${publish.dir}">
-            <fileset dir="${sugarcrm.dir}">
-                <include name="setup.html"/>
-                <include name="popup.html"/>
-                <include name="option-page.html"/>
-                <include name="host-permission.html"/>
-                <include name="inj-template.html"/>
-            </fileset>
-            <fileset dir="${work.dir}/crm-ex">
-                <include name="event-page.html"/>
-            </fileset>
-        </copy>
-
-        <copy todir="${publish.dir}/jsc">
-            <fileset dir="${sugarcrm.dir}/jsc">
-                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
-                <include name="ydn.msg.js"/>
-            </fileset>
-            <fileset dir="${work.dir}/crm-ex/jsc">
-                <include name="ydn.crm-${crm-app-ver}.js"/>
-            </fileset>
-        </copy>
-
-        <copy todir="${publish.dir}/js" >
-            <fileset dir="js">
-                <exclude name="*-dev.js"/>
-            </fileset>
-        </copy>
-
-        <replaceregexp file="${publish.dir}/manifest.json"
-                       match='"version": ".+"'
-                       replace='"version": "${sugarcrm-ver}"'
-                />
-    </target>
 
     <target name="comp-msg-dev" description="compile JS">
 
@@ -234,7 +178,7 @@
         </exec>
     </target>
 
-    <macrodef name="comp-adved" description="compile JS">
+    <macrodef name="comp-sugar-adved" description="compile JS">
        <attribute name="input.fn" />
        <attribute name="output.fn" />
        <attribute name="entrypoint"/>
@@ -374,7 +318,7 @@
         <attribute name="name"/>
         <sequential>
             <exec executable="sass" failonerror="true" dir="${sugarcrm.dir}">
-                <arg line="--sourcemap=auto"/>
+                <arg line="--sourcemap=inline"/>
                 <arg line="--load-path=${scss.dir}"/>
                 <arg value="${scss.dir}/@{name}.scss"/>
                 <arg value="${css.dir}/@{name}.css"/>
@@ -420,7 +364,7 @@
     </target>
 
     <target name="build" description="build all distribution"
-            depends="scss,comp-crm,upload,copy-files">
+            depends="scss,comp-crm,upload">
 
     </target>
 </project>

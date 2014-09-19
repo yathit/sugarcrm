@@ -132,9 +132,10 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
       }).addCallbacks(function(x) {
         var info = /** @type {YdnApiUser} */ (x);
         this.login_info = info;
-        if (!info || !info.is_login) {
-          ydn.crm.msg.Manager.addStatus(info.email + ' login failed.');
-          this.logger.warning('login fail');
+        if (!info) {
+          ydn.crm.msg.Manager.addStatus('Login to Yathit server failed.');
+        } else if (!info.is_login) {
+          ydn.crm.msg.Manager.addStatus('Not login to Yathit server.');
         } else {
           ydn.crm.msg.Manager.addStatus(info.email + ' login.');
         }
