@@ -318,7 +318,6 @@
         <attribute name="name"/>
         <sequential>
             <exec executable="sass" failonerror="true" dir="${sugarcrm.dir}">
-                <arg line="--sourcemap=inline"/>
                 <arg line="--load-path=${scss.dir}"/>
                 <arg value="${scss.dir}/@{name}.scss"/>
                 <arg value="${css.dir}/@{name}.css"/>
