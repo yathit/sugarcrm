@@ -26,8 +26,9 @@ goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuButton');
 goog.require('goog.ui.MenuItem');
 goog.require('goog.ui.Toolbar');
-goog.require('ydn.crm.ui.SugarListPanel');
+goog.require('ydn.crm.gmail.Template');
 goog.require('ydn.crm.sugarcrm.ui.ContextSugarPanel');
+goog.require('ydn.crm.ui.SugarListPanel');
 goog.require('ydn.gmail.Utils');
 
 

@@ -34,13 +34,12 @@
 
 goog.provide('ydn.crm.sugarcrm.ui.ContextSugarPanel');
 goog.require('ydn.crm.sugarcrm.model.GDataSugar');
-goog.require('ydn.crm.ui.GmailCmdInjector');
-goog.require('ydn.crm.ui.gmail.ContactPanel');
-goog.require('ydn.crm.gmail.Template');
 goog.require('ydn.crm.sugarcrm.ui.GDataRecord');
 goog.require('ydn.crm.sugarcrm.ui.Header');
 goog.require('ydn.crm.sugarcrm.ui.NewRecord');
 goog.require('ydn.crm.sugarcrm.ui.SimpleSugarPanel');
+goog.require('ydn.crm.ui.GmailCmdInjector');
+goog.require('ydn.crm.ui.gmail.ContactPanel');
 
 
 

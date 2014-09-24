@@ -129,21 +129,21 @@ ydn.crm.inj.App.prototype.getRightBarTable = function(opt_log_detail) {
   // take the last column
   if (!main) {
     if (opt_log_detail) {
-      this.logger.warning('Could not find main view');
+      goog.log.warning(this.logger, 'Could not find main view');
     }
     return null;
   }
   if (opt_log_detail && main.childElementCount != 1) {
-    this.logger.warning('Probably our assumption about layout is wrong');
+    goog.log.warning(this.logger, 'Probably our assumption about layout is wrong');
   }
   var tr = main.querySelector('tr');
   if (opt_log_detail && tr.childElementCount != 3) {
-    this.logger.warning('Probably our assumption about layout is very wrong');
+    goog.log.warning(this.logger, 'Probably our assumption about layout is very wrong');
     return null;
   }
   var td_sidebar = tr.children[2];
   if (opt_log_detail && !td_sidebar.style.height) {
-    this.logger.warning('Probably our assumption about layout is wrong');
+    goog.log.warning(this.logger, 'Probably our assumption about layout is wrong');
   }
 
   return /** @type {HTMLTableElement} */ (td_sidebar.querySelector('table'));
@@ -159,11 +159,11 @@ ydn.crm.inj.App.prototype.handleTimerTick_ = function(e) {
   this.sniff_count_++;
   if (this.current_href_ != location.href) {
     // url already changed.
-    this.logger.warning('url already changed');
+    goog.log.warning(this.logger, 'url already changed');
     this.sniff_timer_.stop();
   }
   if (this.sniff_count_ > ydn.crm.inj.App.MAX_SNIFF_COUNT) {
-    this.logger.warning('sniff give up after ' + this.sniff_count_);
+    goog.log.warning(this.logger, 'sniff give up after ' + this.sniff_count_);
     this.sniff_timer_.stop();
   }
   var contact_table = this.getRightBarTable();
@@ -274,7 +274,7 @@ ydn.crm.inj.App.prototype.handleHistory = function(e) {
  */
 ydn.crm.inj.App.prototype.updateForCompose = function() {
   var val = this.sidebar.injectTemplateMenu();
-  this.logger.finest('inject compose ' + (val ? 'ok' : 'fail'));
+  goog.log.finer(this.logger, 'inject compose ' + (val ? 'ok' : 'fail'));
 };
 
 
@@ -283,7 +283,7 @@ ydn.crm.inj.App.prototype.updateForCompose = function() {
  * for changes in context contact.
  */
 ydn.crm.inj.App.prototype.updateForNewThread = function() {
-  this.logger.finest('updating sidebar');
+  goog.log.finest(this.logger, 'updating sidebar');
   this.sniff_count_ = 0;
   this.current_href_ = location.href;
   if (this.renderer) {
@@ -331,7 +331,7 @@ ydn.crm.inj.App.prototype.handleChannelMessage = function(e) {
  */
 ydn.crm.inj.App.prototype.resetUser_ = function() {
   this.user_setting.onReady().addCallbacks(function() {
-    this.logger.finest('initiating UI');
+    goog.log.finest(this.logger, 'initiating UI');
     this.renderer.setUserSetting(this.user_setting);
     if (this.user_setting.hasValidLogin()) {
       this.sidebar.updateHeader();
@@ -345,7 +345,7 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
       this.hud.updateHeader();
       this.sidebar.updateSugarPanels([]);
       this.hud.updateSugarPanels([]);
-      this.logger.warning('user not login');
+      goog.log.warning(this.logger, 'user not login');
       this.history.setEnabled(false);
     }
   }, function(e) {
@@ -374,7 +374,7 @@ ydn.crm.inj.App.prototype.updateSugarPanels_ = function() {
  * Init UI.
  */
 ydn.crm.inj.App.prototype.init = function() {
-  this.logger.finer('init ' + this);
+  goog.log.finer(this.logger, 'init ' + this);
 
   this.hud.render();
 
@@ -398,16 +398,6 @@ ydn.crm.inj.App.prototype.init = function() {
  */
 ydn.crm.inj.App.prototype.toString = function() {
   return 'inj.Main:' + ydn.crm.version;
-};
-
-
-/**
- * Initialize Google data after login.
- * @param {YdnApiUser} user_info
- * @protected
- */
-ydn.crm.inj.App.prototype.initData = function(user_info) {
-
 };
 
 

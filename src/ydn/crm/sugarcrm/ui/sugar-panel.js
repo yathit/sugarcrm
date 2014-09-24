@@ -34,7 +34,6 @@
 
 goog.provide('ydn.crm.sugarcrm.ui.SugarPanel');
 goog.require('ydn.crm.sugarcrm.model.GDataSugar');
-goog.require('ydn.crm.gmail.Template');
 goog.require('ydn.crm.sugarcrm.ui.Header');
 goog.require('ydn.crm.sugarcrm.ui.SimpleSugarPanel');
 
