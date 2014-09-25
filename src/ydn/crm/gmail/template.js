@@ -218,7 +218,7 @@ ydn.crm.gmail.Template.prototype.observerAndAttach = function(mutations) {
     if (last_td) {
       this.renderMenu(last_td);
     } else {
-      this.logger.finer('Not a compose form?');
+      goog.log.finer(this.logger, 'Not a compose form?');
     }
   }
 };
@@ -464,7 +464,7 @@ ydn.crm.gmail.Template.prototype.attach = function() {
   var form = document.querySelector('form[enctype="multipart/form-data"]');
 
   if (!form) {
-    this.logger.warning('compose FORM element not found.');
+    goog.log.warning(this.logger, 'compose FORM element not found.');
     return false;
   }
   if (ydn.crm.gmail.Template.DEBUG) {
@@ -477,7 +477,7 @@ ydn.crm.gmail.Template.prototype.attach = function() {
     this.renderMenu(last_td);
     return true;
   } else {
-    this.logger.warning('compose toolbar not found.');
+    goog.log.warning(this.logger, 'compose toolbar not found.');
     return false;
   }
 };
@@ -599,7 +599,7 @@ ydn.crm.gmail.Template.prototype.renderTemplate = function(template, opt_target)
       }
     }
   } else {
-    this.logger.warning('Login user info not available');
+    goog.log.warning(this.logger, 'Login user info not available');
   }
 
   if (ydn.crm.gmail.Template.DEBUG) {
