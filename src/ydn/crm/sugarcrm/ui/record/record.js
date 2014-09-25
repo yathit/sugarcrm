@@ -833,6 +833,8 @@ ydn.crm.sugarcrm.ui.record.Record.MenuName = {
   DELETE: 'delete',
   DETAILS: 'record-detail',
   DUPLICATE: 'duplicate',
+  EDIT: 'edit',
+  EXPORT_TO_GMAIL: 'export',
   NEW: 'new',
   UNSYNC: 'unsync',
   FIELDS_OPTION: 'field-option'
@@ -849,7 +851,8 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getRecordEditable = function() {
 
 
 /**
- * @return {Array.<ydn.crm.sugarcrm.ModuleName>}
+ * @return {Array.<ydn.crm.sugarcrm.ModuleName>} list of module names, that
+ * can be created from the panel.
  * @protected
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.getNewModuleList = function() {
@@ -858,11 +861,25 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getNewModuleList = function() {
 
 
 /**
- * @return {Array.<ydn.crm.sugarcrm.ModuleName>}
+ * @return {Array.<ydn.crm.sugarcrm.ModuleName>} list of module names that can
+ * be duplicated from the current record.
  * @protected
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.getDuplicateModuleList = function() {
   return [];
+};
+
+
+/**
+ * @return {boolean} return true if data can be exported to GData.
+ * @protected
+ */
+ydn.crm.sugarcrm.ui.record.Record.prototype.canExport = function() {
+  var record = this.getModel();
+  if (record && record.getModuleName() == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
+    return true;
+  }
+  return false;
 };
 
 
@@ -876,7 +893,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getMenuItems = function() {
   var items = [];
   if (this.getRecordEditable()) {
     items.push({
-      name: 'edit',
+      name: ydn.crm.sugarcrm.ui.record.Record.MenuName.EDIT,
       label: 'Edit'
     }, {
       name: ydn.crm.sugarcrm.ui.record.Record.MenuName.DELETE,
@@ -913,7 +930,15 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getMenuItems = function() {
       children: dup_items
     });
   }
-  if (new_list.length > 0 || dup_list.length > 0) {
+  var has_export = this.canExport();
+  if (has_export) {
+    items.push({
+      name: ydn.crm.sugarcrm.ui.record.Record.MenuName.EXPORT_TO_GMAIL,
+      label: 'To Gmail',
+      title: 'Export SugarCRM Contacts record to Gmail Contact and sync'
+    });
+  }
+  if (has_export || new_list.length > 0 || dup_list.length > 0) {
     items.push(null);
   }
 
