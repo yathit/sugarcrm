@@ -81,7 +81,7 @@ ydn.crm.gmail.Template.prototype.getModel = function() {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.gmail.Template.DEBUG = true;
+ydn.crm.gmail.Template.DEBUG = false;
 
 
 /**
@@ -532,7 +532,6 @@ ydn.crm.gmail.Template.prototype.attach = function() {
 ydn.crm.gmail.Template.prototype.renderMenu = function(attached_point) {
   var dom = new goog.dom.DomHelper(attached_point.ownerDocument);
   if (!this.root_) {
-    this.root_ = attached_point;
     var menu = new goog.ui.Menu(dom);
     var search_svg = ydn.crm.ui.createSvgIcon('drive-document');
     var b1 = new goog.ui.MenuButton(search_svg, menu, null, dom);
@@ -540,27 +539,22 @@ ydn.crm.gmail.Template.prototype.renderMenu = function(attached_point) {
     this.listTemplates(function(templates) {
       this.renderMenu_(menu, templates);
     }, this);
-    var span = dom.createDom('span');
-    span.className = ydn.crm.gmail.Template.CSS_CLASS;
-    attached_point.appendChild(span);
+    this.root_ = dom.createDom('span');
+    this.root_.className = ydn.crm.gmail.Template.CSS_CLASS;
+    attached_point.appendChild(this.root_);
     // attached_point.insertBefore(span, attached_point.firstElementChild);
-    b1.render(span);
+    b1.render(this.root_);
     goog.events.listen(menu, goog.ui.Component.EventType.ACTION, this.handleMenuAction, true, this);
     if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log('new template menu renderred', attached_point);
     }
-  } else if (this.root_.parentElement == attached_point) {
-    // nothing to do.
   } else {
     if (this.root_.parentElement) {
       this.root_.parentElement.removeChild(this.root_);
     }
-    var span = dom.createDom('span');
-    span.className = ydn.crm.gmail.Template.CSS_CLASS;
-    span.appendChild(this.root_);
-    attached_point.insertBefore(span, attached_point.firstElementChild);
+    attached_point.appendChild(this.root_);
     if (ydn.crm.gmail.Template.DEBUG) {
-      window.console.log('new template menu re-attached', attached_point);
+      window.console.log('new template menu reattached', attached_point);
     }
   }
 

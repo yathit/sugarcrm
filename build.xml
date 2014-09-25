@@ -365,7 +365,6 @@
         <sequential>
             <exec executable="sass" failonerror="true" dir="${sugarcrm.dir}">
                 <arg line="--watch"/>
-                <arg line="--sourcemap"/>
                 <arg line="--load-path=${scss.dir}"/>
                 <arg value="${scss.dir}/@{name}.scss:${css.dir}/@{name}.css"/>
             </exec>
