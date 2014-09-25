@@ -22,3 +22,17 @@
 .toolbar > * {
   margin-left: 4px;
 }
+
+.crm-template {
+  .goog-menu-button-outer-box {
+    border: 0;
+    background: none;
+  }
+  .goog-menu-button-inner-box {
+    border: 0;
+    background: none;
+  }
+  .goog-menu-button {
+    background: none;
+  }
+}

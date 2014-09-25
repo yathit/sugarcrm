@@ -482,7 +482,8 @@ ydn.crm.gmail.Template.prototype.renderMenu = function(last_td) {
   if (!this.root_) {
     this.root_ = last_td;
     var menu = new goog.ui.Menu(dom);
-    var b1 = new goog.ui.MenuButton('$t', menu, null, dom);
+    var search_svg = ydn.crm.ui.createSvgIcon('drive-document');
+    var b1 = new goog.ui.MenuButton(search_svg, menu, null, dom);
     b1.setTooltip('Insert SugarCRM template');
     this.listTemplates(function(templates) {
       this.renderMenu_(menu, templates);
