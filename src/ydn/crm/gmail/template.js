@@ -81,7 +81,7 @@ ydn.crm.gmail.Template.prototype.getModel = function() {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.gmail.Template.DEBUG = false;
+ydn.crm.gmail.Template.DEBUG = true;
 
 
 /**
@@ -365,6 +365,50 @@ ydn.crm.gmail.Template.prototype.extractRecipientEmail = function() {
 
 
 /**
+ * Apply template to gmail compose panel.
+ * @param {ydn.crm.gmail.Template.Info} info template data.
+ * @param {string} email to email.
+ * @param {boolean} used_target_contact
+ * @protected
+ */
+ydn.crm.gmail.Template.prototype.applyTemplate = function(info, email, used_target_contact) {
+  this.fillTemplate(info.id, email).addCallbacks(function(html) {
+    if (ydn.crm.gmail.Template.DEBUG) {
+      window.console.log(html);
+    }
+    var form = ydn.crm.gmail.Template.lastTD2Form(this.root_);
+    var subject_ele = ydn.crm.gmail.Template.form2SubjectElement(form);
+    var compose_ele = ydn.crm.gmail.Template.form2ComposeElement(form);
+
+    // fill email address if target contact is used
+    if (used_target_contact) {
+      var to_ele = ydn.crm.gmail.Template.form2ToElement(form);
+      to_ele.value = email;
+    }
+
+    // fill message subject
+    subject_ele.value = info.name;
+
+    // fill message content
+    var sel = window.getSelection();
+    var fg = document.createElement('span');
+    fg.innerHTML = html;
+    var REPLACE_SELECTION = false;
+    // Node.contains(Node)
+    if (REPLACE_SELECTION && compose_ele.contains(/** @type {Element} */ (sel.baseNode))) {
+      // this testing never trun true because, selection from the Gmail thread
+      // was clear when user click the menu. emmm...
+      sel.baseNode.parentElement.replaceChild(fg, sel.baseNode);
+    } else {
+      compose_ele.appendChild(fg);
+    }
+  }, function(e) {
+    window.console.error(e.stack || e);
+  }, this);
+};
+
+
+/**
  * Handle menu click.
  * @param {Event} e
  */
@@ -396,40 +440,7 @@ ydn.crm.gmail.Template.prototype.handleMenuAction = function(e) {
       }
     }
     if (email) {
-      this.fillTemplate(info.id, email).addCallbacks(function(html) {
-        if (ydn.crm.gmail.Template.DEBUG) {
-          window.console.log(html);
-        }
-        var form = ydn.crm.gmail.Template.lastTD2Form(this.root_);
-        var subject_ele = ydn.crm.gmail.Template.form2SubjectElement(form);
-        var compose_ele = ydn.crm.gmail.Template.form2ComposeElement(form);
-
-        // fill email address if target contact is used
-        if (used_target_contact) {
-          var to_ele = ydn.crm.gmail.Template.form2ToElement(form);
-          to_ele.value = email;
-        }
-
-        // fill message subject
-        subject_ele.value = info.name;
-
-        // fill message content
-        var sel = window.getSelection();
-        var fg = document.createElement('span');
-        fg.innerHTML = html;
-        var REPLACE_SELECTION = false;
-        // Node.contains(Node)
-        if (REPLACE_SELECTION && compose_ele.contains(/** @type {Element} */ (sel.baseNode))) {
-          // this testing never trun true because, selection from the Gmail thread
-          // was clear when user click the menu. emmm...
-          sel.baseNode.parentElement.replaceChild(fg, sel.baseNode);
-        } else {
-          compose_ele.appendChild(fg);
-        }
-
-      }, function(e) {
-        throw e;
-      }, this);
+      this.applyTemplate(info, email, used_target_contact);
     } else {
       window.alert('A valid recipient email address is required in To input field.');
     }
@@ -565,14 +576,26 @@ ydn.crm.gmail.Template.prototype.listTemplates = function(cb, scope) {
 ydn.crm.gmail.Template.prototype.renderTemplate = function(template, opt_target) {
   // see parsing in SugarCE-Full-6.5/modules/EmailTemplates/EmailTemplate.php/parse_template_bean
 
-  var user = this.getModel().getUser();
+  var sugar = this.getModel();
+  var is_v7 = sugar.isVersion7();
+  if (is_v7 === false) {
+    // before SugarCRM V7, template body_html is escaped. ?
+    template = goog.string.unescapeEntitiesWithDocument(template, document);
+  }
+
+  var user = sugar.getUser();
   if (user && user.hasRecord()) {
     var info = this.getModel().getModuleInfo(ydn.crm.sugarcrm.ModuleName.USERS);
     for (var name in info.module_fields) {
       var value = user.value(name);
       if (goog.isString(value)) {
-        template = template.replace(new RegExp('\\$user_' + name, 'g'), value);
-        // template = template.replace(new RegExp('\\$contact_user_' + name, 'g'), value);
+        if (is_v7) {
+          template = template.replace(new RegExp('{::future::Users::' + name + '::}', 'g'), value);
+        } else {
+          template = template.replace(new RegExp('\\$user_' + name, 'g'), value);
+          // somehow, this is too
+          template = template.replace(new RegExp('\\$contact_user_' + name, 'g'), value);
+        }
       }
     }
   } else {
@@ -588,9 +611,12 @@ ydn.crm.gmail.Template.prototype.renderTemplate = function(template, opt_target)
     for (var name in c_info.module_fields) {
       var value = opt_target.value(name);
       if (goog.isString(value)) {
-        template = template.replace(new RegExp('\\$contact_' + name, 'g'), value);
-        template = template.replace(new RegExp('{::future::Contacts::' + name + '::}', 'g'), value);
-        // template = template.replace(new RegExp('\\$contact_account_' + name, 'g'), value);
+        if (is_v7) {
+          template = template.replace(new RegExp('{::future::Contacts::' + name + '::}', 'g'), value);
+        } else {
+          template = template.replace(new RegExp('\\$contact_' + name, 'g'), value);
+          // template = template.replace(new RegExp('\\$contact_account_' + name, 'g'), value);
+        }
       }
     }
   }
@@ -599,7 +625,7 @@ ydn.crm.gmail.Template.prototype.renderTemplate = function(template, opt_target)
 
 
 /**
- * Render a template.
+ * Fill template with given contact data.
  * @param {string} id template id.
  * @param {(ydn.crm.sugarcrm.model.Record|string)=} opt_contact SugarCRM record (Contacts,
  * Leads, or Targets) module. If string, it is email of the record.
