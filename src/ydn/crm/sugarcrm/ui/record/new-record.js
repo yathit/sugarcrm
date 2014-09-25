@@ -86,7 +86,7 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.onContextChange_ = function(e) {
     if (ydn.crm.sugarcrm.ui.NewRecord.DEBUG) {
       var ms = e.record ? ' record' : ' ';
       if (e.gdata) {
-        ms += ' gdata'
+        ms += ' gdata';
       }
       window.console.info(this + ' hiding on context change since ' + ms + ' exists');
     }
