@@ -111,15 +111,11 @@ ydn.crm.gmail.Template.form2BodyTable = function(form) {
 /**
  * Given that FORM element, find last td element, which is candidate for
  * root element.
- * <pre>
- *   var form = document.querySelector('form[enctype="multipart/form-data"]');
- *   var last_td = ydn.crm.gmail.Template.form2TDLastChild(form);
- *   var email = ydn.crm.gmail.Template.extractRecipientEmail(last_td);
- * </pre>
  * @param {Element} form
  * @return {?HTMLTableColElement}
+ * @private
  */
-ydn.crm.gmail.Template.form2TDLastChild = function(form) {
+ydn.crm.gmail.Template.form2TDLastChild_ = function(form) {
   var body_table = ydn.crm.gmail.Template.form2BodyTable(form);
   if (!body_table) {
     if (ydn.crm.gmail.Template.DEBUG) {
@@ -139,6 +135,51 @@ ydn.crm.gmail.Template.form2TDLastChild = function(form) {
     return null;
   }
   return /** @type {HTMLTableColElement} */ (toolbar_table.querySelector('td:last-child'));
+};
+
+
+/**
+ * Given that FORM element, find element, which is candidate for
+ * root element.
+ * @param {Element} form
+ * @return {?Element}
+ * @private
+ */
+ydn.crm.gmail.Template.form2SubjectPanel_ = function(form) {
+  var subject_box = document.querySelector('input[name="subjectbox"]');
+  if (!subject_box) {
+    if (ydn.crm.gmail.Template.DEBUG) {
+      window.console.warn('Compose subject box not found.');
+    }
+    return null;
+  } else {
+    return subject_box.parentElement;
+  }
+};
+
+
+/**
+ * Given Gmail compose form element, find element for attaching menu.
+ * <pre>
+ *   var form = document.querySelector('form[enctype="multipart/form-data"]');
+ *   var el = ydn.crm.gmail.Template.form2AttachElement(form);
+ *   var email = ydn.crm.gmail.Template.extractRecipientEmail(el);
+ * </pre>
+ * @param {Element} form
+ * @return {?Element}
+ */
+ydn.crm.gmail.Template.form2AttachElement = function(form) {
+  return ydn.crm.gmail.Template.form2SubjectPanel_(form);
+};
+
+
+/**
+ * Navigate attach element to compose form.
+ * @param {Element} el
+ * @return {Element}
+ */
+ydn.crm.gmail.Template.attachElement2form = function(el) {
+  return goog.dom.getAncestorByTagNameAndClass(el, goog.dom.TagName.FORM);
 };
 
 
@@ -211,7 +252,7 @@ ydn.crm.gmail.Template.prototype.observerAndAttach = function(mutations) {
      */
     var el = /** @type {Element} */ (mutation.target);
 
-    var last_td = ydn.crm.gmail.Template.form2TDLastChild(el);
+    var last_td = ydn.crm.gmail.Template.form2AttachElement(el);
     if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log(el, last_td);
     }
@@ -330,7 +371,7 @@ ydn.crm.gmail.Template.extractRecipientEmail = function(last_td, opt_logger) {
     return null;
   }
   var logger = opt_logger || ydn.crm.shared.logger;
-  var form = ydn.crm.gmail.Template.lastTD2Form(last_td);
+  var form = ydn.crm.gmail.Template.attachElement2form(last_td);
   if (!form) {
     logger.warning('Gmail header FORM not found');
     return null;
@@ -376,7 +417,7 @@ ydn.crm.gmail.Template.prototype.applyTemplate = function(info, email, used_targ
     if (ydn.crm.gmail.Template.DEBUG) {
       window.console.log(html);
     }
-    var form = ydn.crm.gmail.Template.lastTD2Form(this.root_);
+    var form = ydn.crm.gmail.Template.attachElement2form(this.root_);
     var subject_ele = ydn.crm.gmail.Template.form2SubjectElement(form);
     var compose_ele = ydn.crm.gmail.Template.form2ComposeElement(form);
 
@@ -472,7 +513,7 @@ ydn.crm.gmail.Template.prototype.attach = function() {
     form.setAttribute('data-ydn-tag', tag);
     window.console.log('form tag with ' + tag);
   }
-  var last_td = ydn.crm.gmail.Template.form2TDLastChild(form);
+  var last_td = ydn.crm.gmail.Template.form2AttachElement(form);
   if (last_td) {
     this.renderMenu(last_td);
     return true;
@@ -485,13 +526,13 @@ ydn.crm.gmail.Template.prototype.attach = function() {
 
 /**
  * Render menu
- * @param {Element} last_td HTMLTableColElement
+ * @param {Element} attached_point Element to attach menu.
  * @protected
  */
-ydn.crm.gmail.Template.prototype.renderMenu = function(last_td) {
-  var dom = new goog.dom.DomHelper(last_td.ownerDocument);
+ydn.crm.gmail.Template.prototype.renderMenu = function(attached_point) {
+  var dom = new goog.dom.DomHelper(attached_point.ownerDocument);
   if (!this.root_) {
-    this.root_ = last_td;
+    this.root_ = attached_point;
     var menu = new goog.ui.Menu(dom);
     var search_svg = ydn.crm.ui.createSvgIcon('drive-document');
     var b1 = new goog.ui.MenuButton(search_svg, menu, null, dom);
@@ -501,13 +542,14 @@ ydn.crm.gmail.Template.prototype.renderMenu = function(last_td) {
     }, this);
     var span = dom.createDom('span');
     span.className = ydn.crm.gmail.Template.CSS_CLASS;
-    last_td.insertBefore(span, last_td.firstElementChild);
+    attached_point.appendChild(span);
+    // attached_point.insertBefore(span, attached_point.firstElementChild);
     b1.render(span);
     goog.events.listen(menu, goog.ui.Component.EventType.ACTION, this.handleMenuAction, true, this);
     if (ydn.crm.gmail.Template.DEBUG) {
-      window.console.log('new template menu renderred', last_td);
+      window.console.log('new template menu renderred', attached_point);
     }
-  } else if (this.root_.parentElement == last_td) {
+  } else if (this.root_.parentElement == attached_point) {
     // nothing to do.
   } else {
     if (this.root_.parentElement) {
@@ -516,9 +558,9 @@ ydn.crm.gmail.Template.prototype.renderMenu = function(last_td) {
     var span = dom.createDom('span');
     span.className = ydn.crm.gmail.Template.CSS_CLASS;
     span.appendChild(this.root_);
-    last_td.insertBefore(span, last_td.firstElementChild);
+    attached_point.insertBefore(span, attached_point.firstElementChild);
     if (ydn.crm.gmail.Template.DEBUG) {
-      window.console.log('new template menu re-attached', last_td);
+      window.console.log('new template menu re-attached', attached_point);
     }
   }
 
