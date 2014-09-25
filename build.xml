@@ -23,6 +23,7 @@
     <property name="outputwrapper.norun" value="(function(){%output%})();"/>
     <property name="outputwrapper.app" value="(function(){%output%})();app=runApp();"/>
     <property name="sugarcrm-out.dir" location="${sugarcrm.dir}/jsc"/>
+    <property name="sugarcrm-out.fn" value="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
     <property name="templ.dir" location="${sugarcrm.dir}/templ" />
     <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
     <property name="css.dir" location="${sugarcrm.dir}/css" />
@@ -78,18 +79,53 @@
     </target>
     <target name="comp-crm" description="compile JS">
         <comp-sugar-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
-                    output.fn="ydn.crm.sugarcrm-${sugarcrm-ver}.js"
+                    output.fn="${sugarcrm-out.fn}"
                     entrypoint="ydn.crm.inj.App">
             <opt-arg>
                 <arg line='-f "--define=goog.DEBUG=true"'/>
             </opt-arg>
         </comp-sugar-adved>
         <replace description="replace so with online repo path"
-                 file="${sugarcrm-out.dir}/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
-                 token="sourceMappingURL=ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"
+                 file="${sugarcrm-out.dir}/${sugarcrm-out.fn}"
+                 token="sourceMappingURL=${sugarcrm-out.fn}.map"
                  value="sourceMappingURL=https://${src.bk}.storage.googleapis.com/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
 
     </target>
+    <target name="comp-raw" description="generate concantated js file">
+        <compile-raw input.dir="${sugarcrm.dir}/src"
+                     input="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
+                     output.fn="${sugarcrm-out.dir}/${sugarcrm-out.fn}">
+            <options>
+                <arg line='-p "${ydn-base.dir}/src"'/>
+                <arg line='-p "${ydn.dir}/src"'/>
+                <arg line='-p "${work.dir}/ydn-api/js"'/>
+                <arg line='-p "${work.dir}/crm/src"'/>
+                <arg line='-p "${work.dir}/crm-ex/src"'/>
+                <arg line='-p "${work.dir}/sugarcrm/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
+                <arg line='-p "${db-work.dir}/gdata/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db-fulltext/src"'/>
+                <arg line='-p "${db-work.dir}/fullproof/js"'/>
+                <arg line='-p "${db-work.dir}/natural/js"'/>
+                <arg line='-f "--externs=${closure-compiler.dir}/contrib/externs/chrome_extensions.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/browser.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/atom.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/gapi.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/aws.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/sugarcrm.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/opensocial.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/svg.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn/externs/ydn-server.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/schema.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/websql.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/gdata/externs/gdata.js"'/>
+            </options>
+        </compile-raw>
+    </target>
+
     <target name="upload" description="upload files">
         <apply executable="python" relative="yes">
             <arg value="${gsutil}"/>
