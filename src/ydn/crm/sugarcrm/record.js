@@ -73,10 +73,20 @@ ydn.crm.sugarcrm.Record.prototype.key_path = 'id';
 
 
 /**
- * @return {boolean}
+ * @return {boolean} return record has valid record id.
+ * @see #hasData to check existence of data.
  */
 ydn.crm.sugarcrm.Record.prototype.hasRecord = function() {
   return goog.isDefAndNotNull(this.obj[this.key_path]);
+};
+
+
+/**
+ * @return {boolean} return record has any data.
+ * @see #hasRecord to check valid record.
+ */
+ydn.crm.sugarcrm.Record.prototype.hasData = function() {
+  return Object.keys(this.obj).length > 0;
 };
 
 

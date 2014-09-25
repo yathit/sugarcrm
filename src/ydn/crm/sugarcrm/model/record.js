@@ -351,10 +351,20 @@ ydn.crm.sugarcrm.model.Record.prototype.setRecord = function(record) {
 
 
 /**
- * @return {boolean}
+ * @return {boolean} return record has valid record id.
+ * @see #hasData to check existence of data.
  */
 ydn.crm.sugarcrm.model.Record.prototype.hasRecord = function() {
   return this.record.hasRecord();
+};
+
+
+/**
+ * @return {boolean} return record has valid record data.
+ * @see #hasRecord to check valid record.
+ */
+ydn.crm.sugarcrm.model.Record.prototype.hasData = function() {
+  return this.record.hasData();
 };
 
 

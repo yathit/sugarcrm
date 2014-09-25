@@ -648,7 +648,7 @@ ydn.crm.gmail.Template.prototype.renderTemplate = function(template, opt_target)
     window.console.log(template);
   }
 
-  if (opt_target && opt_target.hasRecord()) {
+  if (opt_target && opt_target.hasData()) {
     var c_info = opt_target.getModuleInfo();
     for (var name in c_info.module_fields) {
       var value = opt_target.value(name);
@@ -678,6 +678,9 @@ ydn.crm.gmail.Template.prototype.fillTemplate = function(id, opt_contact) {
    * @type {ydn.crm.sugarcrm.model.Sugar}
    */
   var sugar = this.getModel();
+  if (ydn.crm.gmail.Template.DEBUG) {
+    window.console.info('filling template ' + id + ' for ' + opt_contact);
+  }
   if (goog.isString(opt_contact)) {
     var email = opt_contact;
     var query = [{
@@ -701,8 +704,33 @@ ydn.crm.gmail.Template.prototype.fillTemplate = function(id, opt_contact) {
         record = new ydn.crm.sugarcrm.Record(sugar.getDomain(), ydn.crm.sugarcrm.ModuleName.LEADS,
             results[1].result[0]);
       }
-      var model = record ? new ydn.crm.sugarcrm.model.Record(sugar, record) : null;
-      return this.fillTemplate(id, model);
+      if (record) {
+        if (ydn.crm.gmail.Template.DEBUG) {
+          window.console.info(email + ' map to ' + record);
+        }
+        var model = new ydn.crm.sugarcrm.model.Record(sugar, record);
+        return this.fillTemplate(id, model);
+      } else {
+        // check in gmail contact
+        return ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT_BY_EMAIL, email)
+            .addCallback(function(arr) {
+              if (arr && !!arr[0]) {
+                var gdata = /** @type {!ContactEntry} */ (arr[0]);
+                var r_obj = /** @type {!SugarCrm.Record} */ ({});
+                ydn.crm.sugarcrm.gdata.gdataContact2Record(sugar.getDomain(),
+                    ydn.crm.sugarcrm.ModuleName.CONTACTS, gdata, r_obj);
+                var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(),
+                    ydn.crm.sugarcrm.ModuleName.CONTACTS, r_obj);
+                if (ydn.crm.gmail.Template.DEBUG) {
+                  window.console.info(email + ' has gdata contact ' + r.getLabel());
+                }
+                var m = new ydn.crm.sugarcrm.model.Record(sugar, r);
+                return this.fillTemplate(id, m);
+              } else {
+                return null;
+              }
+            }, this);
+      }
     }, this);
   }
   if (!goog.isString(id) || id.length < 16) {
