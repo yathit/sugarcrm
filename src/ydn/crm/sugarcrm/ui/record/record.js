@@ -254,7 +254,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
 
   var record_link = dialog.querySelector('a.record');
   record_link.href = record.getViewLink();
-  record_link.textContent =  record.getLabel();
+  record_link.textContent = record.getLabel();
   var type = dialog.querySelector('span.type');
   type.textContent = record.getModuleName();
   dialog.showModal(document.getElementById('sticky-hud-base'));
@@ -280,9 +280,19 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
         ydn.crm.msg.Manager.updateStatus(mid, e.message, ydn.crm.msg.MessageType.ERROR);
       }, this);
     }
-  }
+  };
+
+};
 
 
+/**
+ * Handle on exporting record to GData contact.
+ * @protected
+ * @param {goog.events.BrowserEvent} e
+ */
+ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
+  var record = this.getModel();
+  record.export2GData()
 };
 
 
@@ -297,6 +307,8 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) 
     this.setEditMode(!this.getEditMode());
   } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.DELETE) {
     this.handleRecordDelete(e);
+  } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.EXPORT_TO_GMAIL) {
+    this.onExport(e);
   } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.FIELDS_OPTION) {
     this.showFieldDisplayDialog();
   } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.DETAILS) {
