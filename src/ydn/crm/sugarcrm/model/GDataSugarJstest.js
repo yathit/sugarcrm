@@ -10,7 +10,7 @@ GDataSugarModelJsTest.prototype.setUp = function() {
 
 
 GDataSugarModelJsTest.prototype.test_context_data = function() {
-  ydn.crm.test.getMain().addMockRespond('gdata-list-contact-by-email', []);
+  ydn.crm.test.getMain().addMockRespond('gdata-list-contact', []);
   ydn.crm.test.getMain().addMockSugarRespond('query', [{result: []}]);
   var email = 'test@example.com';
   var fn = 'Test User';
@@ -22,7 +22,7 @@ GDataSugarModelJsTest.prototype.test_context_data = function() {
 
 
 GDataSugarModelJsTest.prototype.test_no_match = function() {
-  ydn.crm.test.getMain().addMockRespond('gdata-list-contact-by-email', []);
+  ydn.crm.test.getMain().addMockRespond('gdata-list-contact', []);
   ydn.crm.test.getMain().addMockSugarRespond('query', [{result: []}]);
   var sugar = ydn.crm.test.createGDataSugar();
   var email = 'test@example.com';
@@ -36,7 +36,7 @@ GDataSugarModelJsTest.prototype.test_no_match = function() {
 
 GDataSugarModelJsTest.prototype.test_gdata_match = function() {
   var gdata = ydn.crm.test.createGDataContact();
-  ydn.crm.test.getMain().addMockRespond('gdata-list-contact-by-email', [gdata]);
+  ydn.crm.test.getMain().addMockRespond('gdata-list-contact', [gdata]);
   ydn.crm.test.getMain().addMockSugarRespond('query', [{result: []}]);
   var sugar = ydn.crm.test.createGDataSugar();
   var email = 'test@example.com';
@@ -54,7 +54,7 @@ GDataSugarModelJsTest.prototype.test_synced = function() {
   var ex_id = new ydn.gdata.m8.ExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
       sugar.getDomain(), 'Contacts', record.id, NaN, 1379715000000);
   gdata.gContact$externalId = [ex_id.toExternalId()];
-  ydn.crm.test.getMain().addMockRespond('gdata-list-contact-by-email', [gdata]);
+  ydn.crm.test.getMain().addMockRespond('gdata-list-contact', [gdata]);
   ydn.crm.test.getMain().addMockSugarRespond('query', [{
     store: 'Contacts',
     result: [record]
@@ -69,7 +69,7 @@ GDataSugarModelJsTest.prototype.test_synced = function() {
 
 GDataSugarModelJsTest.prototype.test_record_match = function() {
   var record = ydn.crm.test.createContactSugarCrmRecord();
-  ydn.crm.test.getMain().addMockRespond('gdata-list-contact-by-email', []);
+  ydn.crm.test.getMain().addMockRespond('gdata-list-contact', []);
   ydn.crm.test.getMain().addMockSugarRespond('query', [{
     store: 'Contacts',
     result: [record]
