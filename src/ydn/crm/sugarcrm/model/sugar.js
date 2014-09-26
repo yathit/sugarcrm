@@ -624,4 +624,18 @@ if (goog.DEBUG) {
 }
 
 
+/**
+ * Export SugarCRM record to Gmail contact
+ * @param {!ydn.crm.sugarcrm.Record} record The SugarCRM record to export.
+ * @return {!goog.async.Deferred.<ydn.gdata.m8.ContactEntry>} ContactEntry return
+ * newly created contact entry.
+ */
+ydn.crm.sugarcrm.model.Sugar.prototype.export2GData = function(record) {
+  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.EXPORT_RECORD, record.toJSON())
+      .addCallback(function(entry) {
+        return new ydn.gdata.m8.ContactEntry(entry);
+      }, this);
+};
+
+
 

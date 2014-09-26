@@ -294,10 +294,21 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
   var record = this.getModel();
-  if (record.hasRecord()) {
-    record.export2GData();
-  } else {
+  if (false && record.hasRecord()) {
+    var mid = ydn.crm.msg.Manager.addStatus('exporting...');
+    record.export2GData().addCallbacks(function(x) {
+      var acui = ydn.crm.ui.getGoogleAcui();
+      ydn.crm.msg.Manager.setStatus(mid, 'Exported to ');
+      var href = x.getGmailViewLink(acui);
+      ydn.crm.msg.Manager.setLink(mid, href, 'View in Gmail contact',
+          'Gmail Contact ' + x.getSingleId());
 
+    }, function(e) {
+      ydn.crm.msg.Manager.setStatus(mid, 'Error exporting: ' + e.message || e);
+    }, this);
+  } else {
+    ydn.ui.MessageDialog.showModal('Export to Gmail Contact',
+        'SugarCRM Record does not exist');
   }
 };
 

@@ -282,16 +282,16 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.importToSugar = function(m_name) {
 /**
  * Export SugarCRM record to Gmail contact
  * @param {!ydn.crm.sugarcrm.Record} record The SugarCRM record to export.
- * @return {!goog.async.Deferred} ContactEntry
+ * @return {!goog.async.Deferred.<ydn.gdata.m8.ContactEntry>} ContactEntry return
+ * newly created contact entry.
  */
 ydn.crm.sugarcrm.model.GDataSugar.prototype.export2GData = function(record) {
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.EXPORT_RECORD, record.toJSON())
-      .addCallback(function(entry) {
-        var old_contact = this.contact_;
-        this.contact_ = new ydn.gdata.m8.ContactEntry(entry);
-        var ev = new ydn.crm.sugarcrm.model.events.GDataUpdatedEvent(old_contact, this.contact_, this);
-        this.dispatchEvent(ev);
-      }, this);
+  return goog.base(this, 'export2GData', record).addCallback(function(entry) {
+    var old_contact = this.contact_;
+    this.contact_ = entry;
+    var ev = new ydn.crm.sugarcrm.model.events.GDataUpdatedEvent(old_contact, this.contact_, this);
+    this.dispatchEvent(ev);
+  }, this);
 };
 
 
