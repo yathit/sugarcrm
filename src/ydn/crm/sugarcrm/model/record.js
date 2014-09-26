@@ -222,6 +222,8 @@ ydn.crm.sugarcrm.model.Record.prototype.findPairedGData = function() {
     var value = xid.getValue();
     return ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, {
       'externalId': value
+    }).addCallback(function(arr) {
+      return arr[0];
     });
   } else {
     return goog.async.Deferred.succeed(null);

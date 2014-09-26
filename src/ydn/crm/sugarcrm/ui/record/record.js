@@ -197,11 +197,17 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.createDom = function() {
 
   var record_type_badge = dom.createDom('span',
       ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_ICON);
+  var gmail_icon = dom.createDom('span', {
+    'title': 'View in Gmail contact',
+    'class': ydn.crm.ui.CSS_CLASS_BADGE
+  },
+  ydn.crm.ui.createSvgIcon('google', 'icons-small'));
   var save_btn = dom.createDom('span', 'svg-button ' + ydn.crm.ui.CSS_CLASS_OK_BUTTON,
       ydn.crm.ui.createSvgIcon('check-circle'));
   save_btn.setAttribute('title', 'Save');
 
   ele_header.appendChild(record_type_badge);
+  ele_header.appendChild(gmail_icon);
   ele_header.appendChild(title);
   ele_header.appendChild(save_btn);
   this.head_menu.render(ele_header);
@@ -738,7 +744,12 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordUpdated = function(e) {
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.postReset = function() {
   if (this.hasExportMenuItem()) {
-
+    var record = this.getModel();
+    record.findPairedGData().addCallback(function(gdata) {
+      if (gdata) {
+        this.head_menu.setEnableMenuItem(ydn.crm.sugarcrm.ui.record.Record.MenuName.EXPORT_TO_GMAIL, false);
+      }
+    }, this);
   }
 };
 
@@ -1067,12 +1078,11 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.refreshHeader = function() {
     ele_title.textContent = record.getLabel();
     ele_title.href = record.getViewLink();
     ele_title.target = record.getDomain();
-    this.head_menu.setEnableMenuItem('duplicate', false);
+    this.head_menu.setEnableMenuItem(ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE, true);
   } else {
     ele_title.innerHTML = '';
     ele_title.href = '';
-    this.head_menu.setEnableMenuItem('duplicate', false);
-    this.head_menu.setEnableMenuItem('duplicate', false);
+    this.head_menu.setEnableMenuItem(ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE, false);
   }
 };
 
