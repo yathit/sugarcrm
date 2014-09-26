@@ -3,7 +3,9 @@
  */
 
 // ydn.msg.Pipe.DEBUG = true;
-ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
+var status_bar = new ydn.crm.msg.StatusBar();
+status_bar.render(document.getElementById('message'));
+ydn.crm.msg.Manager.addConsumer(status_bar);
 ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
 var panel, sugar, model;
