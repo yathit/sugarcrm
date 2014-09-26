@@ -706,7 +706,7 @@ ydn.crm.gmail.Template.prototype.fillTemplate = function(id, opt_contact) {
         return this.fillTemplate(id, model);
       } else {
         // check in gmail contact
-        return ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT_BY_EMAIL, email)
+        return ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, {'email': email})
             .addCallback(function(arr) {
               if (arr && !!arr[0]) {
                 var gdata = /** @type {!ContactEntry} */ (arr[0]);

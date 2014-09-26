@@ -212,6 +212,24 @@ ydn.crm.sugarcrm.model.Record.prototype.save = function(obj) {
 
 
 /**
+ * Find GData contact entry that is paired with this record.
+ * @return {!goog.async.Deferred.<!Array.<ContactEntry>>}
+ */
+ydn.crm.sugarcrm.model.Record.prototype.findPairedGData = function() {
+  if (this.hasRecord()) {
+    var xid = new ydn.gdata.m8.ExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
+        this.getDomain(), this.getModuleName(), this.getId());
+    var value = xid.getValue();
+    return ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, {
+      'externalId': value
+    });
+  } else {
+    return goog.async.Deferred.succeed(null);
+  }
+};
+
+
+/**
  * Update record data.
  * @param {SugarCrm.Record} patch
  * @private

@@ -420,7 +420,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.processContact_ = function(cm) {
     var email = cm.getEmail();
 
     // query to gdata.
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT_BY_EMAIL, email).addCallback(function(x) {
+    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, {'email': email}).addCallback(function(x) {
       var results = /** @type {Array.<!ContactEntry>} */ (x);
       var contacts = results.map(function(x) {
         return new ydn.gdata.m8.ContactEntry(x);
@@ -482,7 +482,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.update_ = function(cm) {
 
     var context_gdata = this.context_.toContactEntry();
     // query to gdata.
-    ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT_BY_EMAIL, email).addCallbacks(function(x) {
+    ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, {'email': email}).addCallbacks(function(x) {
       var results = /** @type {Array.<!ContactEntry>} */ (x);
       var contacts = results.map(function(x) {
         return new ydn.gdata.m8.ContactEntry(x);
