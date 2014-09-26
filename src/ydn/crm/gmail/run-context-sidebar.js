@@ -18,6 +18,13 @@ for (var idx = 0; idx < 50; idx++) {
   ydn.crm.msg.Manager.addStatus('Testing ' + idx);
 }
 
+if (true) {
+  ydn.debug.log('ydn.crm.ui.gmail', 'finest');
+  ydn.debug.log('ydn.crm.sugarcrm.ui.record', 'finest');
+  ydn.crm.sugarcrm.ui.record.Record.DEBUG = true;
+  ydn.crm.ui.gmail.ContactPanel.DEBUG = true;
+  ydn.crm.sugarcrm.model.GDataSugar.DEBUG = true;
+}
 
 user.onReady().addCallbacks(function() {
   panel.render(document.querySelector('.inj'));
