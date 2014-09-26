@@ -297,7 +297,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
   if (record.hasRecord()) {
     var mid = ydn.crm.msg.Manager.addStatus('exporting...');
     record.export2GData().addCallbacks(function(x) {
-      var acui = ydn.crm.ui.getGoogleAcui();
+      var acui = ydn.gmail.Utils.getGoogleAcui();
       ydn.crm.msg.Manager.setStatus(mid, 'Exported to ');
       var href = x.getGmailViewLink(acui);
       ydn.crm.msg.Manager.setLink(mid, href, 'View in Gmail contact',

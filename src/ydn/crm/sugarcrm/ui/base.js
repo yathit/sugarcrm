@@ -252,26 +252,6 @@ ydn.crm.ui.createSvgIconBySymbol = function(fileName, name) {
 
 
 /**
- * Sniff account choosing user id (acui) for Google multiple login.
- * This is selector index on Google service login @link
- * https://accounts.google.com/ServiceLogin
- * Current URI path should be like https://mail.google.com/mail/u/2/, then
- * this return 2.
- * @return {number}
- */
-ydn.crm.ui.getGoogleAcui = function() {
-  // location sould be: https://mail.google.com/mail/u/0/
-  var m = window.location.pathname.match(/^\/mail\/[^\/]+\/(\d+)\//);
-  if (m) {
-    var d = parseInt(m[1], 10);
-    return isNaN(d) ? 0 : d;
-  } else {
-    return 0;
-  }
-};
-
-
-/**
  * Default module when no module name is defined in new record panel, etc.
  * @const
  * @type {ydn.crm.sugarcrm.ModuleName}
