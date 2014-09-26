@@ -734,6 +734,16 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordUpdated = function(e) {
 
 
 /**
+ * Do post-processing progressive enhancement after record is reset.
+ */
+ydn.crm.sugarcrm.ui.record.Record.prototype.postReset = function() {
+  if (this.hasExportMenuItem()) {
+
+  }
+};
+
+
+/**
  * Reset UI when record ID or user setting changed.
  * @protected
  */
@@ -754,7 +764,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.reset = function() {
     root.className = this.getCssClass() + ' ' + model.getModuleName() + ' ' +
         ydn.crm.ui.CSS_CLASS_EMPTY;
   }
-
+  this.postReset();
 };
 
 
@@ -900,11 +910,12 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getDuplicateModuleList = function() 
 
 
 /**
- * @return {boolean} return true if data can be exported to GData.
+ * @return {boolean} return true if data could be exported to GData.
  * @protected
  */
-ydn.crm.sugarcrm.ui.record.Record.prototype.canExport = function() {
+ydn.crm.sugarcrm.ui.record.Record.prototype.hasExportMenuItem = function() {
   var record = this.getModel();
+  // we don't export Leads record, because they are not pernment contact to user.
   if (record && record.getModuleName() == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
     return true;
   }
@@ -959,7 +970,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getMenuItems = function() {
       children: dup_items
     });
   }
-  var has_export = this.canExport();
+  var has_export = this.hasExportMenuItem();
   if (has_export) {
     items.push({
       name: ydn.crm.sugarcrm.ui.record.Record.MenuName.EXPORT_TO_GMAIL,
