@@ -37,7 +37,9 @@ goog.require('ydn.crm.sugarcrm.ui.record.HeaderRenderer');
 goog.require('ydn.crm.sugarcrm.ui.record.Secondary');
 goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.StatusBar');
+goog.require('ydn.ui');
 goog.require('ydn.ui.FlyoutMenu');
+goog.require('ydn.ui.MessageDialog');
 
 
 
@@ -250,7 +252,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.enterDocument = function() {
 ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
   var record = this.getModel();
 
-  var dialog = /** @type {HTMLDialogElement} */ (ydn.crm.ui.getTemplateElement('record-delete-dialog'));
+  var dialog = /** @type {HTMLDialogElement} */ (ydn.ui.getTemplateById('record-delete-dialog'));
 
   var record_link = dialog.querySelector('a.record');
   record_link.href = record.getViewLink();
@@ -292,7 +294,11 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
   var record = this.getModel();
-  record.export2GData()
+  if (record.hasRecord()) {
+    record.export2GData();
+  } else {
+
+  }
 };
 
 
@@ -368,7 +374,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.showFieldDisplayDialog = function() 
   if (m_name != model_m_name) {
     content.innerHTML = '';
     content.setAttribute('name', model_m_name);
-    var table = ydn.crm.ui.getTemplateElement('field-table').content;
+    var table = ydn.ui.getTemplateById('field-table').content;
     content.appendChild(table.cloneNode(true));
     var group_body = content.querySelector('tbody.group-body');
     var field_body = content.querySelector('tbody.field-body');
@@ -417,7 +423,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.showFieldDisplayDialog = function() 
  * @private
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.getFieldDisplayDialog_ = function() {
-  var dialog = document.querySelector('#field-display-dialog') || ydn.crm.ui.getTemplateElement('field-display-dialog');
+  var dialog = document.querySelector('#field-display-dialog') || ydn.ui.getTemplateById('field-display-dialog');
   return /** @type {HTMLDialogElement} */ (dialog);
 };
 
@@ -495,7 +501,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.setFieldDisplaySetting = function(is
 ydn.crm.sugarcrm.ui.record.Record.prototype.showDetailDialog = function() {
   var record = this.getModel();
   var data = record.cloneData();
-  var dialog = /** @type {HTMLDialogElement} */ (ydn.crm.ui.getTemplateElement('record-detail-dialog'));
+  var dialog = /** @type {HTMLDialogElement} */ (ydn.ui.getTemplateById('record-detail-dialog'));
   var cancel_btn = dialog.querySelector('button.ok');
   cancel_btn.onclick = function() {
     dialog.close('close');

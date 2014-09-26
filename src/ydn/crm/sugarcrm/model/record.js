@@ -430,3 +430,15 @@ if (goog.DEBUG) {
     return s;
   };
 }
+
+
+/**
+ * Export SugarCRM record to Gmail contact
+ * @return {!goog.async.Deferred}
+ */
+ydn.crm.sugarcrm.model.Record.prototype.export2GData = function() {
+  if (!this.hasRecord()) {
+    return goog.async.Deferred.fail(new Error('no Record to export.'));
+  }
+  return this.getParent().export2GData(this.record);
+};

@@ -378,18 +378,6 @@ ydn.crm.sugarcrm.model.GDataRecord.prototype.addToSugar = function() {
 
 
 /**
- * Export SugarCRM record to Gmail contact
- * @return {!goog.async.Deferred}
- */
-ydn.crm.sugarcrm.model.GDataRecord.prototype.export2GData = function() {
-  if (!this.hasRecord()) {
-    return goog.async.Deferred.fail('no Record to export.');
-  }
-  return this.getParent().export2GData(this.record);
-};
-
-
-/**
  * Link GData Contact to sugar record
  * @return {!goog.async.Deferred}
  */

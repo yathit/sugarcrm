@@ -252,49 +252,6 @@ ydn.crm.ui.createSvgIconBySymbol = function(fileName, name) {
 
 
 /**
- * @type {Document}
- * @private
- */
-ydn.crm.ui.template_doc_ = null;
-
-
-/**
- * Load template synchronously.
- * @return {Document}
- * @private
- */
-ydn.crm.ui.getTemplate_ = function() {
-  if (!ydn.crm.ui.template_doc_) {
-    var url = chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE);
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, false);
-    xhr.onload = function() {
-      var parser = new DOMParser();
-      ydn.crm.ui.template_doc_ = parser.parseFromString(xhr.responseText, 'text/html');
-      xhr = null;
-    };
-    xhr.send();
-  }
-  return ydn.crm.ui.template_doc_;
-};
-
-
-/**
- * @param {string} id
- * @return {Element}
- */
-ydn.crm.ui.getTemplateElement = function(id) {
-  var doc = ydn.crm.ui.getTemplate_();
-  var el = doc.documentElement.querySelector('#' + id);
-  if (!document.body.contains(el)) {
-    el = document.importNode(el, true);
-    document.body.appendChild(el);
-  }
-  return /** @type {Element} */ (el);
-};
-
-
-/**
  * Default module when no module name is defined in new record panel, etc.
  * @const
  * @type {ydn.crm.sugarcrm.ModuleName}

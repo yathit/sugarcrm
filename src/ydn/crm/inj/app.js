@@ -408,6 +408,8 @@ ydn.crm.inj.App.prototype.toString = function() {
 ydn.crm.inj.App.runInjApp = function() {
   ydn.crm.shared.init();
 
+  ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
+
   var app = new ydn.crm.inj.App();
 
   var tid2 = window.setTimeout(function() {
