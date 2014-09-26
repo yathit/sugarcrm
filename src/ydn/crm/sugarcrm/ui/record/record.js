@@ -294,7 +294,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
   var record = this.getModel();
-  if (false && record.hasRecord()) {
+  if (record.hasRecord()) {
     var mid = ydn.crm.msg.Manager.addStatus('exporting...');
     record.export2GData().addCallbacks(function(x) {
       var acui = ydn.crm.ui.getGoogleAcui();
