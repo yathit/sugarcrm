@@ -199,9 +199,8 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.createDom = function() {
       ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_ICON);
   var gmail_icon = dom.createDom('span', {
     'title': 'View in Gmail contact',
-    'class': ydn.crm.ui.CSS_CLASS_BADGE
-  },
-  ydn.crm.ui.createSvgIcon('google', 'icons-small'));
+    'class': ydn.crm.ui.CSS_CLASS_BADGE_ICON + ' google'
+  }, ydn.crm.ui.createSvgIcon('google', 'icons-small'));
   var save_btn = dom.createDom('span', 'svg-button ' + ydn.crm.ui.CSS_CLASS_OK_BUTTON,
       ydn.crm.ui.createSvgIcon('check-circle'));
   save_btn.setAttribute('title', 'Save');

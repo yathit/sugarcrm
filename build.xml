@@ -26,7 +26,6 @@
     <property name="sugarcrm-out.fn" value="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
     <property name="templ.dir" location="${sugarcrm.dir}/templ" />
     <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
-    <property name="css.dir" location="${sugarcrm.dir}/css" />
     <property name="gss.dir" location="${sugarcrm.dir}/gss" />
 
     <macrodef name="generate-wedget-template">
@@ -350,32 +349,7 @@
                      value="chrome-extension://__MSG_@@extension_id__/image/goog/"/>
         </sequential>
     </target>
-    <macrodef name="comp-sass">
-        <attribute name="name"/>
-        <sequential>
-            <exec executable="sass" failonerror="true" dir="${sugarcrm.dir}">
-                <arg line="--load-path=${scss.dir}"/>
-                <arg value="${scss.dir}/@{name}.scss"/>
-                <arg value="${css.dir}/@{name}.css"/>
-            </exec>
-        </sequential>
-    </macrodef>
-    <macrodef name="watch-sass">
-        <attribute name="name"/>
-        <sequential>
-            <exec executable="sass" failonerror="true" dir="${sugarcrm.dir}">
-                <arg line="--watch"/>
-                <arg line="--load-path=${scss.dir}"/>
-                <arg value="${scss.dir}/@{name}.scss:${css.dir}/@{name}.css"/>
-            </exec>
-        </sequential>
-    </macrodef>
-    <target name="scss" description="compile scss">
-        <comp-sass name="setup"/>
-        <comp-sass name="popup"/>
-        <comp-sass name="option"/>
-        <comp-sass name="inj"/>
-    </target>
+
     <target name="push-edge" description="upload edge js html files">
 
         <apply executable="python" relative="yes">

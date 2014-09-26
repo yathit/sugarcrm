@@ -1,21 +1,21 @@
 
-.gmail-contact-panel .badge {
+.google.badge-icon {
   fill: #0266C8;  // google svg icon
+}
+
+.badge-icon {
+  display: inline-block;
+  border: 1px #0266C8 solid;
+  border-radius: 3px;
+  padding: 3px;
+  height: 14px;
+  margin-right: 4px;
 }
 
 .gmail-contact-panel {
   .head {
     height: 20px;
     margin: 4px 0;
-  }
-
-  .badge {
-    display: inline-block;
-    border: 1px #0266C8 solid;
-    border-radius: 3px;
-    padding: 3px;
-    height: 14px;
-    margin-right: 4px;
   }
 }
 

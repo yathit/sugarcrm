@@ -85,7 +85,7 @@ ydn.crm.ui.gmail.ContactPanel.prototype.createDom = function() {
   var dom = this.getDomHelper();
 
   var google = ydn.crm.ui.createSvgIcon('google', 'icons-small');
-  var badge = dom.createDom('div', ydn.crm.ui.CSS_CLASS_BADGE, google);
+  var badge = dom.createDom('div', ydn.crm.ui.CSS_CLASS_BADGE_ICON + ' google', google);
   badge.setAttribute('title', 'Gmail contact');
 
   var title = dom.createDom('a', ydn.crm.ui.CSS_CLASS_TITLE + ' center');
