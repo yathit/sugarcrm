@@ -213,7 +213,7 @@ ydn.crm.sugarcrm.model.Record.prototype.save = function(obj) {
 
 /**
  * Find GData contact entry that is paired with this record.
- * @return {!goog.async.Deferred.<!Array.<ContactEntry>>}
+ * @return {!goog.async.Deferred.<ContactEntry?>}
  */
 ydn.crm.sugarcrm.model.Record.prototype.findPairedGData = function() {
   if (this.hasRecord()) {
@@ -223,7 +223,12 @@ ydn.crm.sugarcrm.model.Record.prototype.findPairedGData = function() {
     return ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, {
       'externalId': value
     }).addCallback(function(arr) {
-      return arr[0];
+      // NOTE: to change the result `null` must be return instead of `undefined`.
+      var val = arr[0] || null;
+      if (ydn.crm.sugarcrm.model.Record.DEBUG) {
+        window.console.log('findPairedGData:' + value, arr);
+      }
+      return val;
     });
   } else {
     return goog.async.Deferred.succeed(null);

@@ -16,6 +16,10 @@ var div = document.getElementById('activity-root');
 ydn.crm.shared.logger.info('record panel test');
 var results;
 
+if (false) {
+  ydn.crm.sugarcrm.model.Record.DEBUG = true;
+}
+
 var types = document.getElementById('record-type');
 for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
   var option = document.createElement('option');

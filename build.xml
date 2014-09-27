@@ -372,7 +372,7 @@
     </target>
 
     <target name="build" description="build all distribution"
-            depends="scss,comp-crm,upload">
+            depends="comp-crm,upload">
 
     </target>
 </project>

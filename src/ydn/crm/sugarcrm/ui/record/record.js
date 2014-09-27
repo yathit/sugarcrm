@@ -197,7 +197,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.createDom = function() {
 
   var record_type_badge = dom.createDom('span',
       ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_ICON);
-  var gmail_icon = dom.createDom('span', {
+  var gmail_icon = dom.createDom('a', {
     'title': 'View in Gmail contact',
     'class': ydn.crm.ui.CSS_CLASS_BADGE_ICON + ' google'
   }, ydn.crm.ui.createSvgIcon('google', 'icons-small'));
@@ -307,7 +307,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
       var href = x.getGmailViewLink(acui);
       ydn.crm.msg.Manager.setLink(mid, href, 'View in Gmail contact',
           'Gmail Contact ' + x.getSingleId());
-
+      this.postReset();
     }, function(e) {
       ydn.crm.msg.Manager.setStatus(mid, 'Error exporting: ' + e.message || e);
     }, this);
@@ -746,7 +746,14 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.postReset = function() {
     var record = this.getModel();
     record.findPairedGData().addCallback(function(gdata) {
       if (gdata) {
+        var ele_header = this.getHeaderElement();
+        var g_contact = ele_header.querySelector('a.google');
+        goog.style.setElementShown(g_contact, true);
+        var contact = new ydn.gdata.m8.ContactEntry(gdata);
+        g_contact.href = contact.getGmailViewLink(ydn.gmail.Utils.getGoogleAcui());
         this.head_menu.setEnableMenuItem(ydn.crm.sugarcrm.ui.record.Record.MenuName.EXPORT_TO_GMAIL, false);
+      } else {
+        this.head_menu.setEnableMenuItem(ydn.crm.sugarcrm.ui.record.Record.MenuName.EXPORT_TO_GMAIL, true);
       }
     }, this);
   }
@@ -1053,6 +1060,9 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.resetHeader = function() {
   var badge = ele_header.querySelector('span.' +
           ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_ICON);
   badge.textContent = ydn.crm.sugarcrm.toModuleSymbol(m_name);
+  var g_contact = ele_header.querySelector('a.google');
+  goog.style.setElementShown(g_contact, false);
+  g_contact.removeAttribute('href');
 
   this.head_menu.setItems(this.getMenuItems());
 
