@@ -351,16 +351,8 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) 
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.onSaveClick = function(e) {
   var patches = this.body_panel.collectData();
-  var mid = ydn.crm.msg.Manager.addStatus('Saving...');
   var model = this.getModel();
-  this.patch(patches).addCallbacks(function(x) {
-    ydn.crm.msg.Manager.setStatus(mid, model.getModuleName(), ' saved.');
-    var href = /** @type {string} */ (model.getViewLink());
-    ydn.crm.msg.Manager.setLink(mid, href, model.getLabel(), 'View in SugarCRM');
-    this.setDirty(false);
-  }, function(e) {
-    ydn.crm.msg.Manager.updateStatus(mid, e.message, ydn.crm.msg.MessageType.ERROR);
-  }, this);
+  this.patch(patches);
 };
 
 
@@ -587,7 +579,15 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.patch = function(patches) {
    * @type {ydn.crm.sugarcrm.model.Record}
    */
   var model = this.getModel();
-  return model.patch(patches);
+  var mid = ydn.crm.msg.Manager.addStatus('Updating...');
+  return model.patch(patches).addCallbacks(function(x) {
+    this.setDirty(false);
+    ydn.crm.msg.Manager.setStatus(mid, model.getModuleName(), ' updated.');
+    var href = /** @type {string} */ (model.getViewLink());
+    ydn.crm.msg.Manager.setLink(mid, href, model.getLabel(), 'View in SugarCRM');
+  }, function(e) {
+    ydn.crm.msg.Manager.updateStatus(mid, e.message, ydn.crm.msg.MessageType.ERROR);
+  }, this);
 };
 
 
