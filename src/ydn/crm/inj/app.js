@@ -287,7 +287,7 @@ ydn.crm.inj.App.prototype.updateForNewThread = function() {
   this.sniff_count_ = 0;
   this.current_href_ = location.href;
   if (this.renderer) {
-    this.sidebar.updateForNewGmailThread();
+    // this.sidebar.updateForNewGmailThread();
     this.renderer.attachToGmailRightBar(null);
   }
   this.sidebar.updateForNewContact(null); // let know, new context is coming.

@@ -42,6 +42,8 @@ ydn.crm.ui.GmailCmdInjector = function(sugar) {
    */
   this.cmd_pools_ = [];
 
+  this.observeEmailThreadToolbar_(document.body);
+
 };
 
 
@@ -60,19 +62,9 @@ ydn.crm.ui.GmailCmdInjector.prototype.logger =
 
 
 /**
- * Handle menu button click.
- * @param {Event} e
- */
-ydn.crm.ui.GmailCmdInjector.onMenuButtonClick = function(e) {
-  if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
-    window.console.info('adding menu');
-  }
-};
-
-
-/**
  * Inject email message header menu. The menu has option for archiving message.
  * This method is to be called when URL changes to gmail message thread.
+ * @deprecated this is no longer needed.
  */
 ydn.crm.ui.GmailCmdInjector.prototype.injectEmailMessageHeaderMenu = function() {
   // what about other language ?
@@ -80,10 +72,7 @@ ydn.crm.ui.GmailCmdInjector.prototype.injectEmailMessageHeaderMenu = function() 
   var n = reply_btns.length;
   if (n > 0) {
     for (var i = 0; i < n; i++) {
-      var span = document.createElement('span');
-      span.textContent = 'YDN';
-      span.onclick = ydn.crm.ui.GmailCmdInjector.onMenuButtonClick;
-      reply_btns[i].parentElement.insertBefore(span, reply_btns[i]);
+      this.injectMenuBeforeReplyButton_(reply_btns[i]);
     }
   } else {
     ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.LOG,
@@ -102,9 +91,9 @@ ydn.crm.ui.GmailCmdInjector.prototype.injectEmailMessageHeaderMenu = function() 
  * </pre>
  * @param {Element} el
  * @return {MutationObserver}
- * @deprecated use #injectEmailMessageHeaderMenu instead. No longer working.
+ * @private
  */
-ydn.crm.ui.GmailCmdInjector.prototype.observeEmailThreadToolbar = function(el) {
+ydn.crm.ui.GmailCmdInjector.prototype.observeEmailThreadToolbar_ = function(el) {
   var config = /** @type {MutationObserverInit} */ (/** @type {Object} */ ({
     'childList': false,
     'attributes': true,
@@ -153,7 +142,21 @@ ydn.crm.ui.GmailCmdInjector.prototype.popGmailCmd = function() {
 
 
 /**
- * Mutation observer.
+ * Inject menu before "Reply" button.
+ * @param {Element} btn
+ * @private
+ */
+ydn.crm.ui.GmailCmdInjector.prototype.injectMenuBeforeReplyButton_ = function(btn) {
+  var cmd = this.popGmailCmd();
+  var root = document.createElement('span');
+  root.setAttribute('data-sugarcrm', this.sugar.getDomain());
+  btn.parentElement.insertBefore(root, btn);
+  cmd.render(root);
+};
+
+
+/**
+ * Mutation observer to detect on opening email message in gmail message thread.
  * @param {Array.<MutationRecord>} mutations
  * @private
  */
@@ -168,7 +171,9 @@ ydn.crm.ui.GmailCmdInjector.prototype.observe_ = function(mutations) {
      * @type {Node}
      */
     var el = mutation.target;
-    var exp_value = 'Reply'; // what about other languages?
+    var exp_value = 'Show details'; // what about other languages?
+    // "Show details" is a drop-down button, beside 'to me' in the message
+    // header. This in only mutation observer find changes when a new message open.
     var value = el.getAttribute('data-tooltip');
     if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
       window.console.info('data-tooltip=' + value);
@@ -177,10 +182,31 @@ ydn.crm.ui.GmailCmdInjector.prototype.observe_ = function(mutations) {
       if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
         window.console.log(el);
       }
-      var cmd = this.popGmailCmd();
-      var root = document.createElement('span');
-      el.parentElement.insertBefore(root, el);
-      cmd.render(root);
+      // navigate to "Reply" button
+      var detail_table = goog.dom.getAncestorByTagNameAndClass(
+          el, goog.dom.TagName.TABLE);
+      if (!detail_table) {
+        if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
+          window.console.warn('Detail table not found.');
+        }
+        return;
+      }
+      var email_header_table = goog.dom.getAncestorByTagNameAndClass(
+          detail_table.parentElement, goog.dom.TagName.TABLE);
+      if (!email_header_table) {
+        if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
+          window.console.warn('Email header table not found.');
+        }
+        return;
+      }
+      var reply_btn = email_header_table.querySelector('div[data-tooltip="Reply"]');
+      if (!reply_btn) {
+        if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
+          window.console.warn('Reply button not found in email header.');
+        }
+        return;
+      }
+      this.injectMenuBeforeReplyButton_(reply_btn);
     }
   }
 };

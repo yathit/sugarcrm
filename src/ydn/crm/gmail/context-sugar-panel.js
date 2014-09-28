@@ -101,14 +101,6 @@ ydn.crm.sugarcrm.ui.ContextSugarPanel.prototype.createDom = function() {
 
 
 /**
- * Inject drop down menu on Gmail message.
- */
-ydn.crm.sugarcrm.ui.ContextSugarPanel.prototype.injectGmailHeaderMenu = function() {
-  this.gmail_cmd_inj_.injectEmailMessageHeaderMenu();
-};
-
-
-/**
  * @protected
  * @type {goog.debug.Logger}
  */

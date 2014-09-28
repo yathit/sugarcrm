@@ -109,6 +109,14 @@ ydn.crm.ui.GmailCmd.prototype.createDom = function() {
 
 
 /**
+ * @return {string} model domain name.
+ */
+ydn.crm.ui.GmailCmd.prototype.getSugarDomainName = function() {
+  return this.getModel().getDomain();
+};
+
+
+/**
  * Return Gmail link URL of given message id.
  * @param {string} gmail Google account id.
  * @param {string} id message id

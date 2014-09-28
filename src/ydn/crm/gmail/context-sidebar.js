@@ -245,24 +245,3 @@ ydn.crm.gmail.ContextSidebar.prototype.updateHeader = function() {
 };
 
 
-/**
- * Update for new gmail thread.
- */
-ydn.crm.gmail.ContextSidebar.prototype.updateForNewGmailThread = function() {
-  var cn = this.getChildCount();
-  for (var i = 0; i < cn; i++) {
-    var child = /** @type {ydn.crm.sugarcrm.ui.ContextSugarPanel} */ (this.getChildAt(i));
-    if (child instanceof ydn.crm.sugarcrm.ui.ContextSugarPanel) {
-      /**
-       * @type {ydn.crm.sugarcrm.model.GDataSugar}
-       */
-      var sugar = child.getModel();
-      if (sugar.isLogin()) {
-        if (ydn.crm.ui.SugarListPanel.DEBUG) {
-          window.console.log('updating for new gmail thread');
-        }
-        child.injectGmailHeaderMenu();
-      }
-    }
-  }
-};
