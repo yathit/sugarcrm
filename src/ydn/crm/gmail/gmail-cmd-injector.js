@@ -50,7 +50,7 @@ ydn.crm.ui.GmailCmdInjector = function(sugar) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.GmailCmdInjector.DEBUG = true;
+ydn.crm.ui.GmailCmdInjector.DEBUG = false;
 
 
 /**
