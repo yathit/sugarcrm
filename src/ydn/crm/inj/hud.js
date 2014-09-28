@@ -78,7 +78,7 @@ ydn.crm.inj.Hud.prototype.render = function() {
 
 
 /**
- * Initalize ui.
+ * Update header UI.
  */
 ydn.crm.inj.Hud.prototype.updateHeader = function() {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());

@@ -145,7 +145,7 @@ ydn.crm.ui.GmailCmd.prototype.setViewLink = function(obj) {
 /**
  * Set as archive link
  */
-ydn.crm.ui.GmailCmd.prototype.setArhiveLink = function() {
+ydn.crm.ui.GmailCmd.prototype.setArchiveLink = function() {
   this.a_archive_.setLink('Archive', ydn.crm.ui.GmailCmd.HREF_ARCHIVE);
   var ele = this.a_archive_.getElement();
   ele.setAttribute('title', 'Archive this email message to SugarCRM');
@@ -178,14 +178,14 @@ ydn.crm.ui.GmailCmd.prototype.updateLabel_ = function() {
         if (record) {
           me.setViewLink(record);
         } else {
-          me.setArhiveLink();
+          me.setArchiveLink();
         }
       }, function(e) {
-        me.setArhiveLink();
+        me.setArchiveLink();
         throw e;
       });
     } else if (info.html.length > 1) {
-      me.setArhiveLink();
+      me.setArchiveLink();
     } else {
       me.a_archive_.setError('gmail message cannot be parsed');
     }
@@ -205,13 +205,13 @@ ydn.crm.ui.GmailCmd.prototype.enterDocument = function() {
 
 
 /**
- * Gither email info for a given a starting element 'el'.
+ * Gather email info for a given a starting element 'el'.
  * <pre>
  * el = document.querySelector('div[data-tooltip=Reply]')
  * ydn.crm.ui.GmailCmd.gatherEmailInfo(el)
  * </pre>
  * @param {Element} el An element under message heading node.
- * @return {ydn.crm.EmailInfo?}
+ * @return {?ydn.crm.EmailInfo}
  */
 ydn.crm.ui.GmailCmd.gatherEmailInfo = function(el) {
   var from_addr = '';

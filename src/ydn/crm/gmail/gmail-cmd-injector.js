@@ -48,7 +48,7 @@ ydn.crm.ui.GmailCmdInjector = function(sugar) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.GmailCmdInjector.DEBUG = false;
+ydn.crm.ui.GmailCmdInjector.DEBUG = true;
 
 
 /**
@@ -60,13 +60,49 @@ ydn.crm.ui.GmailCmdInjector.prototype.logger =
 
 
 /**
+ * Handle menu button click.
+ * @param {Event} e
+ */
+ydn.crm.ui.GmailCmdInjector.onMenuButtonClick = function(e) {
+  if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
+    window.console.info('adding menu');
+  }
+};
+
+
+/**
+ * Inject email message header menu. The menu has option for archiving message.
+ * This method is to be called when URL changes to gmail message thread.
+ */
+ydn.crm.ui.GmailCmdInjector.prototype.injectEmailMessageHeaderMenu = function() {
+  // what about other language ?
+  var reply_btns = document.querySelectorAll('div[data-tooltip="Reply"]');
+  var n = reply_btns.length;
+  if (n > 0) {
+    for (var i = 0; i < n; i++) {
+      var span = document.createElement('span');
+      span.textContent = 'YDN';
+      span.onclick = ydn.crm.ui.GmailCmdInjector.onMenuButtonClick;
+      reply_btns[i].parentElement.insertBefore(span, reply_btns[i]);
+    }
+  } else {
+    ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.LOG,
+        {'error': 'Reply not found',
+          'html': document.body.outerHTML});
+  }
+};
+
+
+/**
  * Observe Gmail compose panel for template menu attachment.
+ * This need to be called only once.
  * <pre>
  *   var tm = new ydn.crm.ui.GmailCmdInjector(sugar);
  *   tm.observeEmailThreadToolbar(document.body);
  * </pre>
  * @param {Element} el
  * @return {MutationObserver}
+ * @deprecated use #injectEmailMessageHeaderMenu instead. No longer working.
  */
 ydn.crm.ui.GmailCmdInjector.prototype.observeEmailThreadToolbar = function(el) {
   var config = /** @type {MutationObserverInit} */ (/** @type {Object} */ ({
@@ -79,7 +115,11 @@ ydn.crm.ui.GmailCmdInjector.prototype.observeEmailThreadToolbar = function(el) {
     'attributeFilter': ['data-tooltip']
   }));
 
-  var observer = new MutationObserver(this.observe.bind(this));
+  var observer = new MutationObserver(this.observe_.bind(this));
+
+  if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
+    window.console.log('observing data-tooltip changes in ', el);
+  }
 
   observer.observe(el, config);
   return observer;
@@ -115,16 +155,25 @@ ydn.crm.ui.GmailCmdInjector.prototype.popGmailCmd = function() {
 /**
  * Mutation observer.
  * @param {Array.<MutationRecord>} mutations
+ * @private
  */
-ydn.crm.ui.GmailCmdInjector.prototype.observe = function(mutations) {
-  for (var i = 0; i < mutations.length; i++) {
+ydn.crm.ui.GmailCmdInjector.prototype.observe_ = function(mutations) {
+  var n = mutations.length;
+  if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
+    window.console.log('checking ' + n + ' mutations');
+  }
+  for (var i = 0; i < n; i++) {
     var mutation = mutations[i];
     /**
      * @type {Node}
      */
     var el = mutation.target;
-    var exp_value = 'Reply';
-    if (el.getAttribute('data-tooltip') == exp_value) {
+    var exp_value = 'Reply'; // what about other languages?
+    var value = el.getAttribute('data-tooltip');
+    if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
+      window.console.info('data-tooltip=' + value);
+    }
+    if (value == exp_value) {
       if (ydn.crm.ui.GmailCmdInjector.DEBUG) {
         window.console.log(el);
       }

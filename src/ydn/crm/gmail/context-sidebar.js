@@ -139,17 +139,6 @@ ydn.crm.gmail.ContextSidebar.prototype.enterDocument = function() {
 
 
 /**
- * @return {ydn.crm.sugarcrm.ui.ContextSugarPanel}
- * @private
- */
-ydn.crm.gmail.ContextSidebar.prototype.getSugarPanel_ = function() {
-  var sugar = this.getChildAt(1);
-  goog.asserts.assertInstanceof(sugar, ydn.crm.sugarcrm.ui.ContextSugarPanel);
-  return /** @type {ydn.crm.sugarcrm.ui.ContextSugarPanel} */ (sugar);
-};
-
-
-/**
  * @param {goog.events.Event} e
  * @protected
  */
@@ -253,4 +242,27 @@ ydn.crm.gmail.ContextSidebar.prototype.updateForNewContact = function(cm) {
 ydn.crm.gmail.ContextSidebar.prototype.updateHeader = function() {
   goog.base(this, 'updateHeader');
 
+};
+
+
+/**
+ * Update for new gmail thread.
+ */
+ydn.crm.gmail.ContextSidebar.prototype.updateForNewGmailThread = function() {
+  var cn = this.getChildCount();
+  for (var i = 0; i < cn; i++) {
+    var child = /** @type {ydn.crm.sugarcrm.ui.ContextSugarPanel} */ (this.getChildAt(i));
+    if (child instanceof ydn.crm.sugarcrm.ui.ContextSugarPanel) {
+      /**
+       * @type {ydn.crm.sugarcrm.model.GDataSugar}
+       */
+      var sugar = child.getModel();
+      if (sugar.isLogin()) {
+        if (ydn.crm.ui.SugarListPanel.DEBUG) {
+          window.console.log('updating for new gmail thread');
+        }
+        child.injectGmailHeaderMenu();
+      }
+    }
+  }
 };

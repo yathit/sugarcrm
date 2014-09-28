@@ -95,7 +95,6 @@ ydn.crm.ui.SidebarPanel.prototype.enterDocument = function() {
 };
 
 
-
 /**
  * @inheritDoc
  */
@@ -137,4 +136,5 @@ ydn.crm.ui.SidebarPanel.prototype.updateHeader = function() {
   }
 
 };
+
 

@@ -59,7 +59,6 @@ ydn.crm.sugarcrm.ui.ContextSugarPanel = function(model, dom) {
    * @private
    */
   this.gmail_cmd_inj_ = new ydn.crm.ui.GmailCmdInjector(model);
-  this.gmail_cmd_inj_.observeEmailThreadToolbar(document.body);
 };
 goog.inherits(ydn.crm.sugarcrm.ui.ContextSugarPanel, ydn.crm.sugarcrm.ui.SimpleSugarPanel);
 
@@ -98,6 +97,14 @@ ydn.crm.sugarcrm.ui.ContextSugarPanel.prototype.createDom = function() {
   var child = new ydn.crm.sugarcrm.ui.GDataRecord(m, dom);
   this.addChild(child, true);
 
+};
+
+
+/**
+ * Inject drop down menu on Gmail message.
+ */
+ydn.crm.sugarcrm.ui.ContextSugarPanel.prototype.injectGmailHeaderMenu = function() {
+  this.gmail_cmd_inj_.injectEmailMessageHeaderMenu();
 };
 
 

@@ -34,6 +34,7 @@ goog.require('goog.ui.Tab');
 goog.require('goog.ui.TabBar');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
+goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.inj.InlineRenderer');
@@ -41,7 +42,6 @@ goog.require('ydn.crm.inj.StickyRenderer');
 goog.require('ydn.crm.inj.WidgetRenderer');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
-goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -287,6 +287,7 @@ ydn.crm.inj.App.prototype.updateForNewThread = function() {
   this.sniff_count_ = 0;
   this.current_href_ = location.href;
   if (this.renderer) {
+    this.sidebar.updateForNewGmailThread();
     this.renderer.attachToGmailRightBar(null);
   }
   this.sidebar.updateForNewContact(null); // let know, new context is coming.
