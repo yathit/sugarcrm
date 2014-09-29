@@ -176,6 +176,16 @@ ydn.crm.ui.UserSetting.prototype.getLoginEmail = function() {
 
 
 /**
+ * Get login id to Yathit server. Call this method only after login.
+ * @return {string} login id.
+ */
+ydn.crm.ui.UserSetting.prototype.getLoginId = function() {
+  goog.asserts.assert(this.login_info, 'UserSetting not ready');
+  return this.login_info.Id.$t;
+};
+
+
+/**
  * In gmail content script, this return gmail address.
  * @return {?string} gmail address.
  */

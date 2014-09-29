@@ -49,3 +49,25 @@
   }
 
 }
+
+.tracking-button {
+  svg {
+    fill:  #e8e8e8;
+  }
+}
+
+.tracking-button.tracked {
+  svg {
+    fill:  #00ff00;
+  }
+}
+
+.tracking-button:hover {
+  background-color: #f0f0f0; // override svg-button hover state
+}
+
+.tracking-button:hover:not(.tracked) {
+  svg {
+    fill: #dddddd;
+  }
+}
