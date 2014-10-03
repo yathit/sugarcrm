@@ -242,6 +242,7 @@
                 <arg line='-p "${db-work.dir}/ydn-db-fulltext/src"'/>
                 <arg line='-p "${db-work.dir}/fullproof/js"'/>
                 <arg line='-p "${db-work.dir}/natural/js"'/>
+                <arg line='-p "${work.dir}/google-closure-grid/src/pear"'/>
                 <arg line='-f "--externs=${db-work.dir}/fullproof/externs/unicode.js"'/>
                 <arg line='-f "--flagfile=${flagfile}"'/>
                 <arg line='-f "--define=goog.json.USE_NATIVE_JSON=true"'/>
@@ -341,6 +342,9 @@
                     <file name="menuseparator.css"/>
                     <file name="submenu.css"/>
                     <file name="toolbar.css"/>
+                </filelist>
+                <filelist dir="${work.dir}/google-closure-grid/src/css">
+                    <file name="grid.css"/>
                 </filelist>
             </concat>
             <replace description="fix relative path to work in extension"
