@@ -264,6 +264,7 @@
                 <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/schema.js"'/>
                 <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/websql.js"'/>
                 <arg line='-f "--externs=${sugarcrm.dir}/externs/misc.js"'/>
+                <arg line='-f "--externs=${work.dir}/crm/externs/crm.js"'/>
                 <arg line='-f "--externs=${db-work.dir}/gdata/externs/gdata.js"'/>
                 <arg line='-f "--output_wrapper=${outputwrapper.norun}"'/>
             </options>
