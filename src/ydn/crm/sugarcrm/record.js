@@ -17,6 +17,7 @@
 /**
  * @fileoverview SugarCRM Record wrapper object.
  *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 

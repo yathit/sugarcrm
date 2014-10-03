@@ -16,6 +16,8 @@
 
 /**
  * @fileoverview SugarCRM database schema generator base on user setting.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 

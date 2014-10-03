@@ -1,0 +1,24 @@
+.tracking-panel {
+  .stats {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+
+    .slot {
+      text-align: center;
+      padding: 4px 8px;
+
+      .value-holder {
+        font-size: 200%;
+        font-weight: 400;
+      }
+
+      .percent {
+        padding-left: 4px;
+      }
+    }
+  }
+}
