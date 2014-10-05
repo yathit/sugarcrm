@@ -7,6 +7,7 @@ goog.provide('ydn.crm.ui');
 goog.provide('ydn.crm.ui.ContextPanelPosition');
 goog.require('goog.soy.Renderer');
 goog.require('ydn.crm.base');
+goog.require('ydn.crm.sugarcrm');
 
 
 /**

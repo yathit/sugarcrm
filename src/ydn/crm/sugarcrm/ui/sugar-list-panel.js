@@ -134,7 +134,7 @@ ydn.crm.ui.SugarListPanel.prototype.enterDocument = function() {
 
   var a_grant = this.getHeaderElement().querySelector('a.' +
       ydn.crm.ui.SugarListPanel.CSS_CLASS_SUGAR_SETUP_LINK);
-  handler.listen(a_grant, 'click', ydn.crm.base.openPageAsDialog, true);
+  handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
 };
 
 

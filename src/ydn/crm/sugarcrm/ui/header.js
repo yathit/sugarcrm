@@ -184,7 +184,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.enterDocument = function() {
   handler.listen(kh, goog.events.KeyHandler.EventType.KEY, this.handleLogin);
   if (ydn.crm.sugarcrm.ui.Header.USE_POPUP) {
     var a_grant = grant.querySelector('a');
-    handler.listen(a_grant, 'click', ydn.crm.base.openPageAsDialog, true);
+    handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
   }
 
   handler.listen(this.getModel(), ydn.crm.sugarcrm.model.Sugar.Event.HOST_ACCESS_GRANT,

@@ -91,7 +91,7 @@ ydn.crm.ui.SidebarPanel.prototype.enterDocument = function() {
 
   var a_grant = this.getHeaderElement().querySelector('div.' +
       ydn.crm.ui.SidebarPanel.CSS_CLASS_SETUP + ' a');
-  handler.listen(a_grant, 'click', ydn.crm.base.openPageAsDialog, true);
+  handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
 };
 
 
