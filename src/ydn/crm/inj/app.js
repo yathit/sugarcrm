@@ -55,6 +55,8 @@ goog.require('ydn.msg.Pipe');
  */
 ydn.crm.inj.App = function() {
 
+  ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
+
   // connection channel with background page.
   ydn.msg.initPipe(ydn.msg.ChannelName.GMAIL);
 
@@ -408,8 +410,6 @@ ydn.crm.inj.App.prototype.toString = function() {
  */
 ydn.crm.inj.App.runInjApp = function() {
   ydn.crm.shared.init();
-
-  ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 
   var app = new ydn.crm.inj.App();
 

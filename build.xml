@@ -59,6 +59,8 @@
                 <arg line='--path "${work.dir}/gdata/src"'/>
                 <arg line='--path "${work.dir}/crm/src"'/>
                 <arg line='--path "${work.dir}/crm-ex/src"'/>
+                <arg line='--path "${work.dir}/crm-tracking/src"'/>
+                <arg line='--path "${work.dir}/sugarcrm-backend/src"'/>
                 <arg line='--path "${sugarcrm.dir}/src"'/>
             </deps-options>
         </jstd-gen>
@@ -234,14 +236,16 @@
                 <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
                 <arg line='-p "${db-work.dir}/ydn/src"'/>
                 <arg line='-p "${db-work.dir}/ydn-api/js"'/>
-                <arg line='-p "${work.dir}/crm-ex/src"'/>
                 <arg line='-p "${db-work.dir}/sync-app/js"'/>
-                <arg line='-p "${work.dir}/crm/src"'/>
-                <arg line='-p "${work.dir}/sugarcrm/src"'/>
                 <arg line='-p "${db-work.dir}/gdata/src"'/>
                 <arg line='-p "${db-work.dir}/ydn-db-fulltext/src"'/>
                 <arg line='-p "${db-work.dir}/fullproof/js"'/>
                 <arg line='-p "${db-work.dir}/natural/js"'/>
+                <arg line='-p "${work.dir}/crm/src"'/>
+                <arg line='-p "${work.dir}/crm-ex/src"'/>
+                <arg line='-p "${work.dir}/crm-tracking/src"'/>
+                <arg line='-p "${work.dir}/sugarcrm/src"'/>
+                <arg line='-p "${work.dir}/sugarcrm-backend/src"'/>
                 <arg line='-p "${work.dir}/google-closure-grid/src/pear"'/>
                 <arg line='-f "--externs=${db-work.dir}/fullproof/externs/unicode.js"'/>
                 <arg line='-f "--flagfile=${flagfile}"'/>
