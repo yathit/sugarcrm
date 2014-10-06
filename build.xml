@@ -87,7 +87,7 @@
             </opt-arg>
         </comp-sugar-adved>
         <replace description="replace so with online repo path"
-                 file="${sugarcrm-out.dir}/${sugarcrm-out.fn}"
+                 file="${crmininbox.dir}/${sugarcrm-out.fn}"
                  token="sourceMappingURL=${sugarcrm-out.fn}.map"
                  value="sourceMappingURL=https://${src.bk}.storage.googleapis.com/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
 
@@ -95,7 +95,7 @@
     <target name="comp-raw" description="generate concantated js file">
         <compile-raw input.dir="${sugarcrm.dir}/src"
                      input="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
-                     output.fn="${sugarcrm-out.dir}/${sugarcrm-out.fn}">
+                     output.fn="${crmininbox.dir}/${sugarcrm-out.fn}">
             <options>
                 <arg line='-p "${ydn-base.dir}/src"'/>
                 <arg line='-p "${ydn.dir}/src"'/>
@@ -162,11 +162,11 @@
             <closure-compile compilationlevel="@{comp-level}"
                              input="@{input.fn}"
                              input.dir="${sugarcrm.dir}/src"
-                             output.fn="${sugarcrm-out.dir}/@{output.fn}">
+                             output.fn="${crmininbox.dir}/@{output.fn}">
                 <options>
                     <opt-arg/>
                     <arg line='-f "--source_map_format=V3"'/>
-                    <arg line='-f "--create_source_map=${sugarcrm-out.dir}/@{output.fn}.map"'/>
+                    <arg line='-f "--create_source_map=${crmininbox.dir}/@{output.fn}.map"'/>
                     <arg line='-p "${work.dir}/ydn-base/src"'/>
                     <arg line='-p "${work.dir}/ydn/src"'/>
                     <arg line='-f "--flagfile=${flagfile}"'/>
@@ -179,15 +179,15 @@
                     <arg line='-f "--output_wrapper=@{wrapper}"'/>
                 </options>
             </closure-compile>
-            <concat destfile="${sugarcrm-out.dir}/${out.fn}" append="true">
+            <concat destfile="${crmininbox.dir}/${out.fn}" append="true">
                 //# sourceMappingURL=@{output.fn}.map
             </concat>
             <replace description="replace so with online repo path"
-                     file="${sugarcrm-out.dir}/@{output.fn}.map"
+                     file="${crmininbox.dir}/@{output.fn}.map"
                      token="${work.dir}/closure-library/"
                      value="http://localhost/closure-library/"/>
             <replace description="replace so with online repo path"
-                     file="${sugarcrm-out.dir}/@{output.fn}.map"
+                     file="${crmininbox.dir}/@{output.fn}.map"
                      token="${work.dir}/ydn/"
                      value="http://localhost:8085/ydn/"/>
         </sequential>
@@ -221,16 +221,16 @@
        <attribute name="entrypoint"/>
        <element name="opt-arg" optional="true"/>
        <sequential>
-           <mkdir dir="${sugarcrm-out.dir}"/>
+           <mkdir dir="${crmininbox.dir}"/>
            <closure-compile compilationlevel="ADVANCED_OPTIMIZATIONS"
                          input="@{input.fn}"
                          input.dir="${sugarcrm.dir}/src"
-                         output.fn="${sugarcrm-out.dir}/@{output.fn}">
+                         output.fn="${crmininbox.dir}/@{output.fn}">
             <options>
                 <opt-arg/>
                 <arg line='-i "${db-work.dir}/ydn/src/msg/exports.js"'/>
                 <arg line='-f "--source_map_format=V3"'/>
-                <arg line='-f "--create_source_map=${sugarcrm-out.dir}/@{output.fn}.map"'/>
+                <arg line='-f "--create_source_map=${crmininbox.dir}/@{output.fn}.map"'/>
                 <arg line='-p "${db-work.dir}/ydn-base/src"'/>
                 <arg line='-p "${db-work.dir}/ydn-db/src"'/>
                 <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
@@ -273,11 +273,11 @@
                 <arg line='-f "--output_wrapper=${outputwrapper.norun}"'/>
             </options>
         </closure-compile>
-        <concat destfile="${sugarcrm-out.dir}/@{output.fn}" append="true">
+        <concat destfile="${crmininbox.dir}/@{output.fn}" append="true">
             //# sourceMappingURL=@{output.fn}.map
         </concat>
         <replace description="replace so with online repo path"
-                 file="${sugarcrm-out.dir}/@{output.fn}.map"
+                 file="${crmininbox.dir}/@{output.fn}.map"
                  token="${work.dir}/"
                  value="http://localhost/"/>
        </sequential>
