@@ -253,8 +253,7 @@ ydn.crm.ui.createSvgIconBySymbol = function(fileName, name) {
 
 
 /**
- * Default module when no module name is defined in new record panel, etc.
- * @const
- * @type {ydn.crm.sugarcrm.ModuleName}
+ * @define {ydn.crm.sugarcrm.ModuleName} Default module when no module name
+ * is defined in new record panel, etc.
  */
-ydn.crm.ui.DEFAULT_MODULE = ydn.crm.sugarcrm.ModuleName.LEADS;
+ydn.crm.ui.DEFAULT_MODULE = 'Leads';
