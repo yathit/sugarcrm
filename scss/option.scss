@@ -88,6 +88,8 @@ footer {
   background-color: lightgrey;
   position: fixed;
   bottom: 0;
+  padding: 8px;
+  width: 100%;
 }
 
 .audit-log .message {
@@ -99,7 +101,7 @@ footer {
   margin-top: 2.6em;
 
   section {
-    padding: 8px;
+    padding: 2px 4px;
   }
 }
 
