@@ -8,6 +8,7 @@
 @import "search";
 @import "sugar";
 @import "user-setting";
+@import "statusbar";
 @import "wgui";
 @import "tracking-panel";
 
@@ -85,11 +86,12 @@ div.sugar-login input {
 }
 
 footer {
-  background-color: lightgrey;
+  border-top: #d3d3d3 thin solid;
   position: fixed;
   bottom: 0;
-  padding: 8px;
-  width: 100%;
+  left: 0;
+  right: 0;
+  padding: 0 2px 2px 2px;
 }
 
 .audit-log .message {
@@ -103,11 +105,6 @@ footer {
   section {
     padding: 2px 4px;
   }
-}
-
-#stats-panel ul {
-  padding-left: 4px;
-  list-style: none;
 }
 
 
