@@ -1,4 +1,4 @@
-<project name="sugarcrm" basedir="." default="comp-crm-dev">
+<project name="sugarcrm" basedir="." default="deps">
     <dirname property="sugarcrm.dir" file="${ant.file.sugarcrm}"/>
     <property name="work.dir" location="${sugarcrm.dir}/.." />
     <property name="home.dir" location="${user.home}"/>
@@ -64,67 +64,6 @@
                 <arg line='--path "${sugarcrm.dir}/src"'/>
             </deps-options>
         </jstd-gen>
-    </target>
-    <target name="comp-crm-dev" description="compile JS">
-        <comp-sugar-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
-                    output.fn="ydn.crm.sugarcrm-${sugarcrm-ver}.js"
-                    entrypoint="ydn.crm.inj.App">
-            <opt-arg>
-                <arg line='-f "--define=goog.DEBUG=true"'/>
-            </opt-arg>
-        </comp-sugar-adved>
-        <replace description="update sourceMappingURL reference"
-                 file="${sugarcrm.dir}/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
-                 token="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"
-                 value="https://${src.bk}/jsc/ydn.crm.sugarcrm-edge.js.map"/>
-    </target>
-    <target name="comp-crm" description="compile JS">
-        <comp-sugar-adved input.fn="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
-                    output.fn="${sugarcrm-out.fn}"
-                    entrypoint="ydn.crm.inj.App">
-            <opt-arg>
-                <arg line='-f "--define=goog.DEBUG=true"'/>
-            </opt-arg>
-        </comp-sugar-adved>
-        <replace description="replace so with online repo path"
-                 file="${crmininbox.dir}/${sugarcrm-out.fn}"
-                 token="sourceMappingURL=${sugarcrm-out.fn}.map"
-                 value="sourceMappingURL=https://${src.bk}.storage.googleapis.com/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
-
-    </target>
-    <target name="comp-raw" description="generate concantated js file">
-        <compile-raw input.dir="${sugarcrm.dir}/src"
-                     input="${sugarcrm.dir}/src/ydn/crm/inj/app.js"
-                     output.fn="${crmininbox.dir}/${sugarcrm-out.fn}">
-            <options>
-                <arg line='-p "${ydn-base.dir}/src"'/>
-                <arg line='-p "${ydn.dir}/src"'/>
-                <arg line='-p "${work.dir}/ydn-api/js"'/>
-                <arg line='-p "${work.dir}/crm/src"'/>
-                <arg line='-p "${work.dir}/crm-ex/src"'/>
-                <arg line='-p "${work.dir}/sugarcrm/src"'/>
-                <arg line='-p "${db-work.dir}/ydn-db/src"'/>
-                <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
-                <arg line='-p "${db-work.dir}/gdata/src"'/>
-                <arg line='-p "${db-work.dir}/ydn-db-fulltext/src"'/>
-                <arg line='-p "${db-work.dir}/fullproof/js"'/>
-                <arg line='-p "${db-work.dir}/natural/js"'/>
-                <arg line='-f "--externs=${closure-compiler.dir}/contrib/externs/chrome_extensions.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/misc.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/browser.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/atom.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/gapi.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/aws.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/sugarcrm.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/opensocial.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/svg.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn/externs/ydn-server.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/misc.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/schema.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/websql.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/gdata/externs/gdata.js"'/>
-            </options>
-        </compile-raw>
     </target>
 
     <target name="upload" description="upload files">
@@ -381,7 +320,7 @@
     </target>
 
     <target name="build" description="build all distribution"
-            depends="comp-crm,upload">
+            depends="deps">
 
     </target>
 </project>
