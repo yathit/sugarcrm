@@ -9,6 +9,7 @@ goog.provide('ydn.crm.sugarcrm.ui.field.Field');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.PopupMenu');
 goog.require('ydn.crm.ui.Refreshable');
+goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.sugarcrm.ui.events.ChangedEvent');
 goog.require('ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer');
 goog.require('ydn.crm.sugarcrm.ui.field.EnumFieldRenderer');
@@ -203,8 +204,8 @@ ydn.crm.sugarcrm.ui.field.Field.createEditor = function(data) {
   dialog.setModal(true);
   dialog.setDisposeOnHide(true);
   dialog.getContentElement().classList.add('ydn-crm');
-  var html = templ.ydn.crm.app.nameEditor(data);
-  dialog.setContent(html);
+  var html = templ.ydn.crm.inj.nameEditor(data);
+  dialog.setContent(html.toString());
 
   return dialog;
 };

@@ -6,7 +6,6 @@
 
 
 goog.provide('ydn.crm.sugarcrm.ui.group.Name');
-goog.require('templ.ydn.crm.app');
 goog.require('ydn.crm.sugarcrm');
 goog.require('ydn.crm.sugarcrm.model.NameGroup');
 goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
