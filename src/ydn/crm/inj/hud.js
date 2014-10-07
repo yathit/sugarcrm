@@ -22,7 +22,7 @@ ydn.crm.inj.Hud = function() {
   var div = document.createElement('div');
   div.appendChild(temp.cloneNode(true));
   /**
-   * @type {!Element}
+   * @type {Element}
    * @private
    * @final
    */
