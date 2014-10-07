@@ -67,7 +67,7 @@ ydn.crm.sugarcrm.ui.activity.Panel = function(model, dom) {
   this.search = new ydn.crm.sugarcrm.ui.SearchPanel(model, dom);
 
   var new_record = new ydn.crm.sugarcrm.model.Record(model,
-      new ydn.crm.sugarcrm.Record(model.getDomain(), ydn.crm.ui.DEFAULT_MODULE));
+      new ydn.crm.sugarcrm.Record(model.getDomain(), ydn.crm.sugarcrm.DEFAULT_MODULE));
 
   /**
    * @protected

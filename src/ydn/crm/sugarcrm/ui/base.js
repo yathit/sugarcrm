@@ -7,7 +7,6 @@ goog.provide('ydn.crm.ui');
 goog.provide('ydn.crm.ui.ContextPanelPosition');
 goog.require('goog.soy.Renderer');
 goog.require('ydn.crm.base');
-goog.require('ydn.crm.sugarcrm');
 
 
 /**
@@ -250,10 +249,3 @@ ydn.crm.ui.createSvgIconBySymbol = function(fileName, name) {
   svg.appendChild(use);
   return svg;
 };
-
-
-/**
- * @define {ydn.crm.sugarcrm.ModuleName} Default module when no module name
- * is defined in new record panel, etc.
- */
-ydn.crm.ui.DEFAULT_MODULE = 'Leads';

@@ -92,7 +92,7 @@ ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.createDom = function() {
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(content);
 
-  var type = ydn.crm.ui.DEFAULT_MODULE;
+  var type = ydn.crm.sugarcrm.DEFAULT_MODULE;
 
   var sugar = this.getModel();
   var r = new ydn.crm.sugarcrm.model.Record(sugar,

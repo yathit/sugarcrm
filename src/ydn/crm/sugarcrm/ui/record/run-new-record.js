@@ -22,7 +22,7 @@ ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
     sugar = /** @type {ydn.crm.sugarcrm.model.GDataSugar} */ (models[i]);
     document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
     new_record = new ydn.crm.sugarcrm.model.Record(sugar,
-        new ydn.crm.sugarcrm.Record(sugar.getDomain(), ydn.crm.ui.DEFAULT_MODULE));
+        new ydn.crm.sugarcrm.Record(sugar.getDomain(), ydn.crm.sugarcrm.DEFAULT_MODULE));
     panel = new ydn.crm.sugarcrm.ui.NewRecord(new_record);
     panel.render(div);
     break;
