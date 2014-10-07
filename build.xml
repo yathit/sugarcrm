@@ -298,26 +298,6 @@
         </sequential>
     </target>
 
-    <target name="push-edge" description="upload edge js html files">
-
-        <apply executable="python" relative="yes">
-            <arg value="${gsutil}"/>
-            <arg value="cp"/>
-            <fileset dir="${sugarcrm.dir}/jsc">
-                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
-                <include name="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
-            </fileset>
-            <srcfile prefix="${sugarcrm.dir}/jsc/"/>
-            <targetfile prefix="gs://${src.bk}/jsc/"/>
-            <filtermapper>
-                <replacestring from="${sugarcrm-ver}" to="edge"/>
-            </filtermapper>
-        </apply>
-        <replace description="replace baack sourceMappingURL reference"
-                 file="${sugarcrm.dir}/jsc/ydn.crm.sugarcrm-${sugarcrm-ver}.js"
-                 value="ydn.crm.sugarcrm-edge.js.map"
-                 token="ydn.crm.sugarcrm-${sugarcrm-ver}.js.map"/>
-    </target>
 
     <target name="build" description="build all distribution"
             depends="deps">

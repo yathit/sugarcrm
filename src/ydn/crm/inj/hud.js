@@ -17,15 +17,18 @@ goog.require('ydn.crm.ui.SidebarPanel');
  * @struct
  */
 ydn.crm.inj.Hud = function() {
-  var opt = {
-    optionPageUrl: chrome.extension.getURL(ydn.crm.base.OPTION_PAGE)
-  };
+
+  var temp = ydn.ui.getTemplateById('hub-template').content;
+  var div = document.createElement('div');
+  div.appendChild(temp.cloneNode(true));
   /**
    * @type {!Element}
    * @private
    * @final
    */
-  this.root_el_ = goog.soy.renderAsElement(templ.ydn.crm.inj.hub, opt);
+  this.root_el_ = div.firstElementChild;
+  var a = this.root_el_.querySelector('a[name=option-page-url]');
+  a.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
   /**
    * @final
    * @type {ydn.crm.ui.SidebarPanel}

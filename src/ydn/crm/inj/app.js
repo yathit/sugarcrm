@@ -112,7 +112,7 @@ ydn.crm.inj.App.DEBUG = false;
 
 /**
  * @protected
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  */
 ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
 
@@ -233,7 +233,7 @@ ydn.crm.inj.App.sniffEmail = function(contact_table, adv) {
       return null;
     }
   }
-  var email = img_identifier.getAttribute('jid');
+  var jid_email = img_identifier.getAttribute('jid');
   var td_1 = img_identifier;
   while (td_1 && td_1.tagName != 'TD') {
     td_1 = td_1.parentElement;
@@ -241,7 +241,7 @@ ydn.crm.inj.App.sniffEmail = function(contact_table, adv) {
   var span_title = td_1.nextElementSibling.querySelector('span[title]');
   var contact_name = span_title.getAttribute('title');
   var account = ydn.crm.ui.UserSetting.getInstance().getLoginEmail();
-  return new ydn.crm.inj.Context(account, email, contact_name);
+  return new ydn.crm.inj.Context(account, jid_email, contact_name);
 };
 
 
@@ -420,4 +420,6 @@ ydn.crm.inj.App.runInjApp = function() {
 
   return app;
 };
+
+goog.exportSymbol('runInjApp', ydn.crm.inj.App.runInjApp);
 
