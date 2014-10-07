@@ -214,7 +214,7 @@ ydn.crm.ui.getSvgDoc_ = function() {
 ydn.crm.ui.createSvgIcon = function(name, opt_cls) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   var svg_doc = ydn.crm.ui.getSvgDoc_();
-  var symbol = svg_doc.documentElement.getElementById(name);
+  var symbol = svg_doc.getElementById(name);
   if (symbol) {
     svg.setAttribute('viewBox', symbol.getAttribute('viewBox'));
     svg.innerHTML = symbol.innerHTML;

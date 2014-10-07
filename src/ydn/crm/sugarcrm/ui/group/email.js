@@ -7,7 +7,6 @@
 
 goog.provide('ydn.crm.sugarcrm.ui.group.Email');
 goog.require('goog.ui.PopupMenu');
-goog.require('templ.ydn.crm.app');
 goog.require('ydn.crm.sugarcrm');
 goog.require('ydn.crm.sugarcrm.model.EmailGroup');
 goog.require('ydn.crm.sugarcrm.ui.group.Group');

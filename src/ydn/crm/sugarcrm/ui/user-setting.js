@@ -7,7 +7,7 @@ goog.provide('ydn.crm.ui.UserSetting');
 goog.require('goog.asserts');
 goog.require('goog.async.DeferredList');
 goog.require('goog.log');
-goog.require('templ.ydn.crm.app');
+goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.shared');
 goog.require('ydn.gmail.Utils');
@@ -386,7 +386,7 @@ ydn.crm.ui.UserSetting.Dialog = function(df) {
 
   var content = this.getContentElement();
   content.classList.add('ydn-crm');
-  goog.soy.renderElement(content, templ.ydn.crm.app.setting);
+  goog.soy.renderElement(content, templ.ydn.crm.inj.setting);
 
   var hd = this.getHandler();
   hd.listen(this, goog.ui.Dialog.EventType.SELECT, this.handleSelect);
