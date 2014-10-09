@@ -6,6 +6,8 @@
 goog.provide('ydn.crm.ui.UserSetting');
 goog.require('goog.asserts');
 goog.require('goog.async.DeferredList');
+goog.require('goog.crypt');
+goog.require('goog.crypt.Md5');
 goog.require('goog.log');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.Ch');
@@ -48,6 +50,11 @@ ydn.crm.ui.UserSetting = function() {
    * @private
    */
   this.gmail_ = null;
+  /**
+   * @type {string}
+   * @private
+   */
+  this.login_id_md5_ = '';
 };
 goog.addSingletonGetter(ydn.crm.ui.UserSetting);
 
@@ -186,6 +193,20 @@ ydn.crm.ui.UserSetting.prototype.getLoginId = function() {
 
 
 /**
+ * Get MD5 hash of login id.
+ * @return {string} MD5 hash of login id.
+ */
+ydn.crm.ui.UserSetting.prototype.getLoginIdMd5 = function() {
+  if (!this.login_id_md5_) {
+    var md5 = new goog.crypt.Md5();
+    md5.update(this.getLoginId());
+    this.login_id_md5_ = goog.crypt.byteArrayToHex(md5.digest());
+  }
+  return this.login_id_md5_;
+};
+
+
+/**
  * In gmail content script, this return gmail address.
  * @return {?string} gmail address.
  */
@@ -279,7 +300,8 @@ ydn.crm.ui.UserSetting.KEY_USER_SETTING = 'sugar-setting';
  * @enum {string}
  */
 ydn.crm.ui.UserSetting.Key = {
-  SUGAR: 'sugar'
+  SUGAR: 'sugar',
+  TRACKING: 'tracking' // tracking setting
 };
 
 

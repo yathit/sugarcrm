@@ -54,19 +54,34 @@
   svg {
     fill:  #e8e8e8;
   }
+
+  .goog-custom-button-outer-box {
+    border: 0;
+    background: none;
+  }
+
+  .goog-custom-button-inner-box {
+    border: 0;
+    background: none;
+  }
 }
 
-.tracking-button.tracked {
+.tracking-button.goog-custom-button-checked {
   svg {
     fill:  #00ff00;
   }
 }
 
-.tracking-button:hover {
-  background-color: #f0f0f0; // override svg-button hover state
+.tracking-button.goog-custom-button {
+  border: 0;
+  background: none;
 }
 
-.tracking-button:hover:not(.tracked) {
+.tracking-button:hover {
+  background-color: #f7f7f7; // override svg-button hover state
+}
+
+.tracking-button:hover:not(.goog-custom-button-checked) {
   svg {
     fill: #dddddd;
   }
