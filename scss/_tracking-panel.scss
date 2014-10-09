@@ -34,4 +34,13 @@
     padding-top: 6px;
     font-weight: bold;
   }
+
+  .sep-header {
+    margin-top: 16px;
+    border-top: thin solid #d3d3d3;
+
+    h3 {
+      margin-top: 2px;
+    }
+  }
 }
