@@ -27,6 +27,7 @@ goog.require('goog.events.EventHandler');
 goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.sugarcrm.model.ImmutableRecord');
 goog.require('ydn.crm.sugarcrm.model.events');
+goog.require('ydn.crm.sugarcrm.utils');
 goog.require('ydn.debug.error.ConstraintError');
 
 

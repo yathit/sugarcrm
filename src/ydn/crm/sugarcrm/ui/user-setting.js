@@ -8,6 +8,7 @@ goog.require('goog.asserts');
 goog.require('goog.async.DeferredList');
 goog.require('goog.crypt');
 goog.require('goog.crypt.Md5');
+goog.require('goog.dom.forms');
 goog.require('goog.log');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.Ch');
