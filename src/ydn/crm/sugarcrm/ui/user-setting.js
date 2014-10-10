@@ -314,12 +314,29 @@ ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT = {};
 
 
 /**
+ * Get user setting from memory. User setting is loaded to memory when
+ * this object is ready.
  * @param {!Array.<string|ydn.crm.ui.UserSetting.Key>} key_path
  * @return {*}
  */
 ydn.crm.ui.UserSetting.prototype.getSetting = function(key_path) {
   var obj = this.user_setting || ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT;
   return goog.object.getValueByKeys(obj, key_path);
+};
+
+
+/**
+ * Get user setting to memory and persist to persistent storage.
+ * @param {!Array.<string|ydn.crm.ui.UserSetting.Key>} key_path
+ * @param {*} val
+ */
+ydn.crm.ui.UserSetting.prototype.setSetting = function(key_path, val) {
+  this.user_setting = this.user_setting || ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT;
+  ydn.db.utils.setValueByKeys(this.user_setting, key_path.join('.'), val);
+
+  var store = {};
+  store[ydn.crm.base.SyncKey.USER_SETTING] = this.user_setting;
+  chrome.storage.sync.set(store);
 };
 
 

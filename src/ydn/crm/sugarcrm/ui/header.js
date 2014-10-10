@@ -145,6 +145,8 @@ ydn.crm.sugarcrm.ui.Header.prototype.createDom = function() {
     var btn_grant = dom.createDom('a', {
       'className': 'maia-button blue',
       'href': href,
+      'data-window-height': '40',
+      'data-window-width': '200',
       'target': target
     }, msg);
     btn_grant.setAttribute('title', 'Your permission is required to connect your' +
