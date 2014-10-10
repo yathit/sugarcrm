@@ -44,7 +44,7 @@ goog.inherits(ydn.crm.sugarcrm.ui.NewRecord, ydn.crm.sugarcrm.ui.record.Record);
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.NewRecord.DEBUG = true;
+ydn.crm.sugarcrm.ui.NewRecord.DEBUG = false;
 
 
 /**
@@ -176,6 +176,6 @@ if (goog.DEBUG) {
    * @override
    */
   ydn.crm.sugarcrm.ui.NewRecord.prototype.toString = function() {
-    return 'NewRecordPanel';
+    return 'NewRecord';
   };
 }

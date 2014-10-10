@@ -1,5 +1,5 @@
 /**
- * @fileoverview Provide user setting.
+ * @fileoverview Use setting used in front end.
  */
 
 
@@ -20,7 +20,7 @@ goog.require('ydn.ui.MessageBox');
 
 
 /**
- * User setting.
+ * Front end user setting.
  * @constructor
  */
 ydn.crm.ui.UserSetting = function() {
