@@ -530,3 +530,27 @@ ydn.crm.ui.UserSetting.prototype.show = function() {
 };
 
 
+/**
+ * @return {boolean}
+ */
+ydn.crm.ui.UserSetting.hasSidebar = function() {
+  var app_name = ydn.crm.UserSetting.getAppShortName();
+  if (app_name == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+
+/**
+ * @return {boolean}
+ */
+ydn.crm.ui.UserSetting.hasInlineWidget = function() {
+  var app_name = ydn.crm.UserSetting.getAppShortName();
+  if (app_name == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
+    return false;
+  } else {
+    return true;
+  }
+};
