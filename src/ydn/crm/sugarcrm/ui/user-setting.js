@@ -531,26 +531,19 @@ ydn.crm.ui.UserSetting.prototype.show = function() {
 
 
 /**
+ * @param {ydn.crm.base.Feature} feature
  * @return {boolean}
  */
-ydn.crm.ui.UserSetting.hasSidebar = function() {
+ydn.crm.ui.UserSetting.hasFeature = function(feature) {
+  var features = [];
   var app_name = ydn.crm.UserSetting.getAppShortName();
-  if (app_name == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
-    return false;
-  } else {
-    return true;
+  if (feature == ydn.crm.base.Feature.EMAIL_TRACKING) {
+    return app_name == ydn.crm.base.AppShortName.EMAIL_TRACKER;
+  } else if (feature == ydn.crm.base.Feature.SUGARCRM) {
+    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
+  } else if (feature == ydn.crm.base.Feature.GDATA_CONTACT) {
+    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
   }
+  return false;
 };
 
-
-/**
- * @return {boolean}
- */
-ydn.crm.ui.UserSetting.hasInlineWidget = function() {
-  var app_name = ydn.crm.UserSetting.getAppShortName();
-  if (app_name == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
-    return false;
-  } else {
-    return true;
-  }
-};
