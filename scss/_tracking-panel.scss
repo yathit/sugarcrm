@@ -43,4 +43,17 @@
       margin-top: 2px;
     }
   }
+
+  .tracking-detail-panel {
+    padding-left: 24px;
+
+    .pear-grid-row-header {
+      background-color: mintcream;
+    }
+  }
+}
+
+.pear-grid-cell-data-content.no-border,
+.pear-grid-row-highlight .pear-grid-cell-data-highlight .pear-grid-cell-data-content.no-border {
+  border: 0;
 }
