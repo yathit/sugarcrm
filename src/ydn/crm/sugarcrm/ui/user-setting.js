@@ -12,6 +12,7 @@ goog.require('goog.dom.forms');
 goog.require('goog.log');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.Ch');
+goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.gmail.Utils');
 goog.require('ydn.object');
