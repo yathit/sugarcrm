@@ -5,7 +5,7 @@
 
 goog.provide('ydn.crm.ui.SidebarPanel');
 goog.require('ydn.crm.sugarcrm.ui.SugarPanel');
-goog.require('ydn.crm.ui.SugarListPanel');
+goog.require('ydn.crm.ui.SugarWrapperPanel');
 
 
 
@@ -14,12 +14,12 @@ goog.require('ydn.crm.ui.SugarListPanel');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.ui.SugarListPanel}
+ * @extends {ydn.crm.ui.SugarWrapperPanel}
  */
 ydn.crm.ui.SidebarPanel = function(opt_dom) {
   goog.base(this, opt_dom);
 };
-goog.inherits(ydn.crm.ui.SidebarPanel, ydn.crm.ui.SugarListPanel);
+goog.inherits(ydn.crm.ui.SidebarPanel, ydn.crm.ui.SugarWrapperPanel);
 
 
 /**
@@ -74,7 +74,7 @@ ydn.crm.ui.SidebarPanel.prototype.createDom = function() {
   header.appendChild(link_panel);
   header.appendChild(invalid_login);
 
-  var status_el = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS);
+  var status_el = dom.createDom('div', ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_STATUS);
   var status = new ydn.crm.msg.StatusBar();
   status.render(status_el);
   ydn.crm.msg.Manager.addConsumer(status);

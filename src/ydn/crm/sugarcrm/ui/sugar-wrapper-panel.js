@@ -1,13 +1,16 @@
 /**
- * @fileoverview List of SugarCRM panels.
+ * @fileoverview Wrap a sugarcrm panel.
  *
- * Display list of sugarcrm panels. If no sugarcrm available, 'Setup SugarCRM'
+ * If no sugarcrm available, 'Setup SugarCRM'
  * link is shown to bring Setup wizard. If no login or invalid login, panel
  * is hide.
+ * 
+ * The only different with ydn.crm.ui.SugarListPanel is this keep only one
+ * sugarcrm panel.
  */
 
 
-goog.provide('ydn.crm.ui.SugarListPanel');
+goog.provide('ydn.crm.ui.SugarWrapperPanel');
 goog.require('goog.Timer');
 goog.require('goog.async.DeferredList');
 goog.require('goog.dom.classes');
@@ -26,65 +29,65 @@ goog.require('ydn.msg.Message');
 
 
 /**
- * List of SugarCRM panels.
+ * A of SugarCRM panel wrapper.
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
- * @see ydn.crm.ui.SugarWrapperPanel
+ * @see ydn.crm.ui.SugarListPanel
  */
-ydn.crm.ui.SugarListPanel = function(opt_dom) {
+ydn.crm.ui.SugarWrapperPanel = function(opt_dom) {
   goog.base(this, opt_dom);
 
 };
-goog.inherits(ydn.crm.ui.SugarListPanel, goog.ui.Component);
+goog.inherits(ydn.crm.ui.SugarWrapperPanel, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.SugarListPanel.DEBUG = false;
+ydn.crm.ui.SugarWrapperPanel.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.SugarListPanel.CSS_CLASS = 'sidebar';
+ydn.crm.ui.SugarWrapperPanel.CSS_CLASS = 'sidebar';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS = 'sidebar-status';
+ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_STATUS = 'sidebar-status';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.SugarListPanel.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
+ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.ui.SugarListPanel.CSS_CLASS_NO_SUGAR_PANEL = 'no-sugar-panel';
+ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL = 'no-sugar-panel';
 
 
 /** @return {string} */
-ydn.crm.ui.SugarListPanel.prototype.getCssClass = function() {
-  return ydn.crm.ui.SugarListPanel.CSS_CLASS;
+ydn.crm.ui.SugarWrapperPanel.prototype.getCssClass = function() {
+  return ydn.crm.ui.SugarWrapperPanel.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.ui.SugarListPanel.prototype.createDom = function() {
+ydn.crm.ui.SugarWrapperPanel.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   var dom = this.getDomHelper();
@@ -96,11 +99,11 @@ ydn.crm.ui.SugarListPanel.prototype.createDom = function() {
 
   // render header
 
-  var no_sugar_login = dom.createDom('div', ydn.crm.ui.SugarListPanel.CSS_CLASS_NO_SUGAR_PANEL);
+  var no_sugar_login = dom.createDom('div', ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var a = dom.createElement('a');
   a.textContent = 'Setup SugarCRM';
   a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
-  a.className = ydn.crm.ui.SugarListPanel.CSS_CLASS_SUGAR_SETUP_LINK + ' maia-button blue';
+  a.className = ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_SUGAR_SETUP_LINK + ' maia-button blue';
   a.setAttribute('data-window-height', '600');
   a.setAttribute('data-window-width', '800');
   no_sugar_login.appendChild(a);
@@ -113,7 +116,7 @@ ydn.crm.ui.SugarListPanel.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.ui.SugarListPanel.prototype.getContentElement = function() {
+ydn.crm.ui.SugarWrapperPanel.prototype.getContentElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
 };
 
@@ -121,7 +124,7 @@ ydn.crm.ui.SugarListPanel.prototype.getContentElement = function() {
 /**
  * @return {Element}
  */
-ydn.crm.ui.SugarListPanel.prototype.getHeaderElement = function() {
+ydn.crm.ui.SugarWrapperPanel.prototype.getHeaderElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD);
 };
 
@@ -129,12 +132,12 @@ ydn.crm.ui.SugarListPanel.prototype.getHeaderElement = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.ui.SugarListPanel.prototype.enterDocument = function() {
+ydn.crm.ui.SugarWrapperPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var handler = this.getHandler();
 
   var a_grant = this.getHeaderElement().querySelector('a.' +
-      ydn.crm.ui.SugarListPanel.CSS_CLASS_SUGAR_SETUP_LINK);
+      ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_SUGAR_SETUP_LINK);
   handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
 };
 
@@ -142,7 +145,7 @@ ydn.crm.ui.SugarListPanel.prototype.enterDocument = function() {
 /**
  * Update header panel.
  */
-ydn.crm.ui.SugarListPanel.prototype.updateHeader = function() {
+ydn.crm.ui.SugarWrapperPanel.prototype.updateHeader = function() {
 
 
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
@@ -157,10 +160,10 @@ ydn.crm.ui.SugarListPanel.prototype.updateHeader = function() {
 
 /**
  * @protected
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  */
-ydn.crm.ui.SugarListPanel.prototype.logger =
-    goog.log.getLogger('ydn.crm.ui.SugarListPanel');
+ydn.crm.ui.SugarWrapperPanel.prototype.logger =
+    goog.log.getLogger('ydn.crm.ui.SugarWrapperPanel');
 
 
 /**
@@ -169,7 +172,7 @@ ydn.crm.ui.SugarListPanel.prototype.logger =
  * @private
  * @return {!goog.async.Deferred}
  */
-ydn.crm.ui.SugarListPanel.prototype.initSugar_ = function(name) {
+ydn.crm.ui.SugarWrapperPanel.prototype.validateSugarPanels_ = function(name) {
 
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, name);
   var df = ch.send(ydn.crm.Ch.SReq.DETAILS);
@@ -184,8 +187,16 @@ ydn.crm.ui.SugarListPanel.prototype.initSugar_ = function(name) {
     var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     if (!this.hasSugarPanel(name)) {
+      // remove other sugars panel
+      for (var j = 0; j < this.getChildCount(); j++) {
+        var panel = /** @type {ydn.crm.sugarcrm.ui.SimpleSugarPanel} */ (
+            this.removeChildAt(j, true));
+        panel.dispose();
+        var model = panel.getModel();
+        model.dispose();
+      }
       this.addSugarPanel(sugar);
-    } else if (ydn.crm.ui.SugarListPanel.DEBUG) {
+    } else if (ydn.crm.ui.SugarWrapperPanel.DEBUG) {
       window.console.log('sugar panel ' + name + ' already exists.');
     }
   }, this);
@@ -197,10 +208,10 @@ ydn.crm.ui.SugarListPanel.prototype.initSugar_ = function(name) {
  * @param {ydn.crm.sugarcrm.model.GDataSugar} sugar
  * @protected
  */
-ydn.crm.ui.SugarListPanel.prototype.addSugarPanel = function(sugar) {
+ydn.crm.ui.SugarWrapperPanel.prototype.addSugarPanel = function(sugar) {
   var panel = new ydn.crm.sugarcrm.ui.SimpleSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
-  if (ydn.crm.ui.SugarListPanel.DEBUG) {
+  if (ydn.crm.ui.SugarWrapperPanel.DEBUG) {
     window.console.info('simple sugar panel ' + sugar.getDomain() + ' created, now ' +
         this.getChildCount() + ' panels');
   }
@@ -208,11 +219,28 @@ ydn.crm.ui.SugarListPanel.prototype.addSugarPanel = function(sugar) {
 
 
 /**
- * Check existance of sugarcrm instance on the panel.
+ * Get active sugarcrm model.
+ */
+ydn.crm.ui.SugarWrapperPanel.prototype.getSugarModelClone = function() {
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var ch = this.getChildAt(i);
+    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
+      var model = this.getModel();
+      if (model.isLogin()) {
+        return model.clone();
+      }
+    }
+  }
+  return null;
+};
+
+
+/**
+ * Check existence of sugarcrm instance on the panel.
  * @param {string} name domain name
  * @return {boolean}
  */
-ydn.crm.ui.SugarListPanel.prototype.hasSugarPanel = function(name) {
+ydn.crm.ui.SugarWrapperPanel.prototype.hasSugarPanel = function(name) {
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
     if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
@@ -230,9 +258,9 @@ ydn.crm.ui.SugarListPanel.prototype.hasSugarPanel = function(name) {
  * @param {Array.<string>} sugars list of sugar domain.
  * @return {!goog.async.Deferred}
  */
-ydn.crm.ui.SugarListPanel.prototype.updateSugarPanels = function(sugars) {
+ydn.crm.ui.SugarWrapperPanel.prototype.updateSugarPanels = function(sugars) {
   goog.asserts.assertArray(sugars, 'sugar domains');
-  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarListPanel.CSS_CLASS_NO_SUGAR_PANEL);
+  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var q = link_panel.querySelector('a');
   if (!ydn.crm.ui.UserSetting.getInstance().isLogin()) {
     goog.style.setElementShown(link_panel, false);
@@ -261,7 +289,7 @@ ydn.crm.ui.SugarListPanel.prototype.updateSugarPanels = function(sugars) {
     goog.asserts.assertString(sugars[i], 'sugar domain must be a string');
     if (!this.hasSugarPanel(sugars[i])) {
       this.logger.fine('adding sugar panel ' + sugars[i]);
-      dfs.push(this.initSugar_(sugars[i]));
+      dfs.push(this.validateSugarPanels_(sugars[i]));
     }
   }
   return goog.async.DeferredList.gatherResults(dfs);
@@ -273,14 +301,14 @@ ydn.crm.ui.SugarListPanel.prototype.updateSugarPanels = function(sugars) {
  * @return {ydn.crm.inj.Context}
  * @override
  */
-ydn.crm.ui.SugarListPanel.prototype.getModel;
+ydn.crm.ui.SugarWrapperPanel.prototype.getModel;
 
 
 /**
  * Show or hide this panel.
  * @param {boolean} val
  */
-ydn.crm.ui.SugarListPanel.prototype.setVisible = function(val) {
+ydn.crm.ui.SugarWrapperPanel.prototype.setVisible = function(val) {
   goog.style.setElementShown(this.getElement(), val);
 };
 
