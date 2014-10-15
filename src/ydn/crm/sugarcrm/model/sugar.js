@@ -594,7 +594,9 @@ ydn.crm.sugarcrm.model.Sugar.list = function() {
  * @return {ydn.crm.sugarcrm.model.Sugar}
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.clone = function() {
-  return new ydn.crm.sugarcrm.model.Sugar(this.about, this.module_info);
+  var clone = new ydn.crm.sugarcrm.model.Sugar(this.about, this.module_info,
+      this.info);
+  return clone;
 };
 
 

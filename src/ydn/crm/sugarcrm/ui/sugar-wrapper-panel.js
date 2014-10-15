@@ -220,19 +220,21 @@ ydn.crm.ui.SugarWrapperPanel.prototype.addSugarPanel = function(sugar) {
 
 /**
  * Get active sugarcrm model.
+ * @return {ydn.crm.sugarcrm.model.Sugar}
  */
 ydn.crm.ui.SugarWrapperPanel.prototype.getSugarModelClone = function() {
+  var model = null;
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
     if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
       var ssp = /** @type {ydn.crm.sugarcrm.ui.SimpleSugarPanel} */ (ch);
-      var model = ssp.getModel();
+      model = ssp.getModel();
       if (model.isLogin()) {
         return model.clone();
       }
     }
   }
-  return null;
+  return model;
 };
 
 
