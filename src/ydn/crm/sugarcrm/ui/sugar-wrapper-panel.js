@@ -225,7 +225,8 @@ ydn.crm.ui.SugarWrapperPanel.prototype.getSugarModelClone = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
     if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
-      var model = this.getModel();
+      var ssp = /** @type {ydn.crm.sugarcrm.ui.SimpleSugarPanel} */ (ch);
+      var model = ssp.getModel();
       if (model.isLogin()) {
         return model.clone();
       }
