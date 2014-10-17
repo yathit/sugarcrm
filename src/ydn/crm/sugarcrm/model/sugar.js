@@ -640,5 +640,3 @@ ydn.crm.sugarcrm.model.Sugar.prototype.export2GData = function(record) {
       }, this);
 };
 
-
-
