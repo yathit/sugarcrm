@@ -22,7 +22,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.model.Archiver');
-goog.provide('ydn.crm.ui.IMenuItemProvider');
+goog.require('ydn.crm.ui.IMenuItemProvider');
 
 
 
@@ -44,10 +44,23 @@ ydn.crm.sugarcrm.model.Archiver = function(sugar) {
 
 
 /**
+ * @define {boolean} debug flag.
+ */
+ydn.crm.sugarcrm.model.Archiver.DEBUG = true;
+
+
+/**
  * @const
  * @type {string}
  */
 ydn.crm.sugarcrm.model.Archiver.MENU_NAME = 'archiver';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME = 'cloud';
 
 
 /**
@@ -59,53 +72,40 @@ ydn.crm.sugarcrm.model.Archiver.prototype.getMenuName = function() {
 
 
 /**
- * @override
- */
-ydn.crm.sugarcrm.model.Archiver.prototype.getIconName = function() {
-  return ydn.crm.sugarcrm.model.Archiver.MENU_NAME;
-};
-
-
-/**
  * Archive menu label configuration.
  * @param {ydn.crm.gmail.MessageHeaderWidget} widget
  * @override
  */
 ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
   var info = widget.gatherEmailInfo();
+  widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, false,
+      ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME);
   if (!info || !info.message_id) {
-    widget.setMenuItemDetail(this.getMenuName(), false, 'Archive');
+    widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
   } else {
     var q = {
       'store': ydn.crm.sugarcrm.ModuleName.EMAILS,
       'index': 'message_id',
       'key': info.message_id
     };
-    return this.sugar_.send(ydn.crm.Ch.SReq.QUERY, [q]).addCallbacks(function(arr) {
+    this.sugar_.send(ydn.crm.Ch.SReq.QUERY, [q]).addCallbacks(function(arr) {
       if (ydn.crm.sugarcrm.model.Archiver.DEBUG) {
         window.console.log(arr);
       }
       var record = arr[0] && arr[0]['result'] ? arr[0]['result'][0] : null;
       if (record) {
         widget.setMenuItemDetail(this.getMenuName(), true, 'View Archive',
-            'View archived email in SugarCRM', record['id']);
+            record);
+        widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, true,
+            ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
       } else {
         widget.setMenuItemDetail(this.getMenuName(), true, 'Archive',
-            'Archive this message to SugarCRM', info.message_id);
+            info.message_id);
       }
     }, function(e) {
-      widget.setMenuItemDetail(this.getMenuName(), false, 'Archive');
+      widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
       window.console.error(e);
     }, this);
   }
 };
 
-
-/**
- * Archive button message configuration.
- * @param {ydn.crm.gmail.MessageHeaderWidget} widget
- * @override
- */
-ydn.crm.sugarcrm.model.Archiver.prototype.configureButton = function(widget) {
-
-};
