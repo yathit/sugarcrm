@@ -26,13 +26,23 @@
     background-color: #f5f5f5;
     border: 1px solid rgba(0,0,0,0.1);
 
+    .goog-css3-button-caption {
+        vertical-align: middle;
+    }
+
+    /*
     .goog-css3-button-caption > * {
+        vertical-align: middle;
+    }
+
+    .goog-css3-button-caption > * > * {
         vertical-align: middle;
     }
 
     .goog-css3-button-dropdown {
         vertical-align: middle;
     }
+    */
 }
 
 .gmail-header-widget {
@@ -41,4 +51,24 @@
         border-color: #4d90fe;
     }
     */
+
+}
+
+
+.tracking-button.goog-custom-button-checked, .tracking-icon-tracked {
+    svg {
+        fill:  #00ff00;
+    }
+}
+
+.gmail-header-icon > svg {
+    padding: 0 2px;
+}
+
+svg.tracking-icon-has-result {
+    fill:  #00ff00;
+}
+
+svg.tracking-icon-no-result {
+    fill: #add8e6;
 }

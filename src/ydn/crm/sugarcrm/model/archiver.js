@@ -79,9 +79,12 @@ ydn.crm.sugarcrm.model.Archiver.prototype.getMenuName = function() {
  * @override
  */
 ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
-  var info = widget.gatherEmailInfo();
   widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, false,
       ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME);
+  if (!this.sugar_) {
+    widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
+  }
+  var info = widget.gatherEmailInfo();
   if (ydn.crm.sugarcrm.model.Archiver.DEBUG) {
     window.console.log(info);
   }
@@ -119,10 +122,9 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.model.Archiver.prototype.onIMenuItem = function(e) {
+ydn.crm.sugarcrm.model.Archiver.prototype.onIMenuItem = function(widget, e) {
   var item = /** @type {goog.ui.MenuItem} */ (e.target);
-  var widget = /** @type {ydn.crm.gmail.MessageHeaderWidget} */ (e.currentTarget);
-  console.log(e);
+
   var record = item.getModel();
   if (record) {
     // view archive
