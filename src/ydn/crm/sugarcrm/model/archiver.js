@@ -22,7 +22,9 @@
 
 
 goog.provide('ydn.crm.sugarcrm.model.Archiver');
+goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.ui.IMenuItemProvider');
+goog.require('ydn.ui.MessageBox');
 
 
 
@@ -60,7 +62,7 @@ ydn.crm.sugarcrm.model.Archiver.MENU_NAME = 'archiver';
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME = 'cloud';
+ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME = 'cloud-done';
 
 
 /**
@@ -80,6 +82,9 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
   var info = widget.gatherEmailInfo();
   widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, false,
       ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME);
+  if (ydn.crm.sugarcrm.model.Archiver.DEBUG) {
+    window.console.log(info);
+  }
   if (!info || !info.message_id) {
     widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
   } else {
@@ -94,13 +99,14 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
       }
       var record = arr[0] && arr[0]['result'] ? arr[0]['result'][0] : null;
       if (record) {
+        var link = this.sugar_.getRecordViewLink(
+            ydn.crm.sugarcrm.ModuleName.EMAILS, record['id']);
         widget.setMenuItemDetail(this.getMenuName(), true, 'View Archive',
-            record);
+            link);
         widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, true,
             ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
       } else {
-        widget.setMenuItemDetail(this.getMenuName(), true, 'Archive',
-            info.message_id);
+        widget.setMenuItemDetail(this.getMenuName(), true, 'Archive', null);
       }
     }, function(e) {
       widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
@@ -109,3 +115,39 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
   }
 };
 
+
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.model.Archiver.prototype.onIMenuItem = function(e) {
+  var item = /** @type {goog.ui.MenuItem} */ (e.target);
+  var widget = /** @type {ydn.crm.gmail.MessageHeaderWidget} */ (e.currentTarget);
+  console.log(e);
+  var record = item.getModel();
+  if (record) {
+    // view archive
+    window.open(record, '_blank');
+  } else {
+    // archive
+    var info = widget.gatherEmailInfo();
+    var module_name = undefined;
+    var record_id = undefined;
+    if (info) {
+      var mid = ydn.crm.msg.Manager.addStatus('Archiving message');
+      this.sugar_.archiveEmail(info, module_name, record_id).addCallbacks(function(record) {
+        ydn.crm.msg.Manager.setStatus(mid, 'Archived:');
+        var link = this.sugar_.getRecordViewLink(
+            ydn.crm.sugarcrm.ModuleName.EMAILS, record['id']);
+        ydn.crm.msg.Manager.setLink(mid, link, 'view');
+        widget.setMenuItemDetail(this.getMenuName(), true, 'View Archive',
+            link);
+        widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, true,
+            ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
+      }, function(e) {
+        ydn.crm.msg.Manager.setStatus(mid, 'Error archiving: ' + (e.message || e));
+      }, this);
+    } else {
+      ydn.ui.MessageBox.show('Archive message', 'Cannot read message.');
+    }
+  }
+};
