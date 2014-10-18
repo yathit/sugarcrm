@@ -72,6 +72,18 @@
   }
 }
 
+.gmail-header-icon > svg {
+  padding: 0 2px;
+}
+
+svg.tracking-icon-has-result {
+  fill:  #00ff00;
+}
+
+svg.tracking-icon-no-result {
+  fill: #add8e6;
+}
+
 .tracking-button.goog-custom-button {
   border: 0;
   background: none;
