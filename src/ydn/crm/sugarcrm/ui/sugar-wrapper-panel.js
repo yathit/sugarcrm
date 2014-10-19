@@ -40,6 +40,10 @@ goog.require('ydn.msg.Message');
 ydn.crm.ui.SugarWrapperPanel = function(opt_dom) {
   goog.base(this, opt_dom);
 
+  /**
+   * @type {goog.async.Deferred}
+   */
+  this.updating_df_ = null;
 };
 goog.inherits(ydn.crm.ui.SugarWrapperPanel, goog.ui.Component);
 
@@ -262,6 +266,9 @@ ydn.crm.ui.SugarWrapperPanel.prototype.hasSugarPanel = function(name) {
  * @return {!goog.async.Deferred}
  */
 ydn.crm.ui.SugarWrapperPanel.prototype.updateSugarPanels = function(sugars) {
+  if (this.updating_df_) {
+    return this.updating_df_;
+  }
   goog.asserts.assertArray(sugars, 'sugar domains');
   var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var q = link_panel.querySelector('a');
@@ -295,7 +302,10 @@ ydn.crm.ui.SugarWrapperPanel.prototype.updateSugarPanels = function(sugars) {
       dfs.push(this.validateSugarPanels_(sugars[i]));
     }
   }
-  return goog.async.DeferredList.gatherResults(dfs);
+  this.updating_df_ = goog.async.DeferredList.gatherResults(dfs).addBoth(function() {
+    this.updating_df_ = null;
+  }, this);
+  return this.updating_df_;
 };
 
 
