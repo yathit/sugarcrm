@@ -51,7 +51,7 @@ ydn.crm.sugarcrm.model.Archiver = function(sugar) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.Archiver.DEBUG = true;
+ydn.crm.sugarcrm.model.Archiver.DEBUG = false;
 
 
 /**
