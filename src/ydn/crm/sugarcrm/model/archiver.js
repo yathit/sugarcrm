@@ -42,13 +42,16 @@ ydn.crm.sugarcrm.model.Archiver = function(sugar) {
    * @private
    */
   this.sugar_ = sugar;
+  if (ydn.crm.sugarcrm.model.Archiver.DEBUG && !sugar) {
+    window.console.warn('No sugarcrm instance to archive');
+  }
 };
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.Archiver.DEBUG = false;
+ydn.crm.sugarcrm.model.Archiver.DEBUG = true;
 
 
 /**
@@ -84,13 +87,14 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
   if (!this.sugar_) {
     widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
   }
+  if (!this.sugar_) {
+    return;
+  }
   var info = widget.gatherEmailInfo();
   if (ydn.crm.sugarcrm.model.Archiver.DEBUG) {
     window.console.log(info);
   }
-  if (!info || !info.message_id) {
-    widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
-  } else {
+  if (info && !!info.message_id) {
     var q = {
       'store': ydn.crm.sugarcrm.ModuleName.EMAILS,
       'index': 'message_id',
