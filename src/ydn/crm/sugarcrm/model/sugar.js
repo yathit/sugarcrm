@@ -439,8 +439,8 @@ ydn.crm.sugarcrm.model.Sugar.prototype.send = function(req, opt_data) {
  * @param {number=} opt_offset offset
  * @return {!goog.async.Deferred}
  */
-ydn.crm.sugarcrm.model.Sugar.prototype.listRecords = function(m_name, opt_order, opt_range,
-                                                           opt_prefix, opt_limit, opt_offset) {
+ydn.crm.sugarcrm.model.Sugar.prototype.listRecords = function(m_name, opt_order,
+    opt_range, opt_prefix, opt_limit, opt_offset) {
   goog.asserts.assert(ydn.crm.sugarcrm.Modules.indexOf(m_name) >= 0, m_name);
   var query = {
     'store': m_name
@@ -570,11 +570,11 @@ ydn.crm.sugarcrm.model.Sugar.prototype.saveRecord = function(record) {
 
 /**
  * Get list of sugarcrm instance, of which login.
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred.<Array.<ydn.crm.sugarcrm.model.Sugar>>}
  */
 ydn.crm.sugarcrm.model.Sugar.list = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
-  return ydn.msg.getChannel().send('list-sugarcrm').addCallback(function(abouts) {
+  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(function(abouts) {
     var models = [];
     var dfs = [];
     for (var i = 0; i < abouts.length; i++) {
