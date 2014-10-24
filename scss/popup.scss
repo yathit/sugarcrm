@@ -1,4 +1,7 @@
 @import "base";
+@import "goog";
+@import "icons";
+@import "statusbar";
 
 
 body.popup {
@@ -15,27 +18,26 @@ body.popup {
   list-style: none;
 }
 
-footer {
-  right: 0;
-  left: 0;
-  clear: both;
+header {
   position: fixed;
-  bottom: 0;
-  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.2em;
+  padding: 2px;
 }
 
+section.main {
+  margin-top: 1.3em;
+}
 
-#status-bar {
-  clear: both;
-  height: 14px;
-  overflow: hidden;
-  border: solid thin #d3d3d3;
-  border-top: solid thin #ffffff;
-  background: #d3d3d3;
-  padding: 4px 2px;
-  margin: 0;
-  font-size: small;
-
+footer {
+  border-top: #d3d3d3 thin solid;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
 }
 
 ul {
