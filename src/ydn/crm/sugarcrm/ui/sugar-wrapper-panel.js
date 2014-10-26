@@ -42,6 +42,7 @@ ydn.crm.ui.SugarWrapperPanel = function(opt_dom) {
 
   /**
    * @type {goog.async.Deferred}
+   * @private
    */
   this.updating_df_ = null;
 };
