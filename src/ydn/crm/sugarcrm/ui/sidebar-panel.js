@@ -71,6 +71,7 @@ ydn.crm.ui.SidebarPanel.prototype.createDom = function() {
   goog.style.setElementShown(link_panel, false);
 
   var invalid_login = dom.createDom('div', ydn.crm.ui.SidebarPanel.CSS_CLASS_INVALID_LOGIN_PANEL);
+  goog.style.setElementShown(invalid_login, false);
   header.appendChild(link_panel);
   header.appendChild(invalid_login);
 
@@ -116,23 +117,26 @@ ydn.crm.ui.SidebarPanel.prototype.updateHeader = function() {
 
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   var setup = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SidebarPanel.CSS_CLASS_SETUP);
+  var invalid_login_panel = this.getHeaderElement().querySelector('.' +
+      ydn.crm.ui.SidebarPanel.CSS_CLASS_INVALID_LOGIN_PANEL);
 
   if (us.isLogin()) {
     goog.style.setElementShown(setup, false);
-    var msg_panel = this.getHeaderElement().querySelector('.' +
-        ydn.crm.ui.SidebarPanel.CSS_CLASS_INVALID_LOGIN_PANEL);
+
 
     if (!us.hasValidLogin()) {
       var data = {
         ydn_login: us.getLoginEmail()
       };
-      goog.soy.renderElement(msg_panel, templ.ydn.crm.inj.wrongLogin, data);
-      goog.style.setElementShown(msg_panel, true);
+      goog.soy.renderElement(invalid_login_panel, templ.ydn.crm.inj.wrongLogin, data);
+      goog.style.setElementShown(invalid_login_panel, true);
     } else {
-      goog.style.setElementShown(msg_panel, false);
+      goog.style.setElementShown(invalid_login_panel, false);
     }
   } else {
     goog.style.setElementShown(setup, true);
+    goog.style.setElementShown(invalid_login_panel, false);
+
   }
 
 };
