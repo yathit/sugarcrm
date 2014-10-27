@@ -53,6 +53,22 @@
   }
 }
 
+.tracking-result {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 2px;
+
+  > * {
+    align-self: center;
+    padding: 2px;
+  }
+
+  svg {
+    vertical-align: middle;
+  }
+}
+
 
 .pear-grid-cell-data-content.no-border,
 .pear-grid-row-highlight .pear-grid-cell-data-highlight .pear-grid-cell-data-content.no-border {
