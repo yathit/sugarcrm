@@ -71,7 +71,7 @@ ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME = 'cloud-done';
 /**
  * @override
  */
-ydn.crm.sugarcrm.model.Archiver.prototype.getMenuName = function() {
+ydn.crm.sugarcrm.model.Archiver.prototype.getName = function() {
   return ydn.crm.sugarcrm.model.Archiver.MENU_NAME;
 };
 
@@ -85,7 +85,7 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
   widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, false,
       ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME);
   if (!this.sugar_) {
-    widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
+    widget.setMenuItemDetail(this.getName(), false, 'Archive', null);
   }
   if (!this.sugar_) {
     return;
@@ -108,15 +108,15 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
       if (record) {
         var link = this.sugar_.getRecordViewLink(
             ydn.crm.sugarcrm.ModuleName.EMAILS, record['id']);
-        widget.setMenuItemDetail(this.getMenuName(), true, 'View Archive',
+        widget.setMenuItemDetail(this.getName(), true, 'View Archive',
             link);
         widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, true,
             ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
       } else {
-        widget.setMenuItemDetail(this.getMenuName(), true, 'Archive', null);
+        widget.setMenuItemDetail(this.getName(), true, 'Archive', null);
       }
     }, function(e) {
-      widget.setMenuItemDetail(this.getMenuName(), false, 'Archive', null);
+      widget.setMenuItemDetail(this.getName(), false, 'Archive', null);
       window.console.error(e);
     }, this);
   }
@@ -145,7 +145,7 @@ ydn.crm.sugarcrm.model.Archiver.prototype.onIMenuItem = function(widget, e) {
         var link = this.sugar_.getRecordViewLink(
             ydn.crm.sugarcrm.ModuleName.EMAILS, record['id']);
         ydn.crm.msg.Manager.setLink(mid, link, 'view');
-        widget.setMenuItemDetail(this.getMenuName(), true, 'View Archive',
+        widget.setMenuItemDetail(this.getName(), true, 'View Archive',
             link);
         widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, true,
             ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
