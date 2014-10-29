@@ -75,8 +75,21 @@
   background-color: #f7f7f7; // override svg-button hover state
 }
 
-.tracking-button:hover:not(.goog-custom-button-checked) {
+
+.tracking-button:hover:not(.goog-custom-button-checked), .tracking-button:hover:not(.tracked) {
   svg {
     fill: #dddddd;
+  }
+}
+
+.tracking-button.goog-custom-button-checked, .tracking-button.tracked {
+  svg {
+    fill:  #00ff00;
+  }
+}
+
+.tracking-button.goog-custom-button-checked:hover, .tracking-button.tracked:hover {
+  svg {
+    fill:  #00ff00;
   }
 }
