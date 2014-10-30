@@ -71,9 +71,12 @@
 
 .ydn-anchor-reply {
   display: inline-block;
-  margin: 12px 6px 0px 2px;
-  float: right;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 12px 6px 0 2px;
 }
+
 
 
 .pear-grid-cell-data-content.no-border,
