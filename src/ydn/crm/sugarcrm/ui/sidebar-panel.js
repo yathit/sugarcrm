@@ -122,8 +122,6 @@ ydn.crm.ui.SidebarPanel.prototype.updateHeader = function() {
 
   if (us.isLogin()) {
     goog.style.setElementShown(setup, false);
-
-
     if (!us.hasValidLogin()) {
       var data = {
         ydn_login: us.getLoginEmail()
