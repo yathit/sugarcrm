@@ -151,7 +151,7 @@ ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.handleOnGDataChanged = function(e
 
 /**
  * @protected
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  */
 ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.logger =
     goog.log.getLogger('ydn.crm.sugarcrm.ui.SimpleSugarPanel');

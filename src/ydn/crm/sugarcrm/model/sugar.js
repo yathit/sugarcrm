@@ -83,7 +83,7 @@ ydn.crm.sugarcrm.model.Sugar = function(about, arr, opt_info) {
   this.user_ = new ydn.crm.sugarcrm.Record(this.getDomain(), ydn.crm.sugarcrm.ModuleName.USERS);
   this.initUser_();
   var pipe = ydn.msg.getMain();
-  this.handler.listen(pipe, [ydn.crm.Ch.SReq.LOGIN, ydn.crm.Ch.Req.HOST_PERMISSION],
+  this.handler.listen(pipe, [ydn.crm.Ch.SReq.LOGIN, ydn.crm.Ch.BReq.HOST_PERMISSION],
       this.handleMessage);
 
   if (ydn.crm.sugarcrm.model.Sugar.DEBUG) {
@@ -126,7 +126,7 @@ ydn.crm.sugarcrm.model.Sugar.prototype.handleMessage = function(e) {
     if (!!about && about.domain == this.getDomain()) {
       this.setAbout(about);
     }
-  } else if (e.type == ydn.crm.Ch.Req.HOST_PERMISSION && this.about) {
+  } else if (e.type == ydn.crm.Ch.BReq.HOST_PERMISSION && this.about) {
     var msg = e.getData();
     if (msg['grant'] && msg['grant'] == this.getDomain()) {
       this.about.hostPermission = true;

@@ -62,7 +62,7 @@ ydn.crm.sugarcrm.ui.Header.USE_IFRAME = false;
 /**
  * @define {boolean} whether to use popup.
  */
-ydn.crm.sugarcrm.ui.Header.USE_POPUP = true;
+ydn.crm.sugarcrm.ui.Header.USE_POPUP = false;
 
 
 /**
@@ -184,9 +184,11 @@ ydn.crm.sugarcrm.ui.Header.prototype.enterDocument = function() {
   var div_login = root.querySelector('.login-form');
   var kh = new goog.events.KeyHandler(div_login);
   handler.listen(kh, goog.events.KeyHandler.EventType.KEY, this.handleLogin);
+  var a_grant = grant.querySelector('a');
   if (ydn.crm.sugarcrm.ui.Header.USE_POPUP) {
-    var a_grant = grant.querySelector('a');
     handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
+  } else {
+    handler.listen(a_grant, 'click', this.onGrantHostPermission);
   }
 
   handler.listen(this.getModel(), ydn.crm.sugarcrm.model.Sugar.Event.HOST_ACCESS_GRANT,
@@ -202,7 +204,36 @@ ydn.crm.sugarcrm.ui.Header.prototype.enterDocument = function() {
 
 
 /**
- * @param e
+ * Handle grant host permission grant.
+ * @param {goog.events.BrowserEvent} e
+ */
+ydn.crm.sugarcrm.ui.Header.prototype.onGrantHostPermission = function(e) {
+  e.preventDefault();
+  var model = this.getModel();
+  var domain = model.getDomain();
+  var permissions = {
+    origins: ['http://' + domain + '/*', 'https://' + domain + '/*']
+  };
+  if (chrome.permissions) {
+    chrome.permissions.request(permissions);
+  } else {
+    // content script does not have permissions api.
+    ydn.msg.getChannel().send(ydn.crm.Ch.Req.REQUEST_HOST_PERMISSION, permissions).addBoth(function(x) {
+      var grant = this.getElement().querySelector('.host-permission');
+      if (x === true) {
+        goog.style.setElementShown(grant, false);
+      } else {
+        // we no longer do that again
+        var a_grant = grant.querySelector('a');
+        this.getHandler().unlisten(a_grant, 'click', this.onGrantHostPermission);
+      }
+    }, this);
+  }
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
  */
 ydn.crm.sugarcrm.ui.Header.prototype.handleModelLogin = function(e) {
   var div_login = this.getElement().querySelector('.login-form');
