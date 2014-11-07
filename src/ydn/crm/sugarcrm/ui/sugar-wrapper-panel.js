@@ -193,7 +193,7 @@ ydn.crm.ui.SugarWrapperPanel.prototype.validateSugarPanels_ = function(name) {
         details.modulesInfo, ac, details.serverInfo);
     if (!this.hasSugarPanel(name)) {
       // remove other sugars panel
-      for (var j = 0; j < this.getChildCount(); j++) {
+      for (var j = this.getChildCount() - 1; j >= 0; j--) {
         var panel = /** @type {ydn.crm.sugarcrm.ui.SimpleSugarPanel} */ (
             this.removeChildAt(j, true));
         panel.dispose();
