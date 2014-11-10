@@ -83,7 +83,7 @@ ydn.crm.sugarcrm.model.Sugar = function(about, arr, opt_info) {
   this.user_ = new ydn.crm.sugarcrm.Record(this.getDomain(), ydn.crm.sugarcrm.ModuleName.USERS);
   this.initUser_();
   var pipe = ydn.msg.getMain();
-  this.handler.listen(pipe, [ydn.crm.Ch.SReq.LOGIN, ydn.crm.Ch.BReq.HOST_PERMISSION],
+  this.handler.listen(pipe, [ydn.crm.Ch.BReq.SUGARCRM, ydn.crm.Ch.BReq.HOST_PERMISSION],
       this.handleMessage);
 
   if (ydn.crm.sugarcrm.model.Sugar.DEBUG) {
@@ -102,7 +102,7 @@ goog.inherits(ydn.crm.sugarcrm.model.Sugar, goog.events.EventTarget);
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.Sugar.DEBUG = false;
+ydn.crm.sugarcrm.model.Sugar.DEBUG = true;
 
 
 /**
@@ -121,7 +121,10 @@ ydn.crm.sugarcrm.model.Sugar.Event = {
  * @param {ydn.msg.Event} e
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.handleMessage = function(e) {
-  if (e.type == ydn.crm.Ch.SReq.LOGIN) {
+  if (ydn.crm.sugarcrm.model.Sugar.DEBUG) {
+    window.console.log('handling message: ' + e.type, e.mesage);
+  }
+  if (e.type == ydn.crm.Ch.BReq.SUGARCRM) {
     var about = /** @type {SugarCrm.About} */ (e.getData());
     if (!!about && about.domain == this.getDomain()) {
       this.setAbout(about);

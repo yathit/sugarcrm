@@ -52,7 +52,7 @@ goog.inherits(ydn.crm.ui.SugarWrapperPanel, goog.ui.Component);
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.SugarWrapperPanel.DEBUG = false;
+ydn.crm.ui.SugarWrapperPanel.DEBUG = true;
 
 
 /**
@@ -201,6 +201,7 @@ ydn.crm.ui.SugarWrapperPanel.prototype.validateSugarPanels_ = function(name) {
         model.dispose();
       }
       this.addSugarPanel(sugar);
+      window.console.log('sugar panel ' + name + ' added.');
     } else if (ydn.crm.ui.SugarWrapperPanel.DEBUG) {
       window.console.log('sugar panel ' + name + ' already exists.');
     }
@@ -267,9 +268,14 @@ ydn.crm.ui.SugarWrapperPanel.prototype.hasSugarPanel = function(name) {
  * @return {!goog.async.Deferred}
  */
 ydn.crm.ui.SugarWrapperPanel.prototype.updateSugarPanels = function(sugars) {
+  if (ydn.crm.ui.SugarWrapperPanel.DEBUG) {
+    var pmsg = 'updating sugar panel';
+    window.console.log('updating sugar panel' + (this.updating_df_ ? ' in progress' : ''), sugars);
+  }
   if (this.updating_df_) {
     return this.updating_df_;
   }
+
   goog.asserts.assertArray(sugars, 'sugar domains');
   var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var q = link_panel.querySelector('a');
@@ -283,7 +289,7 @@ ydn.crm.ui.SugarWrapperPanel.prototype.updateSugarPanels = function(sugars) {
     goog.style.setElementShown(link_panel, false);
   }
   var dfs = [];
-  for (var i = this.getChildCount() - 1; i > 0; i--) {
+  for (var i = this.getChildCount() - 1; i >= 0; i--) {
     var ch = this.getChildAt(i);
     if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
       var domain = ch.getModel().getDomain();
@@ -304,6 +310,10 @@ ydn.crm.ui.SugarWrapperPanel.prototype.updateSugarPanels = function(sugars) {
     }
   }
   this.updating_df_ = goog.async.DeferredList.gatherResults(dfs).addBoth(function() {
+    var has_panel = this.getChildCount() > 0;
+    if (ydn.crm.ui.SugarWrapperPanel.DEBUG) {
+      window.console.log('updating sugar panels done');
+    }
     this.updating_df_ = null;
   }, this);
   return this.updating_df_;

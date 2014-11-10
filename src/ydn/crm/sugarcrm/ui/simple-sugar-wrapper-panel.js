@@ -4,7 +4,7 @@
  * If no sugarcrm available, 'Setup SugarCRM'
  * link is shown to bring Setup wizard. If no login or invalid login, panel
  * is hide.
- * 
+ *
  * The only different with ydn.crm.ui.SugarListPanel is this keep only one
  * sugarcrm panel.
  */
@@ -52,7 +52,7 @@ goog.inherits(ydn.crm.ui.SimpleSugarWrapperPanel, goog.ui.Component);
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.SimpleSugarWrapperPanel.DEBUG = false;
+ydn.crm.ui.SimpleSugarWrapperPanel.DEBUG = true;
 
 
 /**
@@ -152,6 +152,7 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.enterDocument = function() {
  */
 ydn.crm.ui.SimpleSugarWrapperPanel.prototype.updateHeader = function() {
 
+
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.isLogin()) {
     goog.style.setElementShown(this.getContentElement(), true);
@@ -200,6 +201,7 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.validateSugarPanels_ = function(nam
         model.dispose();
       }
       this.addSugarPanel(sugar);
+      window.console.log('sugar panel ' + name + ' added.');
     } else if (ydn.crm.ui.SimpleSugarWrapperPanel.DEBUG) {
       window.console.log('sugar panel ' + name + ' already exists.');
     }
@@ -262,16 +264,20 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.hasSugarPanel = function(name) {
 
 /**
  * Prepare sugar panels, if valid login.
- * @param {Array.<string>} sugars list of sugar domain.
+ * @param {Array.<SugarCrm.About>} sugars list of sugar domain.
  * @return {!goog.async.Deferred}
  */
-ydn.crm.ui.SimpleSugarWrapperPanel.prototype.updateSugarPanels = function(sugars) {
+ydn.crm.ui.SimpleSugarWrapperPanel.prototype.validateSugarPanels_ = function(sugars) {
+  if (ydn.crm.ui.SimpleSugarWrapperPanel.DEBUG) {
+    var pmsg = 'updating sugar panel';
+    window.console.log('updating sugar panel' + (this.updating_df_ ? ' in progress' : ''), sugars);
+  }
   if (this.updating_df_) {
     return this.updating_df_;
   }
+
   goog.asserts.assertArray(sugars, 'sugar domains');
-  var link_panel = this.getHeaderElement().querySelector('.' +
-      ydn.crm.ui.SimpleSugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL);
+  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SimpleSugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var q = link_panel.querySelector('a');
   if (!ydn.crm.ui.UserSetting.getInstance().isLogin()) {
     goog.style.setElementShown(link_panel, false);
@@ -283,7 +289,7 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.updateSugarPanels = function(sugars
     goog.style.setElementShown(link_panel, false);
   }
   var dfs = [];
-  for (var i = this.getChildCount() - 1; i > 0; i--) {
+  for (var i = this.getChildCount() - 1; i >= 0; i--) {
     var ch = this.getChildAt(i);
     if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
       var domain = ch.getModel().getDomain();
@@ -304,6 +310,10 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.updateSugarPanels = function(sugars
     }
   }
   this.updating_df_ = goog.async.DeferredList.gatherResults(dfs).addBoth(function() {
+    var has_panel = this.getChildCount() > 0;
+    if (ydn.crm.ui.SimpleSugarWrapperPanel.DEBUG) {
+      window.console.log('updating sugar panels done');
+    }
     this.updating_df_ = null;
   }, this);
   return this.updating_df_;
