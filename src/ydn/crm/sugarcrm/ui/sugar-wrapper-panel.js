@@ -52,7 +52,7 @@ goog.inherits(ydn.crm.ui.SugarWrapperPanel, goog.ui.Component);
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.SugarWrapperPanel.DEBUG = true;
+ydn.crm.ui.SugarWrapperPanel.DEBUG = false;
 
 
 /**
