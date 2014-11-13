@@ -279,11 +279,13 @@
                     <file name="css3button.css"/>
                     <file name="css3menubutton.css"/>
                     <file name="custombutton.css"/>
+                    <file name="datepicker.css"/>
                     <file name="dialog.css"/>
                     <file name="menu.css"/>
                     <file name="menuitem.css"/>
                     <file name="menubutton.css"/>
                     <file name="menuseparator.css"/>
+                    <file name="popupdatepicker.css"/>
                     <file name="submenu.css"/>
                     <file name="toolbar.css"/>
                 </filelist>

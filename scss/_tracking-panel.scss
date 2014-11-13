@@ -77,7 +77,16 @@
   margin: 12px 6px 0 2px;
 }
 
+.tracking-table-heading {
+  .toolbar {
+    padding-bottom: 4px;
+    overflow: hidden;
 
+    .right-bar {
+      float: right;
+    }
+  }
+}
 
 .pear-grid-cell-data-content.no-border,
 .pear-grid-row-highlight .pear-grid-cell-data-highlight .pear-grid-cell-data-content.no-border {
