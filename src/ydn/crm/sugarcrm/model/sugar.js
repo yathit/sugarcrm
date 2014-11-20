@@ -26,6 +26,7 @@ goog.provide('ydn.crm.sugarcrm.model.Sugar');
 goog.require('goog.events.EventHandler');
 goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.sugarcrm.model.ImmutableRecord');
+goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.sugarcrm.model.events');
 goog.require('ydn.crm.sugarcrm.utils');
 goog.require('ydn.debug.error.ConstraintError');
@@ -530,7 +531,7 @@ ydn.crm.sugarcrm.model.Sugar.prototype.archiveEmail = function(info,
 
 
 /**
- * Thoroughly find records using prefix list and full text serach.
+ * Thoroughly find records using prefix list and full text search.
  * @param {string} q query term.
  * @param {string} module_name filter by module
  * @return {!ydn.async.Deferred}
