@@ -6,7 +6,7 @@ goog.provide('ydn.crm.ui.SugarLogin');
 goog.require('goog.log');
 goog.require('goog.events.KeyHandler');
 goog.require('templ.ydn.crm.inj');
-goog.require('ydn.crm.inj');
+goog.require('ydn.crm.base');
 
 
 

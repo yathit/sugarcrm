@@ -3,12 +3,12 @@
  */
 
 goog.provide('ydn.crm.ui.SugarSetup');
-goog.require('goog.log');
 goog.require('goog.events.KeyHandler');
+goog.require('goog.log');
 goog.require('goog.ui.Component');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.Ch');
-goog.require('ydn.crm.inj');
+goog.require('ydn.crm.base');
 
 
 
@@ -24,7 +24,7 @@ ydn.crm.ui.SugarSetup = function(opt_dom) {
   goog.base(this, opt_dom);
   /**
    * @protected
-   * @type {string?}
+   * @type {?string}
    */
   this.channel_name = null;
 };

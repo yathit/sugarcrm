@@ -12,7 +12,7 @@ goog.require('goog.events');
 goog.require('goog.style');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.data');
-goog.require('ydn.crm.inj');
+goog.require('ydn.crm.base');
 goog.require('ydn.db');
 goog.require('ydn.msg');
 
