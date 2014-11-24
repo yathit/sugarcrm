@@ -103,7 +103,7 @@ goog.inherits(ydn.crm.sugarcrm.model.Sugar, goog.events.EventTarget);
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.Sugar.DEBUG = true;
+ydn.crm.sugarcrm.model.Sugar.DEBUG = false;
 
 
 /**
