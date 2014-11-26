@@ -88,6 +88,57 @@
   }
 }
 
+.tracking-datalist {
+  .datalist-item {
+    padding: 4px;
+
+    .stats {
+      flex-shrink: 0;
+      padding-left: 4px;
+      cursor: default;
+    }
+
+    .lastopen {
+      white-space: pre;
+      color: gray;
+      font-style: italic;
+    }
+
+    .label {
+      flex-shrink: 1;
+    }
+
+    .center {
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+
+    .symbol {
+      font-weight: bolder;
+      font-style: italic;
+    }
+
+    .subject {
+      color: gray;
+    }
+  }
+
+  .datalist-item > * {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    height: 1.3em;
+  }
+
+  .datalist-item > * > * {
+
+    overflow: hidden;
+
+  }
+
+}
+
 .pear-grid-cell-data-content.no-border,
 .pear-grid-row-highlight .pear-grid-cell-data-highlight .pear-grid-cell-data-content.no-border {
   border: 0;
