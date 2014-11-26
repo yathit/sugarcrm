@@ -89,6 +89,15 @@
 }
 
 .tracking-datalist {
+  .feeditem {
+    padding: 4px;
+    height: 1em;
+    overflow: hidden;
+
+  }
+}
+
+.tracking-datalist {
   .datalist-item {
     padding: 4px;
 
