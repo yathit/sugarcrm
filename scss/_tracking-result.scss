@@ -77,6 +77,20 @@
     .subject {
       color: gray;
     }
+
+    .detail {
+      display: flex;
+      flex-direction: row;
+      overflow: visible;
+      flex-wrap: nowrap;
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow: visible;
+      }
+    }
   }
 
   .datalist-item > * {
@@ -92,6 +106,8 @@
     overflow: hidden;
 
   }
+
+
 
 }
 
