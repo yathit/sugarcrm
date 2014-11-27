@@ -51,7 +51,7 @@
     .stats {
       flex-shrink: 0;
       padding-left: 4px;
-      cursor: default;
+      cursor: pointer;
     }
 
     .lastopen {
@@ -78,22 +78,45 @@
       color: gray;
     }
 
-    .detail {
+    .detail > * {
       display: flex;
       flex-direction: row;
       overflow: visible;
       flex-wrap: nowrap;
+    }
 
-      .item {
+    .detail {
+      .hit-list {
         display: flex;
         flex-direction: column;
+      }
+      .hit-list .item {
+        display: flex;
+        flex-direction: row;
         justify-content: flex-end;
-        overflow: visible;
+        overflow: hidden;
+
+        .center {
+          flex-grow: 1;
+          flex-shrink: 1;
+          text-overflow: ellipsis;
+
+        }
+
+      }
+
+      .item > * {
+        white-space: nowrap;
+        word-break: break-all;
+        overflow: hidden;
+        min-width: 16px;
+        display: inline-block;
+        padding: 0 1px;
       }
     }
   }
 
-  .datalist-item > * {
+  .datalist-item > .row {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
