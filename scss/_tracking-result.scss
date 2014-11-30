@@ -21,8 +21,43 @@
 .tracking-sidebar {
   height: 100%;
 
+  .head {
+    height: 24px;
+    padding: 2px 0;
+
+    .toolbar > * {
+      display: inline-block;
+    }
+
+    .toolbar {
+      input {
+        width: 80px
+      }
+      .more, .less {
+
+      }
+      .more-less-toggle {
+        float: right;
+      }
+
+      .stat-panel {
+        display: inline-block;
+        min-width: 18px;
+        height: 18px;
+        text-align: center;
+        vertical-align: middle;
+        border: solid thin gray;
+        border-radius: 2px;
+        line-height: 18px;
+        margin-top: 2px;
+        cursor: default;
+      }
+
+    }
+  }
+
   .content {
-    height: calc(100% - 20px);
+    height: calc(100% - 24px);
     overflow-y: auto;
   }
 
