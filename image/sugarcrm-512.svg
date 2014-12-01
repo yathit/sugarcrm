@@ -1,9 +1,0 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
- <g>
-  <title>Layer 1</title>
-  <polygon id="svg_1" points="243,467 50,397 50,131 243,210 " stroke-miterlimit="10" stroke-width="2" stroke="#1D1E1C" fill="#3b3536"/>
-  <polygon id="svg_lower_right" points="463,392 263,467 263,211 463,131 " stroke-miterlimit="10" stroke-width="2" stroke="#1D1E1C" fill="#cecccb"/>
-  <polyline id="svg_3" points="63,113 256,38 448,115 255.5,193 63,113   " stroke-miterlimit="10" stroke-width="2" stroke="#1D1E1C" fill="#e61625"/>
-  <polygon id="svg_4" points="480 408 255.5 490 33 405 36 108 255.5 19 480 109" stroke-miterlimit="10" stroke-width="2" stroke="#1D1E1C" fill="none"/>
- </g>
-</svg>

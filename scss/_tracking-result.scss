@@ -17,48 +17,57 @@
 }
 
 
+$tracking-base-color: LightBlue;
 
 .tracking-sidebar {
   height: 100%;
+  border: solid thin $tracking-base-color;
 
-  .head {
+  .sidebar-head {
     height: 24px;
-    padding: 2px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 2px;
+    background-color: $tracking-base-color;
 
-    .toolbar > * {
-      display: inline-block;
+    .head-icon {
+      fill: white;
     }
 
-    .toolbar {
-      input {
-        width: 80px
-      }
-      .more, .less {
+    .center {
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
 
-      }
-      .more-less-toggle {
-        float: right;
-      }
 
-      .stat-panel {
-        display: inline-block;
-        min-width: 18px;
-        height: 18px;
-        text-align: center;
-        vertical-align: middle;
-        border: solid thin gray;
-        border-radius: 2px;
-        line-height: 18px;
-        margin-top: 2px;
-        cursor: default;
-      }
-
+    .stat-panel {
+      display: inline-block;
+      min-width: 16px;
+      height: 16px;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 16px;
+      margin-top: 2px;
+      cursor: default;
+      color: white;
     }
   }
 
-  .content {
+  .sidebar-head > * {
+    margin: 2px;
+  }
+
+  .sidebar-content {
     height: 250px;
     overflow-y: auto;
+    margin-top: 4px;
+
+    .toolbar {
+      margin-left: 4px;
+    }
   }
 
   .datalist {
