@@ -4,7 +4,6 @@
 
 
 /**
- * @type {Object}
  * @const
  */
 var CrmApp = {};
