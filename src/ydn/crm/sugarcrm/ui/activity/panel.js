@@ -189,6 +189,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.createDom = function() {
   this.addChild(this.search, true);
   this.addChild(this.new_record, true);
   this.addChild(this.detail_panel, true);
+  this.tabbar.setSelectedTabIndex(0);
 };
 
 

@@ -62,7 +62,7 @@ ydn.crm.ui.SidebarPanel.CSS_CLASS_NO_SUGAR_PANEL = 'no-sugar-panel';
 
 /** @return {string} */
 ydn.crm.ui.SidebarPanel.prototype.getCssClass = function() {
-  return ydn.crm.ui.SugarWrapperPanel.CSS_CLASS;
+  return ydn.crm.ui.SidebarPanel.CSS_CLASS;
 };
 
 
@@ -120,7 +120,7 @@ ydn.crm.ui.SidebarPanel.prototype.enterDocument = function() {
   var handler = this.getHandler();
 
   var a_grant = this.getHeaderElement().querySelector('a.' +
-      ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_SUGAR_SETUP_LINK);
+      ydn.crm.ui.SidebarPanel.CSS_CLASS_SUGAR_SETUP_LINK);
   handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
 };
 
@@ -139,7 +139,7 @@ ydn.crm.ui.SidebarPanel.prototype.getSugarCrmPanel = function() {
  * @param {?SugarCrm.About} about
  */
 ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
-  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL);
+  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SidebarPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var q = link_panel.querySelector('a');
   var panel = this.getSugarCrmPanel();
   if (!about || !about.isLogin) {
