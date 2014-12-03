@@ -1,5 +1,7 @@
 /**
  * @fileoverview Contact sidebar panel.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
