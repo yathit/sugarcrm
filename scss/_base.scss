@@ -13,6 +13,14 @@ $font-base: arial,sans-serif;
   font-family: $font-base;
   font-size: 12px;
 
+  h5 {
+    font-size: 1em;
+    font-weight: normal;
+    font-style: italic;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 0.5em;
+  }
+
   INPUT {
     font-family: $font-base;     /* Overridden by font: -webkit-small-control; */
     font-size: 100%;

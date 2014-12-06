@@ -75,6 +75,32 @@
   }
 }
 
+.donotrack-section {
+  margin: 12px 0;
+
+  SUMMARY {
+    font-weight: bold;
+  }
+
+  SUMMARY:after {
+    float: left;
+    margin-right: 4px;
+  }
+
+  .donottrack-content {
+    margin: 8px 0;
+  }
+
+  LI.deleting .name {
+    color: gray;
+  }
+
+  LI.deleted .name {
+    text-decoration: line-through;
+  }
+}
+
+
 .pear-grid-cell-data-content.no-border,
 .pear-grid-row-highlight .pear-grid-cell-data-highlight .pear-grid-cell-data-content.no-border {
   border: 0;
