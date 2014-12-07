@@ -89,3 +89,15 @@
     fill:  #00ff00;
   }
 }
+
+.tracking-button.goog-custom-button-checked.donottrack, .tracking-button.tracked.donottrack {
+  svg {
+    fill:  #ff0000;
+  }
+}
+
+.tracking-button.goog-custom-button-checked.donottrack:hover, .tracking-button.tracked.donottrack:hover {
+  svg {
+    fill:  #ff0000;
+  }
+}
