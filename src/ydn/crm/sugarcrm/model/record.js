@@ -30,6 +30,7 @@ goog.require('ydn.crm.sugarcrm.model.EmailGroup');
 goog.require('ydn.crm.sugarcrm.model.Group');
 goog.require('ydn.crm.sugarcrm.model.NameGroup');
 goog.require('ydn.crm.sugarcrm.model.PhoneGroup');
+goog.require('ydn.gdata.m8.ExternalId');
 goog.require('ydn.msg');
 
 
@@ -283,7 +284,7 @@ ydn.crm.sugarcrm.model.Record.prototype.patch = function(patches) {
 
 /**
  * Delete a record.
- * @returns {!goog.async.Deferred}
+ * @return {!goog.async.Deferred}
  */
 ydn.crm.sugarcrm.model.Record.prototype.deleteRecord = function() {
   if (!this.hasRecord()) {
