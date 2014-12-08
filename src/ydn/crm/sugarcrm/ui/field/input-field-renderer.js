@@ -5,6 +5,8 @@
 
 goog.provide('ydn.crm.sugarcrm.ui.field.InputFieldRenderer');
 goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
+goog.require('ydn.crm.ui');
+goog.require('ydn.ui.FlyoutMenu');
 
 
 

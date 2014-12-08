@@ -8,7 +8,6 @@
 goog.provide('ydn.crm.sugarcrm.ui.field.Field');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.PopupMenu');
-goog.require('ydn.crm.ui.Refreshable');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.sugarcrm.ui.events.ChangedEvent');
 goog.require('ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer');
@@ -17,6 +16,7 @@ goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
 goog.require('ydn.crm.sugarcrm.ui.field.InputFieldRenderer');
 goog.require('ydn.crm.sugarcrm.ui.field.TextFieldRenderer');
 goog.require('ydn.crm.sugarcrm.ui.setting.Field');
+goog.require('ydn.crm.ui.Refreshable');
 
 
 

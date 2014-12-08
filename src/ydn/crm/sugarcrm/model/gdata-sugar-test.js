@@ -1,0 +1,87 @@
+goog.provide('ydn.crm.sugarcrm.model.GDataSugarTest');
+goog.setTestOnly('ydn.crm.sugarcrm.model.GDataSugarTest');
+
+goog.require('goog.testing.asserts');
+goog.require('goog.testing.jsunit');
+goog.require('ydn.crm.sugarcrm.model.GDataSugar');
+goog.require('ydn.crm.sugarcrm.model.Record');
+goog.require('ydn.crm.test');
+
+
+function setUp() {
+  ydn.crm.test.initPipe();
+}
+
+
+function test_context_data() {
+  ydn.crm.test.getMain().addMockRespond(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, []);
+  ydn.crm.test.getMain().addMockSugarRespond(ydn.crm.Ch.SReq.QUERY, [{result: []}]);
+  var email = 'test@example.com';
+  var fn = 'Test User';
+  var cm = new ydn.crm.inj.Context('kyaw@email.com', email, fn);
+  var gdata = cm.toContactEntry();
+  assertEquals('context name', fn, gdata.getFullName());
+  assertArrayEquals('context email', [email], gdata.getEmails());
+}
+
+
+function test_no_match() {
+  ydn.crm.test.getMain().addMockRespond(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, []);
+  ydn.crm.test.getMain().addMockSugarRespond(ydn.crm.Ch.SReq.QUERY, [{result: []}]);
+  var sugar = ydn.crm.test.createGDataSugar();
+  var email = 'test@example.com';
+  var cm = new ydn.crm.inj.Context('kyaw@email.com', email);
+  var df = sugar.update(cm);
+  assertNotNull('context', sugar.context_);
+  assertNull('gdata', sugar.contact_);
+  assertNull('record', sugar.record_);
+}
+
+
+function test_gdata_match() {
+  var gdata = ydn.crm.test.createGDataContact();
+  ydn.crm.test.getMain().addMockRespond(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, [gdata]);
+  ydn.crm.test.getMain().addMockSugarRespond(ydn.crm.Ch.SReq.QUERY, [{result: []}]);
+  var sugar = ydn.crm.test.createGDataSugar();
+  var email = 'test@example.com';
+  var cm = new ydn.crm.inj.Context('kyaw@email.com', email);
+  var df = sugar.update(cm);
+  assertNotNull('gdata', sugar.contact_);
+  assertNull('record', sugar.record_);
+}
+
+
+function test_synced() {
+  var sugar = ydn.crm.test.createGDataSugar();
+  var gdata = ydn.crm.test.createGDataContact();
+  var record = ydn.crm.test.createContactSugarCrmRecord();
+  var ex_id = new ydn.gdata.m8.ExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
+      sugar.getDomain(), 'Contacts', record.id, NaN, 1379715000000);
+  gdata.gContact$externalId = [ex_id.toExternalId()];
+  ydn.crm.test.getMain().addMockRespond(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, [gdata]);
+  ydn.crm.test.getMain().addMockSugarRespond(ydn.crm.Ch.SReq.QUERY, [{
+    store: 'Contacts',
+    result: [record]
+  }]);
+  var email = 'test@example.com';
+  var cm = new ydn.crm.inj.Context('kyaw@email.com', email);
+  var df = sugar.update(cm);
+  assertNotNull('gdata', sugar.contact_);
+  assertNotNull('record', sugar.record_);
+}
+
+
+function test_record_match() {
+  var record = ydn.crm.test.createContactSugarCrmRecord();
+  ydn.crm.test.getMain().addMockRespond(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, []);
+  ydn.crm.test.getMain().addMockSugarRespond(ydn.crm.Ch.SReq.QUERY, [{
+    store: 'Contacts',
+    result: [record]
+  }]);
+  var sugar = ydn.crm.test.createGDataSugar();
+  var email = 'test@example.com';
+  var cm = new ydn.crm.inj.Context('kyaw@email.com', email);
+  var df = sugar.update(cm);
+  assertNull('gdata', sugar.contact_);
+  assertNotNull('record', sugar.record_);
+}
