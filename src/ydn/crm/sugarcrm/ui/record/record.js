@@ -351,7 +351,6 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) 
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.onSaveClick = function(e) {
   var patches = this.body_panel.collectData();
-  var model = this.getModel();
   this.patch(patches);
 };
 
@@ -579,10 +578,13 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.patch = function(patches) {
    * @type {ydn.crm.sugarcrm.model.Record}
    */
   var model = this.getModel();
-  var mid = ydn.crm.msg.Manager.addStatus('Updating...');
+  var is_new = !model.hasRecord();
+  var status = is_new ? 'Creating ...' : 'Updating...';
+  var mid = ydn.crm.msg.Manager.addStatus(status);
   return model.patch(patches).addCallbacks(function(x) {
     this.setDirty(false);
-    ydn.crm.msg.Manager.setStatus(mid, model.getModuleName(), ' updated.');
+    var status = is_new ? ' created.' : 'updated.';
+    ydn.crm.msg.Manager.setStatus(mid, model.getModuleName(), status);
     var href = /** @type {string} */ (model.getViewLink());
     ydn.crm.msg.Manager.setLink(mid, href, model.getLabel(), 'View in SugarCRM');
   }, function(e) {

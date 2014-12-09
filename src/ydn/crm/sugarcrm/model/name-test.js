@@ -3,8 +3,8 @@ goog.setTestOnly('ydn.crm.sugarcrm.model.NameTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.sugarcrm.model.Record');
+goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.test');
 
 
