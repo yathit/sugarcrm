@@ -71,6 +71,7 @@ ydn.crm.sugarcrm.ui.SugarPanel.prototype.createDom = function() {
   goog.style.setElementShown(content_ele, false);
 
   var header_panel = new ydn.crm.sugarcrm.ui.Header(this.getModel(), dom);
+  this.addChild(header_panel);
   header_panel.render(head_ele);
 };
 

@@ -121,6 +121,15 @@ ydn.crm.sugarcrm.model.Record.prototype.getLabel = function() {
 
 
 /**
+ * SugarCRM meta data.
+ * @return {ydn.crm.sugarcrm.Meta}
+ */
+ydn.crm.sugarcrm.model.Record.prototype.getMeta = function() {
+  return this.parent;
+};
+
+
+/**
  * SugarCRM instance.
  * @return {ydn.crm.sugarcrm.model.Sugar}
  */

@@ -7,6 +7,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.model.EmailGroup');
+goog.require('ydn.crm.sugarcrm.Meta');
 goog.require('ydn.crm.sugarcrm.model.EmailField');
 goog.require('ydn.crm.sugarcrm.model.Group');
 goog.require('ydn.object');
@@ -78,7 +79,7 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.isBean = function() {
   if (goog.isDef(email)) {
     return goog.isArray(email);
   } else {
-    return !!this.module.getSugar().isVersion7();
+    return !!this.module.getMeta().isVersion7();
   }
 };
 

@@ -25,6 +25,7 @@
 goog.provide('ydn.crm.sugarcrm.model.Sugar');
 goog.require('goog.events.EventHandler');
 goog.require('ydn.crm.Ch');
+goog.require('ydn.crm.sugarcrm.Meta');
 goog.require('ydn.crm.sugarcrm.model.ImmutableRecord');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.sugarcrm.model.events');
@@ -40,6 +41,7 @@ goog.require('ydn.debug.error.ConstraintError');
  * @param {SugarCrm.ServerInfo=} opt_info
  * @constructor
  * @extends {goog.events.EventTarget}
+ * @implements {ydn.crm.sugarcrm.Meta}
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
@@ -142,7 +144,7 @@ ydn.crm.sugarcrm.model.Sugar.prototype.handleMessage = function(e) {
 
 /**
  * Get version.
- * @return {string} SugarCrmVersion
+ * @return {string} SugarCrm Version
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.getVersion = function() {
   return this.info ? this.info.version || '' : '';

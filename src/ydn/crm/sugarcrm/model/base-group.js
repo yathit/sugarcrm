@@ -60,14 +60,6 @@ ydn.crm.sugarcrm.model.BaseGroup.DEBUG = false;
 
 
 /**
- * @return {string}
- */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getDomain = function() {
-  return this.module.getDomain();
-};
-
-
-/**
  * @return {SugarCrm.ModuleInfo}
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getModuleInfo = function() {
@@ -81,6 +73,14 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getModuleInfo = function() {
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldInfo = function(name) {
   return this.module.getFieldInfo(name);
+};
+
+
+/**
+ * @return {ydn.crm.sugarcrm.Meta}
+ */
+ydn.crm.sugarcrm.model.BaseGroup.prototype.getMeta = function() {
+  return this.module.getMeta();
 };
 
 

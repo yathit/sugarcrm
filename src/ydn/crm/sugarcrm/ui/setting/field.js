@@ -269,7 +269,8 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.createUserSetting = function() {
  * @const
  * @type {Array.<string>}
  */
-ydn.crm.sugarcrm.ui.setting.Group.NORMALLY_SHOW = ['name', 'email', 'phone', ''];
+ydn.crm.sugarcrm.ui.setting.Group.NORMALLY_SHOW = ['name', 'email', 'phone',
+  'primary_address', 'alt_address', ''];
 
 
 /**

@@ -325,7 +325,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
 ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) {
   var cmd = this.head_menu.handleClick(e);
   var dp_ = ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE + '-';
-  if (cmd == 'edit') {
+  if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.EDIT) {
     this.setEditMode(!this.getEditMode());
   } else if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.DELETE) {
     this.handleRecordDelete(e);

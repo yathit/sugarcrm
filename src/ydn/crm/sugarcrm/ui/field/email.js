@@ -56,3 +56,15 @@ ydn.crm.sugarcrm.ui.field.Email.prototype.createClearPatch = function() {
   return this.getModel().removeEmail();
 };
 
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.ui.field.Email.prototype.createDom = function() {
+  ydn.crm.sugarcrm.ui.field.Email.base(this, 'createDom');
+  var m = /** @type {ydn.crm.sugarcrm.model.EmailField} */ (this.getModel());
+  if (!m.getMeta().isVersion7() && this.getFieldName() == 'email') {
+    // in SugarCRM v6, the field 'email' is not used
+    this.setNormallyHide(true);
+  }
+};

@@ -134,6 +134,9 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.collectData = function() {
       obj[f.getFieldName()] = value;
     }
   }
+  if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && obj) {
+    window.console.log(this, obj);
+  }
   return obj;
 };
 

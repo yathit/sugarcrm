@@ -59,3 +59,10 @@ ydn.crm.sugarcrm.ui.group.Email.prototype.reset = function() {
 };
 
 
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.ui.group.Email.prototype.collectData = function() {
+  var patch = ydn.crm.sugarcrm.ui.group.Email.base(this, 'collectData');
+  return patch;
+};

@@ -51,6 +51,14 @@ ydn.crm.sugarcrm.model.Field = function(parent, field) {
 
 
 /**
+ * @return {ydn.crm.sugarcrm.Meta}
+ */
+ydn.crm.sugarcrm.model.Field.prototype.getMeta = function() {
+  return this.parent.getMeta();
+};
+
+
+/**
  * @return {ydn.crm.sugarcrm.ModuleName}
  */
 ydn.crm.sugarcrm.model.Field.prototype.getModuleName = function() {
