@@ -22,6 +22,7 @@
 goog.provide('ydn.crm.sugarcrm.ui.setting.Field');
 goog.provide('ydn.crm.sugarcrm.ui.setting.Group');
 goog.provide('ydn.crm.sugarcrm.ui.setting.Setting');
+goog.require('ydn.crm.sugarcrm');
 goog.require('ydn.crm.ui.UserSetting');
 
 
