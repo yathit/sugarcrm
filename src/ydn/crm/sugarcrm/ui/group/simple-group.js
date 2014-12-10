@@ -174,7 +174,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.patchOptionField = function(el, 
     field_value = input.value;
   } else {
     // textarea element.
-    field_value = input.textContent;
+    field_value = input.value;
   }
   patches[field_name] = field_value;
   return true;

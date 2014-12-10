@@ -59,36 +59,6 @@
 
 /**
  * Edit name dialog box content.
- */
-{template .nameEditor}
-  {@param fields: list<[name: string, label: string, value: string, type: string, listId: string|null]>}
-  <div class="field-edit-dialog">
-    <table>
-
-    <tbody>
-    {foreach $field in $fields}
-      <tr class="field" name="{$field.name}">
-        <td class="name">{$field.label}</td>
-        <td>
-          {if $field.type == 'textarea'}
-            <textarea class="value">{$field.value}</textarea>
-          {else}
-            <input class="value"
-                type="{$field.type}"
-                {if $field.listId}list="{$field.listId}"{/if}
-                value="{$field.value}" />
-          {/if}
-        </td>
-      </tr>
-    {/foreach}
-    </tbody>
-    </table>
-  </div>
-{/template}
-
-
-/**
- * Edit name dialog box content.
  * @param full_name
  */
 {template .nameHeader}

@@ -229,7 +229,7 @@ ydn.crm.sugarcrm.ui.field.Field.createEditor = function(data) {
     td1.textContent = field.label;
     if (field.type == 'textarea') {
       var tx = document.createElement('textarea');
-      tx.textContent = field.value;
+      tx.value = field.value;
       tx.setAttribute('rows', '3');
       td2.appendChild(tx);
     } else {
@@ -288,14 +288,7 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.handleEditorSelect = function(e) {
     for (var i = 0; i < fields_el.length; i++) {
       var field_name = fields_el[i].getAttribute('name');
       var input = fields_el[i].querySelector('.value');
-      var field_value;
-      if (input.tagName == goog.dom.TagName.INPUT) {
-        field_value = input.value;
-      } else {
-        // textarea element.
-        field_value = input.textContent;
-      }
-      patches[field_name] = field_value;
+      patches[field_name] = input.value;
     }
     var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patches, this);
     this.dispatchEvent(ev);

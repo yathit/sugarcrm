@@ -172,21 +172,13 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.fillByMetaContact = function(meta) {
 ydn.crm.sugarcrm.ui.group.Address.prototype.patchOptionField = function(el, patches) {
   var field_name = el.getAttribute('name');
   var input = el.querySelector('.value').firstElementChild;
-  var field_value;
+
   var original = this.getModel().getFieldAsValue(field_name);
-  if (input.tagName == goog.dom.TagName.INPUT) {
-    if (input.value == original) {
-      return false;
-    }
-    field_value = input.value;
-  } else {
-    // textarea element.
-    if (input.textContent == original) {
-      return false;
-    }
-    field_value = input.textContent;
+
+  if (input.value == original) {
+    return false;
   }
-  patches[field_name] = field_value;
+  patches[field_name] = input.value;
   return true;
 };
 

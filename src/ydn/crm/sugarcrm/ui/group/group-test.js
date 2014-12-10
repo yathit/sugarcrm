@@ -53,49 +53,96 @@ var simulateDialogEdit = function(name, value) {
   var street = dialog.querySelector('TR[name=' + name + '] .value');
   var input = street.firstElementChild;
   if (input.tagName == 'TEXTAREA') {
-    input.textContent = value;
+    input.value = value;
   } else {
     input.value = value;
   }
 };
 
-var createAddressPanelAndEdit = function() {
+
+var editDialog = function() {
+  var edit = attach_el.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON);
+  edit.click(); // open edit dialog
+};
+
+var createAddressPanel = function() {
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('primary_address');
   var panel = new ydn.crm.sugarcrm.ui.group.Address(group);
   panel.render(attach_el);
-  var edit = attach_el.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON);
-  edit.click(); // open edit dialog
   return panel;
 };
 
-var closeDialogAndCollectData = function(panel) {
+var closeDialog = function() {
   var ok_btn = document.querySelector('div.modal-dialog button[name=ok]');
   ok_btn.click();
-  return panel.collectData();
 };
 
 function test_new_address_street() {
-  var panel = createAddressPanelAndEdit();
+  var panel = createAddressPanel();
+  editDialog();
   simulateDialogEdit('primary_address_street', 'Street 1');
-  var data = closeDialogAndCollectData(panel);
+  closeDialog();
+  var data = panel.collectData();
 
   assertArrayEquals('edited fields', ['primary_address_street'], Object.keys(data));
   assertEquals('edited value', 'Street 1', data['primary_address_street']);
+}
 
+function test_new_address_street_multi_lines() {
+  var panel = createAddressPanel();
+  editDialog();
+  simulateDialogEdit('primary_address_street', 'Street 1\n#09-118');
+  closeDialog();
+  var data = panel.collectData();
+
+  assertArrayEquals('edited fields', ['primary_address_street'], Object.keys(data));
+  assertEquals('edited value', 'Street 1\n#09-118', data['primary_address_street']);
 }
 
 function test_new_address() {
-  var panel = createAddressPanelAndEdit();
+  var panel = createAddressPanel();
+  editDialog();
+  simulateDialogEdit('primary_address_street', 'St 1');
   simulateDialogEdit('primary_address_city', 'City');
   simulateDialogEdit('primary_address_state', 'CA');
   simulateDialogEdit('primary_address_postalcode', '12345');
   simulateDialogEdit('primary_address_country', 'SG');
-  var data = closeDialogAndCollectData(panel);
+  closeDialog();
+  var data = panel.collectData();
 
-  assertArrayEquals('edited fields', ['primary_address_city',
+  assertArrayEquals('edited fields', ['primary_address_street',
+    'primary_address_city',
     'primary_address_state', 'primary_address_postalcode',
     'primary_address_country'], Object.keys(data));
+  assertEquals('primary_address_street', 'St 1', data['primary_address_street']);
+  assertEquals('primary_address_city', 'City', data['primary_address_city']);
+  assertEquals('primary_address_state', 'CA', data['primary_address_state']);
+  assertEquals('primary_address_postalcode', '12345', data['primary_address_postalcode']);
+  assertEquals('primary_address_country', 'SG', data['primary_address_country']);
+
+}
+
+
+function test_new_address_re_edit() {
+  var panel = createAddressPanel();
+  editDialog();
+  simulateDialogEdit('primary_address_street', 'St 1');
+  simulateDialogEdit('primary_address_city', 'City');
+  simulateDialogEdit('primary_address_state', 'CA');
+  simulateDialogEdit('primary_address_postalcode', '12345');
+  simulateDialogEdit('primary_address_country', 'SG');
+  closeDialog();
+
+  editDialog();
+  closeDialog();
+  var data = panel.collectData();
+
+  assertArrayEquals('edited fields', ['primary_address_street',
+    'primary_address_city',
+    'primary_address_state', 'primary_address_postalcode',
+    'primary_address_country'], Object.keys(data));
+  assertEquals('primary_address_street', 'St 1', data['primary_address_street']);
   assertEquals('primary_address_city', 'City', data['primary_address_city']);
   assertEquals('primary_address_state', 'CA', data['primary_address_state']);
   assertEquals('primary_address_postalcode', '12345', data['primary_address_postalcode']);
