@@ -70,7 +70,8 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.isEditable = function() {
  * @return {!ydn.crm.sugarcrm.ui.setting.Setting}
  */
 ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getSetting = function() {
-  return new ydn.crm.sugarcrm.ui.setting.Group(this.getGroupName());
+  return new ydn.crm.sugarcrm.ui.setting.Group(this.getModel().getModuleName(),
+      this.getGroupName());
 };
 
 

@@ -143,19 +143,33 @@ CrmApp.SugarCrmSettingUnit.prototype.normallyHide;
  * Basic user setting used in UI modules.
  * @interface
  */
+CrmApp.SugarCrmModuleSetting = function() {};
+
+
+/**
+ * @type {!Object.<CrmApp.SugarCrmSettingUnit>}
+ */
+CrmApp.SugarCrmModuleSetting.prototype.Group;
+
+
+/**
+ * @type {!Object.<CrmApp.SugarCrmSettingUnit>}
+ */
+CrmApp.SugarCrmModuleSetting.prototype.Field;
+
+
+
+/**
+ * Basic user setting used in UI modules.
+ * @interface
+ */
 CrmApp.SugarCrmSetting = function() {};
 
 
 /**
- * @type {!Object.<CrmApp.SugarCrmSettingUnit>}
+ * @type {!Object.<CrmApp.SugarCrmModuleSetting>}
  */
-CrmApp.SugarCrmSetting.prototype.Group;
-
-
-/**
- * @type {!Object.<CrmApp.SugarCrmSettingUnit>}
- */
-CrmApp.SugarCrmSetting.prototype.Field;
+CrmApp.SugarCrmSetting.prototype.Module;
 
 
 

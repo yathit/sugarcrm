@@ -73,7 +73,8 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.getRenderer = function() {
  * @return {!ydn.crm.sugarcrm.ui.setting.Field}
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.getSetting = function() {
-  return new ydn.crm.sugarcrm.ui.setting.Field(this.getModel().getFieldInfo());
+  var m = this.getModel();
+  return new ydn.crm.sugarcrm.ui.setting.Field(m.getModuleName(), m.getFieldInfo());
 };
 
 
@@ -407,16 +408,6 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.getValue = function() {
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.hasChanged = function() {
   return this.getValue() != this.collectData();
-};
-
-
-/**
- * Get user setting.
- * @return {?CrmApp.SugarCrmSettingUnit}
- */
-ydn.crm.sugarcrm.ui.field.Field.prototype.getUserSetting = function() {
-  var setting = ydn.crm.ui.UserSetting.getInstance().getSugarCrmSetting();
-  return setting.Field[this.getFieldName()] || null;
 };
 
 

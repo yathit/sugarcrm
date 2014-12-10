@@ -398,13 +398,13 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.showFieldDisplayDialog = function() 
         if (groups.indexOf(group) == -1) {
           groups.push(group);
           group_body.appendChild(tr);
-          setting = new ydn.crm.sugarcrm.ui.setting.Group(group);
+          setting = new ydn.crm.sugarcrm.ui.setting.Group(model_m_name, group);
         } else {
           continue;
         }
       } else {
         field_body.appendChild(tr);
-        setting = new ydn.crm.sugarcrm.ui.setting.Field(field);
+        setting = new ydn.crm.sugarcrm.ui.setting.Field(model_m_name, field);
       }
       tr.setAttribute('name', setting.getName());
       var show_td = document.createElement('td');
@@ -492,9 +492,9 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.setFieldDisplaySetting = function(is
     var field = module_info.module_fields[name];
     var setting;
     if (is_group) {
-      setting = new ydn.crm.sugarcrm.ui.setting.Group(name);
+      setting = new ydn.crm.sugarcrm.ui.setting.Group(record.getModuleName(), name);
     } else {
-      setting = new ydn.crm.sugarcrm.ui.setting.Field(field);
+      setting = new ydn.crm.sugarcrm.ui.setting.Field(record.getModuleName(), field);
     }
     setting.setNormallyHide(settings[name]);
   }

@@ -29,11 +29,17 @@ goog.require('ydn.crm.ui.UserSetting');
 /**
  * SugarCRM field setting model.
  * @see ydn.crm.sugarcrm.ui.setting.create
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
  * @param {string} name module field name.
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.setting.Setting = function(name) {
+ydn.crm.sugarcrm.ui.setting.Setting = function(m_name, name) {
+  /**
+   * @final
+   * @type {ydn.crm.sugarcrm.ModuleName}
+   */
+  this.module = m_name;
   /**
    * @final
    * @type {string}
@@ -116,13 +122,14 @@ ydn.crm.sugarcrm.ui.setting.Setting.prototype.setNormallyHide = function(val) {
 /**
  * SugarCRM field setting model.
  * @see ydn.crm.sugarcrm.ui.setting.create
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
  * @param {SugarCrm.ModuleField} field module field
  * @constructor
  * @extends {ydn.crm.sugarcrm.ui.setting.Setting}
  * @struct
  */
-ydn.crm.sugarcrm.ui.setting.Field = function(field) {
-  goog.base(this, field.name);
+ydn.crm.sugarcrm.ui.setting.Field = function(m_name, field) {
+  goog.base(this, m_name, field.name);
   /**
    * @final
    * @type {SugarCrm.ModuleField}
@@ -184,8 +191,10 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHideDefault = function() 
 ydn.crm.sugarcrm.ui.setting.Field.prototype.getUserSetting = function() {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var all_setting = user_setting.getSugarCrmSetting();
-  var value = all_setting.Field[this.field.name];
-  return all_setting.Field[this.field.name] || null;
+  var module_setting = all_setting.Module[this.module];
+  goog.asserts.assert(!!module_setting, 'field setting for ' + this.field.name +
+      ' on ' + this.module + ' not defined');
+  return module_setting.Field[this.field.name] || null;
 };
 
 
@@ -195,10 +204,11 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getUserSetting = function() {
 ydn.crm.sugarcrm.ui.setting.Field.prototype.createUserSetting = function() {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var all_setting = user_setting.getSugarCrmSetting();
-  if (!all_setting.Field[this.field.name]) {
-    all_setting.Field[this.field.name] = /** @type {CrmApp.SugarCrmSettingUnit} */ ({});
+  var module_setting = all_setting.Module[this.module];
+  if (!module_setting.Field[this.field.name]) {
+    module_setting.Field[this.field.name] = /** @type {CrmApp.SugarCrmSettingUnit} */ ({});
   }
-  return all_setting.Field[this.field.name];
+  return module_setting.Field[this.field.name];
 };
 
 
@@ -221,14 +231,15 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
 
 
 /**
- * SugarCRM field setting model.
+ * SugarCRM group setting model.
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
  * @param {string} name module field name
  * @constructor
  * @struct
  * @extends {ydn.crm.sugarcrm.ui.setting.Setting}
  */
-ydn.crm.sugarcrm.ui.setting.Group = function(name) {
-  goog.base(this, name);
+ydn.crm.sugarcrm.ui.setting.Group = function(m_name, name) {
+  goog.base(this, m_name, name);
 };
 goog.inherits(ydn.crm.sugarcrm.ui.setting.Group, ydn.crm.sugarcrm.ui.setting.Setting);
 
@@ -247,7 +258,10 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getLabel = function() {
 ydn.crm.sugarcrm.ui.setting.Group.prototype.getUserSetting = function() {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var all_setting = user_setting.getSugarCrmSetting();
-  return all_setting.Group[this.name] || null;
+  var module_setting = all_setting.Module[this.module];
+  goog.asserts.assert(!!module_setting, 'group setting for ' + this.name +
+      ' on ' + this.module + ' not defined');
+  return module_setting.Group[this.name] || null;
 };
 
 
@@ -257,10 +271,11 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getUserSetting = function() {
 ydn.crm.sugarcrm.ui.setting.Group.prototype.createUserSetting = function() {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var all_setting = user_setting.getSugarCrmSetting();
-  if (!all_setting.Group[this.name]) {
-    all_setting.Group[this.name] = /** @type {CrmApp.SugarCrmSettingUnit} */ ({});
+  var module_setting = all_setting.Module[this.module];
+  if (!module_setting.Group[this.name]) {
+    module_setting.Group[this.name] = /** @type {CrmApp.SugarCrmSettingUnit} */ ({});
   }
-  return all_setting.Group[this.name];
+  return module_setting.Group[this.name];
 };
 
 
