@@ -76,18 +76,26 @@
   display: inline-block;
 }
 
-.field-edit-dialog table {
-  padding: 20px 65px 10px 65px;
-  border-collapse: separate;
-  border-spacing: 2px;
-}
+.field-edit-dialog {
+  table {
+    padding: 20px 65px 10px 65px;
+    border-collapse: separate;
+    border-spacing: 2px;
+  }
 
-.field-edit-dialog td:first-child {
-  text-align: right;
-}
+  td:first-child {
+    text-align: right;
+    vertical-align: top;
+    line-height: 2em;
+  }
 
-.field-edit-dialog td:last-child {
-  text-align: left;
+  td:last-child {
+    text-align: left;
+  }
+
+  .value input, .value textarea {
+    width: 100%;
+  }
 }
 
 .record-body {

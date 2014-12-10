@@ -42,7 +42,7 @@ ydn.crm.sugarcrm.ui.group.Name.prototype.getModel;
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Name.prototype.getTemplateData = function() {
+ydn.crm.sugarcrm.ui.group.Name.prototype.getEditorTemplateData = function() {
 
   var model = this.getModel();
   var data;

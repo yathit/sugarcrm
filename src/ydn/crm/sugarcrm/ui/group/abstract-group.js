@@ -170,8 +170,14 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.simulateEditByField = function
   var input = this.getContentElement().querySelector('div.field' + field_sel + ' input.value');
   if (input) {
     input.value = value;
-  } else if (ydn.crm.sugarcrm.ui.group.AbstractGroup.DEBUG) {
-    window.console.warn('field ' + field_sel + ' not found in ' + this.getGroupName());
+  } else {
+    var txt = this.getContentElement().querySelector('div.field' + field_sel + ' textarea.value');
+    if (txt) {
+      txt.textContent = value;
+    } else {
+      window.console.error('field ' + field_sel + ' not found in ' + this.getGroupName());
+    }
+
   }
 };
 

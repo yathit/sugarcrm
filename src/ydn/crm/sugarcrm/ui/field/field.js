@@ -6,6 +6,8 @@
 
 
 goog.provide('ydn.crm.sugarcrm.ui.field.Field');
+goog.require('goog.dom.TagName');
+goog.require('goog.dom.forms');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.PopupMenu');
 goog.require('templ.ydn.crm.inj');
@@ -155,9 +157,7 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.onMoreMenuClick = function(e) {
 
 /**
  * Get template data for editor dialog.
- * @return {{
- *   fields: !Array.<{label: string, listId: (null|string|undefined), name: string, type: string, value: string}>
- * }}
+ * @return {ydn.crm.sugarcrm.ui.field.Field.EditorTemplateData}
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.getTemplateData = function() {
 
@@ -188,24 +188,69 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.getDataList = function() {
 
 
 /**
+ * @typedef {{
+ *   fields: !Array.<{label: string, listId: (null|string|undefined), name: string, type: string, value: string}>,
+ *   title: (string|undefined)
+ * }}
+ */
+ydn.crm.sugarcrm.ui.field.Field.EditorTemplateData;
+
+
+/**
  * Create editor dialog.
  * Dialog is disposed on hide.
- * @param {{
- *   fields: !Array.<{label: string, listId: (null|string|undefined), name: string, type: string, value: string}>
- * }} data template data.
+ * @param {ydn.crm.sugarcrm.ui.field.Field.EditorTemplateData} data template data.
  * @return {goog.ui.Dialog}
  */
 ydn.crm.sugarcrm.ui.field.Field.createEditor = function(data) {
+  var title = data.title || 'Edit record fields';
   var dialog = new goog.ui.Dialog();
   dialog.setButtonSet(goog.ui.Dialog.ButtonSet.createOkCancel());
-  dialog.setTitle('Edit name');
+  dialog.setTitle(title);
   dialog.setEscapeToCancel(true);
   dialog.setHasTitleCloseButton(true);
   dialog.setModal(true);
   dialog.setDisposeOnHide(true);
-  dialog.getContentElement().classList.add('ydn-crm');
-  var html = templ.ydn.crm.inj.nameEditor(data);
-  dialog.setContent(html.toString());
+
+  var content = dialog.getContentElement();
+  content.classList.add('ydn-crm');
+  var body = document.createElement('tbody');
+  for (var i = 0; i < data.fields.length; i++) {
+    var field = data.fields[i];
+    var tr = document.createElement('tr');
+    tr.className = 'field';
+    tr.setAttribute('name', field.name);
+    var td1 = document.createElement('td');
+    var td2 = document.createElement('td');
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    td1.className = 'name';
+    td2.className = 'value';
+    td1.textContent = field.label;
+    if (field.type == 'textarea') {
+      var tx = document.createElement('textarea');
+      tx.textContent = field.value;
+      tx.setAttribute('rows', '3');
+      td2.appendChild(tx);
+    } else {
+      var ip = document.createElement('input');
+      if (field.type) {
+        ip.type = field.type;
+      }
+      goog.dom.forms.setValue(ip, field.value);
+      if (field.listId) {
+        ip.setAttribute('list', field.listId);
+      }
+      td2.appendChild(ip);
+    }
+    body.appendChild(tr);
+  }
+  var table = document.createElement('table');
+  table.appendChild(body);
+  var div = document.createElement('div');
+  div.className = 'field-edit-dialog';
+  div.appendChild(table);
+  content.appendChild(div);
 
   return dialog;
 };
@@ -228,6 +273,8 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.showEditor = function() {
 
 
 /**
+ * Dispatch ChangedEvent when editor closed.
+ * Subclass should override this to get correct patch from the dialog box.
  * @param {goog.ui.Dialog.Event} e
  * @protected
  */
@@ -238,14 +285,17 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.handleEditorSelect = function(e) {
     var el = dialog.getContentElement();
     var fields_el = el.querySelectorAll('.field');
     var patches = {};
-    var model = this.getModel();
     for (var i = 0; i < fields_el.length; i++) {
       var field_name = fields_el[i].getAttribute('name');
-      var field_value = fields_el[i].querySelector('.value').value;
-      var original_value = model.getFieldValue();
-      if (original_value != field_value) {
-        patches[field_name] = field_value;
+      var input = fields_el[i].querySelector('.value');
+      var field_value;
+      if (input.tagName == goog.dom.TagName.INPUT) {
+        field_value = input.value;
+      } else {
+        // textarea element.
+        field_value = input.textContent;
       }
+      patches[field_name] = field_value;
     }
     var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patches, this);
     this.dispatchEvent(ev);
@@ -303,6 +353,39 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.reset = function() {
 
 
 /**
+ * Conform resulting value collected from input element conforms with model
+ * formatting.
+ * @param {*} new_value
+ * @param {ydn.crm.sugarcrm.model.Field} model
+ * @return {*}
+ */
+ydn.crm.sugarcrm.ui.field.Field.formatResult = function(new_value, model) {
+  var old_value = model.getField();
+  if (model.getType() == 'bool' && (goog.isDef(old_value) && !goog.isBoolean(old_value))) {
+    if (old_value == 'on' || old_value == 'off') {
+      new_value = new_value ? 'on' : 'off';
+    } else if (old_value == 'true' || old_value == 'false') {
+      new_value = new_value ? 'true' : 'false';
+    } else if (old_value == '1' || old_value == '0') {
+      new_value = new_value ? '1' : '0';
+    }
+  } else if (old_value === false && !model.getType() != 'bool' && new_value == 'false') {
+    new_value = old_value; // restore wired old value.
+  } else if (!goog.isDef(old_value) && !new_value) {
+    new_value = old_value; // restore undefined status.
+  }
+  if (ydn.crm.sugarcrm.ui.field.Field.DEBUG) {
+    window.console.log(model.getFieldName(), model.getType(), old_value, new_value);
+  }
+  if (new_value != old_value) {
+    return new_value;
+  } else {
+    return null;
+  }
+};
+
+
+/**
  * Collect data from UI.
  * @return {*} return null if not modified.
  */
@@ -311,29 +394,8 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.collectData = function() {
   /**
    * @type {ydn.crm.sugarcrm.model.Field}
    */
-  var m = this.getModel();
-  var old_value = m.getField();
-  if (m.getType() == 'bool' && (goog.isDef(old_value) && !goog.isBoolean(old_value))) {
-    if (old_value == 'on' || old_value == 'off') {
-      new_value = new_value ? 'on' : 'off';
-    } else if (old_value == 'true' || old_value == 'false') {
-      new_value = new_value ? 'true' : 'false';
-    } else if (old_value == '1' || old_value == '0') {
-      new_value = new_value ? '1' : '0';
-    }
-  } else if (old_value === false && !m.getType() != 'bool' && new_value == 'false') {
-    new_value = old_value; // restore wired old value.
-  } else if (!goog.isDef(old_value) && !new_value) {
-    new_value = old_value; // restore undefined status.
-  }
-  if (ydn.crm.sugarcrm.ui.field.Field.DEBUG) {
-    window.console.log(this.getFieldName(), m.getType(), old_value, new_value);
-  }
-  if (new_value != old_value) {
-    return new_value;
-  } else {
-    return null;
-  }
+  var model = this.getModel();
+  return ydn.crm.sugarcrm.ui.field.Field.formatResult(new_value, model);
 };
 
 

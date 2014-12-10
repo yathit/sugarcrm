@@ -70,10 +70,14 @@
       <tr class="field" name="{$field.name}">
         <td class="name">{$field.label}</td>
         <td>
-          <input class="value"
-              type="{$field.type}"
-              {if $field.listId}list="{$field.listId}"{/if}
-              value="{$field.value}" />
+          {if $field.type == 'textarea'}
+            <textarea class="value">{$field.value}</textarea>
+          {else}
+            <input class="value"
+                type="{$field.type}"
+                {if $field.listId}list="{$field.listId}"{/if}
+                value="{$field.value}" />
+          {/if}
         </td>
       </tr>
     {/foreach}

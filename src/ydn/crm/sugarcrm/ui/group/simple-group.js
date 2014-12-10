@@ -107,7 +107,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.onHoverButtonClick = function(e)
   var el = /** @type {Element} */ (e.currentTarget);
   var cmd = /** @type {ydn.crm.sugarcrm.model.Field.Command} */ (el.getAttribute('name'));
   if (ydn.crm.sugarcrm.ui.group.SimpleGroup.DEBUG) {
-    console.log(cmd);
+    window.console.log(cmd);
   }
   if (cmd) {
     // menu action are handle in group level.
@@ -146,7 +146,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.collectData = function() {
  */
 ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.doMenuActionDefault = function(mae) {
   if (mae.command == ydn.crm.sugarcrm.model.Field.Command.EDIT) {
-    var dialog = ydn.crm.sugarcrm.ui.field.Field.createEditor(this.getTemplateData());
+    var dialog = ydn.crm.sugarcrm.ui.field.Field.createEditor(this.getEditorTemplateData());
 
     this.getHandler().listen(dialog, goog.ui.Dialog.EventType.SELECT, this.handleEditorSelect, false);
     this.getHandler().listenOnce(dialog, goog.ui.PopupBase.EventType.HIDE, function(e) {
@@ -155,6 +155,29 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.doMenuActionDefault = function(m
 
     dialog.setVisible(true);
   }
+};
+
+
+/**
+ * Patch option fields when Edit dialog closed with OK.
+ * Subclass should override this to get correct patch from the dialog box.
+ * @param {Element} el field element.
+ * @param {Object} patches the patch object.
+ * @return {boolean} true if patch has been applied.
+ * @protected
+ */
+ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.patchOptionField = function(el, patches) {
+  var field_name = el.getAttribute('name');
+  var input = el.querySelector('.value');
+  var field_value;
+  if (input.tagName == goog.dom.TagName.INPUT) {
+    field_value = input.value;
+  } else {
+    // textarea element.
+    field_value = input.textContent;
+  }
+  patches[field_name] = field_value;
+  return true;
 };
 
 
@@ -169,19 +192,16 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleEditorSelect = function(e)
     var el = dialog.getContentElement();
     var fields_el = el.querySelectorAll('.field');
     var patches = {};
-    var model = this.getModel();
+    var has_patch = false;
     for (var i = 0; i < fields_el.length; i++) {
-      var field_name = fields_el[i].getAttribute('name');
-      var field_value = fields_el[i].querySelector('.value').value;
-      var original_value = model.getFieldAsValue(field_name);
-      if (original_value != field_value) {
-        patches[field_name] = field_value;
-      }
+      has_patch |= this.patchOptionField(fields_el[i], patches);
     }
-    var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patches, this);
-    this.dispatchEvent(ev);
-    if (!ev.defaultPrevented) {
-      this.doEditorApplyDefault(ev);
+    if (has_patch) {
+      var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patches, this);
+      this.dispatchEvent(ev);
+      if (!ev.defaultPrevented) {
+        this.doEditorApplyDefault(ev);
+      }
     }
   }
 };
@@ -208,12 +228,10 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.refresh = function() {
 /**
  * Get template data for editor dialog.
  * Subclass should override for rendering with default renderer.
- * @return {{
- *   fields: !Array.<{label: string, listId: (null|string|undefined), name: string, type: string, value: string}>
- * }}
+ * @return {ydn.crm.sugarcrm.ui.field.Field.EditorTemplateData}
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getTemplateData = function() {
+ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getEditorTemplateData = function() {
   return {
     fields: []
   };

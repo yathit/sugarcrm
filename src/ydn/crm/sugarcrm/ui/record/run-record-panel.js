@@ -5,6 +5,7 @@
 // ydn.msg.Pipe.DEBUG = true;
 var status_bar = new ydn.crm.msg.StatusBar();
 status_bar.render(document.getElementById('message'));
+ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 ydn.crm.msg.Manager.addConsumer(status_bar);
 ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
