@@ -119,7 +119,7 @@ CrmApp.UiUserSetting.prototype.contextPanel = {};
 
 /**
  * User preferred location of context panel.
- * @type {string} ydn.crm.ui.ContextPanelPosition
+ * @type {string} ydn.crm.base.ContextPanelPosition
  */
 CrmApp.UiUserSetting.prototype.contextPanel.location;
 

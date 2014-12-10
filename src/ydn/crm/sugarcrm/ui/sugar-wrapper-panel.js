@@ -186,7 +186,7 @@ ydn.crm.ui.SugarWrapperPanel.prototype.validateSugarPanels_ = function(name) {
   return df.addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
-      us.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
     var ac = us.getLoginEmail();
     var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,

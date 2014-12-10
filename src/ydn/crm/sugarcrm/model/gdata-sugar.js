@@ -528,7 +528,7 @@ ydn.crm.sugarcrm.model.GDataSugar.list = function() {
             var df = ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
               var details = /** @type {SugarCrm.Details} */ (x);
               for (var i = 0; i < details.modulesInfo.length; i++) {
-                user.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+                ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
               }
               var ac = user.getLoginEmail();
               return new ydn.crm.sugarcrm.model.GDataSugar(details.about,

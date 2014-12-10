@@ -168,25 +168,6 @@ ydn.crm.sugarcrm.ui.setting.Field.NORMALLY_HIDE = ['full_name', 'converted', 'da
 
 
 /**
- * Return default setting.
- * @param {string} name group name.
- * @return {boolean}
- * @protected
- */
-ydn.crm.sugarcrm.ui.setting.Field.getNormallyHideDefault = function(name) {
-  return true;
-};
-
-
-/**
- * @inheritDoc
- */
-ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHideDefault = function() {
-  return ydn.crm.sugarcrm.ui.setting.Field.getNormallyHideDefault(this.getName());
-};
-
-
-/**
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.setting.Field.prototype.getUserSetting = function() {
@@ -222,9 +203,15 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
     return !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE];
   } else {
     if (this.field.group) {
-      return ydn.crm.sugarcrm.ui.setting.Group.getNormallyHideDefault(this.field.group);
+      return false;
     } else {
-      return ydn.crm.sugarcrm.ui.setting.Field.getNormallyHideDefault(this.getName());
+      if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
+        return ['website'].indexOf(this.name) == -1;
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
+        return ['title', 'department', 'description'].indexOf(this.name) == -1;
+      } else {
+        return true;
+      }
     }
   }
 };
@@ -281,32 +268,13 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.createUserSetting = function() {
 
 
 /**
- * List of normally hide group names.
- * @const
- * @type {Array.<string>}
- */
-ydn.crm.sugarcrm.ui.setting.Group.NORMALLY_SHOW = ['name', 'email', 'phone',
-  'primary_address', 'alt_address', ''];
-
-
-/**
- * Return default setting.
- * @param {string} name group name.
- * @return {boolean}
- * @protected
- */
-ydn.crm.sugarcrm.ui.setting.Group.getNormallyHideDefault = function(name) {
-  return ydn.crm.sugarcrm.ui.setting.Group.NORMALLY_SHOW.indexOf(name) == -1;
-};
-
-
-/**
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHide = function() {
   var setting = this.getUserSetting();
-  return setting ? !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE] :
-      ydn.crm.sugarcrm.ui.setting.Group.getNormallyHideDefault(this.name);
+  return setting ?
+      !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE] :
+      this.getNormallyHideDefault();
 };
 
 
@@ -314,5 +282,13 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHide = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() {
-  return ydn.crm.sugarcrm.ui.setting.Group.getNormallyHideDefault(this.getName());
+  if ([''].indexOf(this.name) >= 0) {
+    return false;
+  } else if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
+    return ['billing_address', 'shipping_address', 'name', 'email', 'phone'].indexOf(this.name) == -1;
+  } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS || this.module == ydn.crm.sugarcrm.ModuleName.LEADS) {
+    return ['primary_address', 'alt_address', 'name', 'email', 'phone'].indexOf(this.name) == -1;
+  } else {
+    return true;
+  }
 };
