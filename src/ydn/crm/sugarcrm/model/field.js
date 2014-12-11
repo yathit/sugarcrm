@@ -198,6 +198,16 @@ ydn.crm.sugarcrm.model.Field.prototype.isCalculated = function() {
 
 
 /**
+ * Check the field value is required or not.
+ * @return {boolean}
+ */
+ydn.crm.sugarcrm.model.Field.prototype.isRequired = function() {
+  var setting = this.getFieldInfo();
+  return setting ? setting['required'] == '1' : false;
+};
+
+
+/**
  * Menu commands.
  * @enum {string}
  */

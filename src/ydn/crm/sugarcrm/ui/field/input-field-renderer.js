@@ -44,6 +44,10 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(fiel
     'title': label,
     'placeholder': label
   });
+  if (model.isRequired()) {
+    // Note: the value of 'required' attribute should be empty or 'required'.
+    ele_value.setAttribute('required', '');
+  }
   el.appendChild(ele_value);
   if (model.isCalculated()) {
     ele_value.setAttribute('disabled', '1');

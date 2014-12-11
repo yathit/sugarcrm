@@ -1,17 +1,4 @@
 
-.field {
-  display: flex;
-  flex-flow: row nowrap;
-}
-
-.field .value {
-  flex-grow: 1;
-}
-
-.field:hover > sup.name {
-    display: inline !important;
-}
-
 // display logic
 .record-body {
   .field.empty {
@@ -98,12 +85,31 @@
   }
 }
 
-.record-body {
-
-}
-
 
 .field-edit-dialog .field {
   display: table-row;
+}
+
+.ydn-crm {
+
+  .field {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .field .value {
+    flex-grow: 1;
+  }
+
+  .field:hover > sup.name {
+    display: inline !important;
+  }
+
+
+  .field {
+    .value:required {
+      box-shadow: -2px 0 0 0 red;
+    }
+  }
 }
 

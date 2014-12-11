@@ -63,6 +63,9 @@ ydn.crm.sugarcrm.utils.isValidDate = function(date) {
 ydn.crm.sugarcrm.utils.toDateString = function(date) {
   // ISO: "2014-04-02T03:32:20.522Z"
   // SugarCRM: "2013-09-20 22:10:00"
+  if (!date || !date.getTime()) {
+    return '';
+  }
   return date.toISOString().replace('T', ' ').replace(/\..+/, '');
 };
 
