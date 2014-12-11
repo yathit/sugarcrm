@@ -5,6 +5,7 @@ goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.sugarcrm.ui.group.Address');
+goog.require('ydn.crm.sugarcrm.ui.group.Email');
 goog.require('ydn.crm.sugarcrm.ui.group.Phone');
 goog.require('ydn.crm.sugarcrm.ui.group.Phone');
 goog.require('ydn.crm.test');

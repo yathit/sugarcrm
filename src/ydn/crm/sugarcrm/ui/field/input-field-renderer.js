@@ -1,5 +1,5 @@
 /**
- * @fileoverview SugarCrm module field.
+ * @fileoverview Input field renderer for varchar and datetime.
  */
 
 
@@ -39,7 +39,7 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(fiel
   // console.log(label, type, calculated);
 
   var ele_value = dom.createDom('input', {
-    'type': 'text',
+    'type': model.getInputType(),
     'class': ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE,
     'title': label,
     'placeholder': label
@@ -108,7 +108,11 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
 ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.collectValue = function(ctrl) {
   var ele = ctrl.getContentElement();
   var ele_value = ele.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
-  return ele_value.value;
+  if (ele_value.type == 'datetime-local') {
+    return ydn.crm.sugarcrm.utils.toDateString(new Date(ele_value.value));
+  } else {
+    return ele_value.value;
+  }
 };
 
 

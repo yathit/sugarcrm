@@ -100,3 +100,36 @@ function test_null_module_change_event() {
 }
 
 
+function test_contact_name_group() {
+  var sugar = ydn.crm.test.createSugar();
+  var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(),
+      ydn.crm.sugarcrm.ModuleName.CONTACTS);
+  var record = new ydn.crm.sugarcrm.model.Record(sugar, r);
+  var name_group = record.getGroupModel('name');
+  assertTrue('name group', name_group instanceof ydn.crm.sugarcrm.model.NameGroup);
+}
+
+function test_calls_name_group() {
+  var sugar = ydn.crm.test.createSugar();
+  var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(),
+      ydn.crm.sugarcrm.ModuleName.CALLS);
+  var record = new ydn.crm.sugarcrm.model.Record(sugar, r);
+  var name_group = record.getGroupModel('name');
+  assertTrue('name group', name_group instanceof ydn.crm.sugarcrm.model.Group);
+}
+
+
+
+function test_name_group_change() {
+  var sugar = ydn.crm.test.createSugar();
+  var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(),
+      ydn.crm.sugarcrm.ModuleName.CONTACTS);
+  var record = new ydn.crm.sugarcrm.model.Record(sugar, r);
+  var r2 = new ydn.crm.sugarcrm.Record(sugar.getDomain(),
+      ydn.crm.sugarcrm.ModuleName.CALLS);
+  record.setRecord(r2);
+  var name_group = record.getGroupModel('name');
+  assertTrue('name group', name_group instanceof ydn.crm.sugarcrm.model.Group);
+
+}
+

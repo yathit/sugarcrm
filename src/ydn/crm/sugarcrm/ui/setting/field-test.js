@@ -81,8 +81,8 @@ function test_default_group_notes() {
 
 
 function test_default_group_calls() {
-  var nc = [''];
-  var np = ['created_by_name', 'email', 'name', 'phone', 'primary_address'];
+  var nc = ['name'];
+  var np = ['created_by_name', 'email', 'phone', 'primary_address'];
   default_group_test(ydn.crm.sugarcrm.ModuleName.CALLS, nc, np);
 }
 
@@ -112,6 +112,12 @@ function test_default_field_account() {
 
 function test_default_field_contacts() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.CONTACTS,
-      ['title', 'department', 'description'],
+      [],
       ['id', 'account_id']);
+}
+
+function test_default_field_calls() {
+  default_field_test(ydn.crm.sugarcrm.ModuleName.CALLS,
+      ['name', 'date_start', 'date_end', 'status', 'description'],
+      ['id', 'repeat_count']);
 }

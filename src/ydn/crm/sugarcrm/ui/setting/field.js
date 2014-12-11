@@ -207,8 +207,8 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
     } else {
       if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
         return ['website'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
-        return ['title', 'department', 'description'].indexOf(this.name) == -1;
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.CALLS) {
+        return ['date_start', 'date_end', 'status', 'description'].indexOf(this.name) == -1;
       } else {
         return true;
       }
@@ -286,6 +286,8 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() 
     return false;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
     return ['billing_address', 'shipping_address', 'name', 'email', 'phone'].indexOf(this.name) == -1;
+  } else if (this.module == ydn.crm.sugarcrm.ModuleName.CALLS) {
+    return ['name'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS || this.module == ydn.crm.sugarcrm.ModuleName.LEADS) {
     return ['primary_address', 'alt_address', 'name', 'email', 'phone'].indexOf(this.name) == -1;
   } else {

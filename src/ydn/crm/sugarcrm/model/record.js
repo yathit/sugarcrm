@@ -358,7 +358,10 @@ ydn.crm.sugarcrm.model.Record.prototype.setRecord = function(record) {
       this.record.setData(null);
       this.dispatchEvent(new ydn.crm.sugarcrm.model.events.RecordChangeEvent(null, this));
     }
-  } else if (record.getModule() != this.record.getModule()) {
+  }
+
+  this.groups_ = {};
+  if (record.getModule() != this.record.getModule()) {
     var old_module = this.record.getModule();
     this.record = record;
     this.dispatchEvent(new ydn.crm.sugarcrm.model.events.ModuleChangeEvent(old_module,
@@ -429,7 +432,11 @@ ydn.crm.sugarcrm.model.Record.prototype.listGroups = function() {
 ydn.crm.sugarcrm.model.Record.prototype.getGroupModel = function(name) {
   if (!this.groups_[name]) {
     if (name == 'name') {
-      this.groups_[name] = new ydn.crm.sugarcrm.model.NameGroup(this);
+      if (this.getModuleName() == ydn.crm.sugarcrm.ModuleName.CALLS) {
+        this.groups_[name] = new ydn.crm.sugarcrm.model.Group(this, name);
+      } else {
+        this.groups_[name] = new ydn.crm.sugarcrm.model.NameGroup(this);
+      }
     } else if (['address', 'alt_address', 'primary_address'].indexOf(name) >= 0) {
       this.groups_[name] = new ydn.crm.sugarcrm.model.AddressGroup(this, name);
     } else if (name == 'email') {

@@ -164,10 +164,26 @@ ydn.crm.sugarcrm.model.Field.prototype.getLabel = function() {
 /**
  * Get field type.
  * @return {string} default to 'varchar'
+ * @see #getInputType
  */
 ydn.crm.sugarcrm.model.Field.prototype.getType = function() {
   var info = this.getFieldInfo();
   return info ? info.type || 'varchar' : 'varchar';
+};
+
+
+/**
+ * Return input field type of this field.
+ * @return {string}
+ * @see #getType
+ */
+ydn.crm.sugarcrm.model.Field.prototype.getInputType = function() {
+  var type = this.getType();
+  if (type == 'datetimecombo') {
+    return 'datetime-local';
+  } else {
+    return 'text';
+  }
 };
 
 

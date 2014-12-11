@@ -27,7 +27,7 @@
 
 
 .record-body .field {
-  INPUT[type=text], INPUT[type=email], INPUT[type=tel], TEXTAREA {
+  INPUT[type=text], INPUT[type=email], INPUT[type=tel], INPUT[type=datetime-local], TEXTAREA {
     padding: 1px 0px 1px 1px;
     margin: 2px 0 2px 0px;
     border: 1px transparent;
