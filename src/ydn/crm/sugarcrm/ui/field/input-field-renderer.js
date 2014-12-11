@@ -83,7 +83,17 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
   // console.log(model.getFieldName() + ' ' + value);
   var ele_value = ele_field.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
 
-  ele_value.value = is_def ? value : '';
+  if (is_def) {
+    if (ele_value.type == 'datetime-local') {
+      var lv = ydn.crm.sugarcrm.utils.toDateTimeLocalString(value);
+      // console.log(value, lv);
+      ele_value.value = lv;
+    } else {
+      ele_value.value = value;
+    }
+  } else {
+    ele_value.value = '';
+  }
 
   var more_el = ele_field.querySelector('.' + ydn.crm.ui.CSS_CLASS_MORE_MENU);
   if (more_el) {

@@ -57,7 +57,6 @@ ydn.crm.sugarcrm.utils.isValidDate = function(date) {
  * Convert to SugarCRM date string.
  * @param {Date} date a valid date
  * @return {string}
- * @throws RangeError if not a valid date.
  * @see #isValidDate
  */
 ydn.crm.sugarcrm.utils.toDateString = function(date) {
@@ -69,3 +68,23 @@ ydn.crm.sugarcrm.utils.toDateString = function(date) {
   return date.toISOString().replace('T', ' ').replace(/\..+/, '');
 };
 
+
+/**
+ * Convert to SugarCRM date string to datetime-local INPUT value format.
+ * @param {string} date_str SugarCRM date string
+ * @return {string} eg: "2014-10-17T06:15"
+ */
+ydn.crm.sugarcrm.utils.toDateTimeLocalString = function(date_str) {
+  var date = ydn.crm.sugarcrm.utils.parseDate(date_str);
+  if (!date || !date.getTime()) {
+    return '';
+  }
+  // datetime-local format: "2014-10-17T06:15"
+  var year = date.getFullYear();
+  var month = goog.string.padNumber((date.getMonth() + 1), 2);
+  var day = goog.string.padNumber(date.getDate(), 2);
+  var hour = goog.string.padNumber(date.getHours(), 2);
+  var minute = goog.string.padNumber(date.getMinutes(), 2);
+
+  return year + '-' + month + '-' + day + 'T' + hour + ':' + minute;
+};
