@@ -29,10 +29,11 @@ goog.provide('ydn.crm.sugarcrm.ui.activity.Panel');
 goog.require('goog.date.relative');
 goog.require('goog.ui.Tab');
 goog.require('goog.ui.TabBar');
-goog.require('ydn.crm.sugarcrm.utils');
+goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.sugarcrm.ui.NewRecord');
 goog.require('ydn.crm.sugarcrm.ui.SearchPanel');
 goog.require('ydn.crm.sugarcrm.ui.activity.DetailPanel');
+goog.require('ydn.crm.sugarcrm.utils');
 
 
 
@@ -204,6 +205,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.enterDocument = function() {
   hd.listen(sugar, ydn.crm.sugarcrm.model.Sugar.Event.LOGIN, this.updaterLater_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.SELECT, this.handleTabSelect_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.UNSELECT, this.handleTabUnSelect_);
+  hd.listen(this.detail_panel, ydn.crm.sugarcrm.ui.activity.EventType.VIEW_RECORD, this.onViewRecord_);
   goog.style.setElementShown(this.getElement(), false);
   goog.style.setElementShown(this.new_record.getElement(), false);
   goog.style.setElementShown(this.detail_panel.getElement(), false);
@@ -224,16 +226,30 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabUnSelect_ = function(e) {
 
 
 /**
+ * @enum {number} tab index.
+ */
+ydn.crm.sugarcrm.ui.activity.Panel.TabIndex = {
+  SEARCH: 0,
+  NEW: 1,
+  FEED: 2,
+  MEETINGS: 3,
+  CALLS: 4,
+  TASKS: 5,
+  OPPORTUNITIES: 6
+};
+
+
+/**
  * @param {goog.events.Event} e
  * @private
  */
 ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
   var idx = this.tabbar.getSelectedTabIndex();
-  if (idx == 0) {
+  if (idx == ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.SEARCH) {
     goog.style.setElementShown(this.search.getElement(), true);
     goog.style.setElementShown(this.new_record.getElement(), false);
     goog.style.setElementShown(this.detail_panel.getElement(), false);
-  } else if (idx == 1) {
+  } else if (idx == ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.NEW) {
     goog.style.setElementShown(this.search.getElement(), false);
     goog.style.setElementShown(this.new_record.getElement(), true);
     goog.style.setElementShown(this.detail_panel.getElement(), false);
@@ -241,13 +257,63 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
     goog.style.setElementShown(this.search.getElement(), false);
     goog.style.setElementShown(this.new_record.getElement(), false);
     goog.style.setElementShown(this.detail_panel.getElement(), true);
-    if (idx == 2) {
+    if (idx == ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.FEED) {
       this.detail_panel.renderActivity();
     } else {
       var m_name = ydn.crm.sugarcrm.ACTIVITY_MODULES[idx - 3];
       this.detail_panel.renderUpcoming(m_name);
     }
   }
+};
+
+
+/**
+ * @param {ydn.crm.sugarcrm.ui.activity.RecordViewEvent} ev
+ * @private
+ */
+ydn.crm.sugarcrm.ui.activity.Panel.prototype.onViewRecord_ = function(ev) {
+  this.showRecord(ev.module, ev.id);
+};
+
+
+/**
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {SugarCrm.Record} obj
+ * @private
+ */
+ydn.crm.sugarcrm.ui.activity.Panel.prototype.showRecord_ = function(m_name, obj) {
+  var sugar = this.getModel();
+  var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), m_name, obj);
+  var record = /** @type {ydn.crm.sugarcrm.model.Record} */ (
+      this.new_record.getModel());
+  record.setRecord(r);
+};
+
+
+/**
+ * Show record.
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {string} id
+ */
+ydn.crm.sugarcrm.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
+  this.tabbar.setSelectedTabIndex(
+      ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.NEW);
+  var ch = this.getModel().getChannel();
+  var query = {
+    'module': m_name,
+    'id': id
+  };
+  ch.send(ydn.crm.Ch.SReq.GET, query).addCallbacks(function(obj) {
+    if (obj) {
+      this.showRecord_(m_name, obj);
+    }
+  }, function(e) {
+    var msg = '' + e;
+    var mid = ydn.crm.msg.Manager.addStatus('Fail to load a ' + m_name, msg);
+    var sugar = /** @type {ydn.crm.sugarcrm.model.Sugar} */ (this.getModel());
+    var href = sugar.getRecordViewLink(m_name, id);
+    ydn.crm.msg.Manager.setLink(mid, href, id);
+  }, this);
 };
 
 

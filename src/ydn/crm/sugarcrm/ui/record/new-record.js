@@ -152,7 +152,7 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.socialFill = function(context) {
  * @override
  */
 ydn.crm.sugarcrm.ui.NewRecord.prototype.getNewModuleList = function() {
-  return ydn.crm.sugarcrm.CacheModules;
+  return ydn.crm.sugarcrm.EDITABLE_MODULES;
 };
 
 

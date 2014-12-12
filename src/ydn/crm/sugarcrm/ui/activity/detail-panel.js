@@ -14,7 +14,11 @@
 
 
 /**
- * @fileoverview Activity detail panel.
+ * @fileoverview Activity detail panel for upcoming activities for
+ * Meetings, Calls, Tasks, Opportunities and activity feed.
+ *
+ * The first four module specific activities are rendered by #renderUpcoming.
+ * The activity feed is rendered by #renderActivity.
  *
  * Note: Events are handled by the parent activity panel.
  *
@@ -23,11 +27,13 @@
 
 
 goog.provide('ydn.crm.sugarcrm.ui.activity.DetailPanel');
+goog.require('goog.ui.Component');
+goog.require('ydn.crm.sugarcrm.ui.activity.RecordViewEvent');
 
 
 
 /**
- * Activity detail panel.
+ * Activity detail panel for upcoming activities.
  * @param {ydn.crm.sugarcrm.model.Sugar} model
  * @param {goog.dom.DomHelper} dom
  * @constructor
@@ -130,7 +136,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.getContentElement = function(
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  // this.getHandler().listen(this.getElement(), 'click', this.handleClick_);
+  this.getHandler().listen(this.getContentElement(), 'click', this.handleClick_);
 };
 
 
@@ -139,7 +145,16 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.enterDocument = function() {
  * @private
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.handleClick_ = function(e) {
-
+  if (e.target.tagName == 'A' && e.target.getAttribute('data-view') == 'record') {
+    var module = e.target.getAttribute('data-module');
+    var id = e.target.getAttribute('data-id');
+    if (!!id && ydn.crm.sugarcrm.EDITABLE_MODULES.indexOf(module) >= 0) {
+      e.stopPropagation();
+      e.preventDefault();
+      var ev = new ydn.crm.sugarcrm.ui.activity.RecordViewEvent(module, id, this);
+      this.dispatchEvent(ev);
+    }
+  }
 };
 
 
@@ -178,6 +193,9 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderItem_ = function(record
   msg.appendChild(dom.createTextNode(type));
   var link = dom.createDom('a', {
     'href': sugar.getRecordViewLink(r.getModule(), r.getId()),
+    'data-view': 'record',
+    'data-module': r.getModule(),
+    'data-id': r.getId(),
     'target': '_blank'
   }, r.getLabel());
   msg.appendChild(link);
@@ -327,3 +345,5 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_n
     throw e;
   }, this);
 };
+
+
