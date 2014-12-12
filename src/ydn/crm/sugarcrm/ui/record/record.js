@@ -581,6 +581,9 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.patch = function(patches) {
   var is_new = !model.hasRecord();
   var status = is_new ? 'Creating ...' : 'Updating...';
   var mid = ydn.crm.msg.Manager.addStatus(status);
+  if (ydn.crm.sugarcrm.ui.record.Record.DEBUG) {
+    window.console.log(patches);
+  }
   return model.patch(patches).addCallbacks(function(x) {
     this.setDirty(false);
     var status = is_new ? ' created.' : 'updated.';

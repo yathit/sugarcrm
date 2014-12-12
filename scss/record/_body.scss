@@ -3,10 +3,9 @@
 }
 
 
-.record-body .normally-hide {
+.record-body:not(.detail) .field.normally-hide,
+.record-body:not(.detail) .record-group.normally-hide{
   display: none;
 }
 
-.record.detail .record-body .normally-hide {
-  display: block;
-}
+

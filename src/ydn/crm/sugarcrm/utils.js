@@ -5,6 +5,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.utils');
+goog.require('goog.string');
 
 
 /**
@@ -71,8 +72,8 @@ ydn.crm.sugarcrm.utils.toDateString = function(date) {
 
 /**
  * Convert to SugarCRM date string to datetime-local INPUT value format.
- * @param {string} date_str SugarCRM date string
- * @return {string} eg: "2014-10-17T06:15"
+ * @param {string} date_str SugarCRM date string "2013-09-20 22:10:00"
+ * @return {string} eg: "2013-09-21T06:10"
  */
 ydn.crm.sugarcrm.utils.toDateTimeLocalString = function(date_str) {
   var date = ydn.crm.sugarcrm.utils.parseDate(date_str);
@@ -87,4 +88,19 @@ ydn.crm.sugarcrm.utils.toDateTimeLocalString = function(date_str) {
   var minute = goog.string.padNumber(date.getMinutes(), 2);
 
   return year + '-' + month + '-' + day + 'T' + hour + ':' + minute;
+};
+
+
+/**
+ * Convert from datetime-local to SugarCRM date string
+ * @param {number} date_value input.valueAsNumber
+ * @return {string}
+ */
+ydn.crm.sugarcrm.utils.fromDateTimeLocalString = function(date_value) {
+  if (!date_value) {
+    return '';
+  }
+  var offset = new Date().getTimezoneOffset();
+  var d = new Date(date_value + offset * 60000);
+  return ydn.crm.sugarcrm.utils.toDateString(d);
 };

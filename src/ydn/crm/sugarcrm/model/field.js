@@ -173,21 +173,6 @@ ydn.crm.sugarcrm.model.Field.prototype.getType = function() {
 
 
 /**
- * Return input field type of this field.
- * @return {string}
- * @see #getType
- */
-ydn.crm.sugarcrm.model.Field.prototype.getInputType = function() {
-  var type = this.getType();
-  if (type == 'datetimecombo') {
-    return 'datetime-local';
-  } else {
-    return 'text';
-  }
-};
-
-
-/**
  * Check the field value is calculated or not.
  * @return {boolean}
  */

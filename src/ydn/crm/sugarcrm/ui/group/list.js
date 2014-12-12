@@ -22,8 +22,7 @@ goog.require('ydn.crm.sugarcrm.ui.group.ListRenderer');
  * @extends {ydn.crm.sugarcrm.ui.group.Group}
  */
 ydn.crm.sugarcrm.ui.group.List = function(model, opt_dom) {
-  var renderer = ydn.crm.sugarcrm.ui.group.ListRenderer.getInstance();
-  goog.base(this, model, renderer, opt_dom);
+  goog.base(this, model, opt_dom);
 };
 goog.inherits(ydn.crm.sugarcrm.ui.group.List, ydn.crm.sugarcrm.ui.group.Group);
 

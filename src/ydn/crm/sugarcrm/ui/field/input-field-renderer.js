@@ -24,6 +24,25 @@ goog.addSingletonGetter(ydn.crm.sugarcrm.ui.field.InputFieldRenderer);
 
 
 /**
+ * Return input field type of this field.
+ * @return {string}
+ * @see #getType
+ */
+ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.getInputType = function() {
+  var type = this.getType();
+  if (type == 'datetimecombo') {
+    return 'datetime-local';
+  } else if (type == 'int') {
+    return 'number';
+  } else if (type == 'date') {
+    return 'date';
+  } else {
+    return 'text';
+  }
+};
+
+
+/**
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(field) {
@@ -38,8 +57,20 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(fiel
   var label = model.getLabel();
   // console.log(label, type, calculated);
 
+  var input_type = 'text';
+  var type = model.getType();
+  if (type == 'datetimecombo') {
+    input_type = 'datetime-local';
+  } else if (type == 'int') {
+    input_type = 'number';
+  } else if (type == 'date') {
+    input_type = 'date';
+  } else {
+    input_type = 'text';
+  }
+
   var ele_value = dom.createDom('input', {
-    'type': model.getInputType(),
+    'type': input_type,
     'class': ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE,
     'title': label,
     'placeholder': label
@@ -85,7 +116,8 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
 
   if (is_def) {
     if (ele_value.type == 'datetime-local') {
-      var lv = ydn.crm.sugarcrm.utils.toDateTimeLocalString(value);
+      var lv = ydn.crm.sugarcrm.utils.toDateTimeLocalString(
+          /** @type {string} */ (value));
       // console.log(value, lv);
       ele_value.value = lv;
     } else {
@@ -123,7 +155,7 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.collectValue = function(c
   var ele = ctrl.getContentElement();
   var ele_value = ele.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   if (ele_value.type == 'datetime-local') {
-    return ydn.crm.sugarcrm.utils.toDateString(new Date(ele_value.value));
+    return ydn.crm.sugarcrm.utils.fromDateTimeLocalString(ele_value.valueAsNumber);
   } else {
     return ele_value.value;
   }

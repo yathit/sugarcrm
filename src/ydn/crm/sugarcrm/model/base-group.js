@@ -16,17 +16,11 @@
 /**
  * @fileoverview SugarCRM module group model.
  *
- * Encapsulate module info (or meta data) and its transient record entry data.
- * Record entry data can change during life time of the model dispatching
- * change (goog.events.EventType.CHANGE) event.
- *
+ * A group model is collection of fields.
  */
 
 
 goog.provide('ydn.crm.sugarcrm.model.BaseGroup');
-goog.require('ydn.crm.sugarcrm.gdata');
-goog.require('ydn.crm.sugarcrm.model.EmailField');
-goog.require('ydn.crm.sugarcrm.model.Field');
 goog.require('ydn.ui.FlyoutMenu');
 
 
@@ -77,7 +71,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldInfo = function(name) {
 
 
 /**
- * @return {ydn.crm.sugarcrm.Meta}
+ * @return {ydn.crm.sugarcrm.Meta} SugarCRM metadata.
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getMeta = function() {
   return this.module.getMeta();

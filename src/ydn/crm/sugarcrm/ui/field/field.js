@@ -302,7 +302,10 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.handleEditorSelect = function(e) {
  * @protected
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.handleInputBlur = function(e) {
-  var new_val = this.getRenderer().collectValue(this);
+  var new_val = this.collectData();
+  if (goog.isNull(new_val)) {
+    return;
+  }
   var model = this.getModel();
   var patch = model.patch(new_val);
   if (patch) {
@@ -355,6 +358,10 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.reset = function() {
  */
 ydn.crm.sugarcrm.ui.field.Field.formatResult = function(new_value, model) {
   var old_value = model.getField();
+  if (ydn.crm.sugarcrm.ui.field.Field.DEBUG) {
+    window.console.log(model.getFieldName(), model.getType(), old_value, new_value);
+  }
+
   if (model.getType() == 'bool' && (goog.isDef(old_value) && !goog.isBoolean(old_value))) {
     if (old_value == 'on' || old_value == 'off') {
       new_value = new_value ? 'on' : 'off';
@@ -363,14 +370,14 @@ ydn.crm.sugarcrm.ui.field.Field.formatResult = function(new_value, model) {
     } else if (old_value == '1' || old_value == '0') {
       new_value = new_value ? '1' : '0';
     }
+  } else if (model.getType() == 'int' && (!new_value || new_value == '0') && (!old_value || old_value == '0')) {
+    new_value = old_value;
   } else if (old_value === false && !model.getType() != 'bool' && new_value == 'false') {
     new_value = old_value; // restore wired old value.
   } else if (!goog.isDef(old_value) && !new_value) {
     new_value = old_value; // restore undefined status.
   }
-  if (ydn.crm.sugarcrm.ui.field.Field.DEBUG) {
-    window.console.log(model.getFieldName(), model.getType(), old_value, new_value);
-  }
+
   if (new_value != old_value) {
     return new_value;
   } else {

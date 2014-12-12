@@ -9,25 +9,19 @@ goog.provide('ydn.crm.sugarcrm.ui.group.Group');
 goog.require('goog.ui.Dialog');
 goog.require('ydn.crm.sugarcrm.model.Group');
 goog.require('ydn.crm.sugarcrm.ui.group.AbstractGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.GroupRenderer');
 
 
 
 /**
  * Group controller.
  * @param {ydn.crm.sugarcrm.model.Group} model
- * @param {ydn.crm.sugarcrm.ui.group.GroupRenderer=} opt_renderer
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {ydn.crm.sugarcrm.ui.group.AbstractGroup}
  */
-ydn.crm.sugarcrm.ui.group.Group = function(model, opt_renderer, opt_dom) {
-  /**
-   * @protected
-   * @type {ydn.crm.sugarcrm.ui.group.GroupRenderer}
-   */
-  this.renderer = opt_renderer || ydn.crm.sugarcrm.ui.group.GroupRenderer.getInstance();
+ydn.crm.sugarcrm.ui.group.Group = function(model, opt_dom) {
+
   goog.base(this, model, opt_dom);
 };
 goog.inherits(ydn.crm.sugarcrm.ui.group.Group, ydn.crm.sugarcrm.ui.group.AbstractGroup);
@@ -120,6 +114,22 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.onMenuAction = function(ma) {
 
 
 /**
+ * Get field component by field name.
+ * @param {string} name
+ * @return {ydn.crm.sugarcrm.ui.field.Field}
+ */
+ydn.crm.sugarcrm.ui.group.Group.prototype.getFieldByName = function(name) {
+  for (var j = 0; j < this.getChildCount(); j++) {
+    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    if (f.getFieldName() == name) {
+      return f;
+    }
+  }
+  return null;
+};
+
+
+/**
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.Group.prototype.collectData = function() {
@@ -138,22 +148,6 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.collectData = function() {
     window.console.log(this, obj);
   }
   return obj;
-};
-
-
-/**
- * Get field component by field name.
- * @param {string} name
- * @return {ydn.crm.sugarcrm.ui.field.Field}
- */
-ydn.crm.sugarcrm.ui.group.Group.prototype.getFieldByName = function(name) {
-  for (var j = 0; j < this.getChildCount(); j++) {
-    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
-    if (f.getFieldName() == name) {
-      return f;
-    }
-  }
-  return null;
 };
 
 

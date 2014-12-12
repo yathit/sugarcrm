@@ -16,15 +16,14 @@ inj.style.maxWidth = '20em';
 var div = document.getElementById('activity-root');
 ydn.crm.shared.logger.info('record panel test');
 var results;
-
-if (false) {
-  ydn.crm.sugarcrm.model.Record.DEBUG = true;
-}
+ydn.crm.sugarcrm.ui.field.Field.DEBUG =  true;
+// ydn.crm.sugarcrm.model.Record.DEBUG =  true;
+ydn.crm.sugarcrm.ui.record.Record.DEBUG =  true;
 
 var types = document.getElementById('record-type');
-for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
+for (var i = 0; i < ydn.crm.sugarcrm.EDITABLE_MODULES.length; i++) {
   var option = document.createElement('option');
-  option.value =  ydn.crm.sugarcrm.CacheModules[i];
+  option.value =  ydn.crm.sugarcrm.EDITABLE_MODULES[i];
   option.textContent =  option.value;
   types.appendChild(option);
 
@@ -34,7 +33,7 @@ for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
 types.onchange = function(e) {
   var data_list = document.getElementById('id-list');
   data_list.innerHTML = '';
-  var offset = 100 * Math.random();
+  var offset = 0;
   var type = types.value || 'Contacts';
   sugar.send(ydn.crm.Ch.SReq.VALUES, {'store': type, 'offset': offset}).addCallbacks(function(arr) {
     window.arr_ = arr;

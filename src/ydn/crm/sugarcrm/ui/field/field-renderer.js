@@ -1,5 +1,5 @@
 /**
- * @fileoverview Basic field renderer.
+ * @fileoverview Field renderer.
  */
 
 

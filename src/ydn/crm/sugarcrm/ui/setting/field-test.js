@@ -73,19 +73,24 @@ function test_default_group_leads() {
 }
 
 
-function test_default_group_notes() {
-  var nc = [''];
-  var np = ['created_by_name', 'email', 'name', 'phone', 'primary_address'];
-  default_group_test(ydn.crm.sugarcrm.ModuleName.NOTES, nc, np);
-}
-
-
 function test_default_group_calls() {
-  var nc = ['name'];
+  var nc = ['name', 'appointment'];
   var np = ['created_by_name', 'email', 'phone', 'primary_address'];
   default_group_test(ydn.crm.sugarcrm.ModuleName.CALLS, nc, np);
 }
 
+
+function test_default_group_notes() {
+  var nc = ['name'];
+  var np = ['modified_by_name'];
+  default_group_test(ydn.crm.sugarcrm.ModuleName.NOTES, nc, np);
+}
+
+function test_default_group_tasks() {
+  var nc = ['name', 'date_due', 'date_start'];
+  var np = ['modified_by_name'];
+  default_group_test(ydn.crm.sugarcrm.ModuleName.TASKS, nc, np);
+}
 
 var default_field_test = function(mn, nc, np) {
   for (var i = 0; i < nc.length; i++) {
@@ -120,4 +125,16 @@ function test_default_field_calls() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.CALLS,
       ['name', 'date_start', 'date_end', 'status', 'description'],
       ['id', 'repeat_count']);
+}
+
+function test_default_field_notes() {
+  default_field_test(ydn.crm.sugarcrm.ModuleName.NOTES,
+      ['name', 'description'],
+      ['id', 'deleted']);
+}
+
+function test_default_field_tasks() {
+  default_field_test(ydn.crm.sugarcrm.ModuleName.TASKS,
+      ['status', 'priority', 'description'],
+      ['id', 'deleted']);
 }

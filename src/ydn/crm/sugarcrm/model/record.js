@@ -26,6 +26,7 @@
 goog.provide('ydn.crm.sugarcrm.model.Record');
 goog.require('ydn.crm.sugarcrm.Record');
 goog.require('ydn.crm.sugarcrm.model.AddressGroup');
+goog.require('ydn.crm.sugarcrm.model.AppointmentGroup');
 goog.require('ydn.crm.sugarcrm.model.EmailGroup');
 goog.require('ydn.crm.sugarcrm.model.Group');
 goog.require('ydn.crm.sugarcrm.model.NameGroup');
@@ -417,7 +418,11 @@ ydn.crm.sugarcrm.model.Record.prototype.listGroups = function() {
     var field = module_info.module_fields[name];
     var group = field.group;
     if (groups.indexOf(group) == -1) {
-      groups.push(group);
+      if (group == 'name') {
+        groups.unshift(group);
+      } else {
+        groups.push(group);
+      }
     }
   }
   return groups;
@@ -432,7 +437,11 @@ ydn.crm.sugarcrm.model.Record.prototype.listGroups = function() {
 ydn.crm.sugarcrm.model.Record.prototype.getGroupModel = function(name) {
   if (!this.groups_[name]) {
     if (name == 'name') {
-      if (this.getModuleName() == ydn.crm.sugarcrm.ModuleName.CALLS) {
+      if ([ydn.crm.sugarcrm.ModuleName.CALLS,
+           ydn.crm.sugarcrm.ModuleName.MEETINGS,
+           ydn.crm.sugarcrm.ModuleName.NOTES,
+           ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES,
+           ydn.crm.sugarcrm.ModuleName.TASKS].indexOf(this.getModuleName()) >= 0) {
         this.groups_[name] = new ydn.crm.sugarcrm.model.Group(this, name);
       } else {
         this.groups_[name] = new ydn.crm.sugarcrm.model.NameGroup(this);
@@ -441,6 +450,10 @@ ydn.crm.sugarcrm.model.Record.prototype.getGroupModel = function(name) {
       this.groups_[name] = new ydn.crm.sugarcrm.model.AddressGroup(this, name);
     } else if (name == 'email') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.EmailGroup(this);
+    } else if (name == 'phone') {
+      this.groups_[name] = new ydn.crm.sugarcrm.model.PhoneGroup(this);
+    } else if (name == 'appointment') {
+      this.groups_[name] = new ydn.crm.sugarcrm.model.AppointmentGroup(this);
     } else if (name == 'phone') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.PhoneGroup(this);
     } else {

@@ -12,7 +12,7 @@ goog.require('ydn.crm.sugarcrm.model.BaseGroup');
 
 
 /**
- * Group model for 'email' group fields.
+ * Group model for 'address' group fields.
  * @param {ydn.crm.sugarcrm.model.Record} parent
  * @param {string} group_name group name, should be 'alt_address', 'primary_address'
  * or 'address'.

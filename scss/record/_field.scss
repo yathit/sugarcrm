@@ -12,12 +12,21 @@
   }
 }
 
+.record-body {
+  .field {
+    INPUT[type=text], INPUT[type=email], INPUT[type=tel], INPUT[type=number], INPUT[type=datetime-local], INPUT[type=date], TEXTAREA {
+      padding: 1px 0px 1px 1px;
+      margin: 2px 0 2px 0px;
+      border: 1px transparent;
+    }
+  }
 
-.record-body .field {
-  INPUT[type=text], INPUT[type=email], INPUT[type=tel], INPUT[type=datetime-local], TEXTAREA {
+  .field-label {
     padding: 1px 0px 1px 1px;
     margin: 2px 0 2px 0px;
     border: 1px transparent;
+    display: inline-block;
+    vertical-align: middle;
   }
 }
 
@@ -95,21 +104,33 @@
   .field {
     display: flex;
     flex-flow: row nowrap;
+    align-items: center;
+
+    INPUT[type=text], INPUT[type=email], INPUT[type=tel], INPUT[type=number], INPUT[type=datetime-local], TEXTAREA  {
+      flex-grow: 1;
+    }
+
+    .value:required {
+      box-shadow: -2px 0 0 0 red;
+    }
   }
 
-  .field .value {
-    flex-grow: 1;
+  .field.inline {
+    display: inline-block;
   }
+
+
+  INPUT.value.double-digit {
+    max-width: 3em;
+    text-align: right;
+
+  }
+
 
   .field:hover > sup.name {
     display: inline !important;
   }
 
 
-  .field {
-    .value:required {
-      box-shadow: -2px 0 0 0 red;
-    }
-  }
 }
 

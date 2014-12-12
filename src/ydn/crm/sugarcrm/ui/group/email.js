@@ -22,8 +22,7 @@ goog.require('ydn.crm.sugarcrm.ui.group.Group');
  * @extends {ydn.crm.sugarcrm.ui.group.Group}
  */
 ydn.crm.sugarcrm.ui.group.Email = function(model, opt_dom) {
-  var renderer = ydn.crm.sugarcrm.ui.group.GroupRenderer.getInstance();
-  goog.base(this, model, renderer, opt_dom);
+  goog.base(this, model, opt_dom);
   /**
    * @type {goog.ui.PopupMenu}
    * @private

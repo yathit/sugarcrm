@@ -157,17 +157,6 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getName = function() {
 
 
 /**
- * @const
- * @type {!Array.<string>}
- * @protected
- */
-ydn.crm.sugarcrm.ui.setting.Field.NORMALLY_HIDE = ['full_name', 'converted', 'date_entered', 'date_modified',
-  'modified_user_id', 'modified_by_name', 'created_by', 'created_by_name', 'deleted', 'account_id',
-  'email_and_name1', 'invalid_email', 'team_id',
-  'team_set_id', 'team_count', 'assigned_user_id', 'preferred_language', 'status', 'id'];
-
-
-/**
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.setting.Field.prototype.getUserSetting = function() {
@@ -203,12 +192,27 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
     return !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE];
   } else {
     if (this.field.group) {
+      if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
+        if (['date_due', 'date_start'].indexOf(this.field.group) >= 0) {
+          if (['date_due_flag', 'date_start_flag'].indexOf(this.name) >= 0) {
+            return true;
+          }
+        }
+      }
       return false;
     } else {
       if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
         return ['website'].indexOf(this.name) == -1;
       } else if (this.module == ydn.crm.sugarcrm.ModuleName.CALLS) {
         return ['date_start', 'date_end', 'status', 'description'].indexOf(this.name) == -1;
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.NOTES) {
+        return ['description'].indexOf(this.name) == -1;
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
+        return ['status', 'priority', 'description'].indexOf(this.name) == -1;
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
+        return ['date_closed', 'sales_stage', 'account_name'].indexOf(this.name) == -1;
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
+        return ['status', 'priority', 'description'].indexOf(this.name) == -1;
       } else {
         return true;
       }
@@ -282,14 +286,18 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHide = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() {
-  if ([''].indexOf(this.name) >= 0) {
+  if (['', 'name'].indexOf(this.name) >= 0) {
     return false;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
-    return ['billing_address', 'shipping_address', 'name', 'email', 'phone'].indexOf(this.name) == -1;
+    return ['billing_address', 'shipping_address', 'email', 'phone'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.CALLS) {
-    return ['name'].indexOf(this.name) == -1;
+    return ['appointment'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS || this.module == ydn.crm.sugarcrm.ModuleName.LEADS) {
-    return ['primary_address', 'alt_address', 'name', 'email', 'phone'].indexOf(this.name) == -1;
+    return ['primary_address', 'alt_address', 'email', 'phone'].indexOf(this.name) == -1;
+  } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
+    return ['date_due', 'date_start'].indexOf(this.name) == -1;
+  } else if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
+    return ['date_due', 'date_start'].indexOf(this.name) == -1;
   } else {
     return true;
   }

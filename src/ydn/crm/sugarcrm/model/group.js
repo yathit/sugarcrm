@@ -14,25 +14,21 @@
 
 
 /**
- * @fileoverview SugarCRM module group model.
+ * @fileoverview SugarCRM module group model composes of Field models.
  *
- * Encapsulate module info (or meta data) and its transient record entry data.
- * Record entry data can change during life time of the model dispatching
- * change (goog.events.EventType.CHANGE) event.
+ * Each fields are represented in Field model and cached in the life time.
  *
  */
 
 
 goog.provide('ydn.crm.sugarcrm.model.Group');
-goog.require('ydn.crm.sugarcrm.gdata');
 goog.require('ydn.crm.sugarcrm.model.BaseGroup');
-goog.require('ydn.crm.sugarcrm.model.EmailField');
 goog.require('ydn.crm.sugarcrm.model.Field');
 
 
 
 /**
- * SugarCRM module model.
+ * SugarCRM module group model composes of Field models.
  * @param {ydn.crm.sugarcrm.model.Record} parent
  * @param {string} group_name
  * @constructor
@@ -77,25 +73,6 @@ ydn.crm.sugarcrm.model.Group.prototype.createOrGetFieldModel = function(name) {
   f = new ydn.crm.sugarcrm.model.Field(this, name);
   this.fields.push(f);
   return f;
-};
-
-
-/**
- * Get number of field models.
- * @return {number}
- */
-ydn.crm.sugarcrm.model.Group.prototype.countFieldModel = function() {
-  return this.fields.length;
-};
-
-
-/**
- * Get field model at given index.
- * @param {number} idx
- * @return {ydn.crm.sugarcrm.model.Field}
- */
-ydn.crm.sugarcrm.model.Group.prototype.getFieldModelAt = function(idx) {
-  return this.fields[idx];
 };
 
 

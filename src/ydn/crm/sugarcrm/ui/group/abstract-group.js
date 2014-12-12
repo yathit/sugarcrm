@@ -8,8 +8,8 @@
 goog.provide('ydn.crm.sugarcrm.ui.group.AbstractGroup');
 goog.require('ydn.crm.sugarcrm');
 goog.require('ydn.crm.sugarcrm.model.Group');
-goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.crm.sugarcrm.ui.group.GroupRenderer');
+goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.social.MetaContact');
 
 
@@ -79,8 +79,7 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getSetting = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getContentElement = function() {
-  return goog.dom.getElementByClass(ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT,
-      this.getElement());
+  return this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
 };
 
 
