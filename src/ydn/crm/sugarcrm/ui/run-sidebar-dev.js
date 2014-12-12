@@ -10,7 +10,8 @@ ydn.msg.initPipe('dev');
 // ydn.debug.log('ydn.crm', 'finer');
 var user = ydn.crm.ui.UserSetting.getInstance();
 
-ydn.crm.sugarcrm.ui.group.Group.DEBUG =  true;
+// ydn.crm.sugarcrm.ui.group.Group.DEBUG =  true;
+ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG =  true;
 
 var panel = new ydn.crm.ui.SidebarPanel();
 panel.render(document.querySelector('.inj'));
