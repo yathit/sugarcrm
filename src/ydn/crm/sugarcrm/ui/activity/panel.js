@@ -206,6 +206,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.enterDocument = function() {
   hd.listen(this.tabbar, goog.ui.Component.EventType.SELECT, this.handleTabSelect_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.UNSELECT, this.handleTabUnSelect_);
   hd.listen(this.detail_panel, ydn.crm.sugarcrm.ui.activity.EventType.VIEW_RECORD, this.onViewRecord_);
+  hd.listen(this.detail_panel, ydn.crm.sugarcrm.ui.activity.EventType.NEW_RECORD, this.onNewRecord_);
   goog.style.setElementShown(this.getElement(), false);
   goog.style.setElementShown(this.new_record.getElement(), false);
   goog.style.setElementShown(this.detail_panel.getElement(), false);
@@ -277,6 +278,15 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.onViewRecord_ = function(ev) {
 
 
 /**
+ * @param {ydn.crm.sugarcrm.ui.activity.NewRecordEvent} ev
+ * @private
+ */
+ydn.crm.sugarcrm.ui.activity.Panel.prototype.onNewRecord_ = function(ev) {
+  this.showNewRecord(ev.module);
+};
+
+
+/**
  * @param {ydn.crm.sugarcrm.ModuleName} m_name
  * @param {SugarCrm.Record} obj
  * @private
@@ -314,6 +324,17 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
     var href = sugar.getRecordViewLink(m_name, id);
     ydn.crm.msg.Manager.setLink(mid, href, id);
   }, this);
+};
+
+
+/**
+ * Show a new record creation on New Record panel.
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ */
+ydn.crm.sugarcrm.ui.activity.Panel.prototype.showNewRecord = function(m_name) {
+  this.tabbar.setSelectedTabIndex(
+      ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.NEW);
+  this.new_record.newRecord(m_name);
 };
 
 

@@ -136,7 +136,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.getContentElement = function(
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  this.getHandler().listen(this.getContentElement(), 'click', this.handleClick_);
+  this.getHandler().listen(this.getElement(), 'click', this.handleClick_);
 };
 
 
@@ -148,10 +148,15 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.handleClick_ = function(e) {
   if (e.target.tagName == 'A' && e.target.getAttribute('data-view') == 'record') {
     var module = e.target.getAttribute('data-module');
     var id = e.target.getAttribute('data-id');
-    if (!!id && ydn.crm.sugarcrm.EDITABLE_MODULES.indexOf(module) >= 0) {
+    if (ydn.crm.sugarcrm.EDITABLE_MODULES.indexOf(module) >= 0) {
       e.stopPropagation();
       e.preventDefault();
-      var ev = new ydn.crm.sugarcrm.ui.activity.RecordViewEvent(module, id, this);
+      var ev;
+      if (id) {
+        ev = new ydn.crm.sugarcrm.ui.activity.RecordViewEvent(module, id, this);
+      } else {
+        ev = new ydn.crm.sugarcrm.ui.activity.NewRecordEvent(module, this);
+      }
       this.dispatchEvent(ev);
     }
   }
@@ -335,8 +340,15 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_n
     if (ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG) {
       window.console.log('receiving renderUpcoming ' + results.length + ' items', arr);
     }
-    var head = this.getDomHelper().createDom('span');
-    head.textContent = results.length + ' upcoming ' + m_name;
+    var dom = this.getDomHelper();
+    var msg = dom.createDom('span');
+    msg.textContent = results.length + ' upcoming ' + m_name + '. ';
+    var a = dom.createDom('a', {
+      'href': '#' + m_name,
+      'data-module': m_name,
+      'data-view': 'record'
+    }, 'New');
+    var head = dom.createDom('span', null, [msg, a]);
     this.renderHeader_(head);
     for (var i = 0; i < results.length; i++) {
       this.renderUpcomingItem_(results[i], m_name);

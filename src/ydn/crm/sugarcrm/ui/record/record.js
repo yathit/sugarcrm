@@ -849,9 +849,8 @@ if (goog.DEBUG) {
 
 /**
  * Render new record creation UI for given module.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name module name.
  * @param {boolean=} opt_duplicate duplicate existing record data.
- * @protected
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.newRecord = function(m_name, opt_duplicate) {
   if (ydn.crm.sugarcrm.ui.record.Record.DEBUG) {
