@@ -1,5 +1,5 @@
 /**
- * @fileoverview Input field renderer for varchar and datetime.
+ * @fileoverview Input field renderer for varchar, number and datetime.
  */
 
 
@@ -21,25 +21,6 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer = function() {
 };
 goog.inherits(ydn.crm.sugarcrm.ui.field.InputFieldRenderer, ydn.crm.sugarcrm.ui.field.FieldRenderer);
 goog.addSingletonGetter(ydn.crm.sugarcrm.ui.field.InputFieldRenderer);
-
-
-/**
- * Return input field type of this field.
- * @return {string}
- * @see #getType
- */
-ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.getInputType = function() {
-  var type = this.getType();
-  if (type == 'datetimecombo') {
-    return 'datetime-local';
-  } else if (type == 'int') {
-    return 'number';
-  } else if (type == 'date') {
-    return 'date';
-  } else {
-    return 'text';
-  }
-};
 
 
 /**
