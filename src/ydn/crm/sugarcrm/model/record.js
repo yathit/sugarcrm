@@ -438,6 +438,7 @@ ydn.crm.sugarcrm.model.Record.prototype.getGroupModel = function(name) {
   if (!this.groups_[name]) {
     if (name == 'name') {
       if ([ydn.crm.sugarcrm.ModuleName.CALLS,
+           ydn.crm.sugarcrm.ModuleName.DOCUMENTS,
            ydn.crm.sugarcrm.ModuleName.MEETINGS,
            ydn.crm.sugarcrm.ModuleName.NOTES,
            ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES,

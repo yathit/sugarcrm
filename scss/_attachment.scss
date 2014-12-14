@@ -1,0 +1,50 @@
+/* Used in attachment injector */
+
+.ydn-crm.ydn-att {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  float: left;
+  margin-right: 8px;
+  min-width: 0px;
+  width: 30px;
+  height: 26px;
+  padding: 0px;
+  line-height: 23px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.6);
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+
+  .att-icon {
+    padding-top: 2px;
+    margin: auto auto;
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    vertical-align: middle;
+    fill: white;
+  }
+}
+
+.ydn-att:not(.error):hover {
+  border-color: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.ydn-att.error {
+  border-color: rgba(255, 0, 0, 0.8);
+  background: rgba(255, 0, 0, 0.8);
+}
+
+.ydn-att.alert {
+  border-color: rgba(255, 255, 0, 0.8);
+  background: rgba(255, 255, 0, 0.8);
+}
+
+.ydn-att.working {
+  border-color: rgba(0, 255, 0, 0.8);
+  background: rgba(0, 255, 0, 0.8);
+}

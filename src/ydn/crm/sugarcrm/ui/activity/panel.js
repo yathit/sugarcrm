@@ -205,8 +205,8 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.enterDocument = function() {
   hd.listen(sugar, ydn.crm.sugarcrm.model.Sugar.Event.LOGIN, this.updaterLater_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.SELECT, this.handleTabSelect_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.UNSELECT, this.handleTabUnSelect_);
-  hd.listen(this.detail_panel, ydn.crm.sugarcrm.ui.activity.EventType.VIEW_RECORD, this.onViewRecord_);
-  hd.listen(this.detail_panel, ydn.crm.sugarcrm.ui.activity.EventType.NEW_RECORD, this.onNewRecord_);
+  hd.listen(this.detail_panel, ydn.crm.sugarcrm.events.EventType.VIEW_RECORD, this.onViewRecord_);
+  hd.listen(this.detail_panel, ydn.crm.sugarcrm.events.EventType.NEW_RECORD, this.onNewRecord_);
   goog.style.setElementShown(this.getElement(), false);
   goog.style.setElementShown(this.new_record.getElement(), false);
   goog.style.setElementShown(this.detail_panel.getElement(), false);
@@ -269,7 +269,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.activity.RecordViewEvent} ev
+ * @param {ydn.crm.sugarcrm.events.RecordViewEvent} ev
  * @private
  */
 ydn.crm.sugarcrm.ui.activity.Panel.prototype.onViewRecord_ = function(ev) {
@@ -278,7 +278,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.onViewRecord_ = function(ev) {
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.activity.NewRecordEvent} ev
+ * @param {ydn.crm.sugarcrm.events.NewRecordEvent} ev
  * @private
  */
 ydn.crm.sugarcrm.ui.activity.Panel.prototype.onNewRecord_ = function(ev) {

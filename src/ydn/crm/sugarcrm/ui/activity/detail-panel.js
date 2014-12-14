@@ -28,7 +28,7 @@
 
 goog.provide('ydn.crm.sugarcrm.ui.activity.DetailPanel');
 goog.require('goog.ui.Component');
-goog.require('ydn.crm.sugarcrm.ui.activity.RecordViewEvent');
+goog.require('ydn.crm.sugarcrm.events');
 
 
 
@@ -153,9 +153,9 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.handleClick_ = function(e) {
       e.preventDefault();
       var ev;
       if (id) {
-        ev = new ydn.crm.sugarcrm.ui.activity.RecordViewEvent(module, id, this);
+        ev = new ydn.crm.sugarcrm.events.RecordViewEvent(module, id, this);
       } else {
-        ev = new ydn.crm.sugarcrm.ui.activity.NewRecordEvent(module, this);
+        ev = new ydn.crm.sugarcrm.events.NewRecordEvent(module, this);
       }
       this.dispatchEvent(ev);
     }

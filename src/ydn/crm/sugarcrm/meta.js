@@ -50,8 +50,31 @@ ydn.crm.sugarcrm.Meta.prototype.getDomain = function() {};
 
 
 /**
+ * @return {ydn.msg.Channel} instance domain of sugarcrm.
+ */
+ydn.crm.sugarcrm.Meta.prototype.getChannel = function() {};
+
+
+/**
  * Query module information.
  * @param {ydn.crm.sugarcrm.ModuleName} name
  * @return {SugarCrm.ModuleInfo}
  */
 ydn.crm.sugarcrm.Meta.prototype.getModuleInfo = function(name) {};
+
+
+/**
+ * @return {boolean} check login status.
+ */
+ydn.crm.sugarcrm.Meta.prototype.isLogin = function() {};
+
+
+/**
+ * Get url for contact entry of given id
+ * @param {ydn.crm.sugarcrm.ModuleName} module
+ * @param {string} id
+ * @return {string}
+ */
+ydn.crm.sugarcrm.Meta.prototype.getRecordViewLink = function(module, id) {
+
+};

@@ -21,9 +21,9 @@ ydn.crm.sugarcrm.ui.field.Field.DEBUG =  true;
 ydn.crm.sugarcrm.ui.record.Record.DEBUG =  true;
 
 var types = document.getElementById('record-type');
-for (var i = 0; i < ydn.crm.sugarcrm.EDITABLE_MODULES.length; i++) {
+for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
   var option = document.createElement('option');
-  option.value =  ydn.crm.sugarcrm.EDITABLE_MODULES[i];
+  option.value =  ydn.crm.sugarcrm.CacheModules[i];
   option.textContent =  option.value;
   types.appendChild(option);
 

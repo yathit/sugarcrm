@@ -351,7 +351,7 @@ ydn.crm.sugarcrm.model.Sugar.prototype.getInfo = function() {
 
 /**
  * Get url for contact entry of given id
- * @param {string} module
+ * @param {ydn.crm.sugarcrm.ModuleName} module
  * @param {string} id
  * @return {string}
  */
