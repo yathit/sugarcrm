@@ -193,5 +193,17 @@ ydn.crm.ui.SidebarPanel.prototype.setVisible = function(val) {
 };
 
 
+/**
+ * Show record.
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {string} id
+ */
+ydn.crm.ui.SidebarPanel.prototype.showRecord = function(m_name, id) {
+  var panel = this.getSugarCrmPanel();
+  if (panel) {
+    panel.showRecord(m_name, id);
+  }
+};
+
 
 

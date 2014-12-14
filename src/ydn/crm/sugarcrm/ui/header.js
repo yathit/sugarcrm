@@ -365,5 +365,30 @@ ydn.crm.sugarcrm.ui.Header.prototype.handleSugarChanged = function() {
 };
 
 
+/**
+ * @return {ydn.crm.sugarcrm.ui.activity.Panel}
+ * @private
+ */
+ydn.crm.sugarcrm.ui.Header.prototype.getActivityPanel_ = function() {
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var child = this.getChildAt(i);
+    if (child instanceof ydn.crm.sugarcrm.ui.activity.Panel) {
+      return child;
+    }
+  }
+  return null;
+};
+
+
+/**
+ * Show record.
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {string} id
+ */
+ydn.crm.sugarcrm.ui.Header.prototype.showRecord = function(m_name, id) {
+  this.getActivityPanel_().showRecord(m_name, id);
+};
+
+
 
 

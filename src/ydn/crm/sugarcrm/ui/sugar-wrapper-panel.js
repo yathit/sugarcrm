@@ -152,7 +152,6 @@ ydn.crm.ui.SugarWrapperPanel.prototype.enterDocument = function() {
  */
 ydn.crm.ui.SugarWrapperPanel.prototype.updateHeader = function() {
 
-
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.isLogin()) {
     goog.style.setElementShown(this.getContentElement(), true);
@@ -241,6 +240,22 @@ ydn.crm.ui.SugarWrapperPanel.prototype.getSugarModelClone = function() {
     }
   }
   return model;
+};
+
+
+/**
+ * Check existence of sugarcrm instance on the panel.
+ * @return {ydn.crm.sugarcrm.ui.SimpleSugarPanel}
+ * @private
+ */
+ydn.crm.ui.SugarWrapperPanel.prototype.getSugarPanel_ = function() {
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var ch = this.getChildAt(i);
+    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
+      return ch;
+    }
+  }
+  return null;
 };
 
 
@@ -337,4 +352,18 @@ ydn.crm.ui.SugarWrapperPanel.prototype.setVisible = function(val) {
 };
 
 
+/**
+ * Show record.
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {string} id
+ * @return {boolean} `true` if shown the record.
+ */
+ydn.crm.ui.SugarWrapperPanel.prototype.showRecord = function(m_name, id) {
+  var ch = this.getSugarPanel_();
+  if (ch) {
+    ch.showRecord(m_name, id);
+    return true;
+  }
+  return false;
+};
 

@@ -172,4 +172,3 @@ ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getChannel = function() {
 ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getDomainName = function() {
   return this.getModel().getDomain();
 };
-

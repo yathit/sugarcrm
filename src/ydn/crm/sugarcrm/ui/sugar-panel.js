@@ -83,3 +83,27 @@ ydn.crm.sugarcrm.ui.SugarPanel.prototype.createDom = function() {
 ydn.crm.sugarcrm.ui.SugarPanel.prototype.logger =
     goog.log.getLogger('ydn.crm.sugarcrm.ui.SugarPanel');
 
+
+/**
+ * @return {ydn.crm.sugarcrm.ui.Header}
+ * @private
+ */
+ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getHeader_ = function() {
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var child = this.getChildAt(i);
+    if (child instanceof ydn.crm.sugarcrm.ui.Header) {
+      return child;
+    }
+  }
+  return null;
+};
+
+
+/**
+ * Show record.
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {string} id
+ */
+ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.showRecord = function(m_name, id) {
+  this.getHeader_().showRecord(m_name, id);
+};
