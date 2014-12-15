@@ -495,7 +495,7 @@ ydn.crm.sugarcrm.model.Sugar.prototype.searchRecords = function(module_name, q, 
 
 /**
  * Archive an email to sugarcrm.
- * @param {ydn.crm.EmailInfo} info
+ * @param {ydn.gmail.Utils.EmailInfo} info
  * @param {ydn.crm.sugarcrm.ModuleName=} opt_parent_module
  * @param {string=} opt_parent_id
  * @return {!ydn.async.Deferred}
