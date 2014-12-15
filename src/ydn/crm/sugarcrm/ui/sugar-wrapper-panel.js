@@ -200,7 +200,7 @@ ydn.crm.ui.SugarWrapperPanel.prototype.validateSugarPanels_ = function(name) {
         model.dispose();
       }
       this.addSugarPanel(sugar);
-      window.console.log('sugar panel ' + name + ' added.');
+      // window.console.log('sugar panel ' + name + ' added.');
     } else if (ydn.crm.ui.SugarWrapperPanel.DEBUG) {
       window.console.log('sugar panel ' + name + ' already exists.');
     }
@@ -217,8 +217,8 @@ ydn.crm.ui.SugarWrapperPanel.prototype.addSugarPanel = function(sugar) {
   var panel = new ydn.crm.sugarcrm.ui.SimpleSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
   if (ydn.crm.ui.SugarWrapperPanel.DEBUG) {
-    window.console.info('simple sugar panel ' + sugar.getDomain() + ' created, now ' +
-        this.getChildCount() + ' panels');
+    window.console.info('simple sugar panel ' + sugar.getDomain() +
+        ' created, now ' + this.getChildCount() + ' panels');
   }
 };
 
