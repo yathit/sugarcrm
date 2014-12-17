@@ -183,7 +183,19 @@ CrmApp.FullContact2SocialProfile = function() {};
 /**
  * @type {string}
  */
+CrmApp.FullContact2SocialProfile.prototype.typeId;
+
+
+/**
+ * @type {string}
+ */
 CrmApp.FullContact2SocialProfile.prototype.typeName;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.FullContact2SocialProfile.prototype.id;
 
 
 /**
@@ -475,7 +487,7 @@ CrmApp.FullContact2.prototype.demographics;
 
 
 /**
- * @type {Object.<Array.<CrmApp.FullContact2SocialProfile>>}
+ * @type {Array<CrmApp.FullContact2SocialProfile>}
  */
 CrmApp.FullContact2.prototype.socialProfiles;
 

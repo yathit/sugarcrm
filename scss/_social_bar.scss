@@ -1,4 +1,27 @@
 
 .social-bar {
-  fill: gray;
+  .icons {
+    fill: gray;
+  }
+
+  .tooltip-container.working .icons {
+    fill: rgba(0, 255, 0, 0.8);
+  }
+
+  .tooltip-container.error .icons {
+    fill: rgba(255, 0, 0, 0.8);
+  }
+
+  .tooltip-container.alert .icons {
+    fill: rgba(255, 255, 0, 0.8);
+  }
+
+
+  .tooltip-container.empty .icons {
+    fill: black;
+  }
+
+  .tooltip-container.twitter.exist .icons {
+    fill: #4099FF;
+  }
 }
