@@ -4,6 +4,88 @@
     fill: gray;
   }
 
+  .tooltip-detail {
+    max-width: 400px;
+    opacity: 1;
+    background-color: #ffffff;
+    z-index: 1001;
+    border: solid thin gray;
+    border-radius: 4px;
+    padding: 4px;
+
+    .header {
+      display: flex;
+      flex-direction: row;
+
+      .logo {
+        min-width: 48px;
+        padding: 2px;
+      }
+
+      .content {
+        .name {
+          font-weight: bold;
+          padding: 0 0 4px 0;
+          a {
+            text-decoration: none;
+          }
+        }
+
+        flex-shrink: 1;
+        flex-grow: 1;
+        padding: 2px;
+        font-size: 90%;
+      }
+
+      .head-footer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        margin-top: 4px;
+      }
+
+      .followers, .following {
+        color: #4099FF;
+        font-weight: bold;
+      }
+
+      .head-footer > * {
+        padding: 0 4px;
+      }
+
+      .head-footer > *:last-child {
+        padding-right: 0;
+      }
+
+      .head-footer > * ~ * {
+        border-left: thin solid gray;
+      }
+    }
+
+    .content {
+
+      .tweet-footer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        margin-top: 4px;
+      }
+
+      .tweet-footer > * {
+        padding: 0 4px;
+        font-size: 90%;
+        font-style: italic;
+      }
+
+      .tweet-footer > *:last-child {
+        padding-right: 0;
+      }
+
+    }
+  }
+
   .tooltip-container.working .icons {
     fill: rgba(0, 255, 0, 0.8);
   }
@@ -24,4 +106,39 @@
   .tooltip-container.twitter.exist .icons {
     fill: #4099FF;
   }
+
+
+  .tooltip-container {
+    position: relative;
+
+  }
+
+  .tooltip-host {
+    position: relative
+  }
+
+  .tooltip-container .tooltip-detail {
+    display: none;
+    position: absolute;
+
+  }
+
+  .tooltip-container:hover .tooltip-detail {
+    display: block;
+    bottom: 24px;
+
+  }
+
+  UL.tweets {
+    list-style: none;
+    -webkit-padding-start: 0;
+    max-height: 150px;
+    overflow-y: scroll;
+    font-size: 90%;
+  }
+
+  .tweet-item {
+    margin: 8px 0;
+  }
+
 }
