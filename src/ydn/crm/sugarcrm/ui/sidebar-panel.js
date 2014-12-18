@@ -139,7 +139,8 @@ ydn.crm.ui.SidebarPanel.prototype.getSugarCrmPanel = function() {
  * @param {?SugarCrm.About} about
  */
 ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
-  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SidebarPanel.CSS_CLASS_NO_SUGAR_PANEL);
+  var link_panel = this.getHeaderElement().querySelector('.' +
+      ydn.crm.ui.SidebarPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var q = link_panel.querySelector('a');
   var panel = this.getSugarCrmPanel();
   if (!about || !about.isLogin) {

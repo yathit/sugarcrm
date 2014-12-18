@@ -263,64 +263,6 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.hasSugarPanel = function(name) {
 
 
 /**
- * Prepare sugar panels, if valid login.
- * @param {Array.<SugarCrm.About>} sugars list of sugar domain.
- * @return {!goog.async.Deferred}
- */
-ydn.crm.ui.SimpleSugarWrapperPanel.prototype.validateSugarPanels_ = function(sugars) {
-  if (ydn.crm.ui.SimpleSugarWrapperPanel.DEBUG) {
-    var pmsg = 'updating sugar panel';
-    window.console.log('updating sugar panel' + (this.updating_df_ ? ' in progress' : ''), sugars);
-  }
-  if (this.updating_df_) {
-    return this.updating_df_;
-  }
-
-  goog.asserts.assertArray(sugars, 'sugar domains');
-  var link_panel = this.getHeaderElement().querySelector('.' + ydn.crm.ui.SimpleSugarWrapperPanel.CSS_CLASS_NO_SUGAR_PANEL);
-  var q = link_panel.querySelector('a');
-  if (!ydn.crm.ui.UserSetting.getInstance().isLogin()) {
-    goog.style.setElementShown(link_panel, false);
-    return goog.async.Deferred.succeed(false);
-  }
-  if (sugars.length == 0) {
-    goog.style.setElementShown(link_panel, true);
-  } else {
-    goog.style.setElementShown(link_panel, false);
-  }
-  var dfs = [];
-  for (var i = this.getChildCount() - 1; i >= 0; i--) {
-    var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
-      var domain = ch.getModel().getDomain();
-      var has_it = sugars.indexOf(domain) >= 0;
-      if (!has_it) {
-        this.logger.fine('disposing sugar panel ' + ch.getDomainName());
-        ch.getModel().dispose();
-        this.removeChild(ch, true);
-        ch.dispose();
-      }
-    }
-  }
-  for (var i = 0; i < sugars.length; i++) {
-    goog.asserts.assertString(sugars[i], 'sugar domain must be a string');
-    if (!this.hasSugarPanel(sugars[i])) {
-      this.logger.fine('adding sugar panel ' + sugars[i]);
-      dfs.push(this.validateSugarPanels_(sugars[i]));
-    }
-  }
-  this.updating_df_ = goog.async.DeferredList.gatherResults(dfs).addBoth(function() {
-    var has_panel = this.getChildCount() > 0;
-    if (ydn.crm.ui.SimpleSugarWrapperPanel.DEBUG) {
-      window.console.log('updating sugar panels done');
-    }
-    this.updating_df_ = null;
-  }, this);
-  return this.updating_df_;
-};
-
-
-/**
  * Get current contact showing on sidebar of gmail.
  * @return {ydn.crm.inj.Context}
  * @override
