@@ -184,6 +184,7 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
   ydn.crm.msg.Manager.addConsumer(status);
   root.appendChild(status_el);
 
+  /*
   // toolbar
   var toolbar = dom.createDom('div', 'toolbar flex-bar');
 
@@ -196,6 +197,7 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
   search.appendChild(svg_search);
   toolbar.appendChild(search);
   header.appendChild(toolbar);
+  */
 
   if (!document.getElementById(ydn.crm.sugarcrm.ContextWidget.ID_EMAILS)) {
     var list = document.createElement('datalist');
@@ -212,11 +214,11 @@ ydn.crm.sugarcrm.ContextWidget.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var handler = this.getHandler();
   var head = this.getElement().querySelector('.toolbar');
-  var email_input = head.querySelector('input');
-  var search = head.querySelector('.search');
+  // var email_input = head.querySelector('input');
+  // var search = head.querySelector('.search');
 
-  handler.listen(email_input, 'change', this.onSearch);
-  handler.listen(search, 'click', this.onSearch);
+  // handler.listen(email_input, 'change', this.onSearch);
+  // handler.listen(search, 'click', this.onSearch);
 
 };
 
@@ -237,6 +239,7 @@ ydn.crm.sugarcrm.ContextWidget.prototype.onGmailPageChanged = function(e) {
 /**
  * @param {goog.events.Event} e
  * @protected
+ * @deprecated no longer using.
  */
 ydn.crm.sugarcrm.ContextWidget.prototype.onSearch = function(e) {
   var target = this.getElement().querySelector('input.' + ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_TRAGET);
