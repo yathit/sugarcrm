@@ -419,6 +419,12 @@ CrmApp.FullContact2Photo.prototype.url;
 /**
  * @type {string}
  */
+CrmApp.FullContact2Photo.prototype.typeId;
+
+
+/**
+ * @type {string}
+ */
 CrmApp.FullContact2Photo.prototype.typeName;
 
 
