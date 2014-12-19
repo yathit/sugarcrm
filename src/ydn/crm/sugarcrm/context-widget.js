@@ -31,7 +31,6 @@ goog.require('goog.ui.Component');
 goog.require('ydn.crm.gmail.ComposeObserver');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.Template');
-goog.require('ydn.crm.msg.StatusBar');
 goog.require('ydn.crm.sugarcrm.model.GDataSugar');
 goog.require('ydn.crm.sugarcrm.ui.ContextSugarPanel');
 goog.require('ydn.gmail.Utils');
@@ -125,13 +124,6 @@ ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_TRAGET = 'target-email';
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_STATUS = 'sidebar-status';
-
-
-/**
- * @const
- * @type {string}
- */
 ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
 
 
@@ -177,12 +169,6 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
   goog.style.setElementShown(no_sugar_login, false);
 
   header.appendChild(no_sugar_login);
-
-  var status_el = dom.createDom('div', ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_STATUS);
-  var status = new ydn.crm.msg.StatusBar(true);
-  status.render(status_el);
-  ydn.crm.msg.Manager.addConsumer(status);
-  root.appendChild(status_el);
 
   /*
   // toolbar
