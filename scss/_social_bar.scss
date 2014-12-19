@@ -1,4 +1,8 @@
 
+.social-widget {
+  border-bottom: solid thin #d3d3d3;
+}
+
 .social-bar {
   .icons {
     fill: gray;
@@ -107,7 +111,7 @@
 
   .tooltip-container {
     position: relative;
-
+    display: inline-block;
   }
 
   .tooltip-host {
