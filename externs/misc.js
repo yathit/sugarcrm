@@ -210,6 +210,24 @@ CrmApp.FullContact2SocialProfile.prototype.username;
 CrmApp.FullContact2SocialProfile.prototype.url;
 
 
+/**
+ * @type {string|undefined}
+ */
+CrmApp.FullContact2SocialProfile.prototype.bio;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.FullContact2SocialProfile.prototype.followers;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.FullContact2SocialProfile.prototype.following;
+
+
 
 /**
  * FullContact v2 data.
