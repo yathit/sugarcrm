@@ -107,6 +107,10 @@
     fill: black;
   }
 
+  .tooltip-container.exist .icons {
+    fill: #006400;
+  }
+
   .tooltip-container.twitter.exist .icons {
     fill: #4099FF;
   }
@@ -152,7 +156,7 @@
 
   .tooltip-container:hover .tooltip-detail {
     display: block;
-    bottom: 24px;
+    bottom: 22px;
 
   }
 
