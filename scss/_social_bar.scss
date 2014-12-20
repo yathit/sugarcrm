@@ -136,7 +136,23 @@
   }
 
   .tooltip-container.meetup.exist .icons {
+    fill: #c41200;
+  }
+
+  .tooltip-container.yelp.exist .icons {
     fill: #e92626;
+  }
+  .tooltip-container.youtube.exist .icons {
+    fill: #c4302b;
+  }
+  .tooltip-container.reddit.exist .icons {
+    fill: #cee3f8;
+  }
+  .tooltip-container.tumblur.exist .icons {
+    fill: #35465c;
+  }
+  .tooltip-container.foursquare.exist .icons {
+    fill: #f94877;
   }
 
   .tooltip-container {
@@ -157,7 +173,6 @@
   .tooltip-container:hover .tooltip-detail {
     display: block;
     bottom: 22px;
-
   }
 
   .facebook .svg-button, .pinterest .svg-button, .meetup .svg-button  {
