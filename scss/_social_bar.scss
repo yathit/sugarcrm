@@ -123,6 +123,18 @@
     fill: #39ffca;
   }
 
+  .tooltip-container.facebook.exist .icons {
+    fill: #3b5998;
+  }
+
+  .tooltip-container.pinterest.exist .icons {
+    fill: #C92228;
+  }
+
+  .tooltip-container.meetup.exist .icons {
+    fill: #e92626;
+  }
+
   .tooltip-container {
     position: relative;
     display: inline-block;
@@ -142,6 +154,10 @@
     display: block;
     bottom: 24px;
 
+  }
+
+  .facebook .svg-button, .pinterest .svg-button, .meetup .svg-button  {
+    cursor: default; // these button has no action
   }
 
   UL.tweets {
