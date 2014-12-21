@@ -1,4 +1,6 @@
 
+$tooltip-col-witth: 24px;
+
 .social-widget {
   border-bottom: solid thin #d3d3d3;
 }
@@ -9,6 +11,7 @@
   }
 
   .tooltip-detail {
+    min-width: 200px;
     max-width: 400px;
     opacity: 1;
     background-color: #ffffff;
@@ -89,6 +92,31 @@
       }
 
     }
+  }
+
+  .col-1.tooltip-detail {
+    left: -$tooltip-col-witth;
+  }
+  .col-2.tooltip-detail {
+    left: (-$tooltip-col-witth) * 2;
+  }
+  .col-3.tooltip-detail {
+    left: (-$tooltip-col-witth) * 3;
+  }
+  .col-4.tooltip-detail {
+    left: (-$tooltip-col-witth) * 4;
+  }
+  .col-5.tooltip-detail {
+    left: (-$tooltip-col-witth) * 5;
+  }
+  .col-6.tooltip-detail {
+    left: (-$tooltip-col-witth) * 6;
+  }
+  .col-7.tooltip-detail {
+    left: (-$tooltip-col-witth) * 7;
+  }
+  .col-8.tooltip-detail {
+    left: (-$tooltip-col-witth) * 8;
   }
 
   .tooltip-container.working .icons {
@@ -181,7 +209,9 @@
   .tooltip-container.delicious.exist .icons {
     fill: #205cc0;
   }
-
+  .tooltip-container.vimeo.exist .icons {
+    fill: #1ab7ea;
+  }
 
   .tooltip-container {
     position: relative;
