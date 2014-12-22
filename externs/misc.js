@@ -531,7 +531,13 @@ CrmApp.MetaContact.prototype.fc;
 
 
 /**
- * @type {Object|undefined} ClearBit data.
+ * @type {?Object} ClearBit data.
  */
 CrmApp.MetaContact.prototype.cb;
+
+
+/**
+ * @type {?CrmApp.FullContact2} Pipl data, formatted to FullContact.
+ */
+CrmApp.MetaContact.prototype.pp;
 

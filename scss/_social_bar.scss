@@ -6,6 +6,9 @@ $tooltip-col-witth: 24px;
 }
 
 .social-bar {
+
+  max-width: 238px; // 2 px less than 24*10
+
   .icons {
     fill: gray;
   }
