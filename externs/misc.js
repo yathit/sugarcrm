@@ -525,6 +525,13 @@ CrmApp.MetaContact = function() {};
 
 
 /**
- * @type {?CrmApp.FullContact2}
+ * @type {?CrmApp.FullContact2} FullContact data
  */
 CrmApp.MetaContact.prototype.fc;
+
+
+/**
+ * @type {Object|undefined} ClearBit data.
+ */
+CrmApp.MetaContact.prototype.cb;
+

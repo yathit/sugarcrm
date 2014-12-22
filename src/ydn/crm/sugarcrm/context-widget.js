@@ -98,6 +98,12 @@ ydn.crm.sugarcrm.ContextWidget.DEBUG = false;
 
 
 /**
+ * @type {boolean}
+ */
+ydn.crm.sugarcrm.ContextWidget.prototype.show_toolbar_ = false;
+
+
+/**
  * @protected
  * @type {goog.log.Logger}
  */
@@ -172,6 +178,8 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
 
   // toolbar
   var toolbar = dom.createDom('div', 'toolbar flex-bar');
+  goog.style.setElementShown(toolbar,
+      ydn.crm.sugarcrm.ContextWidget.prototype.show_toolbar_);
 
   var emails_list = dom.createDom('input',
       ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_TRAGET);
@@ -337,7 +345,9 @@ ydn.crm.sugarcrm.ContextWidget.prototype.updateForNewContact = function(cm) {
       window.console.log('updating new contact', cm);
     }
     sugar.update(cm);
-    this.email_list_updator_.start();
+    if (this.show_toolbar_) {
+      this.email_list_updator_.start();
+    }
   }
 
 };
