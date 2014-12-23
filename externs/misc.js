@@ -217,13 +217,13 @@ CrmApp.FullContact2SocialProfile.prototype.bio;
 
 
 /**
- * @type {string}
+ * @type {number|undefined}
  */
 CrmApp.FullContact2SocialProfile.prototype.followers;
 
 
 /**
- * @type {string}
+ * @type {number|undefined}
  */
 CrmApp.FullContact2SocialProfile.prototype.following;
 
