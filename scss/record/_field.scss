@@ -101,7 +101,7 @@
 
 .ydn-crm {
 
-  .field {
+  DIV.field { // there are TR
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -109,6 +109,10 @@
     INPUT[type=text], INPUT[type=email], INPUT[type=tel], INPUT[type=number], INPUT[type=datetime-local], TEXTAREA  {
       flex-grow: 1;
     }
+
+  }
+
+  .field {
 
     .value:required {
       box-shadow: -2px 0 0 0 red;
