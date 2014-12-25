@@ -37,6 +37,15 @@
 }
 
 
+.widget-content {
+  SUMMARY {
+    font-weight: bold;
+  }
+  SUMMARY:after {
+    float: left;
+    margin-right: 4px;
+  }
+}
 
 
 
