@@ -426,6 +426,25 @@ ydn.crm.sugarcrm.model.Sugar.prototype.createNew = function(url, username, passw
 
 
 /**
+ * Load a new sugarcrm instance.
+ * @param {SugarCrm.About} about
+ * @return {!goog.async.Deferred<ydn.crm.sugarcrm.model.Sugar>}
+ */
+ydn.crm.sugarcrm.model.Sugar.load = function(about) {
+  var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
+  return ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
+    var details = /** @type {SugarCrm.Details} */ (x);
+    for (var i = 0; i < details.modulesInfo.length; i++) {
+      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+    }
+    return ch.send(ydn.crm.Ch.SReq.SERVER_INFO).addCallback(function(info) {
+      return new ydn.crm.sugarcrm.model.Sugar(about, details, info);
+    });
+  });
+};
+
+
+/**
  * @param {string} req
  * @param {*=} opt_data
  * @return {!ydn.async.Deferred}
