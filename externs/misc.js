@@ -61,31 +61,31 @@ CrmApp.ReqQuery.prototype.prefix;
 
 
 /**
- * @type {IDBKey?}
+ * @type {?IDBKey}
  */
 CrmApp.ReqQuery.prototype.key;
 
 
 /**
- * @type {number?}
+ * @type {?number}
  */
 CrmApp.ReqQuery.prototype.limit;
 
 
 /**
- * @type {number?}
+ * @type {?number}
  */
 CrmApp.ReqQuery.prototype.offset;
 
 
 /**
- * @type {boolean?}
+ * @type {?boolean}
  */
 CrmApp.ReqQuery.prototype.reverse;
 
 
 /**
- * @type {IDBKeyRange?}
+ * @type {?IDBKeyRange}
  */
 CrmApp.ReqQuery.prototype.keyRange;
 
