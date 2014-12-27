@@ -1,13 +1,40 @@
 .sync-page {
-  .header {
+  > .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-bottom: 4px;
     .title {
       font-weight: bold;
       font-size: 120%;
     }
+
+    .count {
+      padding: 4px 0;
+    }
   }
 
+  LI.sync-pair {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 4px 0;
+    .primary {
+      max-width: 200px;
+    }
+    .secondary {
+      flex-grow: 0.8;
+      flex-shrink: 0.8;
+    }
+  }
 
+}
+
+.gdata-sync-panel {
+  > .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 4px 0;
+  }
 }
