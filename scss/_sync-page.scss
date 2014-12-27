@@ -14,18 +14,34 @@
     }
   }
 
+  UL.infinite-scroll  {
+    position: absolute;
+    top: 70px; bottom: 20px;
+    left: 0; right: 0;
+    overflow: auto;
+  }
+
   LI.sync-pair {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    padding: 4px;
     margin: 4px 0;
     .primary {
-      max-width: 200px;
+      width: 300px;
     }
     .secondary {
       flex-grow: 0.8;
       flex-shrink: 0.8;
+
+      > * > .header {
+        margin: 2px 0;
+      }
     }
+  }
+
+  LI.sync-pair:nth-child(odd) {
+    background-color: azure;
   }
 
 }

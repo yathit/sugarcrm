@@ -20,20 +20,6 @@
     text-overflow: ellipsis;
   }
 
-  .icon {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    padding: 2px;
-    border-radius: 3px;
-    font-weight: 400;
-    font-size: 10px;
-    margin: 0 4px 0 0;
-    border: none;
-    color: #ffffff;
-    vertical-align: middle;
-  }
-
   .icon.small {
     width: 15px;
     height: 15px;
@@ -51,6 +37,21 @@
     vertical-align: middle;
     background: url('chrome-extension://__MSG_@@extension_id__/image/sync.svg') left center no-repeat;
   }
+}
+
+
+.record-header .icon, .record-header-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  padding: 2px;
+  border-radius: 3px;
+  font-weight: 400;
+  font-size: 10px;
+  margin: 0 4px 0 0;
+  border: none;
+  color: #ffffff;
+  vertical-align: middle;
 }
 
 .record-header:hover .link {
