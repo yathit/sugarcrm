@@ -42,6 +42,10 @@ $font-base: arial,sans-serif;
   INPUT:invalid {
     color: red;
   }
+
+  .inline-block {
+    display: inline-block;
+  }
 }
 
 .left {
