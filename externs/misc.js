@@ -115,7 +115,7 @@ CrmApp.QueryResult = function() {};
 
 
 /**
- * @type {Array.<Object>} query result
+ * @type {Array.<SugarCrm.Record>} query result
  */
 CrmApp.QueryResult.prototype.result;
 
