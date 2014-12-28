@@ -70,9 +70,6 @@ ydn.crm.sugarcrm.Schema = function(name, info, user_data) {
  */
 ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
   'Accounts': {
-    'indexes': [{
-      name: 'name'
-    }],
     'GeneratorIndex': {
       'ydn$emails': ['email', 'email1', 'email_addresses_non_primary'],
       'ydn$phones': ['phone_office', 'phone_alternate', 'phone_fax']
@@ -93,9 +90,6 @@ ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
     }]
   },
   'Contacts': {
-    'indexes': [{
-      'name': 'name'
-    }],
     'FullTextIndex': {
       'name': ['name', 'first_name', 'last_name', 'full_name']
     },
@@ -130,9 +124,6 @@ ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
       }]
   },
   'Leads': {
-    'indexes': [{
-      'name': 'name'
-    }],
     'FullTextIndex': {
       'name': ['name', 'first_name', 'last_name', 'full_name']
     },

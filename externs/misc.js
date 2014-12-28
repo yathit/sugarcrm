@@ -43,25 +43,27 @@ CrmApp.ReqQuery = function() {};
 
 
 /**
- * @type {string}
+ * @type {string} `ydn.crm.sugarcrm.ModuleName`
  */
 CrmApp.ReqQuery.prototype.store;
 
 
 /**
- * @type {string}
+ * @type {string} See `ydn.crm.sugarcrm.Schema` for available indexes.
  */
 CrmApp.ReqQuery.prototype.index;
 
 
 /**
- * @type {boolean|undefined} for prefix query
+ * @type {boolean|undefined} for prefix query, in combine with key.
  */
 CrmApp.ReqQuery.prototype.prefix;
 
 
 /**
- * @type {?IDBKey}
+ * @type {?IDBKey} same as `KeyRange.only(key)`, but do normalization of the key
+ * for phone and email query. If prefix is true, this becomes
+ * `KeyRange.starts(key)`
  */
 CrmApp.ReqQuery.prototype.key;
 
@@ -85,21 +87,43 @@ CrmApp.ReqQuery.prototype.reverse;
 
 
 /**
+ * @type {?boolean} key-only query.
+ */
+CrmApp.ReqQuery.prototype.keyOnly;
+
+
+/**
  * @type {?IDBKeyRange}
  */
 CrmApp.ReqQuery.prototype.keyRange;
 
 
 /**
+ * @type {?string} full text search query.
+ */
+CrmApp.ReqQuery.prototype.q;
+
+
+
+/**
+ * Query result.
+ * Query information are retained.
+ * @constructor
+ * @extends {CrmApp.ReqQuery}
+ */
+CrmApp.QueryResult = function() {};
+
+
+/**
  * @type {Array.<Object>} query result
  */
-CrmApp.ReqQuery.prototype.result;
+CrmApp.QueryResult.prototype.result;
 
 
 /**
  * @type {Array.<DbFullTextSearchResult>} query result
  */
-CrmApp.ReqQuery.prototype.fullTextResult;
+CrmApp.QueryResult.prototype.fullTextResult;
 
 
 
