@@ -145,8 +145,8 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.linkGDataToRecord = function() {
       (+gdata.getUpdatedDate()), this.record_.getUpdated());
   var data = {
     'kind': gdata.getKind(),
-    'gdata-id': gdata.getId(),
-    'external-id': ex_id.toExternalId()
+    'gdataId': gdata.getId(),
+    'externalId': ex_id.toExternalId()
   };
   var df1 = this.getChannel().send(ydn.crm.Ch.SReq.LINK, data);
   return df1.addCallback(function(entry) {
@@ -187,8 +187,8 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGDataToRecord = function() {
 
   var data = {
     'kind': gdata.getKind(),
-    'gdata-id': gdata.getId(),
-    'external-id': xp.getValue()
+    'gdataId': gdata.getId(),
+    'externalId': xp.getValue()
   };
   var df1 = this.getChannel().send(ydn.crm.Ch.SReq.UNLINK, data);
   return df1.addCallback(function(entry) {
@@ -226,8 +226,8 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGData = function() {
 
   var data = {
     'kind': gdata.getKind(),
-    'gdata-id': gdata.getId(),
-    'external-id': xp.getValue()
+    'gdataId': gdata.getId(),
+    'externalId': xp.getValue()
   };
   var df1 = this.getChannel().send(ydn.crm.Ch.SReq.UNLINK, data);
   return df1.addCallback(function(entry) {
@@ -261,7 +261,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.importToSugar = function(m_name) {
   var data = {
     'module': m_name,
     'kind': contact.getKind(),
-    'gdata-id': contact.getId()
+    'gdataId': contact.getId()
   };
   if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
     window.console.info('sending ' + req + ' ' + JSON.stringify(data));

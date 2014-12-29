@@ -315,7 +315,7 @@ ydn.crm.sugarcrm.model.GDataRecord.prototype.importToSugar = function() {
   var data = {
     'module': this.getModuleName(),
     'kind': contact.getKind(),
-    'gdata-id': contact.getId()
+    'gdataId': contact.getId()
   };
   this.logger.finer('sending ' + req + ' ' + JSON.stringify(data));
   return this.getChannel().send(req, data).addCallback(function(data) {
