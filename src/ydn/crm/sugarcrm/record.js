@@ -108,7 +108,7 @@ ydn.crm.sugarcrm.Record.prototype.getModule = function() {
 
 
 /**
- * @return {?SugarCrm.Record}
+ * @return {!SugarCrm.Record} get underlying data.
  */
 ydn.crm.sugarcrm.Record.prototype.getData = function() {
   return this.obj;
@@ -126,7 +126,7 @@ ydn.crm.sugarcrm.Record.prototype.setData = function(obj) {
     }
     goog.asserts.assertString(obj[this.key_path], 'id missing in record');
   }
-  this.obj = obj || /** @type {!SugarCrm.Record} */ ({});;
+  this.obj = obj || /** @type {!SugarCrm.Record} */ ({});
 };
 
 

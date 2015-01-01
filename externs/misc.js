@@ -49,7 +49,7 @@ CrmApp.ReqQuery.prototype.store;
 
 
 /**
- * @type {string} See `ydn.crm.sugarcrm.Schema` for available indexes.
+ * @type {string|undefined} See `ydn.crm.sugarcrm.Schema` for available indexes.
  */
 CrmApp.ReqQuery.prototype.index;
 
@@ -61,7 +61,7 @@ CrmApp.ReqQuery.prototype.prefix;
 
 
 /**
- * @type {?IDBKey} same as `KeyRange.only(key)`, but do normalization of the key
+ * @type {IDBKey|undefined} same as `KeyRange.only(key)`, but do normalization of the key
  * for phone and email query. If prefix is true, this becomes
  * `KeyRange.starts(key)`
  */
@@ -69,25 +69,25 @@ CrmApp.ReqQuery.prototype.key;
 
 
 /**
- * @type {?number}
+ * @type {number|undefined}
  */
 CrmApp.ReqQuery.prototype.limit;
 
 
 /**
- * @type {?number}
+ * @type {number|undefined}
  */
 CrmApp.ReqQuery.prototype.offset;
 
 
 /**
- * @type {?boolean}
+ * @type {boolean|undefined}
  */
 CrmApp.ReqQuery.prototype.reverse;
 
 
 /**
- * @type {?boolean} key-only query.
+ * @type {boolean|undefined} key-only query.
  */
 CrmApp.ReqQuery.prototype.keyOnly;
 
