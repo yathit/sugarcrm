@@ -108,7 +108,7 @@ ydn.crm.sugarcrm.Record.prototype.getModule = function() {
 
 
 /**
- * @return {?SugarCrm.Record}
+ * @return {!SugarCrm.Record}
  */
 ydn.crm.sugarcrm.Record.prototype.getData = function() {
   return this.obj;
@@ -117,7 +117,8 @@ ydn.crm.sugarcrm.Record.prototype.getData = function() {
 
 /**
  * Set record data.
- * @param {SugarCrm.Record?} obj
+ * @param {?SugarCrm.Record} obj if obj is specify, it must have a valid id.
+ * To set empty record, use null value, i.e, setData(null);.
  */
 ydn.crm.sugarcrm.Record.prototype.setData = function(obj) {
   if (obj) {
@@ -126,7 +127,7 @@ ydn.crm.sugarcrm.Record.prototype.setData = function(obj) {
     }
     goog.asserts.assertString(obj[this.key_path], 'id missing in record');
   }
-  this.obj = obj || /** @type {!SugarCrm.Record} */ ({});;
+  this.obj = obj || /** @type {!SugarCrm.Record} */ ({});
 };
 
 
