@@ -80,8 +80,6 @@ ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
       'name': ['name', 'description'],
       'content': ['name', 'description']
     }, 'indexes': [{
-      'name': 'name'
-    }, {
       'name': 'parent',
       'keyPath': ['parent_type', 'parent_id', 'date_modified']
     }, {
