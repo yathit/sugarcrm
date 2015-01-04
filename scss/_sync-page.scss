@@ -14,6 +14,11 @@
     }
   }
 
+  .primary > .gdata > .header, .secondary > .record > .header  {
+    display: flex;
+    align-items: center;
+  }
+
   UL.infinite-scroll  {
     margin: 2px 0;
   }
