@@ -23,6 +23,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.ui.record.Secondary');
+goog.require('ydn.db.KeyRange');
 
 
 
