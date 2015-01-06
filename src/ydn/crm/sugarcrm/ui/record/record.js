@@ -33,7 +33,6 @@ goog.require('ydn.crm.sugarcrm.ui.field.Field');
 goog.require('ydn.crm.sugarcrm.ui.record.Body');
 goog.require('ydn.crm.sugarcrm.ui.record.Default');
 goog.require('ydn.crm.sugarcrm.ui.record.FooterRenderer');
-goog.require('ydn.crm.sugarcrm.ui.record.HeaderRenderer');
 goog.require('ydn.crm.sugarcrm.ui.record.Secondary');
 goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.StatusBar');
@@ -130,6 +129,41 @@ ydn.crm.sugarcrm.ui.record.Record.CSS_CLASS_DETAIL = 'detail';
 
 
 /**
+ * @const
+ * @type {string} CSS class name for secondary records panel.
+ */
+ydn.crm.sugarcrm.ui.record.CSS_HEADER = 'record-header';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.sugarcrm.ui.record.CSS_HEADER_TITLE = 'title';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.sugarcrm.ui.record.CSS_HEADER_ICON = 'icon';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.sugarcrm.ui.record.CSS_HEADER_SYNCED = 'synced';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.sugarcrm.ui.record.CSS_HEADER_EDIT = 'edit-button';
+
+
+/**
  * @return {string}
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.getCssClass = function() {
@@ -187,16 +221,16 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.createDom = function() {
   root.appendChild(ele_header);
   root.appendChild(content);
 
-  ele_header.classList.add(ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS);
+  ele_header.classList.add(ydn.crm.sugarcrm.ui.record.CSS_HEADER);
   ele_header.classList.add(ydn.crm.ui.CSS_CLASS_FLEX_BAR);
 
   var title = dom.createDom('a', {
-    'class': ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_TITLE + ' center',
+    'class': ydn.crm.sugarcrm.ui.record.CSS_HEADER_TITLE + ' center',
     'title': 'Open in SugarCRM'
   });
 
   var record_type_badge = dom.createDom('span',
-      ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_ICON);
+      ydn.crm.sugarcrm.ui.record.CSS_HEADER_ICON);
   var gmail_icon = dom.createDom('a', {
     'title': 'View in Gmail contact',
     'class': ydn.crm.ui.CSS_CLASS_BADGE_ICON + ' google'
@@ -1062,7 +1096,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.resetHeader = function() {
     window.console.log('resetHeader' + m_name + ':' + record);
   }
   var badge = ele_header.querySelector('span.' +
-          ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_ICON);
+          ydn.crm.sugarcrm.ui.record.CSS_HEADER_ICON);
   badge.textContent = ydn.crm.sugarcrm.toModuleSymbol(m_name);
   var g_contact = ele_header.querySelector('a.google');
   goog.style.setElementShown(g_contact, false);
@@ -1086,7 +1120,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.refreshHeader = function() {
   if (ydn.crm.sugarcrm.ui.record.Record.DEBUG) {
     window.console.log('refreshHeader:' + m_name + ':' + record);
   }
-  var ele_title = ele_header.querySelector('a.' + ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_TITLE);
+  var ele_title = ele_header.querySelector('a.' + ydn.crm.sugarcrm.ui.record.CSS_HEADER_TITLE);
   if (record.hasRecord()) {
     ele_title.textContent = record.getLabel();
     ele_title.href = record.getViewLink();

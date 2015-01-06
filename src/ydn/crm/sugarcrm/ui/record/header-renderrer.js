@@ -53,41 +53,6 @@ ydn.crm.sugarcrm.ui.record.HeaderRenderer.DEBUG = false;
 
 
 /**
- * @const
- * @type {string} CSS class name for secondary records panel.
- */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS = 'record-header';
-
-
-/**
- * @const
- * @type {string}
- */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_TITLE = 'title';
-
-
-/**
- * @const
- * @type {string}
- */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_ICON = 'icon';
-
-
-/**
- * @const
- * @type {string}
- */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_SYNCED = 'synced';
-
-
-/**
- * @const
- * @type {string}
- */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_EDIT = 'edit-button';
-
-
-/**
  * @protected
  * @type {goog.debug.Logger}
  */
@@ -107,19 +72,19 @@ ydn.crm.sugarcrm.ui.record.HeaderRenderer.prototype.reset = function(ctrl) {
     window.console.log('HeadRenderer:reset:' + m_name + ':' + record);
   }
   ele_header.innerHTML = '';
-  ele_header.classList.add(ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS);
+  ele_header.classList.add(ydn.crm.sugarcrm.ui.record.CSS_HEADER);
   ele_header.classList.add(ydn.crm.ui.CSS_CLASS_FLEX_BAR);
 
   var title = dom.createDom('a', {
-    'class': ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_TITLE + ' center',
+    'class': ydn.crm.sugarcrm.ui.record.CSS_HEADER_TITLE + ' center',
     'title': 'Open in SugarCRM'
   });
 
-  var icon = dom.createDom('span', ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_ICON,
+  var icon = dom.createDom('span', ydn.crm.sugarcrm.ui.record.CSS_HEADER_ICON,
       ydn.crm.sugarcrm.toModuleSymbol(m_name));
 
   var option_svg = ydn.crm.ui.createSvgIcon('menu');
-  var option = dom.createDom('div', ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_EDIT,
+  var option = dom.createDom('div', ydn.crm.sugarcrm.ui.record.CSS_HEADER_EDIT,
       option_svg);
   option.classList.add('svg-button');
 
@@ -141,7 +106,7 @@ ydn.crm.sugarcrm.ui.record.HeaderRenderer.prototype.refresh = function(ctrl) {
   if (ydn.crm.sugarcrm.ui.record.HeaderRenderer.DEBUG) {
     window.console.log('HeadRenderer:refresh:' + m_name + ':' + record);
   }
-  var ele_title = ele_header.querySelector('a.' + ydn.crm.sugarcrm.ui.record.HeaderRenderer.CSS_CLASS_TITLE);
+  var ele_title = ele_header.querySelector('a.' + ydn.crm.sugarcrm.ui.record.CSS_HEADER_TITLE);
   if (record.hasRecord()) {
     ele_title.textContent = record.getLabel();
     ele_title.href = record.getViewLink();
