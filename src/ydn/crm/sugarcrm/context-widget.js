@@ -99,6 +99,7 @@ ydn.crm.sugarcrm.ContextWidget.DEBUG = false;
 
 /**
  * @type {boolean}
+ * @private
  */
 ydn.crm.sugarcrm.ContextWidget.prototype.show_toolbar_ = false;
 
@@ -191,7 +192,6 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
   search.appendChild(svg_search);
   toolbar.appendChild(search);
   header.appendChild(toolbar);
-
 
   if (!document.getElementById(ydn.crm.sugarcrm.ContextWidget.ID_EMAILS)) {
     var list = document.createElement('datalist');
@@ -297,7 +297,6 @@ ydn.crm.sugarcrm.ContextWidget.prototype.setSugarCrm = function(sugar) {
     return;
   }
 
-
   this.gmail_template_ = new ydn.crm.gmail.Template(sugar);
   this.gmail_template_.setObserver(this.compose_observer_);
 
@@ -307,7 +306,6 @@ ydn.crm.sugarcrm.ContextWidget.prototype.setSugarCrm = function(sugar) {
     window.console.info('context sugar panel ' + sugar.getDomain() +
         ' initialized');
   }
-
 
 };
 

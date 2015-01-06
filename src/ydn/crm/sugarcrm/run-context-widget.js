@@ -2,7 +2,7 @@
  * @fileoverview About this file
  */
 
-// ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
+ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
 var user = ydn.crm.ui.UserSetting.getInstance();
@@ -10,6 +10,8 @@ var inj = document.querySelector('.inj');
 var div = document.getElementById('activity-root');
 ydn.crm.shared.logger.info('record panel test');
 var results;
+
+ydn.crm.sugarcrm.model.GDataSugar.DEBUG =  true;
 
 var gmail_obs = new ydn.crm.gmail.GmailObserver();
 var comp_obs = new ydn.crm.gmail.ComposeObserver(gmail_obs);
@@ -44,4 +46,26 @@ target_sel.onchange = function(ev) {
   panel.updateForNewContact(cm);
 };
 
+var addMoreItem = function() {
+  var char = String.fromCharCode(Math.floor(97 + Math.random() * 20));
+  var q = {
+    'index': 'ydn$emails',
+    'from': char,
+    'limit': 5
+  };
+  var ch = ydn.msg.getChannel();
+  ch.send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, q).addCallback(function(arr) {
+    // console.log(arr);
+    var sel = document.getElementById('target-context');
+    for (var i = 0; i < arr.length; i++) {
+      var c = new ydn.gdata.m8.ContactEntry(arr[i]);
+      var op = document.createElement('option');
+      op.value = c.getEmails()[0];
+      op.textContent = c.getFullName();
+      sel.appendChild(op);
+    }
+  });
+};
+
+addMoreItem();
 

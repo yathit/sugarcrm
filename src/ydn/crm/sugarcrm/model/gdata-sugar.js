@@ -16,6 +16,16 @@
 /**
  * @fileoverview SugarCRM model with gmail context.
  *
+ * <pre>
+ *   var gs = new ydn.crm.sugarcrm.model.GDataSugar(about, info, email);
+ *   // Controllers will listen for model changes.
+ *   goog.events.listen(gs, 'context-change', listener);
+ *   // Main app will update context from gmail
+ *   gs.update(context);
+ *   // Run some process
+ *   gs.importToSugar('Leads');
+ * </pre>
+ *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
@@ -26,7 +36,7 @@ goog.require('ydn.crm.sugarcrm.model.Sugar');
 
 
 /**
- * Sugar model with context to inbox.
+ * SugarCRM model with gmail context.
  * @param {SugarCrm.About} about setup for particular domain.
  * @param {Array.<SugarCrm.ModuleInfo>} modules_info
  * @param {string} gdata_account Google account id, i.e., email address
@@ -62,6 +72,11 @@ ydn.crm.sugarcrm.model.GDataSugar = function(about, modules_info, gdata_account,
    * @type {string}
    */
   this.gdata_account = gdata_account;
+  /**
+   * @type {YdnCrm.SyncRecord}
+   * @private
+   */
+  this.sync_ = null;
 
 };
 goog.inherits(ydn.crm.sugarcrm.model.GDataSugar, ydn.crm.sugarcrm.model.Sugar);
@@ -118,44 +133,34 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.getContextGmail = function() {
 
 /**
  * Link GData Contact to sugar record
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<YdnCrm.SyncRecord>}
  */
 ydn.crm.sugarcrm.model.GDataSugar.prototype.linkGDataToRecord = function() {
   if (!this.record_) {
-    return goog.async.Deferred.fail('No SugarCRM Record to link with Gmail contact.');
+    throw new Error('No SugarCRM Record to link with Gmail contact.');
   }
-  var sugar_id = this.record_.getId();
   var module_name = this.record_.getModule();
   // window.console.log(record);
-  goog.asserts.assertString(sugar_id, 'no Record ID'); // this will not happen.
   var gdata = this.contact_;
   if (!gdata) {
-    return goog.async.Deferred.fail('Not Gmail contact data to link.');
-  }
-  var xp = gdata.getExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
-      this.getDomain(), module_name);
-  if (xp) {
-    // todo: should we be updating ?
-    return goog.async.Deferred.fail('Contact ' + gdata.getSingleId() + ' already link to ' +
-        xp.record_id + ' with the module ' + module_name);
+    throw new Error('Not Gmail contact data to link.');
   }
 
-  var ex_id = new ydn.gdata.m8.ExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
-      this.getDomain(), module_name, this.record_.getId(),
-      (+gdata.getUpdatedDate()), this.record_.getUpdated());
   var data = {
-    'kind': gdata.getKind(),
-    'gdataId': gdata.getId(),
-    'externalId': ex_id.toExternalId()
+    'domain': this.getDomain(),
+    'module': module_name,
+    'recordId': this.record_.getId(),
+    'entryId': gdata.getEntryId()
   };
   var df1 = this.getChannel().send(ydn.crm.Ch.SReq.LINK, data);
-  return df1.addCallback(function(entry) {
+  return df1.addCallback(function(x) {
+    var sync = /** @type {YdnCrm.SyncRecord} */(x);
     if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
-      window.console.log('link', entry);
+      window.console.log('link', sync);
     }
-    this.contact_ = new ydn.gdata.m8.ContactEntry(entry);
+    this.sync_ = sync;
     var ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(this.context_,
-        this.contact_, this.record_);
+        this.contact_, this.record_, sync);
     this.dispatchEvent(ev);
   }, this);
 
@@ -168,37 +173,28 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.linkGDataToRecord = function() {
  */
 ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGDataToRecord = function() {
   if (!this.record_) {
-    return goog.async.Deferred.fail('No SugarCRM Record to unlink with Gmail contact.');
+    throw new Error('No SugarCRM Record to unlink with Gmail contact.');
   }
   var sugar_id = this.record_.getId();
   var module_name = this.record_.getModule();
   // window.console.log(record);
   goog.asserts.assertString(sugar_id, 'no Record ID'); // this will not happen.
   var gdata = this.contact_;
-  if (!gdata) {
-    return goog.async.Deferred.fail('Not Gmail contact data to link.');
-  }
-  var xp = gdata.getExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
-      this.getDomain(), module_name, sugar_id);
-  if (!xp) {
-    return goog.async.Deferred.fail('No link exists between SugarCRM ' + module_name +
-        ' ' + sugar_id + ' and Gmail Contact ' + gdata.getSingleId());
+  if (!this.sync_) {
+    throw new Error('No link record.');
   }
 
-  var data = {
-    'kind': gdata.getKind(),
-    'gdataId': gdata.getId(),
-    'externalId': xp.getValue()
-  };
-  var df1 = this.getChannel().send(ydn.crm.Ch.SReq.UNLINK, data);
-  return df1.addCallback(function(entry) {
+  var df1 = this.getChannel().send(ydn.crm.Ch.SReq.UNLINK, this.sync_);
+  return df1.addCallback(function(ok) {
     if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
-      window.console.log('unlink', entry);
+      window.console.log('unlink', ok);
     }
-    this.contact_ = new ydn.gdata.m8.ContactEntry(entry);
-    var ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(this.context_,
-        this.contact_, this.record_);
-    this.dispatchEvent(ev);
+    if (ok) {
+      this.sync_ = null;
+      var ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(this.context_,
+          this.contact_, this.record_, this.sync_);
+      this.dispatchEvent(ev);
+    }
   }, this);
 
 };
@@ -207,8 +203,9 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGDataToRecord = function() {
 /**
  * Remove all external id link on GData Contact for this SugarCRM instance.
  * @return {!goog.async.Deferred}
+ * @deprecated use unlinkGDataToRecord instead
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGData = function() {
+ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGData_old = function() {
   var sugar_id = this.record_.getId();
   var module_name = this.record_.getModule();
   // window.console.log(record);
@@ -245,17 +242,20 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGData = function() {
 
 /**
  * Import from gdata to a new sugar entry.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name module name.
- * @return {!goog.async.Deferred} Return {ydn.crm.sugarcrm.Record} on success.
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name people module name.
+ * @return {!goog.async.Deferred<ydn.crm.sugarcrm.Record>} Return newly created record.
  */
 ydn.crm.sugarcrm.model.GDataSugar.prototype.importToSugar = function(m_name) {
   if (this.record_) {
-    return goog.async.Deferred.fail('already imported as ' + this.record_.getId() +
+    throw new Error('already imported as ' + this.record_.getId() +
         ' in ' + this.record_.getModule());
   }
   var contact = this.getGData();
   if (!contact) {
-    return goog.async.Deferred.fail('no contact gdata to import?');
+    throw new Error('no contact gdata to import?');
+  }
+  if (ydn.crm.sugarcrm.PEOPLE_MODULES.indexOf(m_name) == -1) {
+    throw new Error('invalid module name: ' + m_name);
   }
   var req = ydn.crm.Ch.SReq.IMPORT_GDATA;
   var data = {

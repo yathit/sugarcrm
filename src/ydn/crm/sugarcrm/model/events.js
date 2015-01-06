@@ -70,14 +70,14 @@ goog.inherits(ydn.crm.sugarcrm.model.events.Event, goog.events.Event);
  * @param {ydn.gdata.m8.ContactEntry=} opt_gdata contact gdata of matching email with
  * context.
  * @param {ydn.crm.sugarcrm.Record=} opt_record SugarCRM record of matching email with
- * context.
+ * @param {YdnCrm.SyncRecord=} opt_sync Sync record.
  * @param {Object=} opt_event_target target.
  * @extends {ydn.crm.sugarcrm.model.events.Event}
  * @constructor
  * @struct
  */
 ydn.crm.sugarcrm.model.events.ContextChangeEvent = function(context,
-    opt_gdata, opt_record, opt_event_target) {
+    opt_gdata, opt_record, opt_sync, opt_event_target) {
   goog.base(this, ydn.crm.sugarcrm.model.events.Type.CONTEXT_CHANGE, opt_event_target);
   /**
    * @final
@@ -94,6 +94,12 @@ ydn.crm.sugarcrm.model.events.ContextChangeEvent = function(context,
    * @type {?ydn.crm.sugarcrm.Record}
    */
   this.record = opt_record || null;
+
+  /**
+   * @final
+   * @type {?YdnCrm.SyncRecord}
+   */
+  this.sync = opt_sync || null;
 };
 goog.inherits(ydn.crm.sugarcrm.model.events.ContextChangeEvent, ydn.crm.sugarcrm.model.events.Event);
 

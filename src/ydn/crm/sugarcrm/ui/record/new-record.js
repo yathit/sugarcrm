@@ -16,7 +16,12 @@
 /**
  * @fileoverview New record create panel.
  *
- * Note: Events are handled by the parent activity panel.
+ * New record creation panel is displayed when search event received but
+ * there is no existing data in SugarCRM or Gmail contact.
+ * This component listen @see {ydn.crm.sugarcrm.model.events.ContextChangeEvent}
+ * from the model for user interaction.
+ *
+ * This panel does not have search UI.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
