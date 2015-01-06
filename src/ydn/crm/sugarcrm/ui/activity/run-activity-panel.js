@@ -2,6 +2,7 @@
  * @fileoverview About this file
  */
 
+ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG =  true;
 ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');

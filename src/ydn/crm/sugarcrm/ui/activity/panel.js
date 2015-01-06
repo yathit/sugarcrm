@@ -387,7 +387,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
   if (!m_name) {
     return;
   }
-  var query = this.detail_panel.queryUpcoming(m_name);
+  var query = this.detail_panel.genUpcomingQuery(m_name);
   this.getModel().send(ydn.crm.Ch.SReq.KEYS, query).addCallbacks(function(ans) {
     var query_result = /** @type {Array.<string>} */ (ans);
     var next = index + 1;

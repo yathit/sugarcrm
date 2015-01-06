@@ -231,11 +231,11 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.clear = function() {
 
 
 /**
- * Return query.
+ * Generate upcoming query.
  * @param {ydn.crm.sugarcrm.ModuleName} m_name one of ydn.crm.sugarcrm.ACTIVITY_MODULES.
  * @return {CrmApp.ReqQuery} query
  */
-ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.queryUpcoming = function(m_name) {
+ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m_name) {
   var assigned_user_id = this.getModel().getUser().getId();
   var start_date = ydn.crm.sugarcrm.utils.toDateString(new Date());
   var kr = ydn.db.KeyRange.bound([assigned_user_id, start_date], [assigned_user_id, '\uffff']);
@@ -331,7 +331,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderHeader_ = function(el) 
  * @param {ydn.crm.sugarcrm.ModuleName} m_name one of ydn.crm.sugarcrm.ACTIVITY_MODULES.
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name) {
-  var q = this.queryUpcoming(m_name);
+  var q = this.genUpcomingQuery(m_name);
   if (ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG) {
     window.console.log('renderUpcoming for ' + m_name, q);
   }
