@@ -357,7 +357,12 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
  * @param {goog.events.BrowserEvent} e
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) {
-  var cmd = this.head_menu.handleClick(e);
+  var cmds = this.head_menu.handleClick(e);
+  if (!cmds) {
+    return;
+  }
+  var names = cmds.split(',');
+  var cmd = names[names.length - 1];
   var dp_ = ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE + '-';
   if (cmd == ydn.crm.sugarcrm.ui.record.Record.MenuName.EDIT) {
     this.setEditMode(!this.getEditMode());

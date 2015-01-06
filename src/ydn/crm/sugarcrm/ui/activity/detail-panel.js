@@ -243,7 +243,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m
   var query = {
     'store': m_name,
     'index': ydn.crm.sugarcrm.Record.getIndexForDeadline(m_name),
-    'keyRange': kr
+    'keyRange': kr.toJSON()
   };
   return /** @type {CrmApp.ReqQuery} */ (/** @type {Object} */ (query));
 };
