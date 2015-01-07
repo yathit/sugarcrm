@@ -29,11 +29,11 @@ goog.inherits(ydn.crm.sugarcrm.model.AddressGroup, ydn.crm.sugarcrm.model.BaseGr
 /**
  * Get address field value by address field.
  * @param {string} fn address field name, such as 'city', 'country', etc.
- * @return {?string}
+ * @return {string}
  */
 ydn.crm.sugarcrm.model.AddressGroup.prototype.getValueByAddressField = function(fn) {
   var field_name = this.getGroupName() + '_' + fn;
-  return this.module.value(field_name);
+  return this.module.valueAsString(field_name);
 };
 
 

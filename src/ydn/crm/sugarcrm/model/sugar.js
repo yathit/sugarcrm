@@ -247,7 +247,7 @@ ydn.crm.sugarcrm.model.Sugar.prototype.getUserName = function() {
  * @return {?string}
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.getUserLabel = function() {
-  return this.user_.value('name') || this.about.userName || null;
+  return this.user_.getStringValue('name') || this.about.userName || null;
 };
 
 

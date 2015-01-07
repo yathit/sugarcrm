@@ -132,7 +132,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.listFields = function() {
 /**
  * Get record field value.
  * @param {string} name
- * @return {?string}
+ * @return {(!Array|string|boolean|undefined)}
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
   return this.module.value(name);

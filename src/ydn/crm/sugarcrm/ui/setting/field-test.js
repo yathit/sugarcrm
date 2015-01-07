@@ -23,7 +23,7 @@ function tearDown() {
 }
 
 var getFieldInfo = function(mn, fn) {
-  var info
+  var info;
   for (var i = 0; i < moduleLists.length; i++) {
     if (moduleLists[i].module_name == mn) {
       info = moduleLists[i].module_fields[fn];
@@ -97,14 +97,14 @@ var default_field_test = function(mn, nc, np) {
     var name = nc[i];
     var info = getFieldInfo(mn, name);
     var group = new ydn.crm.sugarcrm.ui.setting.Field(mn, info);
-    assertFalse('field: ' + name, group.getNormallyHide());
+    assertFalse('Not NormallyHide field: ' + name, group.getNormallyHide());
   }
 
   for (var i = 0; i < np.length; i++) {
     var name = np[i];
     var info = getFieldInfo(mn, name);
     var group = new ydn.crm.sugarcrm.ui.setting.Field(mn, info);
-    assertTrue('field: ' + name, group.getNormallyHide());
+    assertTrue('NormallyHide field: ' + name, group.getNormallyHide());
   }
 };
 
@@ -123,7 +123,7 @@ function test_default_field_contacts() {
 
 function test_default_field_calls() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.CALLS,
-      ['name', 'date_start', 'date_end', 'status', 'description'],
+      ['name', 'date_start', 'date_end', 'status', 'description', 'assigned_user_name'],
       ['id', 'repeat_count']);
 }
 

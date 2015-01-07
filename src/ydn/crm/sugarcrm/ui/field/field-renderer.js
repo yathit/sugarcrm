@@ -1,5 +1,5 @@
 /**
- * @fileoverview Field renderer.
+ * @fileoverview Basic field renderer for string field value.
  */
 
 
@@ -11,7 +11,7 @@ goog.require('ydn.ui.FlyoutMenu');
 
 
 /**
- * Field renderer.
+ * Basic field renderer for string field value.
  * @constructor
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.

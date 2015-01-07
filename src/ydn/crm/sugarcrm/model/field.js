@@ -115,20 +115,20 @@ ydn.crm.sugarcrm.model.Field.prototype.getFieldId = function() {
 
 
 /**
- * Get field value.
+ * Get field value as string.
  * @return {?string}
  */
 ydn.crm.sugarcrm.model.Field.prototype.getFieldValue = function() {
-  return this.parent.module.value(this.field_name);
+  return this.parent.module.valueAsString(this.field_name);
 };
 
 
 /**
- * Get field value without casting to string.
- * @return {*}
+ * Get raw field value.
+ * @return {(!Array|string|boolean|undefined)}
  */
 ydn.crm.sugarcrm.model.Field.prototype.getField = function() {
-  return this.getFieldValue();
+  return this.parent.module.value(this.field_name);
 };
 
 
@@ -136,8 +136,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getField = function() {
  * @return {boolean} true if field has value set.
  */
 ydn.crm.sugarcrm.model.Field.prototype.hasFieldValue = function() {
-  var v = this.getFieldValue();
-  return goog.isString(v) ? !goog.string.isEmpty(v) : goog.isDefAndNotNull(v);
+  return this.parent.module.hasValue(this.field_name);
 };
 
 

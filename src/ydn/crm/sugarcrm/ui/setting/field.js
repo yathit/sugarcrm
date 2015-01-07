@@ -204,7 +204,7 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
       if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
         return ['website'].indexOf(this.name) == -1;
       } else if (this.module == ydn.crm.sugarcrm.ModuleName.CALLS) {
-        return ['date_start', 'date_end', 'status', 'description'].indexOf(this.name) == -1;
+        return ['date_start', 'date_end', 'status', 'description', 'assigned_user_name'].indexOf(this.name) == -1;
       } else if (this.module == ydn.crm.sugarcrm.ModuleName.NOTES) {
         return ['description'].indexOf(this.name) == -1;
       } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {

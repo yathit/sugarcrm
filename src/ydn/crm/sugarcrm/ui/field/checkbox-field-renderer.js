@@ -70,7 +70,7 @@ ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.refresh = function(ctr
   if (!model) {
     return;
   }
-  var value = model.getFieldValue();
+  var value = model.getField();
   var is_def = goog.isString(value) ? !goog.string.isEmpty(value) :
       goog.isDefAndNotNull(value);
   // console.log(model.getFieldName() + ' ' + value);

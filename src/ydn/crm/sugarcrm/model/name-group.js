@@ -89,9 +89,9 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.parseFullNameLabel = function(full_na
       'name': full_name
     };
   }
-  var salutation = this.module.value('salutation');
-  var first_name = this.module.value('first_name');
-  var last_name = this.module.value('last_name');
+  var salutation = this.module.getStringValue('salutation');
+  var first_name = this.module.getStringValue('first_name');
+  var last_name = this.module.getStringValue('last_name');
 
   if (names[0] == salutation) {
     obj['salutation'] = names.shift();
@@ -175,7 +175,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupValue = function() {
   if (this.hasField('full_name')) {
     return this.getFullNameLabel();
   } else {
-    return this.module.value('name') || '';
+    return this.module.valueAsString('name');
   }
 };
 

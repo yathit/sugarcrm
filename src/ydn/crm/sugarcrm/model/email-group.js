@@ -119,7 +119,7 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.getFieldValueByEmailId = function(na
     }
     return null;
   } else {
-    return this.module.value(name);
+    return this.module.getStringValue(name);
   }
 };
 

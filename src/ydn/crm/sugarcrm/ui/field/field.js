@@ -405,7 +405,7 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.collectData = function() {
  * @return {*}
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.getValue = function() {
-  return this.getModel().getFieldValue();
+  return this.getModel().getField();
 };
 
 

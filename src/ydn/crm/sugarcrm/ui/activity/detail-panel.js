@@ -176,20 +176,20 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderItem_ = function(record
   var r = new ydn.crm.sugarcrm.Record(domain, m_name, record);
   var icon = dom.createDom('div', 'icon small', record._module.substr(0, 2));
   var msg = dom.createDom('span');
-  var mod_id = r.value('modified_user_id');
-  var user_id = r.value('created_by');
+  var mod_id = r.getStringValue('modified_user_id');
+  var user_id = r.getStringValue('created_by');
   if (mod_id) {
     var mod_link = dom.createDom('a', {
       'href': sugar.getRecordViewLink(ydn.crm.sugarcrm.ModuleName.USERS, mod_id),
       'target': '_blank'
-    }, r.value('modified_user_name'));
+    }, r.getStringValue('modified_user_name'));
     msg.appendChild(mod_link);
     msg.appendChild(dom.createTextNode(' '));
   } else if (user_id) {
     var user_link = dom.createDom('a', {
       'href': sugar.getRecordViewLink(ydn.crm.sugarcrm.ModuleName.USERS, user_id),
       'target': '_blank'
-    }, r.value('created_by_name'));
+    }, r.getStringValue('created_by_name'));
     msg.appendChild(user_link);
     msg.appendChild(dom.createTextNode(' '));
   }

@@ -280,8 +280,15 @@ ydn.crm.sugarcrm.Record.prototype.names = function() {
 
 
 /**
+ * @typedef {(!Array|string|boolean|undefined)}
+ */
+ydn.crm.sugarcrm.RecordValue;
+
+
+/**
+ * Get record field value.
  * @param {string} name
- * @return {?string}
+ * @return {ydn.crm.sugarcrm.RecordValue}
  */
 ydn.crm.sugarcrm.Record.prototype.value = function(name) {
   return this.obj[name];
@@ -289,10 +296,33 @@ ydn.crm.sugarcrm.Record.prototype.value = function(name) {
 
 
 /**
- * @param {string} name
- * @return {boolean}
+ * Get record field value for string.
+ * @param {string} name field name
+ * @return {?string} a string field value.
+ */
+ydn.crm.sugarcrm.Record.prototype.getStringValue = function(name) {
+  var s = this.obj[name];
+  return /** @type {?string} */ (goog.isString(s) ? s : null);
+};
+
+
+/**
+ * @param {string} name field name
+ * @return {boolean} `true` if record schema has valid field value.
+ * @see {#hasValue}
  */
 ydn.crm.sugarcrm.Record.prototype.hasField = function(name) {
+  // todo: should use schema.
+  return this.obj.hasOwnProperty(name);
+};
+
+
+/**
+ * @param {string} name field name
+ * @return {boolean} `true` if field value is define and not null.
+ * @see {#hasField}
+ */
+ydn.crm.sugarcrm.Record.prototype.hasValue = function(name) {
   return goog.isDefAndNotNull(this.obj[name]);
 };
 

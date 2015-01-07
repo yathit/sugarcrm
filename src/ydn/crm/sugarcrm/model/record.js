@@ -103,12 +103,55 @@ ydn.crm.sugarcrm.model.Record.prototype.getId = function() {
 
 /**
  * Get record field value.
- * Note: Newer bean format many return as Object or array of Objects.
  * @param {string} name field name
- * @return {?string} field value.
+ * @return {ydn.crm.sugarcrm.RecordValue} field value.
+ * @see #getStringValue
  */
 ydn.crm.sugarcrm.model.Record.prototype.value = function(name) {
   return this.record.value(name);
+};
+
+
+/**
+ * Get record field value for string.
+ * @param {string} name field name
+ * @return {?string} a string field value. If the field is not a string, `null`
+ * is returned.
+ * @see #valueAsString for casting field value to string.
+ * @see #value for getting raw field value.
+ */
+ydn.crm.sugarcrm.model.Record.prototype.getStringValue = function(name) {
+  var s = this.record.value(name);
+  return /** @type {?string} */ (goog.isString(s) ? s : null);
+};
+
+
+/**
+ * @param {string} name field name
+ * @return {boolean} `true` if field value is define and not null.
+ */
+ydn.crm.sugarcrm.model.Record.prototype.hasValue = function(name) {
+  return this.record.hasValue(name);
+};
+
+
+/**
+ * Get record field value as string.
+ * @param {string} name field name
+ * @return {string} if field value is not string, it is converted into string.
+ * `null` and `undefined` values are converted into empty string.
+ * @see #getStringValue when field value is always string.
+ * @see #value for getting raw field value.
+ */
+ydn.crm.sugarcrm.model.Record.prototype.valueAsString = function(name) {
+  var s = this.record.value(name);
+  if (goog.isString(s)) {
+    return s;
+  } else if (goog.isDefAndNotNull(s)) {
+    return String(s);
+  } else {
+    return '';
+  }
 };
 
 
