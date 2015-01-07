@@ -271,7 +271,7 @@ ydn.crm.sugarcrm.Record.prototype.getLabel = function() {
 
 
 /**
- * List of keys.
+ * List of field names.
  * @return {Array.<string>}
  */
 ydn.crm.sugarcrm.Record.prototype.names = function() {

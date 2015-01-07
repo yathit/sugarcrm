@@ -103,6 +103,28 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.hasField = function(name) {
 
 
 /**
+ * @param {string} name
+ * @return {boolean} return `true` if field has value set.
+ * @see #hasField
+ */
+ydn.crm.sugarcrm.model.EmailGroup.prototype.hasFieldValue = function(name) {
+  var email = this.module.value('email');
+  if (goog.isArray(email)) {
+    var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
+    for (var i = 0; i < beans.length; i++) {
+      var x = beans[i];
+      if (x.email_address_id == name) {
+        return goog.isDefAndNotNull(x.email_address);
+      }
+    }
+    return false;
+  } else {
+    return goog.base(this, 'hasFieldValue', name);
+  }
+};
+
+
+/**
  * Return email value by email id.
  * @param {string} name
  * @return {?string}

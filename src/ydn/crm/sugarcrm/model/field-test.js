@@ -13,6 +13,28 @@ function setUp() {
 }
 
 
+function test_has_field_value_calls() {
+  var record = ydn.crm.test.createRecord(null, 'Calls');
+  var group = record.getGroupModel('name');
+  assertTrue(group.hasFieldValue('name'));
+  var name = group.createOrGetFieldModel('name');
+  assertTrue('has name field', !!name);
+  assertTrue(name.hasFieldValue());
+}
+
+
+function test_has_field_value_contact() {
+  var record = ydn.crm.test.createRecord(null, 'Contacts');
+  var obj = record.record.obj;
+  var group = record.getGroupModel('email');
+  var fields = group.listFields();
+  assertTrue(group.hasFieldValue(fields[0]));
+  assertTrue(group.hasFieldValue(fields[1]));
+
+}
+
+
+
 
 
 

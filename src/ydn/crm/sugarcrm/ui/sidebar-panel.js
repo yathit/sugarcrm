@@ -137,6 +137,7 @@ ydn.crm.ui.SidebarPanel.prototype.getSugarCrmPanel = function() {
 /**
  * Set SugarCRM.
  * @param {?SugarCrm.About} about
+ * @return {!goog.async.Deferred<ydn.crm.sugarcrm.model.GDataSugar>}
  */
 ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
   var link_panel = this.getHeaderElement().querySelector('.' +
@@ -148,13 +149,13 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
     if (panel) {
       goog.style.setElementShown(panel.getElement(), false);
     }
-    return;
+    return goog.async.Deferred.fail(null);
   }
   if (panel) {
     var model = panel.getModel();
     if (model.getDomain() == about.domain) {
       goog.log.finer(this.logger, 'sugar panel ' + model.getDomain() + ' already exists.');
-      return;
+      return goog.async.Deferred.fail(null);
     }
     goog.log.fine(this.logger, 'disposing sugar panel ' + model.getDomain());
     this.removeChild(panel, true);
@@ -164,11 +165,11 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
   var us = ydn.crm.ui.UserSetting.getInstance();
 
-  ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
+  return ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
     panel = this.getSugarCrmPanel();
     if (panel) {
       goog.log.fine(this.logger, 'existing sugar panel detect');
-      return;
+      return null;
     }
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
@@ -181,6 +182,7 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
     goog.log.fine(this.logger, 'sugar panel ' + about.domain + ' added.');
     this.addChild(panel, true);
     goog.style.setElementShown(link_panel, false);
+    return sugar;
   }, this);
 
 };

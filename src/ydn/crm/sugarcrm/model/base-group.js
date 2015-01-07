@@ -98,10 +98,11 @@ ydn.crm.sugarcrm.model.BaseGroup.getNormallyHideDefaultSetting = function(name) 
  * Check existence of a field name in module information.
  * @param {string} name
  * @return {boolean}
+ * @see #hasFieldValue
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.hasField = function(name) {
   var module_info = this.module.getModuleInfo();
-  for (var x in module_info.module_fields) {
+  for (var x in module_info.module_fields) { // todo: hasOwnProperty ?
     if (x == name) {
       return true;
     }
@@ -146,6 +147,16 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.valueAsString = function(name) {
   return this.module.valueAsString(name);
+};
+
+
+/**
+ * @param {string} name
+ * @return {boolean} return `true` if field has value set.
+ * @see #hasField
+ */
+ydn.crm.sugarcrm.model.BaseGroup.prototype.hasFieldValue = function(name) {
+  return this.module.hasValue(name);
 };
 
 

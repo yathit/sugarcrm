@@ -236,7 +236,8 @@ ydn.crm.sugarcrm.model.Sugar.prototype.updateStatus = function() {
 
 
 /**
- * @return {string} sugarcrm user id. This is About.userName
+ * @return {string} sugarcrm user name. This is About.userName
+ * @see #getUserLabel
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.getUserName = function() {
   return this.about ? this.about.userName || '' : '';
@@ -244,10 +245,13 @@ ydn.crm.sugarcrm.model.Sugar.prototype.getUserName = function() {
 
 
 /**
- * @return {?string}
+ * @return {string} get name of User record of login user.
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.getUserLabel = function() {
-  return this.user_.getStringValue('name') || this.about.userName || null;
+  if (!this.user_) {
+    return '';
+  }
+  return this.user_.getStringValue('name') || this.about.userName || '';
 };
 
 
@@ -257,6 +261,17 @@ ydn.crm.sugarcrm.model.Sugar.prototype.getUserLabel = function() {
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.getUser = function() {
   return this.user_;
+};
+
+
+/**
+ * @return {string} get User record id of login user.
+ */
+ydn.crm.sugarcrm.model.Sugar.prototype.getUserId = function() {
+  if (this.user_) {
+    return this.user_.getStringValue('id') || '';
+  }
+  return this.about.userName || '';
 };
 
 

@@ -84,18 +84,20 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(fiel
  */
 ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) {
   var ele_field = ctrl.getElement();
+  /**
+   * @type {ydn.crm.sugarcrm.model.Field}
+   */
   var model = ctrl.getModel();
   goog.style.setElementShown(ele_field, !!model);
   if (!model) {
     return;
   }
-  var value = model.getStringValue();
-  var is_def = goog.isString(value) ? !goog.string.isEmpty(value) :
-      goog.isDefAndNotNull(value);
+
   // console.log(model.getFieldName() + ' ' + value);
   var ele_value = ele_field.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
 
-  if (is_def) {
+  if (model.hasFieldValue()) {
+    var value = model.getStringValue();
     if (ele_value.type == 'datetime-local') {
       var lv = ydn.crm.sugarcrm.utils.toDateTimeLocalString(
           /** @type {string} */ (value));
@@ -104,8 +106,10 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
     } else {
       ele_value.value = value;
     }
+    ele_field.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   } else {
     ele_value.value = '';
+    ele_field.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   }
 
   var more_el = ele_field.querySelector('.' + ydn.crm.ui.CSS_CLASS_MORE_MENU);
@@ -113,12 +117,6 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
     more_el.innerHTML = '';
     var options = model.getMoreOptions();
     var new_el = ydn.ui.FlyoutMenu.decoratePopupMenu(more_el, options);
-  }
-
-  if (is_def) {
-    ele_field.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
-  } else {
-    ele_field.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   }
 
   if (!model.getGroupName() && ctrl.getSetting().getNormallyHide()) {

@@ -27,6 +27,7 @@ goog.provide('ydn.crm.sugarcrm.model.Record');
 goog.require('ydn.crm.sugarcrm.Record');
 goog.require('ydn.crm.sugarcrm.model.AddressGroup');
 goog.require('ydn.crm.sugarcrm.model.AppointmentGroup');
+goog.require('ydn.crm.sugarcrm.model.AssignUserGroup');
 goog.require('ydn.crm.sugarcrm.model.EmailGroup');
 goog.require('ydn.crm.sugarcrm.model.Group');
 goog.require('ydn.crm.sugarcrm.model.NameGroup');
@@ -493,6 +494,8 @@ ydn.crm.sugarcrm.model.Record.prototype.getGroupModel = function(name) {
       }
     } else if (['address', 'alt_address', 'primary_address'].indexOf(name) >= 0) {
       this.groups_[name] = new ydn.crm.sugarcrm.model.AddressGroup(this, name);
+    } else if (name == 'assigned_user_name') {
+      this.groups_[name] = new ydn.crm.sugarcrm.model.AssignUserGroup(this);
     } else if (name == 'email') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.EmailGroup(this);
     } else if (name == 'phone') {

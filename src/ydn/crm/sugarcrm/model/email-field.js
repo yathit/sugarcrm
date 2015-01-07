@@ -60,6 +60,15 @@ ydn.crm.sugarcrm.model.EmailField.prototype.getStringValue = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.model.EmailField.prototype.hasFieldValue = function() {
+  var email_model = this.getParentModel();
+  return email_model.hasFieldValue(this.field_name);
+};
+
+
+/**
  * @return {?boolean}
  */
 ydn.crm.sugarcrm.model.EmailField.prototype.isOptOut = function() {

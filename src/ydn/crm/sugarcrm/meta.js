@@ -50,6 +50,18 @@ ydn.crm.sugarcrm.Meta.prototype.getDomain = function() {};
 
 
 /**
+ * @return {string} instance domain of sugarcrm.
+ */
+ydn.crm.sugarcrm.Meta.prototype.getUserId = function() {};
+
+
+/**
+ * @return {string} instance domain of sugarcrm.
+ */
+ydn.crm.sugarcrm.Meta.prototype.getUserLabel = function() {};
+
+
+/**
  * @return {ydn.msg.Channel} instance domain of sugarcrm.
  */
 ydn.crm.sugarcrm.Meta.prototype.getChannel = function() {};

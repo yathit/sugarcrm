@@ -124,6 +124,15 @@ ydn.crm.sugarcrm.model.Field.prototype.getStringValue = function() {
 
 
 /**
+ * Get field value as string.
+ * @return {?string}
+ */
+ydn.crm.sugarcrm.model.Field.prototype.getDefaultStringValue = function() {
+  return null;
+};
+
+
+/**
  * Get raw field value.
  * @return {(!Array|string|boolean|undefined)}
  */

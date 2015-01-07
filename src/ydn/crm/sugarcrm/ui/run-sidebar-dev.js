@@ -9,6 +9,7 @@ ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('dev');
 // ydn.debug.log('ydn.crm', 'finer');
 var user = ydn.crm.ui.UserSetting.getInstance();
+var sugar;
 
 // ydn.crm.sugarcrm.ui.group.Group.DEBUG =  true;
 ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG =  true;
@@ -21,11 +22,12 @@ user.onReady().addCallbacks(function() {
   ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(
       function(sugars) {
         console.log(sugars);
-        panel.setSugarCrm(sugars[0]);
-        setTimeout(function() {
+        panel.setSugarCrm(sugars[0]).addBoth(function(x) {
           activity_panel = panel.getChildAt(0).getChildAt(0).getChildAt(0);
           new_record_panel = activity_panel.getChildAt(2);
-        }, 1000);
+          sugar = x;
+        });
+
       }, this);
 }, function(e) {
   window.console.error(e);

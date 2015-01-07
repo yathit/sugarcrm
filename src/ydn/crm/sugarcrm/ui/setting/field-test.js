@@ -42,13 +42,13 @@ var default_group_test = function(mn, nc, np) {
   for (var i = 0; i < nc.length; i++) {
     var name = nc[i];
     var group = new ydn.crm.sugarcrm.ui.setting.Group(mn, name);
-    assertFalse('group: ' + name, group.getNormallyHide());
+    assertFalse('Not NormallyHide group: ' + name, group.getNormallyHide());
   }
 
   for (var i = 0; i < np.length; i++) {
     var name = np[i];
     var group = new ydn.crm.sugarcrm.ui.setting.Group(mn, name);
-    assertTrue('group: ' + name, group.getNormallyHide());
+    assertTrue('NormallyHide group: ' + name, group.getNormallyHide());
   }
 };
 
@@ -74,7 +74,7 @@ function test_default_group_leads() {
 
 
 function test_default_group_calls() {
-  var nc = ['name', 'appointment'];
+  var nc = ['name', 'appointment', 'assigned_user_name'];
   var np = ['created_by_name', 'email', 'phone', 'primary_address'];
   default_group_test(ydn.crm.sugarcrm.ModuleName.CALLS, nc, np);
 }
@@ -123,7 +123,7 @@ function test_default_field_contacts() {
 
 function test_default_field_calls() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.CALLS,
-      ['name', 'date_start', 'date_end', 'status', 'description', 'assigned_user_name'],
+      ['name', 'date_start', 'date_end', 'status', 'description'],
       ['id', 'repeat_count']);
 }
 
