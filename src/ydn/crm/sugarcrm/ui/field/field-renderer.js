@@ -149,7 +149,7 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
   if (!model) {
     return;
   }
-  var value = model.getFieldValue();
+  var value = model.getStringValue();
   ele_field.textContent = value;
   if (ydn.crm.sugarcrm.ui.field.FieldRenderer.DEBUG) {
     window.console.log(model.getFieldName(), model.getType(), value);

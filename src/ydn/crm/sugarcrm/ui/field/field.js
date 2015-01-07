@@ -167,7 +167,7 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.getTemplateData = function() {
   var fields = [{
     label: model.getLabel(),
     name: model.getFieldName(),
-    value: model.getFieldValue(),
+    value: model.getStringValue(),
     type: model.getType(),
     listId: lid
   }];

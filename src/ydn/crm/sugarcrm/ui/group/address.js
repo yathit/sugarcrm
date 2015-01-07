@@ -60,7 +60,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.getActiveFieldValue_ = function(name
     return this.patches_[name];
   } else {
     var model = this.getModel();
-    return model.getFieldAsValue(name);
+    return model.getStringValue(name);
   }
 };
 
@@ -173,7 +173,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.patchOptionField = function(el, patc
   var field_name = el.getAttribute('name');
   var input = el.querySelector('.value').firstElementChild;
 
-  var original = this.getModel().getFieldAsValue(field_name);
+  var original = this.getModel().valueAsString(field_name);
 
   if (input.value == original) {
     return false;

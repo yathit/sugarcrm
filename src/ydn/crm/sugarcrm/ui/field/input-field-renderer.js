@@ -89,7 +89,7 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
   if (!model) {
     return;
   }
-  var value = model.getFieldValue();
+  var value = model.getStringValue();
   var is_def = goog.isString(value) ? !goog.string.isEmpty(value) :
       goog.isDefAndNotNull(value);
   // console.log(model.getFieldName() + ' ' + value);

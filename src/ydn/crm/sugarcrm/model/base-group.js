@@ -144,9 +144,18 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
  * @param {string} name
  * @return {string}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldAsValue = function(name) {
-  var s = this.module.value(name);
-  return goog.isString(s) ? s : '';
+ydn.crm.sugarcrm.model.BaseGroup.prototype.valueAsString = function(name) {
+  return this.module.valueAsString(name);
+};
+
+
+/**
+ * Get record field value for string.
+ * @param {string} name
+ * @return {?string}
+ */
+ydn.crm.sugarcrm.model.BaseGroup.prototype.getStringValue = function(name) {
+  return this.module.getStringValue(name);
 };
 
 

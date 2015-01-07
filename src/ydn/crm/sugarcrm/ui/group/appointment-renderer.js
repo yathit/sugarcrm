@@ -90,9 +90,9 @@ ydn.crm.sugarcrm.ui.group.AppointmentRenderer.prototype.refresh = function(ctrl)
       ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.MINUTE + ']');
   var model = /** @type {ydn.crm.sugarcrm.model.AppointmentGroup} */ (ctrl.getModel());
   var hour_field = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.HOUR);
-  hour.value = hour_field.getFieldValue();
+  hour.value = hour_field.getStringValue();
   var minute_field = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.MINUTE);
-  minute.value = minute_field.getFieldValue();
+  minute.value = minute_field.getStringValue();
 };
 
 

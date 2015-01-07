@@ -53,7 +53,7 @@ ydn.crm.sugarcrm.model.EmailField.prototype.getParentModel = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.getFieldValue = function() {
+ydn.crm.sugarcrm.model.EmailField.prototype.getStringValue = function() {
   var email_model = this.getParentModel();
   return email_model.getFieldValueByEmailId(this.field_name);
 };

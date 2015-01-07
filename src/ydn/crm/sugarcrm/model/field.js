@@ -118,7 +118,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getFieldId = function() {
  * Get field value as string.
  * @return {?string}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getFieldValue = function() {
+ydn.crm.sugarcrm.model.Field.prototype.getStringValue = function() {
   return this.parent.module.valueAsString(this.field_name);
 };
 
@@ -233,7 +233,7 @@ ydn.crm.sugarcrm.model.Field.prototype.patch = function(value) {
   if (this.isCalculated()) {
     return null;
   }
-  if (value === this.getFieldValue()) {
+  if (value === this.getStringValue()) {
     return null;
   }
   var obj = {};

@@ -54,20 +54,20 @@ ydn.crm.sugarcrm.ui.group.Name.prototype.getEditorTemplateData = function() {
         name: 'salutation',
         label: 'Salutation',
         type: 'enum',
-        value: model.getFieldAsValue('salutation'),
+        value: model.valueAsString('salutation'),
         listId: sal
       },
       {
         name: 'first_name',
         label: 'First name',
         type: 'text',
-        value: model.getFieldAsValue('first_name')
+        value: model.valueAsString('first_name')
       },
       {
         name: 'last_name',
         label: 'Last name',
         type: 'text',
-        value: model.getFieldAsValue('last_name')
+        value: model.valueAsString('last_name')
       }
     ];
   } else {
@@ -75,7 +75,7 @@ ydn.crm.sugarcrm.ui.group.Name.prototype.getEditorTemplateData = function() {
       name: 'name',
       label: 'Name',
       type: 'text',
-      value: model.getFieldAsValue('name')
+      value: model.valueAsString('name')
     }];
   }
 
