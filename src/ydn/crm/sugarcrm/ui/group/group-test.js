@@ -167,6 +167,7 @@ function test_assigned_user() {
   ctrl.refresh();
   var field_el = attach_el.querySelector('div.record-group[name="assigned_user_name"] input.value');
   assertEquals('input value', exp_value, field_el.value);
+  assertFalse(ctrl.hasChanged());
 }
 
 
@@ -182,10 +183,11 @@ function test_assigned_user_default() {
   ctrl.refresh();
   var field_el = attach_el.querySelector('div.record-group[name="assigned_user_name"] input.value');
   assertEquals('input value', exp_value, field_el.value);
+  assertFalse(ctrl.hasChanged());
 }
 
 
-function test_appointment_date_start() {
+function test_appointment() {
   var sugar = ydn.crm.test.createSugar();
   var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
   var model = record.getGroupModel('appointment');
@@ -193,8 +195,32 @@ function test_appointment_date_start() {
   var ctrl = new ydn.crm.sugarcrm.ui.group.Appointment(model);
   ctrl.render(attach_el);
   ctrl.refresh();
-  var field_el = attach_el.querySelector('div.field[name="date_start"] input.value');
-  var exp_value = record.getStringValue('date_start');
-  exp_value = ydn.crm.sugarcrm.utils.toDateTimeLocalString(exp_value);
-  assertEquals('input value', exp_value, field_el.value);
+  var date_start_el = attach_el.querySelector('div.field[name="date_start"] input.value');
+  var duration_hours_el = attach_el.querySelector('.field[name="duration_hours"] input.value');
+  var duration_minutes_el = attach_el.querySelector('.field[name="duration_minutes"] input.value');
+  var date_start = record.getStringValue('date_start');
+  var duration_hours = record.getStringValue('duration_hours');
+  var duration_minutes = record.getStringValue('duration_minutes');
+  date_start = ydn.crm.sugarcrm.utils.toDateTimeLocalString(date_start);
+  assertEquals('date_start value', date_start, date_start_el.value);
+  assertEquals('duration_hours value', duration_hours, duration_hours_el.value);
+  assertEquals('duration_hours value', duration_minutes, duration_minutes_el.value);
+}
+
+
+function test_appointment_date_start_default() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS, {});
+  var model = record.getGroupModel('appointment');
+  var default_st = ydn.time.getNextNominal(); // default value
+  assertEquals(ydn.crm.sugarcrm.utils.toDateString(default_st),
+      model.getDefaultFieldValue(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START));
+  var ctrl = new ydn.crm.sugarcrm.ui.group.Appointment(model);
+  ctrl.render(attach_el);
+  ctrl.refresh();
+  var date_start_el = attach_el.querySelector('div.field[name="date_start"] input.value');
+  var duration_minutes_el = attach_el.querySelector('.field[name="duration_minutes"] input.value');
+  assertTrue('date_start value', !!date_start_el.value);
+  assertTrue('date_start value', !!duration_minutes_el.value);
+  assertFalse(ctrl.hasChanged());
 }

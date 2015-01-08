@@ -414,7 +414,15 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.getValue = function() {
  * @return {boolean}
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.hasChanged = function() {
-  return this.getValue() != this.collectData();
+  /**
+   * @type {ydn.crm.sugarcrm.model.Field}
+   */
+  var model = this.getModel();
+  var val = model.getField();
+  if (!goog.isDefAndNotNull(val)) {
+    val = model.getDefaultFieldValue();
+  }
+  return val != this.collectData();
 };
 
 

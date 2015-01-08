@@ -90,18 +90,13 @@ ydn.crm.sugarcrm.ui.group.Appointment.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Appointment.prototype.hasChanged = function() {
-
-};
-
-
-/**
- * @inheritDoc
- */
 ydn.crm.sugarcrm.ui.group.Appointment.prototype.collectData = function() {
   var obj = null;
   for (var j = 0; j < this.getChildCount(); j++) {
     var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    if (!f.hasChanged()) {
+      continue;
+    }
     var value = f.collectData();
     if (!goog.isNull(value)) {
       if (!obj) {
@@ -131,17 +126,5 @@ ydn.crm.sugarcrm.ui.group.Appointment.prototype.refresh = function() {
 };
 
 
-/**
- * @override
- */
-ydn.crm.sugarcrm.ui.group.Appointment.prototype.reset = function() {
-  goog.base(this, 'reset');
-  for (var i = 0; i < this.getChildCount(); i++) {
-    var child = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(i));
-    if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && !child) {
-      console.error(this + ' child ' + i + ' ' + child);
-    }
-    child.reset();
-  }
-};
+
 
