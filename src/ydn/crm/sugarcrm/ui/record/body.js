@@ -219,7 +219,10 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.collectData = function() {
   var obj = null;
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.Group} */ (child);
+    var g = /** @type {ydn.crm.sugarcrm.ui.group.AbstractGroup} */ (child);
+    if (!g.hasChanged()) {
+      continue;
+    }
     var value = g.collectData();
     if (value) {
       if (!obj) {

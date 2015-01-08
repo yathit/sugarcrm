@@ -39,13 +39,14 @@ goog.require('ydn.debug.error.ConstraintError');
  * @param {SugarCrm.About} about setup for particular domain.
  * @param {Array.<SugarCrm.ModuleInfo>|Object.<SugarCrm.ModuleInfo>} arr
  * @param {SugarCrm.ServerInfo=} opt_info
+ * @param {SugarCrm.Record=} opt_user login user info.
  * @constructor
  * @extends {goog.events.EventTarget}
  * @implements {ydn.crm.sugarcrm.Meta}
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.model.Sugar = function(about, arr, opt_info) {
+ydn.crm.sugarcrm.model.Sugar = function(about, arr, opt_info, opt_user) {
   goog.base(this);
   /**
    * @protected
@@ -83,8 +84,10 @@ ydn.crm.sugarcrm.model.Sugar = function(about, arr, opt_info) {
    * @type {!ydn.crm.sugarcrm.Record}
    * @private
    */
-  this.user_ = new ydn.crm.sugarcrm.Record(this.getDomain(), ydn.crm.sugarcrm.ModuleName.USERS);
-  this.initUser_();
+  this.user_ = new ydn.crm.sugarcrm.Record(this.getDomain(), ydn.crm.sugarcrm.ModuleName.USERS, opt_user);
+  if (!opt_user) {
+    this.initUser_();
+  }
   var pipe = ydn.msg.getMain();
   this.handler.listen(pipe, [ydn.crm.Ch.BReq.SUGARCRM, ydn.crm.Ch.BReq.HOST_PERMISSION],
       this.handleMessage);
@@ -237,7 +240,7 @@ ydn.crm.sugarcrm.model.Sugar.prototype.updateStatus = function() {
 
 /**
  * @return {string} sugarcrm user name. This is About.userName
- * @see #getUserLabel
+ * @see #getUser for getting login user record.
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.getUserName = function() {
   return this.about ? this.about.userName || '' : '';
@@ -245,33 +248,11 @@ ydn.crm.sugarcrm.model.Sugar.prototype.getUserName = function() {
 
 
 /**
- * @return {string} get name of User record of login user.
- */
-ydn.crm.sugarcrm.model.Sugar.prototype.getUserLabel = function() {
-  if (!this.user_) {
-    return '';
-  }
-  return this.user_.getStringValue('name') || this.about.userName || '';
-};
-
-
-/**
- * Get SugarCRM entry of login user.
+ * Get SugarCRM entry of login user record.
  * @return {!ydn.crm.sugarcrm.Record} SugarCRM User record.
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.getUser = function() {
   return this.user_;
-};
-
-
-/**
- * @return {string} get User record id of login user.
- */
-ydn.crm.sugarcrm.model.Sugar.prototype.getUserId = function() {
-  if (this.user_) {
-    return this.user_.getStringValue('id') || '';
-  }
-  return this.about.userName || '';
 };
 
 
@@ -544,8 +525,8 @@ ydn.crm.sugarcrm.model.Sugar.prototype.archiveEmail = function(info,
   var date_str = ydn.crm.sugarcrm.utils.isValidDate(info.date_sent) ?
       ydn.crm.sugarcrm.utils.toDateString(info.date_sent) : '';
   var obj = {
-    'assigned_user_id': this.getUserName(),
-    'assigned_user_name': this.getUserLabel(),
+    'assigned_user_id': this.user_.getStringValue('id'),
+    'assigned_user_name': this.user_.getStringValue('name'),
     'type': 'archived',
     'date_sent': date_str,
     'description': div.textContent,

@@ -16,6 +16,7 @@ function setUp() {
   ydn.crm.test.getMain().addMockRespond('gdata-list-contact-by-email', []);
   ydn.crm.test.getMain().addMockRespond('gdata-list-contact', []);
   ydn.crm.test.getMain().addMockSugarRespond('query', [{result: []}]);
+  ydn.crm.test.getMain().addMockSugarRespond('list-name', []);
   ydn.crm.test.getMain().addMockRespond('sync-q', []);
 
 }

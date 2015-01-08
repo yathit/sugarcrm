@@ -144,6 +144,9 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.createDom = function(field) {
  */
 ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
   var ele_field = ctrl.getElement();
+  /**
+   * @type {ydn.crm.sugarcrm.model.Field}
+   */
   var model = ctrl.getModel();
   goog.style.setElementShown(ele_field, !!model);
   if (!model) {
@@ -161,8 +164,7 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
     ele_field.removeAttribute('title');
   }
 
-  var is_def = goog.isString(value) ? !goog.string.isEmpty(value) :
-      goog.isDefAndNotNull(value);
+  var is_def = model.hasFieldValue();
   if (is_def) {
     ele_field.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   } else {

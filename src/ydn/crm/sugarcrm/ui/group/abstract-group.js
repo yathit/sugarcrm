@@ -84,8 +84,18 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getContentElement = function()
 
 
 /**
+ * Check if user has change the data.
+ * @return {boolean}
+ */
+ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.hasChanged = function() {
+  var data = this.collectData();
+  return !!data;
+};
+
+
+/**
  * Collect data of the field user has changes.
- * @return {?Object} null if no change in data.
+ * @return {?Object} may be null if there is no changes.
  */
 ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.collectData = function() {
   return null;

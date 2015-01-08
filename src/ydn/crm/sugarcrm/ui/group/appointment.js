@@ -90,6 +90,14 @@ ydn.crm.sugarcrm.ui.group.Appointment.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
+ydn.crm.sugarcrm.ui.group.Appointment.prototype.hasChanged = function() {
+
+};
+
+
+/**
+ * @inheritDoc
+ */
 ydn.crm.sugarcrm.ui.group.Appointment.prototype.collectData = function() {
   var obj = null;
   for (var j = 0; j < this.getChildCount(); j++) {

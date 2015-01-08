@@ -402,7 +402,7 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.collectData = function() {
 
 /**
  * Get field value from the model.
- * @return {*}
+ * @return {ydn.crm.sugarcrm.RecordValue}
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.getValue = function() {
   return this.getModel().getField();

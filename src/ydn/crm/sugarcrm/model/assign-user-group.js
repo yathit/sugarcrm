@@ -48,7 +48,7 @@ ydn.crm.sugarcrm.model.AssignUserGroup.prototype.getGroupValue = function() {
   if (name) {
     return name;
   } else {
-    return this.module.getMeta().getUserLabel();
+    return this.module.getMeta().getUser().getStringValue('name') || '';
   }
 };
 

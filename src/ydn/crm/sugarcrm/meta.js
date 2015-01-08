@@ -50,15 +50,9 @@ ydn.crm.sugarcrm.Meta.prototype.getDomain = function() {};
 
 
 /**
- * @return {string} instance domain of sugarcrm.
+ * @return {!ydn.crm.sugarcrm.Record} login user record.
  */
-ydn.crm.sugarcrm.Meta.prototype.getUserId = function() {};
-
-
-/**
- * @return {string} instance domain of sugarcrm.
- */
-ydn.crm.sugarcrm.Meta.prototype.getUserLabel = function() {};
+ydn.crm.sugarcrm.Meta.prototype.getUser = function() {};
 
 
 /**

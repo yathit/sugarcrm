@@ -6,6 +6,7 @@ goog.require('goog.testing.jsunit');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.sugarcrm.ui.field.Field');
 goog.require('ydn.crm.sugarcrm.ui.group.Email');
+goog.require('ydn.crm.sugarcrm.ui.group.Appointment');
 goog.require('ydn.crm.test');
 
 var mock_el = document.createElement('div');
@@ -13,6 +14,7 @@ document.body.appendChild(mock_el);
 
 function setUp() {
   ydn.crm.test.initPipe();
+  ydn.crm.test.getMain().addMockSugarRespond('list-name', []);
 }
 
 
@@ -62,6 +64,5 @@ function test_email() {
   assertEquals('email1', exp_email1, email_el[0].value);
   assertEquals('email2', exp_email2, email_el[1].value);
 }
-
 
 

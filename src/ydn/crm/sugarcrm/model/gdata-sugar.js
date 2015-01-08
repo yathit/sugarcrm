@@ -41,12 +41,14 @@ goog.require('ydn.crm.sugarcrm.model.Sugar');
  * @param {Array.<SugarCrm.ModuleInfo>} modules_info
  * @param {string} gdata_account Google account id, i.e., email address
  * @param {SugarCrm.ServerInfo=} opt_info
+ * @param {SugarCrm.Record=} opt_user login user info.
  * @constructor
  * @extends {ydn.crm.sugarcrm.model.Sugar}
  * @struct
  */
-ydn.crm.sugarcrm.model.GDataSugar = function(about, modules_info, gdata_account, opt_info) {
-  goog.base(this, about, modules_info, opt_info);
+ydn.crm.sugarcrm.model.GDataSugar = function(about, modules_info, gdata_account,
+                                             opt_info, opt_user) {
+  goog.base(this, about, modules_info, opt_info, opt_user);
   /**
    * Gmail context contact data.
    * @type {ydn.crm.inj.Context}

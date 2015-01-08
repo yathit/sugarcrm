@@ -133,10 +133,20 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.listFields = function() {
 /**
  * Get record field value.
  * @param {string} name
- * @return {(!Array|string|boolean|undefined)}
+ * @return {ydn.crm.sugarcrm.RecordValue}
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
   return this.module.value(name);
+};
+
+
+/**
+ * Get default field value.
+ * @param {string} name
+ * @return {ydn.crm.sugarcrm.RecordValue}
+ */
+ydn.crm.sugarcrm.model.BaseGroup.prototype.getDefaultFieldValue = function(name) {
+  return undefined;
 };
 
 

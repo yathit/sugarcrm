@@ -115,26 +115,38 @@ ydn.crm.sugarcrm.model.Field.prototype.getFieldId = function() {
 
 
 /**
- * Get field value as string.
- * @return {?string}
+ * Get field value for string type.
+ * @return {?string} `null` if not a string value or field value is not set.
  */
 ydn.crm.sugarcrm.model.Field.prototype.getStringValue = function() {
-  return this.parent.module.valueAsString(this.field_name);
+  return this.parent.module.getStringValue(this.field_name);
 };
 
 
 /**
- * Get field value as string.
+ * Get default field value.
+ * @return {ydn.crm.sugarcrm.RecordValue}
+ * @see #getDefaultStringValue
+ */
+ydn.crm.sugarcrm.model.Field.prototype.getDefaultFieldValue = function() {
+  return this.parent.getDefaultFieldValue(this.field_name);
+};
+
+
+/**
+ * Get default field value as string.
  * @return {?string}
+ * @see #getDefaultFieldValue
  */
 ydn.crm.sugarcrm.model.Field.prototype.getDefaultStringValue = function() {
-  return null;
+  var s = this.getDefaultFieldValue();
+  return goog.isString(s) ? s : null;
 };
 
 
 /**
  * Get raw field value.
- * @return {(!Array|string|boolean|undefined)}
+ * @return {ydn.crm.sugarcrm.RecordValue}
  */
 ydn.crm.sugarcrm.model.Field.prototype.getField = function() {
   return this.parent.module.value(this.field_name);
