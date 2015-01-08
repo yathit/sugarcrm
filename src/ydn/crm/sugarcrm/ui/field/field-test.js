@@ -32,7 +32,7 @@ function test_bool_rendering() {
   panel.render(mock_el);
 
   assertFalse('original value', panel.getValue());
-  assertNull('field value not change', panel.collectData());
+  assertFalse('field value not change', panel.hasChanged());
 }
 
 
@@ -45,7 +45,7 @@ function test_bool_rendering_default() {
   panel.render(mock_el);
 
   assertUndefined('original value', panel.getValue());
-  assertNull('field value not change', panel.collectData());
+  assertFalse('field value not change', panel.hasChanged());
 }
 
 
@@ -65,4 +65,30 @@ function test_email() {
   assertEquals('email2', exp_email2, email_el[1].value);
 }
 
+function test_data_start() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
+  var model = record.getGroupModel('appointment');
+  assertTrue(model.hasField(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START));
+  var start = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START);
+  var ctrl = new ydn.crm.sugarcrm.ui.field.Field(start);
+  ctrl.render(mock_el);
+  ctrl.refresh();
+
+  var ex_val = start.getField();
+  var ac_val = ctrl.collectData();
+  assertEquals(ex_val, ac_val);
+}
+
+function test_data_start_change() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
+  var model = record.getGroupModel('appointment');
+  var start = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START);
+  var ctrl = new ydn.crm.sugarcrm.ui.field.Field(start);
+  ctrl.render(mock_el);
+  ctrl.refresh();
+
+  assertFalse(ctrl.hasChanged());
+}
 

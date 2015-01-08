@@ -378,11 +378,7 @@ ydn.crm.sugarcrm.ui.field.Field.formatResult = function(new_value, model) {
     new_value = old_value; // restore undefined status.
   }
 
-  if (new_value != old_value) {
-    return new_value;
-  } else {
-    return null;
-  }
+  return new_value;
 };
 
 
@@ -396,7 +392,12 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.collectData = function() {
    * @type {ydn.crm.sugarcrm.model.Field}
    */
   var model = this.getModel();
-  return ydn.crm.sugarcrm.ui.field.Field.formatResult(new_value, model);
+  var val = ydn.crm.sugarcrm.ui.field.Field.formatResult(new_value, model);
+  if (goog.isDefAndNotNull(val)) {
+    return val;
+  } else {
+    return model.getDefaultFieldValue();
+  }
 };
 
 

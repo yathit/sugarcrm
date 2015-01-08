@@ -171,6 +171,19 @@ function test_assigned_user() {
 }
 
 
+function test_assigned_user_change() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
+  var model = record.getGroupModel('assigned_user_name');
+
+  var ctrl = new ydn.crm.sugarcrm.ui.group.AssignUser(model);
+  ctrl.render(attach_el);
+  ctrl.refresh();
+
+  assertFalse(ctrl.hasChanged());
+}
+
+
 function test_assigned_user_default() {
   var sugar = ydn.crm.test.createSugar();
   var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS, {});
@@ -183,9 +196,20 @@ function test_assigned_user_default() {
   ctrl.refresh();
   var field_el = attach_el.querySelector('div.record-group[name="assigned_user_name"] input.value');
   assertEquals('input value', exp_value, field_el.value);
-  assertFalse(ctrl.hasChanged());
 }
 
+
+function test_assigned_user_default_change() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS, {});
+  var model = record.getGroupModel('assigned_user_name');
+
+  var ctrl = new ydn.crm.sugarcrm.ui.group.AssignUser(model);
+  ctrl.render(attach_el);
+  ctrl.refresh();
+
+  assertFalse(ctrl.hasChanged());
+}
 
 function test_appointment() {
   var sugar = ydn.crm.test.createSugar();
@@ -208,7 +232,20 @@ function test_appointment() {
 }
 
 
-function test_appointment_date_start_default() {
+function test_appointment_change() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
+  var model = record.getGroupModel('appointment');
+  assertTrue(model.hasField(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START));
+  var ctrl = new ydn.crm.sugarcrm.ui.group.Appointment(model);
+  ctrl.render(attach_el);
+  ctrl.refresh();
+
+  assertFalse(ctrl.hasChanged());
+}
+
+
+function test_appointment_default() {
   var sugar = ydn.crm.test.createSugar();
   var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS, {});
   var model = record.getGroupModel('appointment');
@@ -221,6 +258,36 @@ function test_appointment_date_start_default() {
   var date_start_el = attach_el.querySelector('div.field[name="date_start"] input.value');
   var duration_minutes_el = attach_el.querySelector('.field[name="duration_minutes"] input.value');
   assertTrue('date_start value', !!date_start_el.value);
-  assertTrue('date_start value', !!duration_minutes_el.value);
+  assertTrue('duration_minutes_el value', !!duration_minutes_el.value);
+}
+
+
+function test_appointment_default_change() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS, {});
+  var model = record.getGroupModel('appointment');
+
+  var ctrl = new ydn.crm.sugarcrm.ui.group.Appointment(model);
+  ctrl.render(attach_el);
+  ctrl.refresh();
+
   assertFalse(ctrl.hasChanged());
+
+  var data = ctrl.collectData();
+  assertTrue(!!data); // still get default data
+}
+
+function test_appointment_default_collect_data() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS, {});
+  var model = record.getGroupModel('appointment');
+
+  var ctrl = new ydn.crm.sugarcrm.ui.group.Appointment(model);
+  ctrl.render(attach_el);
+  ctrl.refresh();
+
+  assertFalse(ctrl.hasChanged());
+
+  var data = ctrl.collectData();
+  assertTrue(!!data); // still get default data
 }

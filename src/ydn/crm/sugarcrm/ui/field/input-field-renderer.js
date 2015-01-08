@@ -96,7 +96,10 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
   // console.log(model.getFieldName() + ' ' + value);
   var ele_value = ele_field.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
 
-  var value = model.getStringValue() || model.getDefaultStringValue();
+  var value = model.getStringValue();
+  if (!goog.isDefAndNotNull(model.getStringValue())) {
+    value = model.getDefaultStringValue();
+  }
 
   if (goog.isDefAndNotNull(value)) {
     if (ele_value.type == 'datetime-local') {

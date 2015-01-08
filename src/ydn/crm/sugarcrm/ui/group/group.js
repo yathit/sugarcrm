@@ -152,6 +152,20 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.collectData = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.ui.group.Group.prototype.hasChanged = function() {
+  for (var j = 0; j < this.getChildCount(); j++) {
+    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    if (f.hasChanged()) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
  * @override
  */
 ydn.crm.sugarcrm.ui.group.Group.prototype.refresh = function() {

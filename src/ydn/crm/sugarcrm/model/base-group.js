@@ -145,7 +145,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
  * @return {ydn.crm.sugarcrm.RecordValue}
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getDefaultFieldValue = function(name) {
-  return undefined;
+  return null;
 };
 
 
