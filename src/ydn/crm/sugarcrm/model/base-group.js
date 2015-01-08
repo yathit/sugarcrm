@@ -102,12 +102,11 @@ ydn.crm.sugarcrm.model.BaseGroup.getNormallyHideDefaultSetting = function(name) 
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.hasField = function(name) {
   var module_info = this.module.getModuleInfo();
-  for (var x in module_info.module_fields) { // todo: hasOwnProperty ?
-    if (x == name) {
-      return true;
-    }
+  var info = module_info.module_fields[name];
+  if (!info) {
+    return false;
   }
-  return false;
+  return info.group == this.group_name;
 };
 
 
