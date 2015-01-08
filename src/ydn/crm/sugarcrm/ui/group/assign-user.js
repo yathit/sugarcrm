@@ -8,6 +8,7 @@
 goog.provide('ydn.crm.sugarcrm.ui.group.AssignUser');
 goog.require('ydn.crm.sugarcrm');
 goog.require('ydn.crm.sugarcrm.model.AssignUserGroup');
+goog.require('ydn.crm.sugarcrm.ui.group.AssignUserRenderer');
 goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
 
 
@@ -21,7 +22,8 @@ goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
  * @extends {ydn.crm.sugarcrm.ui.group.SimpleGroup}
  */
 ydn.crm.sugarcrm.ui.group.AssignUser = function(model, opt_dom) {
-  goog.base(this, model, null, opt_dom);
+  var r = ydn.crm.sugarcrm.ui.group.AssignUserRenderer.getInstance();
+  goog.base(this, model, r, opt_dom);
 };
 goog.inherits(ydn.crm.sugarcrm.ui.group.AssignUser, ydn.crm.sugarcrm.ui.group.SimpleGroup);
 
@@ -77,9 +79,12 @@ ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getDataListId = function() {
     document.body.appendChild(el);
     var ch = model.getMeta().getChannel();
     var q = {
-      'name': ydn.crm.sugarcrm.ModuleName.USERS
+      'module': ydn.crm.sugarcrm.ModuleName.USERS
     };
     ch.send(ydn.crm.Ch.SReq.LIST_NAME, q).addCallbacks(function(arr) {
+      if (ydn.crm.sugarcrm.ui.group.AssignUser.DEBUG) {
+        window.console.log(arr);
+      }
       var el = document.getElementById(id);
       for (var i = 0; i < arr.length; i++) {
         var obj = arr[i];

@@ -176,6 +176,8 @@ ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
         'name': 'assigned_user_id, date_due',
         'keyPath': ['assigned_user_id', 'date_due']
       }]
+  },
+  'Users': {
   }
 };
 

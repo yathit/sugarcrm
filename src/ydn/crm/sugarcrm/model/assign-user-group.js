@@ -19,7 +19,7 @@ goog.require('ydn.crm.sugarcrm.model.BaseGroup');
  * @struct
  */
 ydn.crm.sugarcrm.model.AssignUserGroup = function(parent) {
-  goog.base(this, parent, 'name');
+  goog.base(this, parent, 'assigned_user_name');
 };
 goog.inherits(ydn.crm.sugarcrm.model.AssignUserGroup, ydn.crm.sugarcrm.model.BaseGroup);
 
