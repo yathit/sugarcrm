@@ -1,7 +1,6 @@
 goog.provide('ydn.crm.sugarcrm.ui.group.GroupTest');
 goog.setTestOnly('ydn.crm.sugarcrm.ui.group.GroupTest');
 
-goog.require('ydn.crm.sugarcrm.ui.group.Phone');
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
@@ -303,7 +302,6 @@ function test_appointment_default_change() {
 }
 
 
-
 function test_appointment_default_collect_data() {
   var sugar = ydn.crm.test.createSugar();
   var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS, {});
@@ -318,3 +316,4 @@ function test_appointment_default_collect_data() {
   var data = ctrl.collectData();
   assertTrue(!!data); // still get default data
 }
+

@@ -62,7 +62,7 @@ ydn.crm.sugarcrm.ui.group.AssignUser.prototype.collectData = function() {
     if (el) {
       var option = el.querySelector('option[value="' + val + '"]');
       if (option) {
-        var id = el.getAttribute('data-id');
+        var id = option.getAttribute('data-id');
         obj['assigned_user_id'] = id;
       }
     }

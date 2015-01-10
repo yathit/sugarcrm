@@ -192,7 +192,19 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
     return !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE];
   } else {
     if (this.field.group) {
-      if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
+      if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
+        if (['name'].indexOf(this.field.group) >= 0) {
+          if (['name', 'full_name'].indexOf(this.name) >= 0) {
+            return true;
+          }
+        }
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
+        if (['name'].indexOf(this.field.group) >= 0) {
+          if (['name', 'full_name'].indexOf(this.name) >= 0) {
+            return true;
+          }
+        }
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.LEADS) {
         if (['name'].indexOf(this.field.group) >= 0) {
           if (['name', 'full_name'].indexOf(this.name) >= 0) {
             return true;

@@ -398,7 +398,9 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.onSaveClick = function(e) {
   var is_new_record = !this.getModel().hasRecord();
   var patches = is_new_record ?
       this.body_panel.collectData() : this.body_panel.getPatch();
-  this.patch(patches);
+  if (patches) {
+    this.patch(patches);
+  }
 };
 
 
@@ -589,7 +591,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleInputChanged = function(e) {
     e.preventDefault();
     this.patch(e.patches);
   } else {
-    // for new record creation, but also be in 
+    // for new record creation, should be in input mode.
     this.setDirty(true);
   }
 };

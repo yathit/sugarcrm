@@ -23,6 +23,17 @@ goog.require('ydn.crm.sugarcrm.ui.group.Group');
  */
 ydn.crm.sugarcrm.ui.group.Expander = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
+  /**
+   * Patch object on edit.
+   * @protected
+   * @type {?Object}
+   */
+  this.patches = null;
+  /**
+   * @protected
+   * @type {goog.events.KeyHandler}
+   */
+  this.keyHandler = null;
 };
 goog.inherits(ydn.crm.sugarcrm.ui.group.Expander, ydn.crm.sugarcrm.ui.group.Group);
 
@@ -54,7 +65,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.createDom = function() {
   }
   header.appendChild(label);
   header.appendChild(dom.createDom('span', 'center'));
-  var svg = ydn.crm.ui.createSvgIcon('pencil');
+  var svg = ydn.crm.ui.createSvgIcon('create');
   var btn = dom.createDom('span', ydn.crm.ui.CSS_CLASS_SVG_BUTTON, svg);
   btn.setAttribute('title', 'Edit');
   header.appendChild(btn);
@@ -88,9 +99,17 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.expand = function(val) {
   goog.style.setElementShown(content, val);
   var label = this.getHeaderLabel();
   if (val) {
-    label.textContent = 'Edit name';
+    if (label.tagName == 'INPUT') {
+      label.setAttribute('disabled', 'disabled');
+    } else {
+      label.textContent = 'Edit ' + this.getModel().getGroupName();
+    }
   } else {
-    label.textContent = this.getModel().getGroupValue();
+    if (label.tagName == 'INPUT') {
+      label.removeAttribute('disabled');
+    } else {
+      label.textContent = this.getModel().getGroupValue();
+    }
   }
 };
 
@@ -110,7 +129,20 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.enterDocument = function() {
     var header = this.getElement().querySelector('.' +
         ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER);
     header.classList.add('field-like');
-    this.getHandler().listen(input, 'blur', this.onLabelBlur);
+    this.getHandler().listen(input, 'blur', this.onLabelChanged);
+    this.keyHandler = new goog.events.KeyHandler(input);
+    this.getHandler().listen(this.keyHandler, goog.events.KeyHandler.EventType.KEY, this.onInputKey_);
+  }
+};
+
+
+/**
+ * @param {goog.events.KeyEvent} k
+ * @private
+ */
+ydn.crm.sugarcrm.ui.group.Expander.prototype.onInputKey_ = function(k) {
+  if (k.keyCode == goog.events.KeyCodes.ENTER) {
+    this.onLabelChanged(k);
   }
 };
 
@@ -119,7 +151,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.enterDocument = function() {
  * @param {goog.events.Event} ev
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.onLabelBlur = function(ev) {
+ydn.crm.sugarcrm.ui.group.Expander.prototype.onLabelChanged = function(ev) {
 
   var model = this.getModel();
   var input = this.getElement().querySelector('.' +
@@ -128,6 +160,12 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.onLabelBlur = function(ev) {
   if (patch) {
     var ce = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patch, this);
     this.dispatchEvent(ce);
+    if (!ce.defaultPrevented) {
+      if (!this.patches) {
+        this.patches = {};
+      }
+      goog.object.extend(this.patches, ce.patches);
+    }
   }
 };
 
@@ -153,7 +191,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.isExpanded = function() {
 
 /**
  * @protected
- * @return {Element}
+ * @return {Element} could be input or span.
  */
 ydn.crm.sugarcrm.ui.group.Expander.prototype.getHeaderLabel = function() {
   return this.getElement().querySelector('.' +
@@ -185,4 +223,73 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.reset = function() {
   var label = this.getHeaderLabel();
   label.setAttribute('title', this.getModel().getGroupName());
 
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.ui.group.Expander.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  if (this.keyHandler) {
+    this.keyHandler.dispose();
+    this.keyHandler = null;
+  }
+};
+
+
+/**
+* @inheritDoc
+*/
+ydn.crm.sugarcrm.ui.group.Expander.prototype.collectData = function() {
+  var out = goog.base(this, 'collectData');
+  if (this.patches) {
+    var new_out = {};
+    for (var name in this.patches) {
+      new_out[name] = this.patches[name];
+    }
+    if (out) {
+      for (var name in out) {
+        if (goog.isDefAndNotNull(out[name])) {
+          new_out[name] = out[name];
+        }
+      }
+    }
+    return new_out;
+  }
+  return out;
+};
+
+
+/**
+* @inheritDoc
+*/
+ydn.crm.sugarcrm.ui.group.Expander.prototype.hasChanged = function() {
+  if (this.patches) {
+    return true;
+  }
+  return goog.base(this, 'hasChanged');
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.ui.group.Expander.prototype.getPatch = function() {
+  var out = goog.base(this, 'getPatch');
+  if (this.patches) {
+    var new_out = {};
+    for (var name in this.patches) {
+      new_out[name] = this.patches[name];
+    }
+    if (out) {
+      for (var name in out) {
+        if (out[name]) {
+          new_out[name] = out[name];
+        }
+      }
+    }
+    return new_out;
+  }
+  return out;
 };
