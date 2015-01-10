@@ -166,6 +166,31 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.hasChanged = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.ui.group.Group.prototype.getPatch = function() {
+  var obj = null;
+  for (var j = 0; j < this.getChildCount(); j++) {
+    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    if (!f.hasChanged()) {
+      continue;
+    }
+    var value = f.collectData();
+    if (!goog.isNull(value)) {
+      if (!obj) {
+        obj = {};
+      }
+      obj[f.getFieldName()] = value;
+    }
+  }
+  if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && obj) {
+    window.console.log(this, obj);
+  }
+  return obj;
+};
+
+
+/**
  * @override
  */
 ydn.crm.sugarcrm.ui.group.Group.prototype.refresh = function() {

@@ -26,14 +26,17 @@ goog.inherits(ydn.crm.sugarcrm.model.NameGroup, ydn.crm.sugarcrm.model.BaseGroup
 
 
 /**
- * @return {string} full name with salutation.
+ * Make full name.
+ * @param {string} full_name
+ * @param {string} first_name
+ * @param {string} last_name
+ * @return {string}
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.getFullNameLabel = function() {
+ydn.crm.sugarcrm.model.NameGroup.makeFullName = function(full_name, first_name,
+                                                         last_name) {
   var fn = '';
-  var full_name = this.module.value('full_name');
   if (!full_name) {
-    fn += this.module.value('first_name') || '';
-    var last_name = this.module.value('last_name');
+    fn += first_name || '';
     if (last_name) {
       fn += ' ' + last_name;
     }
@@ -41,6 +44,17 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getFullNameLabel = function() {
     fn += full_name;
   }
   return fn;
+};
+
+
+/**
+ * @return {string} full name with salutation.
+ */
+ydn.crm.sugarcrm.model.NameGroup.prototype.getFullNameLabel = function() {
+  return ydn.crm.sugarcrm.model.NameGroup.makeFullName(
+      this.module.valueAsString('full_name'),
+      this.module.valueAsString('first_name'),
+      this.module.valueAsString('last_name'));
 };
 
 
@@ -164,7 +178,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupLabel = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.model.NameGroup.prototype.hasGroupValue = function() {
-  return this.hasField('name') || this.hasField('first_name');
+  return this.hasField('name') || this.hasField('full_name');
 };
 
 
@@ -173,7 +187,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.hasGroupValue = function() {
  */
 ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupValue = function() {
   if (this.hasField('full_name')) {
-    return this.getFullNameLabel();
+    return this.module.valueAsString('full_name');
   } else {
     return this.module.valueAsString('name');
   }

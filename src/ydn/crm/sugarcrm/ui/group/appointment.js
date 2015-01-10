@@ -14,9 +14,8 @@
 
 
 /**
- * @fileoverview Panel for listed items.
+ * @fileoverview Appointment fields group.
  *
- * This module provide adding, linking and syncing.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -30,7 +29,7 @@ goog.require('ydn.crm.sugarcrm.ui.group.Group');
 
 
 /**
- * Panel for listed items.
+ * Appointment fields group.
  * @param {ydn.crm.sugarcrm.model.AppointmentGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor

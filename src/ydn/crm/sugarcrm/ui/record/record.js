@@ -389,7 +389,15 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleHeaderMenuClick = function(e) 
  * @param {goog.events.BrowserEvent} e
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.onSaveClick = function(e) {
-  var patches = this.body_panel.collectData();
+  if (!this.body_panel.hasChanged()) {
+    if (ydn.crm.sugarcrm.ui.record.Record.DEBUG) {
+      window.console.info('No change');
+    }
+    return;
+  }
+  var is_new_record = !this.getModel().hasRecord();
+  var patches = is_new_record ?
+      this.body_panel.collectData() : this.body_panel.getPatch();
   this.patch(patches);
 };
 
@@ -636,16 +644,6 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.patch = function(patches) {
 
 
 /**
- * Return data from UI values. Return null, if invalid data present.
- * @return {?SugarCrm.Record} null if data is not valid.
- * @protected
- */
-ydn.crm.sugarcrm.ui.record.Record.prototype.collectData = function() {
-  return this.body_panel.collectData();
-};
-
-
-/**
  * @protected
  * @param {ydn.crm.sugarcrm.ui.events.SettingChangeEvent} e
  */
@@ -707,8 +705,10 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.setMessage = function(s, opt_is_erro
  * @return {?SugarCrm.Record} null if record value is not updated.
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.getUpdatedValue = function() {
-
-  var delta = this.body_panel.collectData();
+  if (!this.body_panel.hasChanged()) {
+    return null;
+  }
+  var delta = this.body_panel.getPatch();
   if (delta) {
     var old_value = this.getModel().getRecordValue();
     if (old_value) {
@@ -869,7 +869,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.simulateEdit = function(user_patch,
   }
   this.body_panel.simulateEdit(user_patch);
   if (opt_dispatch_event) {
-    var patch = this.collectData();
+    var patch = this.body_panel.getPatch();
     var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patch, this);
     this.dispatchEvent(ev);
   }

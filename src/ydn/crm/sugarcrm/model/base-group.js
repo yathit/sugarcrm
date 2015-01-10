@@ -142,7 +142,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
 /**
  * Get default field value.
  * @param {string} name
- * @return {ydn.crm.sugarcrm.RecordValue}
+ * @return {?ydn.crm.sugarcrm.RecordValue} `null` if no default value set.
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getDefaultFieldValue = function(name) {
   return null;
@@ -238,7 +238,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getAdditionalOptions = function() {
  * @param {*} value input value.
  * @return {?Object} patch object. `null` if patch is not necessary.
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.patch = function(value) {
+ydn.crm.sugarcrm.model.BaseGroup.prototype.pluck = function(value) {
   if (!goog.isObject(value)) {
     return null;
   }
@@ -251,13 +251,13 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.patch = function(value) {
         has_changed = true;
         obj[name] = value[name];
       }
-    } else {
+    } /* else {
       has_changed = true;
       obj[name] = value[name];
       if (ydn.crm.sugarcrm.model.BaseGroup.DEBUG) {
         window.console.warn('New field: ' + name + ' was introduced to ' + this);
       }
-    }
+    } */
   }
   return has_changed ? obj : null;
 };

@@ -209,7 +209,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.getGroupValue = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.doEditorApplyDefault = function(ev) {
+ydn.crm.sugarcrm.ui.group.Address.prototype.applyEditorChanges = function(ev) {
   this.patches_ = ydn.object.clone(ev.patches);
   var label = this.getGroupValue();
   this.setInputValue(label);

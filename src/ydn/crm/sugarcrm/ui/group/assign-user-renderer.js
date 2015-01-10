@@ -38,17 +38,5 @@ ydn.crm.sugarcrm.ui.group.AssignUserRenderer.prototype.decorate = function(x) {
 };
 
 
-/**
- * @inheritDoc
- */
-ydn.crm.sugarcrm.ui.group.AssignUserRenderer.prototype.refresh = function(x) {
-  goog.base(this, 'refresh', x);
-  var ctrl = /** @type {ydn.crm.sugarcrm.ui.group.AssignUser} */(x);
-  /**
-   * @type {ydn.crm.sugarcrm.model.AssignUserGroup}
-   */
-  var model = ctrl.getModel();
-
-};
 
 

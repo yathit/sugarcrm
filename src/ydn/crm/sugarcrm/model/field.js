@@ -125,7 +125,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getStringValue = function() {
 
 /**
  * Get default field value.
- * @return {ydn.crm.sugarcrm.RecordValue}
+ * @return {?ydn.crm.sugarcrm.RecordValue} `null` if no default value set.
  * @see #getDefaultStringValue
  */
 ydn.crm.sugarcrm.model.Field.prototype.getDefaultFieldValue = function() {

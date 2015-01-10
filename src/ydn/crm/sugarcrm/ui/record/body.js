@@ -212,6 +212,22 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.createDom = function() {
 
 
 /**
+ * Change if user change fields.
+ * @return {boolean}
+ */
+ydn.crm.sugarcrm.ui.record.Body.prototype.hasChanged = function() {
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var child = this.getChildAt(i);
+    var g = /** @type {ydn.crm.sugarcrm.ui.group.AbstractGroup} */ (child);
+    if (g.hasChanged()) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
  * Return data from UI values. Return null, if invalid data present.
  * @return {?SugarCrm.Record} null if data is not valid.
  */
@@ -220,11 +236,31 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.collectData = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
     var g = /** @type {ydn.crm.sugarcrm.ui.group.AbstractGroup} */ (child);
-    if (!g.hasChanged()) {
-      continue;
-    }
     var value = g.collectData();
-    if (value) {
+    if (!goog.isNull(value)) {
+      if (!obj) {
+        obj = {};
+      }
+      for (var name in value) {
+        obj[name] = value[name];
+      }
+    }
+  }
+  return /** @type {SugarCrm.Record} */ (/** @type {Object} */ (obj));
+};
+
+
+/**
+ * Return data from UI values for only fields of user changed.
+ * @return {?SugarCrm.Record} null if data is not valid or not changed.
+ */
+ydn.crm.sugarcrm.ui.record.Body.prototype.getPatch = function() {
+  var obj = null;
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var child = this.getChildAt(i);
+    var g = /** @type {ydn.crm.sugarcrm.ui.group.AbstractGroup} */ (child);
+    var value = g.getPatch();
+    if (!goog.isNull(value)) {
       if (!obj) {
         obj = {};
       }

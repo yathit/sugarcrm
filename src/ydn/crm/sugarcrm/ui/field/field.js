@@ -357,7 +357,16 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.reset = function() {
  * @return {*}
  */
 ydn.crm.sugarcrm.ui.field.Field.formatResult = function(new_value, model) {
-  var old_value = model.getField();
+  var old_value = undefined;
+  if (model.hasFieldValue()) {
+    old_value = model.getField();
+  } else {
+    var def = model.getDefaultFieldValue();
+    if (goog.isDefAndNotNull(def)) {
+      old_value = def;
+    }
+  }
+
   if (ydn.crm.sugarcrm.ui.field.Field.DEBUG) {
     window.console.log(model.getFieldName(), model.getType(), old_value, new_value);
   }
@@ -383,25 +392,6 @@ ydn.crm.sugarcrm.ui.field.Field.formatResult = function(new_value, model) {
 
 
 /**
- * Collect data from UI.
- * @return {*} return null if not modified.
- */
-ydn.crm.sugarcrm.ui.field.Field.prototype.collectData = function() {
-  var new_value = this.getRenderer().collectValue(this);
-  /**
-   * @type {ydn.crm.sugarcrm.model.Field}
-   */
-  var model = this.getModel();
-  var val = ydn.crm.sugarcrm.ui.field.Field.formatResult(new_value, model);
-  if (goog.isDefAndNotNull(val)) {
-    return val;
-  } else {
-    return model.getDefaultFieldValue();
-  }
-};
-
-
-/**
  * Get field value from the model.
  * @return {ydn.crm.sugarcrm.RecordValue}
  */
@@ -411,7 +401,7 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.getValue = function() {
 
 
 /**
- * Check modification on UI value with model value.
+ * Check modification on UI value from the original set (by the user).
  * @return {boolean}
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.hasChanged = function() {
@@ -424,6 +414,20 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.hasChanged = function() {
     val = model.getDefaultFieldValue();
   }
   return val != this.collectData();
+};
+
+
+/**
+ * Collect data from Element.
+ * @return {*}
+ */
+ydn.crm.sugarcrm.ui.field.Field.prototype.collectData = function() {
+  var new_value = this.getRenderer().collectValue(this);
+  /**
+   * @type {ydn.crm.sugarcrm.model.Field}
+   */
+  var model = this.getModel();
+  return ydn.crm.sugarcrm.ui.field.Field.formatResult(new_value, model);
 };
 
 

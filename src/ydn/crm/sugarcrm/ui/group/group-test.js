@@ -9,6 +9,7 @@ goog.require('ydn.crm.sugarcrm.ui.group.Address');
 goog.require('ydn.crm.sugarcrm.ui.group.Appointment');
 goog.require('ydn.crm.sugarcrm.ui.group.AssignUser');
 goog.require('ydn.crm.sugarcrm.ui.group.Email');
+goog.require('ydn.crm.sugarcrm.ui.group.Name');
 goog.require('ydn.crm.sugarcrm.ui.group.Phone');
 goog.require('ydn.crm.test');
 
@@ -32,7 +33,7 @@ function test_new_email() {
   panel.simulateEditByField('email', 'abc@example.com');
 
   var data = panel.collectData();
-  assertArrayEquals('edited fields', ['email'], Object.keys(data));
+  assertTrue('edited', !!data);
   assertEquals('edited value', 'abc@example.com', data['email']);
 
 }
@@ -46,7 +47,7 @@ function test_new_phone() {
   panel.simulateEditByField('phone_home', '12345678');
 
   var data = panel.collectData();
-  assertArrayEquals('edited fields', ['phone_home'], Object.keys(data));
+  assertTrue('edited', !!data);
   assertEquals('edited value', '12345678', data['phone_home']);
 
 }
@@ -171,6 +172,20 @@ function test_assigned_user() {
 }
 
 
+function test_name() {
+  var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.CONTACTS);
+  var model = record.getGroupModel('name');
+  var ctrl = new ydn.crm.sugarcrm.ui.group.Name(model);
+  ctrl.render(attach_el);
+  editDialog();
+  simulateDialogEdit('first_name', 'New Name');
+  closeDialog();
+  var data = ctrl.collectData();
+  assertEquals('New Name', data['first_name']);
+}
+
+
+
 function test_assigned_user_change() {
   var sugar = ydn.crm.test.createSugar();
   var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
@@ -209,6 +224,8 @@ function test_assigned_user_default_change() {
   ctrl.refresh();
 
   assertFalse(ctrl.hasChanged());
+  var data = ctrl.collectData();
+  assert('filled with default', !!data);
 }
 
 function test_appointment() {

@@ -22,6 +22,12 @@ goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
  */
 ydn.crm.sugarcrm.ui.group.Name = function(model, opt_dom) {
   goog.base(this, model, null, opt_dom);
+  /**
+   * User edited value.
+   * @type {?Object}
+   * @private
+   */
+  this.patches_ = null;
 };
 goog.inherits(ydn.crm.sugarcrm.ui.group.Name, ydn.crm.sugarcrm.ui.group.SimpleGroup);
 
@@ -88,47 +94,60 @@ ydn.crm.sugarcrm.ui.group.Name.prototype.getEditorTemplateData = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Name.prototype.collectData = function() {
-  var model = this.getModel();
-  var value = this.getInputValue();
-  var org_value = model.getGroupValue();
-  if (value == org_value) {
-    // HACK: Since our parsing is not reliable, we check the input value is
-    // tempered or not. If not, we just skip.
-    // NOTE: Name may change via, popup dialog as well.
-    if (ydn.crm.sugarcrm.ui.group.Name.DEBUG) {
-      window.console.log('Name:collectData:No change');
-    }
-    return null;
+ydn.crm.sugarcrm.ui.group.Name.prototype.applyEditorChanges = function(ev) {
+  if (!this.patches_) {
+    this.patches_ = {};
   }
-  if (!model.hasField('full_name')) {
-    return {
-      'name': value
-    };
+  for (var k in ev.patches) {
+    this.patches_[k] = ev.patches[k];
   }
-  var new_value = model.parseFullNameLabel(value);
-  var sal = model.getFieldValue('salutation');
-  var first_name = model.getFieldValue('first_name');
-  var last_name = model.getFieldValue('last_name');
-  var full_name = model.getFieldValue('full_name');
-  var has_changed = sal != new_value['salutation'] ||
-      first_name != new_value['first_name'] ||
-      last_name != new_value['last_name'] ||
-      full_name != new_value['full_name'];
-  var out = has_changed ? new_value : null;
-  if (ydn.crm.sugarcrm.ui.group.Name.DEBUG) {
-    window.console.log('Name:collectData', out);
-  }
-  return out;
+  var name = ydn.crm.sugarcrm.model.NameGroup.makeFullName(
+      this.patches_['full_name'],
+      this.patches_['first_name'],
+      this.patches_['last_name']);
+  this.setInputValue(name);
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Name.prototype.simulateEditByField = function(name, value) {
-  if (name == 'full_name' || name == 'name') {
-    goog.base(this, 'simulateEditByField', null, value);
+ydn.crm.sugarcrm.ui.group.Name.prototype.collectData = function() {
+  return this.patches_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getPatch = function() {
+
+};
+
+
+/**
+ * @param {Event} e
+ * @protected
+ */
+ydn.crm.sugarcrm.ui.group.Name.prototype.handleInputBlur = function(e) {
+  var value = this.getInputValue();
+  var model = this.getModel();
+  var patch = {
+    'name': value
+  };
+  if (model.hasField('full_name')) {
+    patch['full_name'] = value;
+  }
+  patch = model.pluck(patch);
+  if (patch) {
+    if (!this.patches_) {
+      this.patches_ = {};
+    }
+    for (var k in patch) {
+      this.patches_[k] = patch[k];
+    }
+    var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patch, this);
+    this.dispatchEvent(ev);
   }
 };
 

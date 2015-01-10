@@ -91,7 +91,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.setInputValue = function(val) {
 ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleInputBlur = function(e) {
   var new_val = this.collectData();
   var model = this.getModel();
-  var patch = model.patch(new_val);
+  var patch = model.pluck(new_val);
   if (patch) {
     var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patch, this);
     this.dispatchEvent(ev);
@@ -126,6 +126,9 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.onHoverButtonClick = function(e)
 ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.collectData = function() {
   var obj = null;
   for (var j = 0; j < this.getChildCount(); j++) {
+    if (!(this.getChildAt(j) instanceof ydn.crm.sugarcrm.ui.field.Field)) {
+      continue;
+    }
     var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
     var value = f.collectData();
     if (!goog.isNull(value)) {
@@ -140,6 +143,48 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.collectData = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getPatch = function() {
+  var obj = null;
+  for (var j = 0; j < this.getChildCount(); j++) {
+    if (!(this.getChildAt(j) instanceof ydn.crm.sugarcrm.ui.field.Field)) {
+      continue;
+    }
+    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    if (!f.hasChanged()) {
+      continue;
+    }
+    var value = f.collectData();
+    if (!goog.isNull(value)) {
+      if (!obj) {
+        obj = {};
+      }
+      obj[f.getFieldName()] = value;
+    }
+  }
+  return obj;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.hasChanged = function() {
+  for (var j = 0; j < this.getChildCount(); j++) {
+    if (!(this.getChildAt(j) instanceof ydn.crm.sugarcrm.ui.field.Field)) {
+      continue;
+    }
+    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    if (f.hasChanged()) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
  * Default operation for action.
  * @param {ydn.crm.sugarcrm.ui.events.FieldMenuActionEvent} mae
  * @protected
@@ -148,9 +193,11 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.doMenuActionDefault = function(m
   if (mae.command == ydn.crm.sugarcrm.model.Field.Command.EDIT) {
     var dialog = ydn.crm.sugarcrm.ui.field.Field.createEditor(this.getEditorTemplateData());
 
-    this.getHandler().listen(dialog, goog.ui.Dialog.EventType.SELECT, this.handleEditorSelect, false);
+    this.getHandler().listen(dialog, goog.ui.Dialog.EventType.SELECT,
+        this.handleEditorSelect_, false);
     this.getHandler().listenOnce(dialog, goog.ui.PopupBase.EventType.HIDE, function(e) {
-      this.getHandler().unlisten(dialog, goog.ui.Dialog.EventType.SELECT, this.handleEditorSelect, false);
+      this.getHandler().unlisten(dialog, goog.ui.Dialog.EventType.SELECT,
+          this.handleEditorSelect_, false);
     }, false);
 
     dialog.setVisible(true);
@@ -168,7 +215,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.doMenuActionDefault = function(m
  */
 ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.patchOptionField = function(el, patches) {
   var field_name = el.getAttribute('name');
-  var input = el.querySelector('.value');
+  var input = el.querySelector('.value').firstElementChild;
   var field_value;
   if (input.tagName == goog.dom.TagName.INPUT) {
     field_value = input.value;
@@ -182,27 +229,41 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.patchOptionField = function(el, 
 
 
 /**
- * @param {goog.ui.Dialog.Event} e
+ * Handle when dialog is closed with 'OK' button.
+ * The default handler will collect field values and dispatch
+ * @see {ydn.crm.sugarcrm.ui.events.Type.CHANGE} event.
+ * If the event is handled
+ * @see {#applyEditorChanges} default handler will be invoke.
+ * @param {goog.ui.Dialog} dialog
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleEditorSelect = function(e) {
+ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleDialogOk = function(dialog) {
+  var el = dialog.getContentElement();
+  var fields_el = el.querySelectorAll('.field');
+  var patches = {};
+  var has_patch = false;
+  for (var i = 0; i < fields_el.length; i++) {
+    has_patch |= this.patchOptionField(fields_el[i], patches);
+  }
+  if (has_patch) {
+    var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patches, this);
+    this.dispatchEvent(ev);
+    if (!ev.defaultPrevented) {
+      this.applyEditorChanges(ev);
+    }
+  }
+};
+
+
+/**
+ * @param {goog.ui.Dialog.Event} e
+ * @private
+ */
+ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleEditorSelect_ = function(e) {
 
   if (e.key == goog.ui.Dialog.DefaultButtonKeys.OK) {
     var dialog = /** @type {goog.ui.Dialog} */ (e.target);
-    var el = dialog.getContentElement();
-    var fields_el = el.querySelectorAll('.field');
-    var patches = {};
-    var has_patch = false;
-    for (var i = 0; i < fields_el.length; i++) {
-      has_patch |= this.patchOptionField(fields_el[i], patches);
-    }
-    if (has_patch) {
-      var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patches, this);
-      this.dispatchEvent(ev);
-      if (!ev.defaultPrevented) {
-        this.doEditorApplyDefault(ev);
-      }
-    }
+    this.handleDialogOk(dialog);
   }
 };
 
@@ -212,7 +273,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleEditorSelect = function(e)
  * @param {ydn.crm.sugarcrm.ui.events.ChangedEvent} ev
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.doEditorApplyDefault = function(ev) {
+ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.applyEditorChanges = function(ev) {
   // sub-class may override
 };
 
@@ -227,7 +288,9 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.refresh = function() {
 
 /**
  * Get template data for editor dialog.
- * Subclass should override for rendering with default renderer.
+ * Subclass  with default renderer should override for rendering standard edit
+ * dialog and override
+ * @see #applyEditorChanges handler.
  * @return {ydn.crm.sugarcrm.ui.field.Field.EditorTemplateData}
  * @protected
  */

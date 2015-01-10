@@ -94,12 +94,17 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.hasChanged = function() {
 
 
 /**
- * Collect data of the field user has changes.
- * @return {?Object} may be null if there is no changes.
+ * Collect data form UI.
+ * @return {Object}
  */
-ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.collectData = function() {
-  return null;
-};
+ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.collectData = goog.abstractMethod;
+
+
+/**
+ * Collect data that user has changed.
+ * @return {?Object} `null` if user does not change the data.
+ */
+ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getPatch = goog.abstractMethod;
 
 
 /** @return {string} */

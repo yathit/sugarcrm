@@ -42,23 +42,46 @@ ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getModel;
 
 
 /**
- * @inheritDoc
+ * @override
+ */
+ydn.crm.sugarcrm.ui.group.AssignUser.prototype.hasChanged = function() {
+  var val = this.renderer.getInputValue(this);
+  var org = this.getModel().getGroupValue();
+  return val != org;
+};
+
+
+/**
+ * @override
  */
 ydn.crm.sugarcrm.ui.group.AssignUser.prototype.collectData = function() {
-  var model = this.getModel();
-  var value = this.getInputValue();
-  var org_value = model.getGroupValue();
-  if (value == org_value) {
-    // HACK: Since our parsing is not reliable, we check the input value is
-    // tempered or not. If not, we just skip.
-    // NOTE: Name may change via, popup dialog as well.
-    if (ydn.crm.sugarcrm.ui.group.AssignUser.DEBUG) {
-      window.console.log('Name:collectData:No change');
+  var val = this.renderer.getInputValue(this);
+  if (val) {
+    var obj = {'assigned_user_name': val};
+    var el = document.getElementById(this.getDataListId());
+    if (el) {
+      var option = el.querySelector('option[value="' + val + '"]');
+      if (option) {
+        var id = el.getAttribute('data-id');
+        obj['assigned_user_id'] = id;
+      }
     }
+    return obj;
+  } else {
     return null;
   }
+};
 
-  throw new Error('Not impl');
+
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getPatch = function() {
+  if (this.hasChanged()) {
+    return this.collectData();
+  } else {
+    return null;
+  }
 };
 
 
@@ -89,8 +112,11 @@ ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getDataListId = function() {
       for (var i = 0; i < arr.length; i++) {
         var obj = arr[i];
         var option = document.createElement('option');
-        option.value = obj['id'];
-        option.textContent = obj['name'];
+        // Note: User `name` is not unique, we should use `id` instead.
+        // Unfortunately `option` element supports only `value` attribute.
+        // Look like we need to implement custom element for selecting user.
+        option.value = obj['name'];
+        option.setAttribute('data-id', obj['id']);
         el.appendChild(option);
       }
     }, function(e) {
