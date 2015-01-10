@@ -177,11 +177,12 @@ function test_name() {
   var model = record.getGroupModel('name');
   var ctrl = new ydn.crm.sugarcrm.ui.group.Name(model);
   ctrl.render(attach_el);
-  editDialog();
-  simulateDialogEdit('first_name', 'New Name');
-  closeDialog();
+  ctrl.simulateEditByField('first_name', 'Foo');
+  ctrl.simulateEditByField('last_name', 'Bar');
   var data = ctrl.collectData();
-  assertEquals('New Name', data['first_name']);
+  assertTrue(ctrl.hasChanged());
+  assertEquals('Foo', data['first_name']);
+  assertEquals('Bar', data['last_name']);
 }
 
 
@@ -292,7 +293,16 @@ function test_appointment_default_change() {
 
   var data = ctrl.collectData();
   assertTrue(!!data); // still get default data
+  var names = [ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START,
+    ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.HOUR,
+    ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.MINUTE];
+  for (var i = 0; i < names.length; i++) {
+    var name = names[i];
+    assertTrue('default for '  + name, !!data[name]);
+  }
 }
+
+
 
 function test_appointment_default_collect_data() {
   var sugar = ydn.crm.test.createSugar();

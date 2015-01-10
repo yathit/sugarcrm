@@ -61,11 +61,11 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getModel;
 ydn.crm.sugarcrm.ui.record.Body.prototype.setEditMode = function(val) {
   var root = this.getElement();
   if (val) {
-    root.classList.add(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_EDIT);
-    root.classList.remove(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_VIEW);
+    root.classList.add(ydn.crm.ui.CSS_CLASS_EDIT);
+    root.classList.remove(ydn.crm.ui.CSS_CLASS_VIEW);
   } else {
-    root.classList.remove(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_EDIT);
-    root.classList.add(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_VIEW);
+    root.classList.remove(ydn.crm.ui.CSS_CLASS_EDIT);
+    root.classList.add(ydn.crm.ui.CSS_CLASS_VIEW);
   }
 };
 
@@ -153,38 +153,24 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getGroupByFieldValueElement = function
  * @return {boolean} true if edit mode.
  */
 ydn.crm.sugarcrm.ui.record.Body.prototype.getEditMode = function() {
-  return this.getElement().classList.contains(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_EDIT);
+  return this.getElement().classList.contains(ydn.crm.ui.CSS_CLASS_EDIT);
 };
 
 
 /**
  * Reset control UI to initial state.
  * Record id many change or or user setting, but record type does not change.
+ * @param {boolean} edit_mode
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.reset = function() {
+ydn.crm.sugarcrm.ui.record.Body.prototype.reset = function(edit_mode) {
   var root = this.getElement();
-  root.classList.add(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_VIEW);
-  root.classList.remove(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_EDIT);
+  this.setEditMode(edit_mode);
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
     var g = /** @type {ydn.crm.sugarcrm.ui.group.Group} */ (child);
     g.reset();
   }
 };
-
-
-/**
- * @const
- * @type {string} CSS class name for editing record.
- */
-ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_EDIT = 'edit';
-
-
-/**
- * @const
- * @type {string} CSS class name for viewing record.
- */
-ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_VIEW = 'view';
 
 
 /**
@@ -207,7 +193,7 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   root.classList.add(this.getCssClass());
-  root.classList.add(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_VIEW);
+  root.classList.add(ydn.crm.ui.CSS_CLASS_VIEW);
 };
 
 

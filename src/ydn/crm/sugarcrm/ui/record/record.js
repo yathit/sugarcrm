@@ -497,11 +497,9 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.onFieldDisplayDialogClose_ = functio
     this.setFieldDisplaySetting(false, field_display_setting);
 
     var is_edit = this.getEditMode();
-    this.body_panel.reset();
+    this.body_panel.reset(is_edit);
     this.body_panel.refresh();
-    if (is_edit) {
-      this.body_panel.setEditMode(true);
-    }
+
   }
 };
 
@@ -586,10 +584,13 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleInputChanged = function(e) {
     // event dispatcher may need to store the patches.
     // @see ydn.crm.sugarcrm.ui.group.Address#doEditorApplyDefault
     this.setDirty(true);
-  } else {
+  } else if (this.getModel().hasRecord()) {
     // patch is applied, so default is prevented.
     e.preventDefault();
     this.patch(e.patches);
+  } else {
+    // for new record creation, but also be in 
+    this.setDirty(true);
   }
 };
 
@@ -659,9 +660,9 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleSettingChange = function(e) {
 ydn.crm.sugarcrm.ui.record.Record.prototype.setEditMode = function(val) {
   var root = this.getElement();
   if (val) {
-    root.classList.add(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_EDIT);
+    root.classList.add(ydn.crm.ui.CSS_CLASS_EDIT);
   } else {
-    root.classList.remove(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_EDIT);
+    root.classList.remove(ydn.crm.ui.CSS_CLASS_EDIT);
   }
 
   this.body_panel.setEditMode(val);
@@ -672,7 +673,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.setEditMode = function(val) {
  * @return {boolean}
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.getEditMode = function() {
-  return this.getElement().classList.contains(ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS_EDIT);
+  return this.getElement().classList.contains(ydn.crm.ui.CSS_CLASS_EDIT);
 };
 
 
@@ -817,7 +818,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.reset = function() {
   this.resetHeader();
   this.refreshHeader();
   this.footer_panel.reset(this);
-  this.body_panel.reset();
+  this.body_panel.reset(this.getEditMode());
   this.body_panel.refresh();
   if (model.hasRecord()) {
     root.className = this.getCssClass() + ' ' + model.getModuleName();

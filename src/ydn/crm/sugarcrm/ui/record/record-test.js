@@ -53,7 +53,7 @@ function test_rendering() {
 
 }
 
-function _test_rendering_account_name() {
+function test_rendering_account_name() {
 
   var obj = {
     'id': '14931041-0811-1232-7bfc-5402b6f6dd93',
@@ -83,9 +83,9 @@ function test_normally_hide_setting() {
 }
 
 
-function _test_edit_name() {
+function test_edit_name() {
 
-  var record = ydn.crm.test.createContactRecord(null, {});
+  var record = ydn.crm.test.createContactRecord(null);
   var record_panel = new ydn.crm.sugarcrm.ui.record.Record(record);
 
   record_panel.render(mock_el);
@@ -93,14 +93,13 @@ function _test_edit_name() {
 
   record_panel.patch = function(patch) {
 
-    assertTrue('salutation', !patch['salutation']);
     assertEquals('first name', 'Kyaw', patch['first_name']);
     assertEquals('last name', 'Tun', patch['last_name']);
-    assertEquals('full name', 'Kyaw Tun', patch['full_name']);
     called = true;
   };
 
-  record_panel.simulateEdit({'full_name': 'Kyaw Tun'}, true);
+  record_panel.simulateEdit({'first_name': 'Kyaw'});
+  record_panel.simulateEdit({'last_name': 'Tun'}, true);
   assertTrue(called);
 }
 
@@ -117,23 +116,6 @@ function test_edit_email() {
   record_panel.simulateEdit({'email': 'foo@example.com'}, true);
 }
 
-
-function _test_with_default_value() {
-  var record = ydn.crm.test.createRecord(null, 'Calls');
-  var record_panel = new ydn.crm.sugarcrm.ui.record.Record(record);
-  var called = false;
-  record_panel.render(mock_el);
-  record_panel.patch = function(patch) {
-    assertEquals('name', 'Test call', patch['name']);
-    // the following fields should be filled with default value
-    assertTrue(!!patch[ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START]);
-    assertTrue(!!patch[ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.HOUR]);
-    assertTrue(!!patch[ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.MINUTE]);
-    called = true;
-  };
-  record_panel.simulateEdit({'name': 'Test call'}, true);
-  assertTrue(called);
-}
 
 
 

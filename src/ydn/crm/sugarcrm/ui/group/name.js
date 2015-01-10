@@ -8,7 +8,7 @@
 goog.provide('ydn.crm.sugarcrm.ui.group.Name');
 goog.require('ydn.crm.sugarcrm');
 goog.require('ydn.crm.sugarcrm.model.NameGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
+goog.require('ydn.crm.sugarcrm.ui.group.Expander');
 
 
 
@@ -18,18 +18,12 @@ goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.SimpleGroup}
+ * @extends {ydn.crm.sugarcrm.ui.group.Expander}
  */
 ydn.crm.sugarcrm.ui.group.Name = function(model, opt_dom) {
-  goog.base(this, model, null, opt_dom);
-  /**
-   * User edited value.
-   * @type {?Object}
-   * @private
-   */
-  this.patches_ = null;
+  goog.base(this, model, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Name, ydn.crm.sugarcrm.ui.group.SimpleGroup);
+goog.inherits(ydn.crm.sugarcrm.ui.group.Name, ydn.crm.sugarcrm.ui.group.Expander);
 
 
 /**
@@ -46,7 +40,8 @@ ydn.crm.sugarcrm.ui.group.Name.prototype.getModel;
 
 
 /**
- * @inheritDoc
+ * @protected
+ * @return {*}
  */
 ydn.crm.sugarcrm.ui.group.Name.prototype.getEditorTemplateData = function() {
 
@@ -94,73 +89,6 @@ ydn.crm.sugarcrm.ui.group.Name.prototype.getEditorTemplateData = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Name.prototype.applyEditorChanges = function(ev) {
-  if (!this.patches_) {
-    this.patches_ = {};
-  }
-  for (var k in ev.patches) {
-    this.patches_[k] = ev.patches[k];
-  }
-  var name = ydn.crm.sugarcrm.model.NameGroup.makeFullName(
-      this.patches_['full_name'],
-      this.patches_['first_name'],
-      this.patches_['last_name']);
-  this.setInputValue(name);
-};
-
-
-/**
- * @inheritDoc
- */
-ydn.crm.sugarcrm.ui.group.Name.prototype.collectData = function() {
-  return this.patches_;
-};
-
-
-/**
- * @inheritDoc
- */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getPatch = function() {
-
-};
-
-
-/**
- * @param {Event} e
- * @protected
- */
-ydn.crm.sugarcrm.ui.group.Name.prototype.handleInputBlur = function(e) {
-  var value = this.getInputValue();
-  var model = this.getModel();
-  var patch = {
-    'name': value
-  };
-  if (model.hasField('full_name')) {
-    patch['full_name'] = value;
-  }
-  patch = model.pluck(patch);
-  if (patch) {
-    if (!this.patches_) {
-      this.patches_ = {};
-    }
-    for (var k in patch) {
-      this.patches_[k] = patch[k];
-    }
-    var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patch, this);
-    this.dispatchEvent(ev);
-  }
-};
-
-
-/**
- * @inheritDoc
- */
 ydn.crm.sugarcrm.ui.group.Name.prototype.fillByMetaContact = function(meta) {
-  var value = this.getInputValue();
-  var full_name = meta.getFullName();
-  if (!value && !!full_name) {
-    this.setInputValue(full_name);
-    return true;
-  }
-  return false;
+  throw new Error('Not impl');
 };

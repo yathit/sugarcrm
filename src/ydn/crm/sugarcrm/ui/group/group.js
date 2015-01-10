@@ -83,6 +83,7 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.createFields = function() {
  * Superclass override to attach handlers. This will be called only when
  * handlers were not being attached.
  * @protected
+ * @deprecated use enterDocument
  */
 ydn.crm.sugarcrm.ui.group.Group.prototype.attachHandlers = function() {
 
@@ -94,9 +95,6 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.attachHandlers = function() {
  */
 ydn.crm.sugarcrm.ui.group.Group.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  if (this.isEditable()) {
-    this.attachHandlers();
-  }
 
   this.getHandler().listen(this, ydn.crm.sugarcrm.ui.events.Type.ACTION,
       this.onMenuAction);

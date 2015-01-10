@@ -118,7 +118,7 @@ function test_default_field_account() {
 function test_default_field_contacts() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.CONTACTS,
       [],
-      ['id', 'account_id']);
+      ['id', 'account_id', 'name', 'full_name']);
 }
 
 function test_default_field_calls() {

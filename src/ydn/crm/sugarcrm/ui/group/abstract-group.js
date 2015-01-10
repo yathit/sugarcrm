@@ -26,12 +26,6 @@ goog.require('ydn.social.MetaContact');
 ydn.crm.sugarcrm.ui.group.AbstractGroup = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
-  /**
-   * Editable.
-   * @type {boolean}
-   * @private
-   */
-  this.is_editable_ = false;
 };
 goog.inherits(ydn.crm.sugarcrm.ui.group.AbstractGroup, goog.ui.Component);
 
@@ -55,14 +49,6 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getModel;
  */
 ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getGroupName = function() {
   return this.getModel().getGroupName();
-};
-
-
-/**
- * @return {boolean}
- */
-ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.isEditable = function() {
-  return this.is_editable_;
 };
 
 
@@ -217,3 +203,13 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.fillByMetaContact = function(m
   return false;
 };
 
+
+/**
+ * Check if in edit mode.
+ * @return {boolean}
+ */
+ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.isEditMode = function() {
+  var pe = goog.dom.getAncestorByClass(this.getElement(),
+      ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS);
+  return pe.classList.contains(ydn.crm.ui.CSS_CLASS_EDIT);
+};

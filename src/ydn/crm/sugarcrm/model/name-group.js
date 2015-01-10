@@ -7,7 +7,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.model.NameGroup');
-goog.require('ydn.crm.sugarcrm.model.BaseGroup');
+goog.require('ydn.crm.sugarcrm.model.Group');
 
 
 
@@ -16,13 +16,13 @@ goog.require('ydn.crm.sugarcrm.model.BaseGroup');
  * 'full_name', 'first_name', 'last_name' or 'name'.
  * @param {ydn.crm.sugarcrm.model.Record} parent
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.BaseGroup}
+ * @extends {ydn.crm.sugarcrm.model.Group}
  * @struct
  */
 ydn.crm.sugarcrm.model.NameGroup = function(parent) {
   goog.base(this, parent, 'name');
 };
-goog.inherits(ydn.crm.sugarcrm.model.NameGroup, ydn.crm.sugarcrm.model.BaseGroup);
+goog.inherits(ydn.crm.sugarcrm.model.NameGroup, ydn.crm.sugarcrm.model.Group);
 
 
 /**

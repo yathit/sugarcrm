@@ -192,7 +192,13 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
     return !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE];
   } else {
     if (this.field.group) {
-      if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
+      if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
+        if (['name'].indexOf(this.field.group) >= 0) {
+          if (['name', 'full_name'].indexOf(this.name) >= 0) {
+            return true;
+          }
+        }
+      } else if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
         if (['date_due', 'date_start'].indexOf(this.field.group) >= 0) {
           if (['date_due_flag', 'date_start_flag'].indexOf(this.name) >= 0) {
             return true;
