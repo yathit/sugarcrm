@@ -43,8 +43,15 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.createDom = function() {
       ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER);
   header.classList.add(ydn.crm.sugarcrm.ui.group.Expander.CSS_CLASS);
   var dom = this.getDomHelper();
-  var label = dom.createDom('span',
+  var model = this.getModel();
+  // model should not be null, but here make it robust while in DOM creation.
+  var ed = model ? model.isGroupValueEditable() : false;
+  var tag = ed ? 'input' : 'span';
+  var label = dom.createDom(tag,
       ydn.crm.sugarcrm.ui.group.Expander.CSS_HEADER_LABEL);
+  if (ed) {
+    label.setAttribute('type', 'text');
+  }
   header.appendChild(label);
   header.appendChild(dom.createDom('span', 'center'));
   var svg = ydn.crm.ui.createSvgIcon('pencil');
@@ -97,6 +104,31 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.enterDocument = function() {
       ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' .' +
       ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
   this.getHandler().listen(btn, 'click', this.onExpandClick_);
+  var input = this.getElement().querySelector('.' +
+      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
+  if (input) {
+    var header = this.getElement().querySelector('.' +
+        ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER);
+    header.classList.add('field-like');
+    this.getHandler().listen(input, 'blur', this.onLabelBlur);
+  }
+};
+
+
+/**
+ * @param {goog.events.Event} ev
+ * @protected
+ */
+ydn.crm.sugarcrm.ui.group.Expander.prototype.onLabelBlur = function(ev) {
+
+  var model = this.getModel();
+  var input = this.getElement().querySelector('.' +
+      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
+  var patch = model.setGroupValue(input.value);
+  if (patch) {
+    var ce = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patch, this);
+    this.dispatchEvent(ce);
+  }
 };
 
 
@@ -149,7 +181,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.refresh = function() {
  */
 ydn.crm.sugarcrm.ui.group.Expander.prototype.reset = function() {
   goog.base(this, 'reset');
-  this.expand(this.isEditMode());
+  this.expand(false);
   var label = this.getHeaderLabel();
   label.setAttribute('title', this.getModel().getGroupName());
 

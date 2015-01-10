@@ -186,11 +186,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.hasGroupValue = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupValue = function() {
-  if (this.hasField('full_name')) {
-    return this.module.valueAsString('full_name');
-  } else {
-    return this.module.valueAsString('name');
-  }
+  return this.module.valueAsString('name');
 };
 
 
@@ -203,4 +199,24 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getAdditionalOptions = function() {
     name: ydn.crm.sugarcrm.model.Field.Command.EDIT,
     type: 'text'
   };
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.model.NameGroup.prototype.isGroupValueEditable = function() {
+  return true;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.model.NameGroup.prototype.setGroupValue = function(label) {
+  var org = this.module.valueAsString('name');
+  if (org == label) {
+    return null;
+  }
+  return this.parseFullNameLabel(label);
 };

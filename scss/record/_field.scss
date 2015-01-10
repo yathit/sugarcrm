@@ -13,7 +13,7 @@
 }
 
 .record-body {
-  .field {
+  .field, .field-like {
     INPUT[type=text], INPUT[type=email], INPUT[type=tel], INPUT[type=number], INPUT[type=datetime-local], INPUT[type=date], TEXTAREA {
       padding: 1px 0px 1px 1px;
       margin: 2px 0 2px 0px;
@@ -41,12 +41,12 @@
 /*
  * make input look like label. This setting is obtained from Gmail contact editor.
 */
-.record-body .field > INPUT {
+.record-body .field > INPUT, .record-body .field-like > INPUT {
     background-color: transparent;
     vertical-align: text-top;
 }
 
-.record-body .field > * {
+.record-body .field > *, .record-body .field-like > * {
     box-sizing: border-box;
 }
 

@@ -196,6 +196,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupName = function() {
 
 
 /**
+ * Generally used by controller as group title tooltip.
  * @return {string}
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupLabel = function() {
@@ -206,6 +207,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupLabel = function() {
 
 
 /**
+ * If return `true` {@link getGroupValue} must return a string.
  * @return {boolean} true if field has value set.
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.hasGroupValue = function() {
@@ -214,10 +216,33 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.hasGroupValue = function() {
 
 
 /**
- * Get field value.
+ * Get group value.
+ * Generally used by controller as group title string.
  * @return {?string}
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupValue = function() {
+  return null;
+};
+
+
+/**
+ * Check that group label is editable.
+ * If return `true` {@link setGroupValue} will be call when user chagne group
+ * title string.
+ * @return {boolean} `true` is group value can be set.
+ */
+ydn.crm.sugarcrm.model.BaseGroup.prototype.isGroupValueEditable = function() {
+  return false;
+};
+
+
+/**
+ * Set group label.
+ * @param {string} label
+ * @return {Object} return a patch object as result of setting group value.
+ * return `null` if no change required.
+ */
+ydn.crm.sugarcrm.model.BaseGroup.prototype.setGroupValue = function(label) {
   return null;
 };
 
