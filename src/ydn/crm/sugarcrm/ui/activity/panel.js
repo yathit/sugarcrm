@@ -445,16 +445,41 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.setCount = function(name, cnt) {
   var el = svg.querySelector('circle');
   if (cnt) {
     if (!el) {
-      el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      el.setAttributeNS(null, 'cx', '60');
-      el.setAttributeNS(null, 'cy', '20');
-      el.setAttributeNS(null, 'r', '20');
-      el.setAttributeNS(null, 'fill', 'red');
-      svg.appendChild(el);
+      var ns = 'http://www.w3.org/2000/svg';
+      var nu_ns = /** @type {string} */(/** @type {*} */(null));
+      var size = parseInt(svg.getAttribute('viewBox').split(' ')[3], 10);
+      if (cnt > 9) {
+        var cx = 60 * size / 80;
+        var cy = 20 * size / 80;
+        var r = 20 * size / 80;
+        el = document.createElementNS(ns, 'circle');
+        el.setAttribute('name', 'count');
+        el.setAttributeNS(nu_ns, 'cx', cx);
+        el.setAttributeNS(nu_ns, 'cy', cy);
+        el.setAttributeNS(nu_ns, 'r', r);
+        el.setAttributeNS(nu_ns, 'fill', 'red');
+        svg.appendChild(el);
+      } else {
+        var x = 50 * size / 80;
+        var y = 40 * size / 80;
+        var font_size = 50 * size / 80;
+        var style = 'fill:red; font-weight: bolder;stroke: red;font-size:' +
+            font_size + 'px;';
+        el = document.createElementNS(ns, 'text');
+        el.setAttributeNS(nu_ns, 'x', x);
+        el.setAttributeNS(nu_ns, 'y', y);
+        el.setAttributeNS(nu_ns, 'fill', 'red');
+        el.setAttributeNS(nu_ns, 'style', 'red');
+        // el.setAttribute('font-weight', 'bold');
+        el.setAttribute('name', 'count');
+        el.setAttribute('style', style);
+        el.textContent = cnt;
+        svg.appendChild(el);
+      }
     }
   } else {
     if (el) {
-      svg.removeNode(el);
+      svg.removeChild(el);
     }
   }
 

@@ -49,6 +49,7 @@ goog.inherits(ydn.crm.sugarcrm.model.AppointmentGroup, ydn.crm.sugarcrm.model.Gr
  */
 ydn.crm.sugarcrm.model.AppointmentGroup.FieldName = {
   START: 'date_start',
+  DUE: 'date_due',
   END: 'date_end',
   HOUR: 'duration_hours',
   MINUTE: 'duration_minutes'
@@ -59,9 +60,10 @@ ydn.crm.sugarcrm.model.AppointmentGroup.FieldName = {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.model.AppointmentGroup.prototype.getDefaultFieldValue = function(fn) {
-  if (fn == ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.END) {
+  if (fn == ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.END ||
+      fn == ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.DUE) {
     var duration = this.default_minute_ * ydn.time.MINUTE + this.default_hour_ * ydn.time.HOUR;
-    var end_date = new Date(duration + this.default_start_);
+    var end_date = new Date(duration + this.default_start_.getTime());
     return ydn.crm.sugarcrm.utils.toDateString(end_date);
   } else if (fn == ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.HOUR) {
     return String(this.default_hour_);

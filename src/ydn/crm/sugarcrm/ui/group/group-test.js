@@ -228,7 +228,7 @@ function test_assigned_user_default_change() {
   assert('filled with default', !!data);
 }
 
-function test_appointment() {
+function test_appointment_render() {
   var sugar = ydn.crm.test.createSugar();
   var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
   var model = record.getGroupModel('appointment');
@@ -262,7 +262,7 @@ function test_appointment_change() {
 }
 
 
-function test_appointment_default() {
+function test_calls_appointment_default() {
   var sugar = ydn.crm.test.createSugar();
   var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS, {});
   var model = record.getGroupModel('appointment');
@@ -276,6 +276,22 @@ function test_appointment_default() {
   var duration_minutes_el = attach_el.querySelector('.field[name="duration_minutes"] input.value');
   assertTrue('date_start value', !!date_start_el.value);
   assertTrue('duration_minutes_el value', !!duration_minutes_el.value);
+}
+
+
+function test_tasks_appointment_default() {
+  var sugar = ydn.crm.test.createSugar();
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.TASKS, {});
+  var model = record.getGroupModel('appointment');
+
+  var ctrl = new ydn.crm.sugarcrm.ui.group.Appointment(model);
+  ctrl.render(attach_el);
+  ctrl.refresh();
+
+  var date_start_el = attach_el.querySelector('div.field[name="date_start"] input.value');
+  var date_due_el = attach_el.querySelector('.field[name="date_due"] input.value');
+  assertTrue('date_start value', !!date_start_el.value);
+  assertTrue('date_due value', !!date_due_el.value);
 }
 
 
@@ -317,3 +333,24 @@ function test_appointment_default_collect_data() {
   assertTrue(!!data); // still get default data
 }
 
+
+
+function test_tasks_appointment() {
+  var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.TASKS);
+  var model = record.getGroupModel('appointment');
+  var ctrl = new ydn.crm.sugarcrm.ui.group.Appointment(model);
+  ctrl.render(attach_el);
+  var now = goog.now();
+  var date_start = ydn.crm.sugarcrm.utils.toDateString(new Date(2015, 1, 1, 1, 1));
+  var date_due = ydn.crm.sugarcrm.utils.toDateString(new Date(2015, 1, 1, 2, 1));
+
+  ctrl.simulateEditByField('date_start',
+      ydn.crm.sugarcrm.utils.toDateTimeLocalString(date_start));
+  ctrl.simulateEditByField('date_due',
+      ydn.crm.sugarcrm.utils.toDateTimeLocalString(date_due));
+  var data = ctrl.collectData();
+
+  assertTrue(ctrl.hasChanged());
+  assertEquals('date_start', date_start, data['date_start']);
+  assertEquals('date_due', date_due, data['date_due']);
+}

@@ -23,7 +23,6 @@ function test_date_conversion() {
   var d = ydn.crm.sugarcrm.utils.parseDate(s);
   var s2 = ydn.crm.sugarcrm.utils.toDateString(d);
   assertEquals(s, s2);
-
 }
 
 

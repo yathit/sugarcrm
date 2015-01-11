@@ -58,30 +58,41 @@ ydn.crm.sugarcrm.ui.group.Appointment.prototype.createDom = function() {
 
   var model = /** @type {ydn.crm.sugarcrm.model.AppointmentGroup} */ (this.getModel());
 
-  var start = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START);
+  var start = model.createOrGetFieldModel(
+      ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START);
   var start_ctrl = new ydn.crm.sugarcrm.ui.field.Field(start, null, dom);
   this.addChild(start_ctrl, true);
 
-  var duration_el = dom.createDom('span', 'field-label', 'Duration: ');
-  this.getContentElement().appendChild(duration_el);
+  if (model.hasField(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.DUE)) {
+    var due = model.createOrGetFieldModel(
+        ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.DUE);
+    var due_ctrl = new ydn.crm.sugarcrm.ui.field.Field(due, null, dom);
+    this.addChild(due_ctrl, true);
+  }
 
-  var hour = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.HOUR);
-  var inline = ydn.crm.sugarcrm.ui.field.InlineFieldRenderer.getInstance();
-  var hour_ctrl = new ydn.crm.sugarcrm.ui.field.Field(hour, inline, dom);
-  this.addChild(hour_ctrl, true);
-  var hour_el = hour_ctrl.getElement().querySelector('input');
-  hour_el.classList.add('double-digit');
-  hour_el.setAttribute('type', 'number');
-  hour_el.setAttribute('min', '0');
+  if (model.hasField(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.HOUR)) {
+    var duration_el = dom.createDom('span', 'field-label', 'Duration: ');
+    this.getContentElement().appendChild(duration_el);
 
-  var minute = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.MINUTE);
-  var minute_ctrl = new ydn.crm.sugarcrm.ui.field.Field(minute, inline, dom);
-  this.addChild(minute_ctrl, true);
-  var minute_el = minute_ctrl.getElement().querySelector('input');
-  minute_el.classList.add('double-digit');
-  minute_el.setAttribute('type', 'number');
-  minute_el.setAttribute('min', '0');
-  minute_el.setAttribute('max', '59');
+    var hour = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.HOUR);
+    var inline = ydn.crm.sugarcrm.ui.field.InlineFieldRenderer.getInstance();
+    var hour_ctrl = new ydn.crm.sugarcrm.ui.field.Field(hour, inline, dom);
+    this.addChild(hour_ctrl, true);
+    var hour_el = hour_ctrl.getElement().querySelector('input');
+    hour_el.classList.add('double-digit');
+    hour_el.setAttribute('type', 'number');
+    hour_el.setAttribute('min', '0');
+
+    var minute = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.MINUTE);
+    var minute_ctrl = new ydn.crm.sugarcrm.ui.field.Field(minute, inline, dom);
+    this.addChild(minute_ctrl, true);
+    var minute_el = minute_ctrl.getElement().querySelector('input');
+    minute_el.classList.add('double-digit');
+    minute_el.setAttribute('type', 'number');
+    minute_el.setAttribute('min', '0');
+    minute_el.setAttribute('max', '59');
+  }
+
 
 };
 

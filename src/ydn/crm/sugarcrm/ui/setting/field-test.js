@@ -79,7 +79,6 @@ function test_default_group_calls() {
   default_group_test(ydn.crm.sugarcrm.ModuleName.CALLS, nc, np);
 }
 
-
 function test_default_group_notes() {
   var nc = ['name'];
   var np = ['modified_by_name'];
@@ -87,7 +86,7 @@ function test_default_group_notes() {
 }
 
 function test_default_group_tasks() {
-  var nc = ['name', 'date_due', 'date_start'];
+  var nc = ['name', 'appointment'];
   var np = ['modified_by_name'];
   default_group_test(ydn.crm.sugarcrm.ModuleName.TASKS, nc, np);
 }
@@ -135,6 +134,6 @@ function test_default_field_notes() {
 
 function test_default_field_tasks() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.TASKS,
-      ['status', 'priority', 'description'],
+      ['status', 'priority', 'description', 'date_start', 'date_due'],
       ['id', 'deleted']);
 }

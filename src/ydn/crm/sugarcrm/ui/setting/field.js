@@ -315,7 +315,7 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() 
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
     return ['date_due', 'date_start'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
-    return ['date_due', 'date_start'].indexOf(this.name) == -1;
+    return ['appointment'].indexOf(this.name) == -1;
   } else {
     return true;
   }

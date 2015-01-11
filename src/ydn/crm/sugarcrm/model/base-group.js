@@ -146,8 +146,12 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getDefaultFieldValue = function(name) {
   // default field values
-  if (!this.group_name && name == 'status') {
-    return 'Planned';
+  if (!this.group_name) {
+    if (name == 'status') {
+      return 'Planned';
+    } else if (name == 'priority') {
+      return 'Medium';
+    }
   }
   return null;
 };
