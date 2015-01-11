@@ -79,6 +79,12 @@ function test_default_group_calls() {
   default_group_test(ydn.crm.sugarcrm.ModuleName.CALLS, nc, np);
 }
 
+function test_default_group_meetings() {
+  var nc = ['name', 'appointment', 'assigned_user_name'];
+  var np = ['created_by_name', 'email', 'phone', 'primary_address'];
+  default_group_test(ydn.crm.sugarcrm.ModuleName.MEETINGS, nc, np);
+}
+
 function test_default_group_notes() {
   var nc = ['name'];
   var np = ['modified_by_name'];
@@ -122,6 +128,12 @@ function test_default_field_contacts() {
 
 function test_default_field_calls() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.CALLS,
+      ['name', 'date_start', 'date_end', 'status', 'description'],
+      ['id', 'repeat_count']);
+}
+
+function test_default_field_meetings() {
+  default_field_test(ydn.crm.sugarcrm.ModuleName.MEETINGS,
       ['name', 'date_start', 'date_end', 'status', 'description'],
       ['id', 'repeat_count']);
 }

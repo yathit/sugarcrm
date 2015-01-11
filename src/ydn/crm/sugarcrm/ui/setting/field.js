@@ -226,7 +226,7 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
       } else if (this.module == ydn.crm.sugarcrm.ModuleName.NOTES) {
         return ['description'].indexOf(this.name) == -1;
       } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
-        return ['status', 'priority', 'description'].indexOf(this.name) == -1;
+        return ['date_start', 'date_end', 'status', 'priority', 'description'].indexOf(this.name) == -1;
       } else if (this.module == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
         return ['date_closed', 'sales_stage', 'account_name'].indexOf(this.name) == -1;
       } else if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
@@ -313,7 +313,7 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() 
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS || this.module == ydn.crm.sugarcrm.ModuleName.LEADS) {
     return ['primary_address', 'alt_address', 'email', 'phone'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
-    return ['date_due', 'date_start'].indexOf(this.name) == -1;
+    return ['appointment', 'assigned_user_name'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
     return ['appointment'].indexOf(this.name) == -1;
   } else {
