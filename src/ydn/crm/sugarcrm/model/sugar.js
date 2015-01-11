@@ -40,13 +40,14 @@ goog.require('ydn.debug.error.ConstraintError');
  * @param {Array.<SugarCrm.ModuleInfo>|Object.<SugarCrm.ModuleInfo>} arr
  * @param {SugarCrm.ServerInfo=} opt_info
  * @param {SugarCrm.Record=} opt_user login user info.
+ * @param {SugarCrm.LoginRecord=} opt_login_info login user info.
  * @constructor
  * @extends {goog.events.EventTarget}
  * @implements {ydn.crm.sugarcrm.Meta}
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.model.Sugar = function(about, arr, opt_info, opt_user) {
+ydn.crm.sugarcrm.model.Sugar = function(about, arr, opt_info, opt_user, opt_login_info) {
   goog.base(this);
   /**
    * @protected
@@ -88,6 +89,15 @@ ydn.crm.sugarcrm.model.Sugar = function(about, arr, opt_info, opt_user) {
   if (!opt_user) {
     this.initUser_();
   }
+  /**
+   * @type {SugarCrm.LoginRecord}
+   * @private
+   */
+  this.login_info_ = opt_login_info || null;
+  if (!opt_login_info) {
+    this.initUserInfo_();
+  }
+
   var pipe = ydn.msg.getMain();
   this.handler.listen(pipe, [ydn.crm.Ch.BReq.SUGARCRM, ydn.crm.Ch.BReq.HOST_PERMISSION],
       this.handleMessage);
@@ -219,6 +229,24 @@ ydn.crm.sugarcrm.model.Sugar.prototype.initUser_ = function() {
       this.send(ydn.crm.Ch.SReq.LOGIN_USER).addCallback(function(obj) {
         if (obj && obj['id']) {
           this.user_.setData(/** @type {SugarCrm.Record} */ (obj));
+        }
+      }, this);
+    }
+
+  }
+};
+
+
+/**
+ * Initialize user info.
+ * @private
+ */
+ydn.crm.sugarcrm.model.Sugar.prototype.initUserInfo_ = function() {
+  if (this.about) {
+    if (this.about.userName) {
+      this.send(ydn.crm.Ch.SReq.LOGIN_INFO).addCallback(function(obj) {
+        if (obj && obj['id']) {
+          this.login_info_ = /** @type {SugarCrm.LoginRecord} */ (obj);
         }
       }, this);
     }

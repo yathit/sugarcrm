@@ -151,6 +151,8 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getDefaultFieldValue = function(name)
       return 'Planned';
     } else if (name == 'priority') {
       return 'Medium';
+    } else if (name == 'sales_stage') {
+      return 'Prospecting';
     }
   }
   return null;
