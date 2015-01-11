@@ -262,7 +262,9 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
       this.detail_panel.renderActivity();
     } else {
       var m_name = ydn.crm.sugarcrm.ACTIVITY_MODULES[idx - 3];
-      this.detail_panel.renderUpcoming(m_name);
+      this.detail_panel.renderUpcoming(m_name).addCallback(function(cnt) {
+        this.setCount(m_name, cnt);
+      }, this);
     }
   }
 };
@@ -437,6 +439,23 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.setCount = function(name, cnt) {
     // ele.textContent = '0';
     tab.setTooltip('No upcoming ' + name);
     // tab.setVisible(false);
+  }
+
+  var svg = tab.getElement().querySelector('svg');
+  var el = svg.querySelector('circle');
+  if (cnt) {
+    if (!el) {
+      el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      el.setAttributeNS(null, 'cx', '60');
+      el.setAttributeNS(null, 'cy', '20');
+      el.setAttributeNS(null, 'r', '20');
+      el.setAttributeNS(null, 'fill', 'red');
+      svg.appendChild(el);
+    }
+  } else {
+    if (el) {
+      svg.removeNode(el);
+    }
   }
 
 };

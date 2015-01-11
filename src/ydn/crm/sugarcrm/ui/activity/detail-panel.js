@@ -329,13 +329,14 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderHeader_ = function(el) 
 /**
  * Render upcoming activity.
  * @param {ydn.crm.sugarcrm.ModuleName} m_name one of ydn.crm.sugarcrm.ACTIVITY_MODULES.
+ * @return {!goog.async.Deferred<number>} number of upcoming items.
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name) {
   var q = this.genUpcomingQuery(m_name);
   if (ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG) {
     window.console.log('renderUpcoming for ' + m_name, q);
   }
-  this.getModel().send(ydn.crm.Ch.SReq.VALUES, q).addCallbacks(function(arr) {
+  return this.getModel().send(ydn.crm.Ch.SReq.VALUES, q).addCallbacks(function(arr) {
     var results = /** @type {Array.<SugarCrm.Record>} */ (arr);
     if (ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG) {
       window.console.log('receiving renderUpcoming ' + results.length + ' items', arr);
@@ -353,6 +354,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_n
     for (var i = 0; i < results.length; i++) {
       this.renderUpcomingItem_(results[i], m_name);
     }
+    return results.length;
   }, function(e) {
     throw e;
   }, this);

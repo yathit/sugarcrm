@@ -145,6 +145,10 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
  * @return {?ydn.crm.sugarcrm.RecordValue} `null` if no default value set.
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.getDefaultFieldValue = function(name) {
+  // default field values
+  if (!this.group_name && name == 'status') {
+    return 'Planned';
+  }
   return null;
 };
 
