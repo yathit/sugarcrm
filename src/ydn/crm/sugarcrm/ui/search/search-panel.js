@@ -12,6 +12,7 @@ goog.require('goog.ui.ToolbarSelect');
 goog.require('wgui.TextInput');
 goog.require('ydn.crm.sugarcrm.model.ResultRecord');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.require('ydn.crm.sugarcrm.ui.record.Record');
 
 
 

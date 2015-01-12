@@ -25,11 +25,18 @@ goog.provide('ydn.crm.sugarcrm.ui.widget.RecordMatcher');
 
 
 /**
- *
+ * @param {ydn.crm.sugarcrm.Meta} meta
+ * @param {ydn.crm.sugarcrm.ModuleName} m_name
  * @constructor
+ * Implements {@link goog.ui.ac.AutoComplete.Matcher}
  */
-ydn.crm.sugarcrm.ui.widget.RecordMatcher = function() {
-
+ydn.crm.sugarcrm.ui.widget.RecordMatcher = function(meta, m_name) {
+  /**
+   *
+   * @type {ydn.crm.sugarcrm.Meta}
+   */
+  this.meta = meta;
+  this.module = m_name;
 };
 
 
@@ -46,5 +53,17 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher = function() {
  */
 ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     function(token, maxMatches, matchHandler, opt_fullString) {
+  var q = {
+    'module': this.module,
+    'limit': maxMatches,
+    'keyRange': kr
+  }
+};
 
+
+/**
+ * @return {boolean}
+ */
+ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.isRowDisabled = function() {
+  return false;
 };

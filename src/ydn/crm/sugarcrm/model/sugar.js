@@ -30,6 +30,7 @@ goog.require('ydn.crm.sugarcrm.model.ImmutableRecord');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.sugarcrm.model.events');
 goog.require('ydn.crm.sugarcrm.utils');
+goog.require('ydn.db.KeyRange');
 goog.require('ydn.debug.error.ConstraintError');
 
 

@@ -22,6 +22,7 @@
 
 goog.provide('ydn.crm.sugarcrm.ui.widget.SelectRecord');
 goog.require('goog.ui.Component');
+goog.require('goog.ui.ac.ArrayMatcher');
 goog.require('goog.ui.ac.AutoComplete');
 goog.require('goog.ui.ac.InputHandler');
 goog.require('goog.ui.ac.Renderer');
@@ -56,16 +57,16 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, m_name, opt_multi, opt_
   this.module = m_name;
 
   var data = ['Apple', 'Car', 'Dog'];
-  var matcher = new goog.ui.ac.ArrayMatcher(data);
-  var renderer = new goog.ui.ac.Renderer();
+  var matcher = new ydn.crm.sugarcrm.ui.widget.RecordMatcher(meta, m_name);
+  this.renderer = new goog.ui.ac.Renderer();
   this.input_handler = new goog.ui.ac.InputHandler(null, null, !!opt_multi, 300);
   /**
    * @final
    * @type {goog.ui.ac.AutoComplete}
    * @protected
    */
-  this.ac = new goog.ui.ac.AutoComplete(matcher, renderer, this.input_handler);
-  inputHandler.attachAutoComplete(this.ac);
+  this.ac = new goog.ui.ac.AutoComplete(matcher, this.renderer, this.input_handler);
+  this.input_handler.attachAutoComplete(this.ac);
 
 };
 goog.inherits(ydn.crm.sugarcrm.ui.widget.SelectRecord, goog.ui.Component);
@@ -88,4 +89,5 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.createDom = function() {
   var dom = this.getDomHelper();
   var input = dom.createDom('input');
   this.input_handler.attachInputs(input);
+  root.appendChild(input);
 };

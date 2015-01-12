@@ -8,14 +8,13 @@ ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
 var panel;
 
-SugarCrmModel.list(function(models) {
+ydn.crm.sugarcrm.model.GDataSugar.list().addCallback(function(models) {
   for (var i = 0; i < models.length; i++) {
     if (models[i].isLogin()) {
       var model = models[i];
       ydn.crm.ui.UserSetting.getInstance().getModuleInfo(model.getDomain())
           .addCallback(function(info) {
-            var m = new ydn.crm.sugarcrm.model.Sugar(model.getDetails(), info);
-            panel = new ydn.crm.sugarcrm.ui.SearchPanel(null, m);
+            panel = new ydn.crm.sugarcrm.ui.SearchPanel(model);
             var root = document.getElementById('sync-panel-root');
             panel.render(root);
           }, this);
