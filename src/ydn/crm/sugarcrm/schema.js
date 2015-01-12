@@ -75,6 +75,16 @@ ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
       'ydn$phones': ['phone_office', 'phone_alternate', 'phone_fax']
     }
   },
+  'Cases': {
+    'FullTextIndex': {
+      'name': ['name', 'description'],
+      'content': ['name', 'description']
+    }, 'indexes': [{
+      'name': 'account_id'
+    }, {
+      'name': 'assigned_user_id'
+    }]
+  },
   'Calls': {
     'FullTextIndex': {
       'name': ['name', 'description'],

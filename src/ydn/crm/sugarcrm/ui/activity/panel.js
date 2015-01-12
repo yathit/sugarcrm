@@ -178,7 +178,8 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.createDom = function() {
   for (var i = 0; i < ydn.crm.sugarcrm.ACTIVITY_MODULES.length; i++) {
     var module_name = ydn.crm.sugarcrm.ACTIVITY_MODULES[i];
     // var caption = module_name.substr(0, 2);
-    var svg = ydn.crm.ui.createSvgIcon(module_name);
+    var icon_name = module_name;
+    var svg = ydn.crm.ui.createSvgIcon(icon_name);
     var ele = dom.createDom('div', ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_TAB_LABEL, svg);
     var tab = new goog.ui.Tab(ele);
     tab.setTooltip(module_name);
@@ -389,7 +390,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
   if (!m_name) {
     return;
   }
-  var query = this.detail_panel.genUpcomingQuery(m_name);
+  var query = this.detail_panel.genUpcomingQuery(m_name, ydn.time.getWeekend());
   this.getModel().send(ydn.crm.Ch.SReq.KEYS, query).addCallbacks(function(ans) {
     var query_result = /** @type {Array.<string>} */ (ans);
     var next = index + 1;
@@ -431,15 +432,13 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.setCount = function(name, cnt) {
   var tab = /** @type {goog.ui.Tab} */ (this.tabbar.getChildAt(idx + 3));
   var ele = tab.getContentElement().querySelector('.' +
       ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_TAB_LABEL);
-  if (cnt) {
-    // ele.textContent = cnt;
-    tab.setTooltip(cnt + ' upcoming ' + name);
-    // tab.setVisible(true);
+  var tooltip = cnt ? cnt + ' ' : 'No ';
+  if (name == ydn.crm.sugarcrm.ModuleName.CASES) {
+    tooltip += 'Cases assigned to you.';
   } else {
-    // ele.textContent = '0';
-    tab.setTooltip('No upcoming ' + name);
-    // tab.setVisible(false);
+    tooltip += 'upcoming ' + name + ' in this week.';
   }
+  tab.setTooltip(tooltip);
 
   var root = tab.getElement();
   var el = root.querySelector('.count');

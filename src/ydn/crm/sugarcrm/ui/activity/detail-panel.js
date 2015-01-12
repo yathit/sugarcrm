@@ -231,14 +231,26 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.clear = function() {
 
 
 /**
- * Generate upcoming query.
+ * Generate upcoming query from current time.
  * @param {ydn.crm.sugarcrm.ModuleName} m_name one of ydn.crm.sugarcrm.ACTIVITY_MODULES.
+ * @param {Date=} opt_until last upcoming date.
  * @return {CrmApp.ReqQuery} query
  */
-ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m_name) {
+ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m_name, opt_until) {
   var assigned_user_id = this.getModel().getUser().getId();
+  if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
+    return /** @type {CrmApp.ReqQuery} */ (/** @type {Object} */ ({
+      'store': m_name,
+      'index': 'assigned_user_id',
+      'keyRange': ydn.db.KeyRange.only(assigned_user_id).toJSON()
+    }));
+  }
   var start_date = ydn.crm.sugarcrm.utils.toDateString(new Date());
-  var kr = ydn.db.KeyRange.bound([assigned_user_id, start_date], [assigned_user_id, '\uffff']);
+  var until = '\uffff';
+  if (opt_until) {
+    until = ydn.crm.sugarcrm.utils.toDateString(opt_until);
+  }
+  var kr = ydn.db.KeyRange.bound([assigned_user_id, start_date], [assigned_user_id, until]);
 
   var query = {
     'store': m_name,
@@ -288,6 +300,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderActivity = function() {
  * Render upcoming activity item.
  * @param {SugarCrm.Record} obj
  * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @return {ydn.crm.sugarcrm.Record}
  * @private
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcomingItem_ = function(obj, m_name) {
@@ -311,6 +324,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcomingItem_ = functio
   div.className = ydn.crm.sugarcrm.ui.activity.DetailPanel.CSS_CLASS_ITEM +
       ' record-header ' + obj._module;
   this.getContentElement().appendChild(div);
+  return r;
 };
 
 
@@ -329,7 +343,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderHeader_ = function(el) 
 /**
  * Render upcoming activity.
  * @param {ydn.crm.sugarcrm.ModuleName} m_name one of ydn.crm.sugarcrm.ACTIVITY_MODULES.
- * @return {!goog.async.Deferred<number>} number of upcoming items.
+ * @return {!goog.async.Deferred<number>} number of upcoming items until next weekend.
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name) {
   var q = this.genUpcomingQuery(m_name);
@@ -343,7 +357,6 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_n
     }
     var dom = this.getDomHelper();
     var msg = dom.createDom('span');
-    msg.textContent = results.length + ' upcoming ' + m_name + '. ';
     var a = dom.createDom('a', {
       'href': '#' + m_name,
       'data-module': m_name,
@@ -351,10 +364,21 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_n
     }, 'New');
     var head = dom.createDom('span', null, [msg, a]);
     this.renderHeader_(head);
-    for (var i = 0; i < results.length; i++) {
-      this.renderUpcomingItem_(results[i], m_name);
+    var cnt = 0;
+    if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
+      cnt = results.length;
+    } else {
+      var weekend = ydn.time.getWeekend();
+      for (var i = 0; i < results.length; i++) {
+        var r = this.renderUpcomingItem_(results[i], m_name);
+        var deadline = r.getDeadline();
+        if (deadline < weekend) {
+          cnt++;
+        }
+      }
     }
-    return results.length;
+    msg.textContent = cnt + ' upcoming ' + m_name + '. ';
+    return cnt;
   }, function(e) {
     throw e;
   }, this);
