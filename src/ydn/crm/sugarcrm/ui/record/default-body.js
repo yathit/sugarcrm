@@ -21,6 +21,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.ui.record.Default');
+goog.require('ydn.crm.sugarcrm.ui.group.Account');
 goog.require('ydn.crm.sugarcrm.ui.group.Address');
 goog.require('ydn.crm.sugarcrm.ui.group.Appointment');
 goog.require('ydn.crm.sugarcrm.ui.group.AssignUser');
@@ -66,6 +67,9 @@ ydn.crm.sugarcrm.ui.record.Default.prototype.createDom = function() {
     if (group_model instanceof ydn.crm.sugarcrm.model.EmailGroup) {
       var email = /** @type {ydn.crm.sugarcrm.model.EmailGroup} */ (group_model);
       group = new ydn.crm.sugarcrm.ui.group.Email(email, dom);
+    } else if (group_model instanceof ydn.crm.sugarcrm.model.AccountGroup) {
+      var account = /** @type {ydn.crm.sugarcrm.model.AccountGroup} */ (group_model);
+      group = new ydn.crm.sugarcrm.ui.group.Account(account, dom);
     } else if (group_model instanceof ydn.crm.sugarcrm.model.AddressGroup) {
       var address = /** @type {ydn.crm.sugarcrm.model.AddressGroup} */ (group_model);
       group = new ydn.crm.sugarcrm.ui.group.Address(address, dom);
@@ -80,7 +84,11 @@ ydn.crm.sugarcrm.ui.record.Default.prototype.createDom = function() {
       group = new ydn.crm.sugarcrm.ui.group.Phone(phone, dom);
     } else if (group_model instanceof ydn.crm.sugarcrm.model.NameGroup) {
       var name_group = /** @type {ydn.crm.sugarcrm.model.NameGroup} */ (group_model);
-      group = new ydn.crm.sugarcrm.ui.group.Name(name_group, dom);
+      if (name_group.hasField('full_name')) {
+        group = new ydn.crm.sugarcrm.ui.group.Name(name_group, dom);
+      } else {
+        group = new ydn.crm.sugarcrm.ui.group.Group(name_group, dom);
+      }
     } else if (group_model instanceof ydn.crm.sugarcrm.model.Group) {
       var gm = /** @type {ydn.crm.sugarcrm.model.Group} */ (group_model);
       var renderer = null;

@@ -172,7 +172,7 @@ function test_assigned_user() {
 
 
 function test_name() {
-  var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.CONTACTS);
+  var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.CASES);
   var model = record.getGroupModel('name');
   var ctrl = new ydn.crm.sugarcrm.ui.group.Name(model);
   ctrl.render(attach_el);
@@ -184,6 +184,19 @@ function test_name() {
   assertEquals('Bar', data['last_name']);
 }
 
+
+function test_full_name() {
+  var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.CONTACTS);
+  var model = record.getGroupModel('name');
+  var ctrl = new ydn.crm.sugarcrm.ui.group.Name(model);
+  ctrl.render(attach_el);
+  ctrl.simulateEditByField('first_name', 'Foo');
+  ctrl.simulateEditByField('last_name', 'Bar');
+  var data = ctrl.collectData();
+  assertTrue(ctrl.hasChanged());
+  assertEquals('Foo', data['first_name']);
+  assertEquals('Bar', data['last_name']);
+}
 
 
 function test_assigned_user_change() {

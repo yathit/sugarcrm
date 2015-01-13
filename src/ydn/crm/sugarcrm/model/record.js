@@ -25,6 +25,7 @@
 
 goog.provide('ydn.crm.sugarcrm.model.Record');
 goog.require('ydn.crm.sugarcrm.Record');
+goog.require('ydn.crm.sugarcrm.model.AccountGroup');
 goog.require('ydn.crm.sugarcrm.model.AddressGroup');
 goog.require('ydn.crm.sugarcrm.model.AppointmentGroup');
 goog.require('ydn.crm.sugarcrm.model.AssignUserGroup');
@@ -492,6 +493,8 @@ ydn.crm.sugarcrm.model.Record.prototype.getGroupModel = function(name) {
       } else {
         this.groups_[name] = new ydn.crm.sugarcrm.model.NameGroup(this);
       }
+    } else if (name == 'account') {
+      this.groups_[name] = new ydn.crm.sugarcrm.model.AccountGroup(this);
     } else if (['address', 'alt_address', 'primary_address'].indexOf(name) >= 0) {
       this.groups_[name] = new ydn.crm.sugarcrm.model.AddressGroup(this, name);
     } else if (name == 'assigned_user_name') {

@@ -16,9 +16,10 @@ inj.style.maxWidth = '20em';
 var div = document.getElementById('activity-root');
 ydn.crm.shared.logger.info('record panel test');
 var results;
-ydn.crm.sugarcrm.ui.field.Field.DEBUG =  true;
+// ydn.crm.sugarcrm.ui.field.Field.DEBUG =  true;
 // ydn.crm.sugarcrm.model.Record.DEBUG =  true;
 ydn.crm.sugarcrm.ui.record.Record.DEBUG =  true;
+// ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG =  true;
 
 var types = document.getElementById('record-type');
 for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {

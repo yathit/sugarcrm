@@ -62,6 +62,7 @@ ydn.crm.sugarcrm.ui.widget.RichInputHandler.prototype.selectRow = function(row) 
   var record = /** @type {SugarCrm.Record} */(row);
   input.value = record.name;
   input.setAttribute('data-id', record.id);
+  input.setAttribute('data-name', record.name);
   var a = input.nextElementSibling;
   if (a.tagName == 'A' && record._module) {
     var mn = /** @type {ydn.crm.sugarcrm.ModuleName} */(record._module);

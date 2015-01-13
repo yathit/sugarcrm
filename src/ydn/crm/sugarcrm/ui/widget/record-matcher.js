@@ -47,7 +47,7 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher = function(meta, m_name) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG = true;
+ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG = false;
 
 
 /**

@@ -313,9 +313,9 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() 
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.CALLS) {
     return ['appointment', 'assigned_user_name'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.CASES) {
-    return ['assigned_user_name'].indexOf(this.name) == -1;
+    return ['account', 'assigned_user_name'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS || this.module == ydn.crm.sugarcrm.ModuleName.LEADS) {
-    return ['primary_address', 'alt_address', 'email', 'phone'].indexOf(this.name) == -1;
+    return ['account', 'primary_address', 'alt_address', 'email', 'phone'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
     return ['appointment', 'assigned_user_name'].indexOf(this.name) == -1;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {

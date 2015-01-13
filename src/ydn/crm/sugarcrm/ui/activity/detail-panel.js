@@ -291,7 +291,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderActivity = function() {
       this.renderItem_(ans[i]);
     }
   }, function(e) {
-    throw e;
+    window.console.error(e);
   }, this);
 };
 
@@ -364,20 +364,20 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_n
     }, 'New');
     var head = dom.createDom('span', null, [msg, a]);
     this.renderHeader_(head);
+
     var cnt = 0;
-    if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
-      cnt = results.length;
-    } else {
-      var weekend = ydn.time.getWeekend();
-      for (var i = 0; i < results.length; i++) {
-        var r = this.renderUpcomingItem_(results[i], m_name);
-        var deadline = r.getDeadline();
-        if (deadline < weekend) {
-          cnt++;
-        }
+    var weekend = ydn.time.getWeekend();
+    for (var i = 0; i < results.length; i++) {
+      var r = this.renderUpcomingItem_(results[i], m_name);
+      var deadline = r.getDeadline();
+      if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
+        cnt++;
+      } else if (deadline < weekend) {
+        cnt++;
       }
     }
     msg.textContent = cnt + ' upcoming ' + m_name + '. ';
+
     return cnt;
   }, function(e) {
     throw e;

@@ -4,6 +4,7 @@
 
 // ydn.msg.Pipe.DEBUG =  true;
 ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
+ydn.crm.sugarcrm.ui.record.Record.DEBUG =  true;
 
 ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('dev');
@@ -12,7 +13,7 @@ var user = ydn.crm.ui.UserSetting.getInstance();
 var sugar;
 
 // ydn.crm.sugarcrm.ui.group.Group.DEBUG =  true;
-ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG =  true;
+// ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG =  true;
 
 var panel = new ydn.crm.ui.SidebarPanel();
 panel.render(document.querySelector('.inj'));

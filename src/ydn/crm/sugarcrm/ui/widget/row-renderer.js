@@ -24,7 +24,6 @@ goog.addSingletonGetter(ydn.crm.sugarcrm.ui.widget.RowRenderer);
  * @param {Element} elem
  */
 ydn.crm.sugarcrm.ui.widget.RowRenderer.prototype.renderRow = function(row, token, elem) {
-  console.log(row, token, elem);
   if (!goog.isObject(row['data'])) {
     return;
   }

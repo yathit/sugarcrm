@@ -4,6 +4,7 @@
 
 ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG =  true;
 ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
+ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
 var panel, sugar;

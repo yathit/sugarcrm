@@ -6,6 +6,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.ui.group.Address');
+goog.require('ydn.crm.sugarcrm.model.AddressGroup');
 goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
 
 
