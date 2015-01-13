@@ -32,10 +32,14 @@ goog.provide('ydn.crm.sugarcrm.ui.widget.RecordMatcher');
  */
 ydn.crm.sugarcrm.ui.widget.RecordMatcher = function(meta, m_name) {
   /**
-   *
+   * @protected
    * @type {ydn.crm.sugarcrm.Meta}
    */
   this.meta = meta;
+  /**
+   * @protected
+   * @type {ydn.crm.sugarcrm.ModuleName}
+   */
   this.module = m_name;
 };
 
@@ -91,6 +95,7 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     }
     var arr = /** @type {Array<CrmApp.QueryResult>} */(x[0][1]);
     var out = [];
+    var module = this.module;
     var add = function(r) {
       if (!r) {
         return;
@@ -99,6 +104,9 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
         return x['id'] == r['id'];
       });
       if (!exists) {
+        if (!r['_module']) {
+          r['_module'] = module;
+        }
         out.push(r);
       }
     };
@@ -128,4 +136,22 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
  */
 ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.isRowDisabled = function() {
   return false;
+};
+
+
+/**
+ * Set record module.
+ * @param {ydn.crm.sugarcrm.ModuleName} mn
+ */
+ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.setModule = function(mn) {
+  this.module = mn;
+};
+
+
+/**
+ * Get record module.
+ * @return {ydn.crm.sugarcrm.ModuleName} mn
+ */
+ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.getModule = function() {
+  return this.module;
 };

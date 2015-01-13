@@ -24,17 +24,18 @@ goog.provide('ydn.crm.sugarcrm.ui.widget.SelectRecord');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.ac.ArrayMatcher');
 goog.require('goog.ui.ac.AutoComplete');
-goog.require('goog.ui.ac.InputHandler');
 goog.require('goog.ui.ac.Renderer');
 goog.require('ydn.crm.sugarcrm.ui.widget.RecordMatcher');
+goog.require('ydn.crm.sugarcrm.ui.widget.RichInputHandler');
 goog.require('ydn.crm.sugarcrm.ui.widget.RowRenderer');
+goog.require('ydn.crm.ui');
 
 
 
 /**
  * Record selector.
  * @param {ydn.crm.sugarcrm.Meta} meta
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.sugarcrm.ModuleName=} opt_m_name default to Accounts module.
  * @param {boolean=} opt_multi multiple field selector.
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
@@ -42,32 +43,34 @@ goog.require('ydn.crm.sugarcrm.ui.widget.RowRenderer');
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, m_name, opt_multi, opt_dom) {
-  goog.base(this, opt_dom);
+ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi, opt_dom) {
+  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'constructor', opt_dom);
   /**
    * @final
    * @type {ydn.crm.sugarcrm.Meta}
    * @protected
    */
   this.sugar = meta;
-  /**
-   * @final
-   * @type {ydn.crm.sugarcrm.ModuleName}
-   * @protected
-   */
-  this.module = m_name;
 
-  var data = ['Apple', 'Car', 'Dog'];
-  var matcher = new ydn.crm.sugarcrm.ui.widget.RecordMatcher(meta, m_name);
-  var r = ydn.crm.sugarcrm.ui.widget.RowRenderer.getInstance();
-  this.renderer = new goog.ui.ac.Renderer(undefined, r);
-  this.input_handler = new goog.ui.ac.InputHandler(null, null, !!opt_multi, 300);
+  var m_name = opt_m_name || ydn.crm.sugarcrm.ModuleName.ACCOUNTS;
   /**
-   * @final
+   * @protected
+   * @type {ydn.crm.sugarcrm.ui.widget.RecordMatcher}
+   */
+  this.matcher = new ydn.crm.sugarcrm.ui.widget.RecordMatcher(meta, m_name);
+  var r = ydn.crm.sugarcrm.ui.widget.RowRenderer.getInstance();
+  var renderer = new goog.ui.ac.Renderer(undefined, r);
+  /**
+   * @protected
+   * @type {ydn.crm.sugarcrm.ui.widget.RichInputHandler}
+   */
+  this.input_handler = new ydn.crm.sugarcrm.ui.widget.RichInputHandler(meta,
+      null, null, !!opt_multi, 300);
+  /**
    * @type {goog.ui.ac.AutoComplete}
    * @protected
    */
-  this.ac = new goog.ui.ac.AutoComplete(matcher, this.renderer, this.input_handler);
+  this.ac = new goog.ui.ac.AutoComplete(this.matcher, renderer, this.input_handler);
   this.input_handler.attachAutoComplete(this.ac);
 
 };
@@ -82,14 +85,71 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord.CSS_CLASS = 'select-record';
 
 
 /**
+ * Set record module.
+ * @param {ydn.crm.sugarcrm.ModuleName} mn
+ */
+ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.setModule = function(mn) {
+  this.matcher.setModule(mn);
+};
+
+
+/**
+ * Get record module.
+ * @return {ydn.crm.sugarcrm.ModuleName} mn
+ */
+ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.getModule = function() {
+  return this.matcher.getModule();
+};
+
+
+/**
  * @override
  */
 ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.createDom = function() {
-  goog.base(this, 'createDom');
+  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'createDom');
   var root = this.getElement();
   root.classList.add(ydn.crm.sugarcrm.ui.widget.SelectRecord.CSS_CLASS);
   var dom = this.getDomHelper();
   var input = dom.createDom('input');
-  this.input_handler.attachInputs(input);
+  var a = dom.createDom('a');
+  a.setAttribute('title', 'View in SugarCRM');
+  a.setAttribute('target', '_blank');
+  goog.style.setElementShown(a, false);
+  var svg = ydn.crm.ui.createSvgIcon('launch');
+  a.appendChild(svg);
   root.appendChild(input);
+  root.appendChild(a);
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.enterDocument = function() {
+  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'enterDocument');
+  var input = this.getElement().querySelector('input');
+  this.input_handler.attachInputs(input);
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.exitDocument = function() {
+  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'exitDocument');
+  var input = this.getElement().querySelector('input');
+  this.input_handler.detachInput(input);
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.disposeInternal = function() {
+  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'disposeInternal');
+  this.input_handler.dispose();
+  this.input_handler = null;
+  this.ac.dispose();
+  this.ac = null;
+  this.matcher = null;
 };

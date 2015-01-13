@@ -29,16 +29,12 @@ ydn.crm.sugarcrm.ui.widget.RowRenderer.prototype.renderRow = function(row, token
     return;
   }
   var record = /** @type {SugarCrm.Record} */(row['data']);
-  var span = document.createElement('span');
   var email = ydn.crm.sugarcrm.Record.getEmail(record);
   var label = record.name;
   if (email) {
     label += ' <' + email + '>';
   }
-  span.textContent = label;
-  span.setAttribute('data-id', record.id);
-  span.setAttribute('data-module', record._module);
-  elem.appendChild(span);
+  elem.textContent = label;
 };
 
 

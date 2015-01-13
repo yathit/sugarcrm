@@ -273,6 +273,7 @@
                     */
                 </header>
                 <filelist dir="${closure-library.dir}/closure/goog/css">
+                    <file name="autocomplete.css"/>
                     <file name="common.css"/>
                     <file name="combobox.css"/>
                     <file name="colormenubutton.css"/>

@@ -34,6 +34,7 @@ goog.require('ydn.crm.sugarcrm.ui.record.Body');
 goog.require('ydn.crm.sugarcrm.ui.record.Default');
 goog.require('ydn.crm.sugarcrm.ui.record.FooterRenderer');
 goog.require('ydn.crm.sugarcrm.ui.record.Secondary');
+goog.require('ydn.crm.sugarcrm.ui.widget.SelectRecord');
 goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.StatusBar');
 goog.require('ydn.ui');

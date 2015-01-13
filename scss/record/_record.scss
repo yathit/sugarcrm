@@ -26,3 +26,12 @@
     text-align: left;
   }
 }
+
+.select-record {
+  display: flex;
+  align-items: center;
+
+  INPUT, A {
+    line-height: 12px;
+  }
+}
