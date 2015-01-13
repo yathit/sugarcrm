@@ -14,16 +14,27 @@ var user = ydn.crm.ui.UserSetting.getInstance();
 var inj = document.querySelector('.inj');
 inj.style.maxWidth = '20em';
 
+var renderInput = function(mn) {
+  var main = document.getElementById('main');
+  var h3 = document.createElement('h3');
+  h3.textContent = mn;
+  var t = ydn.ui.getTemplateById('select-record-template').content;
+  var root = t.cloneNode(true).firstElementChild;
+  document.body.appendChild(h3);
+  document.body.appendChild(root);
+  var input = root.querySelector('input');
+  input.onfocus = function(e) {
+    var sel = ydn.crm.sugarcrm.ui.widget.SelectRecord.getInstanceFor(sugar, mn);
+    sel.attach(root);
+  };
+};
 
 ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
-  for (var i = 0; i < models.length; i++) {
-    sugar = /** @type {ydn.crm.sugarcrm.model.GDataSugar} */ (models[i]);
-    document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
+  sugar = /** @type {ydn.crm.sugarcrm.model.GDataSugar} */ (models[0]);
+  document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
 
-    panel = new ydn.crm.sugarcrm.ui.widget.SelectRecord(sugar,
-        ydn.crm.sugarcrm.ModuleName.ACCOUNTS);
-    panel.render(document.getElementById('record-root'));
-    break;
+  for (var i = 0; i < ydn.crm.sugarcrm.PEOPLE_MODULES.length; i++) {
+    renderInput(ydn.crm.sugarcrm.PEOPLE_MODULES[i]);
   }
 }, function(e) {
   throw e;

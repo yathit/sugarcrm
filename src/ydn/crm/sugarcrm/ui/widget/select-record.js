@@ -37,14 +37,11 @@ goog.require('ydn.crm.ui');
  * @param {ydn.crm.sugarcrm.Meta} meta
  * @param {ydn.crm.sugarcrm.ModuleName=} opt_m_name default to Accounts module.
  * @param {boolean=} opt_multi multiple field selector.
- * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi, opt_dom) {
-  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'constructor', opt_dom);
+ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi) {
+
   /**
    * @final
    * @type {ydn.crm.sugarcrm.Meta}
@@ -73,8 +70,13 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi, 
   this.ac = new goog.ui.ac.AutoComplete(this.matcher, renderer, this.input_handler);
   this.input_handler.attachAutoComplete(this.ac);
 
+  /**
+   * @type {Element}
+   * @private
+   */
+  this.input_ = null;
+
 };
-goog.inherits(ydn.crm.sugarcrm.ui.widget.SelectRecord, goog.ui.Component);
 
 
 /**
@@ -103,53 +105,52 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.getModule = function() {
 
 
 /**
- * @override
+ * Attach input.
+ * Current attach input element will be detach.
+ * @param {Element} el select record Element build by `select-record-template`
+ * template.
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.createDom = function() {
-  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'createDom');
-  var root = this.getElement();
-  root.classList.add(ydn.crm.sugarcrm.ui.widget.SelectRecord.CSS_CLASS);
-  var dom = this.getDomHelper();
-  var input = dom.createDom('input');
-  var a = dom.createDom('a');
-  a.setAttribute('title', 'View in SugarCRM');
-  a.setAttribute('target', '_blank');
-  goog.style.setElementShown(a, false);
-  var svg = ydn.crm.ui.createSvgIcon('launch');
-  a.appendChild(svg);
-  root.appendChild(input);
-  root.appendChild(a);
+ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.attach = function(el) {
+  goog.asserts.assert(el.classList.contains('select-record'));
+  this.detach();
+  this.input_ = el.querySelector('input');
+  this.input_handler.attachInput(this.input_);
 };
 
 
 /**
- * @override
+ * Detach current input element.
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.enterDocument = function() {
-  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'enterDocument');
-  var input = this.getElement().querySelector('input');
-  this.input_handler.attachInputs(input);
+ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.detach = function() {
+  if (this.input_) {
+    this.input_handler.detachInput(this.input_);
+    this.input_ = null;
+  }
+
 };
 
 
 /**
- * @override
+ * @type {Object<!ydn.crm.sugarcrm.ui.widget.SelectRecord>}
+ * @private
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.exitDocument = function() {
-  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'exitDocument');
-  var input = this.getElement().querySelector('input');
-  this.input_handler.detachInput(input);
-};
+ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_ = {};
 
 
 /**
- * @override
+ * Get select record instance.
+ * @param {ydn.crm.sugarcrm.Meta} meta
+ * @param {ydn.crm.sugarcrm.ModuleName} mn
+ * @return {!ydn.crm.sugarcrm.ui.widget.SelectRecord}
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.disposeInternal = function() {
-  ydn.crm.sugarcrm.ui.widget.SelectRecord.base(this, 'disposeInternal');
-  this.input_handler.dispose();
-  this.input_handler = null;
-  this.ac.dispose();
-  this.ac = null;
-  this.matcher = null;
+ydn.crm.sugarcrm.ui.widget.SelectRecord.getInstanceFor = function(meta, mn) {
+  var domain = meta.getDomain();
+  if (!ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_[domain]) {
+    ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_[domain] =
+        new ydn.crm.sugarcrm.ui.widget.SelectRecord(meta, mn);
+  }
+  var sr = ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_[domain];
+  sr.detach();
+  sr.setModule(mn);
+  return sr;
 };
