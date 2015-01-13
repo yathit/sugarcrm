@@ -41,6 +41,12 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher = function(meta, m_name) {
 
 
 /**
+ * @define {boolean} debug flag.
+ */
+ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG = true;
+
+
+/**
  * Retrieve a set of matching rows from the server via ajax.
  * @param {string} token The text that should be matched; passed to the server
  *     as the 'token' query param.
@@ -53,11 +59,67 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher = function(meta, m_name) {
  */
 ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     function(token, maxMatches, matchHandler, opt_fullString) {
-  var q = {
-    'module': this.module,
-    'limit': maxMatches,
-    'keyRange': kr
+  if (!token || token.length == 0) {
+    matchHandler(token, []);
+    return;
   }
+  var q = [{
+    'store': this.module,
+    'index': 'id',
+    'key': token
+  }, {
+    'store': this.module,
+    'index': 'name',
+    'limit': 2,
+    'prefix': true,
+    'key': token
+  }];
+  var fq = [{
+    'store': this.module,
+    'index': 'name',
+    'fetchFull': true,
+    'threshold': 0.2,
+    'q': token
+  }];
+  var dfs = new goog.async.DeferredList([
+    this.meta.getChannel().send(ydn.crm.Ch.SReq.QUERY, q),
+    this.meta.getChannel().send(ydn.crm.Ch.SReq.SEARCH, fq)
+  ]);
+  dfs.addCallbacks(function(x) {
+    if (ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG) {
+      window.console.log(x);
+    }
+    var arr = /** @type {Array<CrmApp.QueryResult>} */(x[0][1]);
+    var out = [];
+    var add = function(r) {
+      if (!r) {
+        return;
+      }
+      var exists = out.some(function(x) {
+        return x['id'] == r['id'];
+      });
+      if (!exists) {
+        out.push(r);
+      }
+    };
+    for (var i = 0; i < arr.length; i++) {
+      for (var j = 0; j < arr[i].result.length; j++) {
+        add(arr[i].result[j]);
+      }
+    }
+    var frr = /** @type {CrmApp.TextQueryResult} */(x[1][1][0]);
+    var res = frr.fullTextResult;
+    for (var i = 0; i < res.length; i++) {
+      add(res[i].record);
+    }
+    if (ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG) {
+      window.console.log(out.map(function(x) {return {id: x.id, name: x.name}}));
+    }
+    matchHandler(token, out);
+  }, function(e) {
+    matchHandler(token, []);
+    window.console.error(e);
+  }, this);
 };
 
 

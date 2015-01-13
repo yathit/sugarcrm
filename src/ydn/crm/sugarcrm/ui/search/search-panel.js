@@ -341,7 +341,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.updateSearch_ = function() {
   } else if (task.taskNo == 3) {
     // Task 2. full text search on name
     model.searchRecords(task.module, task.q).addCallbacks(function(x) {
-      var arr = /** @type {Array.<CrmApp.ReqQuery>} */ (x);
+      var arr = /** @type {!Array<!CrmApp.TextQueryResult>} */ (x);
       var result = arr[0].fullTextResult;
       var n = result.length || 0;
       for (var i = 0; i < n; i++) {

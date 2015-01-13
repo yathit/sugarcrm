@@ -36,6 +36,84 @@ CrmApp.UserSetting.prototype.logging;
 
 
 /**
+ * Full text search query
+ * @constructor
+ */
+CrmApp.TextQuery = function() {};
+
+
+/**
+ * @type {string} `ydn.crm.sugarcrm.ModuleName`
+ */
+CrmApp.TextQuery.prototype.store;
+
+
+/**
+ * @type {string} See `ydn.crm.sugarcrm.Schema` for available indexes.
+ */
+CrmApp.TextQuery.prototype.index;
+
+
+/**
+ * @type {string} query.
+ */
+CrmApp.TextQuery.prototype.q;
+
+
+/**
+ * @type {number|undefined} query.
+ */
+CrmApp.TextQuery.prototype.limit;
+
+
+/**
+ * @type {number|undefined} Threshold score of a result to consider as
+ * success.
+ */
+CrmApp.TextQuery.prototype.threshold;
+
+
+/**
+ * Return full record instead of just full text search result.
+ * @type {boolean} query.
+ */
+CrmApp.TextQuery.prototype.fetchFull;
+
+
+
+/**
+ * Query result.
+ * Query information are retained.
+ * @constructor
+ * @extends {DbFullTextSearchResult}
+ */
+CrmApp.RecordFullTextSearchResult = function() {};
+
+
+/**
+ * @type {SugarCrm.Record} return only when `fetchFull` is set `true` in query.
+ */
+CrmApp.RecordFullTextSearchResult.prototype.record;
+
+
+
+/**
+ * Query result.
+ * Query information are retained.
+ * @constructor
+ * @extends {CrmApp.TextQuery}
+ */
+CrmApp.TextQueryResult = function() {};
+
+
+/**
+ * @type {!Array.<CrmApp.RecordFullTextSearchResult>} query result
+ */
+CrmApp.TextQueryResult.prototype.fullTextResult;
+
+
+
+/**
  * Query for request. Use in ydn.crm.Ch.SReq.LIST and ydn.crm.Ch.SReq.SEARCH
  * @constructor
  */
@@ -98,12 +176,6 @@ CrmApp.ReqQuery.prototype.keyOnly;
 CrmApp.ReqQuery.prototype.keyRange;
 
 
-/**
- * @type {?string} full text search query.
- */
-CrmApp.ReqQuery.prototype.q;
-
-
 
 /**
  * Query result.
@@ -118,12 +190,6 @@ CrmApp.QueryResult = function() {};
  * @type {Array.<SugarCrm.Record>} query result
  */
 CrmApp.QueryResult.prototype.result;
-
-
-/**
- * @type {Array.<DbFullTextSearchResult>} query result
- */
-CrmApp.QueryResult.prototype.fullTextResult;
 
 
 

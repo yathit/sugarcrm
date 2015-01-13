@@ -27,6 +27,7 @@ goog.require('goog.ui.ac.AutoComplete');
 goog.require('goog.ui.ac.InputHandler');
 goog.require('goog.ui.ac.Renderer');
 goog.require('ydn.crm.sugarcrm.ui.widget.RecordMatcher');
+goog.require('ydn.crm.sugarcrm.ui.widget.RowRenderer');
 
 
 
@@ -58,7 +59,8 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, m_name, opt_multi, opt_
 
   var data = ['Apple', 'Car', 'Dog'];
   var matcher = new ydn.crm.sugarcrm.ui.widget.RecordMatcher(meta, m_name);
-  this.renderer = new goog.ui.ac.Renderer();
+  var r = ydn.crm.sugarcrm.ui.widget.RowRenderer.getInstance();
+  this.renderer = new goog.ui.ac.Renderer(undefined, r);
   this.input_handler = new goog.ui.ac.InputHandler(null, null, !!opt_multi, 300);
   /**
    * @final

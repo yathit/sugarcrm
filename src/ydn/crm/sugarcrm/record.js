@@ -354,6 +354,53 @@ ydn.crm.sugarcrm.Record.prototype.toJSON = function() {
 
 
 /**
+ * Get list of email from the record.
+ * @param {SugarCrm.Record} record
+ * @return {!Array<string>}
+ * @see getEmail
+ */
+ydn.crm.sugarcrm.Record.getEmails = function(record) {
+  var emails = [];
+  if (record['email1']) {
+    emails.push(record['email1']);
+  }
+  if (record['email2']) {
+    emails.push(record['email2']);
+  }
+  if (record['email_addresses_non_primary']) {
+    var email = record['email_addresses_non_primary'];
+    var exists = emails.some(function(x) {
+      return x == email;
+    });
+    if (!exists) {
+      emails.push(email);
+    }
+  }
+  return emails;
+};
+
+
+/**
+ * Get an email from the record.
+ * @param {SugarCrm.Record} record
+ * @return {string} empty string if no email.
+ * @see #getEmails
+ */
+ydn.crm.sugarcrm.Record.getEmail = function(record) {
+  if (record['email1']) {
+    return record['email1'];
+  }
+  if (record['email2']) {
+    return record['email2'];
+  }
+  if (record['email_addresses_non_primary']) {
+    return record['email_addresses_non_primary'];
+  }
+  return '';
+};
+
+
+/**
  * Deserialize JSON object.
  * @param {!Object} json
  * @return {!ydn.crm.sugarcrm.Record}

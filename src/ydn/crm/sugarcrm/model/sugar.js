@@ -521,7 +521,7 @@ ydn.crm.sugarcrm.model.Sugar.prototype.listRecords = function(m_name, opt_order,
  * @param {string} module_name filter by module
  * @param {string} q query term.
  * @param {boolean=} opt_fetch_full fetch full record
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<!Array<!CrmApp.TextQueryResult>>}
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.searchRecords = function(module_name, q, opt_fetch_full) {
   var query = {
