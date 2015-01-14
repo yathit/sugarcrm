@@ -22,6 +22,13 @@ function test_tasks_appointment() {
 }
 
 
+function test_name() {
+  var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.CASES);
+  var model = record.getGroupModel('');
+  assertTrue(model.hasField('name'));
+}
+
+
 
 
 

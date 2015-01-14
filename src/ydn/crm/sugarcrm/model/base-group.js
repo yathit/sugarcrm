@@ -97,7 +97,7 @@ ydn.crm.sugarcrm.model.BaseGroup.getNormallyHideDefaultSetting = function(name) 
 /**
  * Check existence of a field name in module information.
  * @param {string} name
- * @return {boolean}
+ * @return {boolean} `true` if field name is in the group.
  * @see #hasFieldValue
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.hasField = function(name) {

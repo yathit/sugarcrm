@@ -15,7 +15,7 @@ function setUp() {
 
 function test_has_field_value_calls() {
   var record = ydn.crm.test.createRecord(null, 'Calls');
-  var group = record.getGroupModel('name');
+  var group = record.getGroupModel('');
   assertTrue(group.hasFieldValue('name'));
   var name = group.createOrGetFieldModel('name');
   assertTrue('has name field', !!name);

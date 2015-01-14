@@ -122,7 +122,7 @@ function test_default_field_account() {
 
 function test_default_field_contacts() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.CONTACTS,
-      [],
+      ['first_name'],
       ['id', 'account_id', 'name', 'full_name']);
 }
 
@@ -147,5 +147,12 @@ function test_default_field_notes() {
 function test_default_field_tasks() {
   default_field_test(ydn.crm.sugarcrm.ModuleName.TASKS,
       ['status', 'priority', 'description', 'date_start', 'date_due'],
+      ['id', 'deleted']);
+}
+
+
+function test_default_field_opportunity() {
+  default_field_test(ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES,
+      ['amount'],
       ['id', 'deleted']);
 }

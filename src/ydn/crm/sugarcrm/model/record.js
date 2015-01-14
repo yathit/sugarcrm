@@ -483,16 +483,7 @@ ydn.crm.sugarcrm.model.Record.prototype.listGroups = function() {
 ydn.crm.sugarcrm.model.Record.prototype.getGroupModel = function(name) {
   if (!this.groups_[name]) {
     if (name == 'name') {
-      if ([ydn.crm.sugarcrm.ModuleName.CALLS,
-           ydn.crm.sugarcrm.ModuleName.DOCUMENTS,
-           ydn.crm.sugarcrm.ModuleName.MEETINGS,
-           ydn.crm.sugarcrm.ModuleName.NOTES,
-           ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES,
-           ydn.crm.sugarcrm.ModuleName.TASKS].indexOf(this.getModuleName()) >= 0) {
-        this.groups_[name] = new ydn.crm.sugarcrm.model.Group(this, name);
-      } else {
-        this.groups_[name] = new ydn.crm.sugarcrm.model.NameGroup(this);
-      }
+      this.groups_[name] = new ydn.crm.sugarcrm.model.NameGroup(this);
     } else if (name == 'account') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.AccountGroup(this);
     } else if (['address', 'alt_address', 'primary_address'].indexOf(name) >= 0) {

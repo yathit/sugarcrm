@@ -173,15 +173,13 @@ function test_assigned_user() {
 
 function test_name() {
   var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.CASES);
-  var model = record.getGroupModel('name');
+  var model = record.getGroupModel('');
   var ctrl = new ydn.crm.sugarcrm.ui.group.Name(model);
   ctrl.render(attach_el);
-  ctrl.simulateEditByField('first_name', 'Foo');
-  ctrl.simulateEditByField('last_name', 'Bar');
+  ctrl.simulateEditByField('name', 'Foo');
   var data = ctrl.collectData();
   assertTrue(ctrl.hasChanged());
-  assertEquals('Foo', data['first_name']);
-  assertEquals('Bar', data['last_name']);
+  assertEquals('Foo', data['name']);
 }
 
 

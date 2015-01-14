@@ -55,8 +55,8 @@ ydn.crm.sugarcrm.ui.group.Account.prototype.getModel;
  */
 ydn.crm.sugarcrm.ui.group.Account.prototype.createDom = function() {
   ydn.crm.sugarcrm.ui.group.Account.base(this, 'createDom');
-  var t = ydn.ui.getTemplateById('select-record-template').content;
-  this.getContentElement().appendChild(t.cloneNode(true));
+  var t = goog.soy.renderAsElement(templ.ydn.crm.inj.selectRecord, {});
+  this.getContentElement().appendChild(t);
 };
 
 
