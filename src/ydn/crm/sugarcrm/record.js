@@ -208,6 +208,8 @@ ydn.crm.sugarcrm.Record.getFieldNameForDeadline = function(m_name) {
     return 'date_due';
   } else if (m_name == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
     return 'date_closed';
+  } else if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
+    return 'date_modified';
   } else {
     return 'date_start';
   }

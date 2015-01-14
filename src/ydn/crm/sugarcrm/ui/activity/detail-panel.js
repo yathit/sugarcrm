@@ -233,7 +233,7 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.clear = function() {
 /**
  * Generate upcoming query from current time.
  * @param {ydn.crm.sugarcrm.ModuleName} m_name one of ydn.crm.sugarcrm.ACTIVITY_MODULES.
- * @param {Date=} opt_until last upcoming date.
+ * @param {Date=} opt_until date limit.
  * @return {CrmApp.ReqQuery} query
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m_name, opt_until) {
@@ -245,16 +245,28 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m
       'keyRange': ydn.db.KeyRange.only(assigned_user_id).toJSON()
     }));
   }
+  var reverse = false;
   var start_date = ydn.crm.sugarcrm.utils.toDateString(new Date());
   var until = '\uffff';
-  if (opt_until) {
-    until = ydn.crm.sugarcrm.utils.toDateString(opt_until);
+  if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
+    reverse = true;
+    start_date = '';
+    if (opt_until) {
+      start_date = ydn.crm.sugarcrm.utils.toDateString(opt_until);
+    }
+  } else {
+    if (opt_until) {
+      until = ydn.crm.sugarcrm.utils.toDateString(opt_until);
+    }
   }
+
   var kr = ydn.db.KeyRange.bound([assigned_user_id, start_date], [assigned_user_id, until]);
 
   var query = {
     'store': m_name,
     'index': ydn.crm.sugarcrm.Record.getIndexForDeadline(m_name),
+    'limit': 20,
+    'reverse': reverse,
     'keyRange': kr.toJSON()
   };
   return /** @type {CrmApp.ReqQuery} */ (/** @type {Object} */ (query));

@@ -85,7 +85,8 @@ ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
     }, 'indexes': [{
       'name': 'account_id'
     }, {
-      'name': 'assigned_user_id'
+      'name': 'assigned_user_id, date_modified',
+      'keyPath': ['assigned_user_id', 'date_modified']
     }]
   },
   'Calls': {

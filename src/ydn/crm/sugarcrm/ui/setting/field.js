@@ -212,6 +212,11 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
           return true;
         }
       }
+
+      if (['amount_usdollar'].indexOf(this.name) >= 0) {
+        return true;
+      }
+
       return false;
     } else {
       if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
