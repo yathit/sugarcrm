@@ -238,13 +238,6 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.clear = function() {
  */
 ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m_name, opt_until) {
   var assigned_user_id = this.getModel().getUser().getId();
-  if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
-    return /** @type {CrmApp.ReqQuery} */ (/** @type {Object} */ ({
-      'store': m_name,
-      'index': 'assigned_user_id, date_modified',
-      'keyRange': ydn.db.KeyRange.starts([assigned_user_id]).toJSON()
-    }));
-  }
   var reverse = false;
   var start_date = ydn.crm.sugarcrm.utils.toDateString(new Date());
   var until = '\uffff';
@@ -365,7 +358,8 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_n
   return this.getModel().send(ydn.crm.Ch.SReq.VALUES, q).addCallbacks(function(arr) {
     var results = /** @type {Array.<SugarCrm.Record>} */ (arr);
     if (ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG) {
-      window.console.log('receiving renderUpcoming ' + results.length + ' items', arr);
+      window.console.log('receiving renderUpcoming ' + results.length + ' items',
+          q, arr);
     }
     var dom = this.getDomHelper();
     var msg = dom.createDom('span');
