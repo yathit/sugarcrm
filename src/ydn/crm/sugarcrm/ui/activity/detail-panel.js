@@ -241,8 +241,8 @@ ydn.crm.sugarcrm.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m
   if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
     return /** @type {CrmApp.ReqQuery} */ (/** @type {Object} */ ({
       'store': m_name,
-      'index': 'assigned_user_id',
-      'keyRange': ydn.db.KeyRange.only(assigned_user_id).toJSON()
+      'index': 'assigned_user_id, date_modified',
+      'keyRange': ydn.db.KeyRange.starts([assigned_user_id]).toJSON()
     }));
   }
   var reverse = false;
