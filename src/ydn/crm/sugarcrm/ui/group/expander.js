@@ -97,14 +97,17 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.expand = function(val) {
   var content = this.getElement().querySelector('.' +
       ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
   goog.style.setElementShown(content, val);
+  var root = this.getElement();
   var label = this.getHeaderLabel();
   if (val) {
+    root.classList.add('edit');
     if (label.tagName == 'INPUT') {
       label.setAttribute('disabled', 'disabled');
     } else {
       label.textContent = 'Edit ' + this.getModel().getGroupName();
     }
   } else {
+    root.classList.remove('edit');
     if (label.tagName == 'INPUT') {
       label.removeAttribute('disabled');
     } else {
@@ -206,10 +209,11 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.getHeaderLabel = function() {
 ydn.crm.sugarcrm.ui.group.Expander.prototype.refresh = function() {
   goog.base(this, 'refresh');
   var label = this.getHeaderLabel();
-  if (this.isExpanded()) {
-    label.textContent = 'Edit name';
+  var value = this.isExpanded() ? 'Edit name' : this.getModel().getGroupValue();
+  if (label.tagName == 'INPUT') {
+    label.value = value;
   } else {
-    label.textContent = this.getModel().getGroupValue();
+    label.textContent = value;
   }
 };
 
@@ -222,7 +226,6 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.reset = function() {
   this.expand(false);
   var label = this.getHeaderLabel();
   label.setAttribute('title', this.getModel().getGroupName());
-
 };
 
 

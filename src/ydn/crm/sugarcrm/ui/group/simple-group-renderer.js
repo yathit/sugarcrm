@@ -101,12 +101,12 @@ ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.refresh = function(ctrl)
    * @type {ydn.crm.sugarcrm.model.BaseGroup}
    */
   var model = ctrl.getModel();
-  var root = ctrl.getContentElement();
-  goog.style.setElementShown(root, !!model);
+  var content = ctrl.getContentElement();
+  goog.style.setElementShown(content, !!model);
   if (!model) {
     return;
   }
-  var ele_field = root.querySelector('.' +
+  var ele_field = content.querySelector('.' +
       ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   var value = model.getGroupValue();
   if (ele_field.tagName == goog.dom.TagName.INPUT) {
@@ -123,9 +123,10 @@ ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.refresh = function(ctrl)
 
   var is_def = goog.isString(value) ? !goog.string.isEmpty(value) :
       goog.isDefAndNotNull(value);
+  var root = ctrl.getElement();
   if (is_def) {
-    ele_field.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    root.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   } else {
-    ele_field.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    root.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   }
 };

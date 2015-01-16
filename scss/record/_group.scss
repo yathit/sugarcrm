@@ -21,6 +21,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 24px; // so that height dont change on hover state
 
     span.header-label {
       cursor: default;
@@ -33,6 +34,19 @@
     .center {
       flex-shrink: 1;
     }
+
+  }
+
+  .header.expander:not(:hover) {
+    .svg-button {
+      display: none;
+    }
+  }
+}
+
+.record-body:not(.edit) {
+  .record-group.empty {
+    display: none;
   }
 }
 

@@ -1,6 +1,6 @@
 
 // display logic
-.record-body {
+.record-body:not(.edit) .record-group:not(.edit) {
   .field.empty {
     display: none;
   }

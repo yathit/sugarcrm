@@ -85,7 +85,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.parseFullNameLabel = function(full_na
   full_name = full_name.trim();
   if (!this.hasField('last_name')) {
     return {
-      'full_name': !full_name ? undefined : full_name
+      'name': !full_name ? undefined : full_name
     };
   }
   var obj = {
@@ -186,7 +186,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.hasGroupValue = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupValue = function() {
-  return this.module.valueAsString('name');
+  return this.module.valueAsString('full_name');
 };
 
 
@@ -214,7 +214,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.isGroupValueEditable = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.model.NameGroup.prototype.setGroupValue = function(label) {
-  var org = this.module.valueAsString('name');
+  var org = this.getGroupValue();
   if (org == label) {
     return null;
   }
