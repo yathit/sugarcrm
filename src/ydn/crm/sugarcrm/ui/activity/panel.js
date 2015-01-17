@@ -390,7 +390,11 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
   if (!m_name) {
     return;
   }
-  var query = this.detail_panel.genUpcomingQuery(m_name, ydn.time.getWeekend());
+  var until = null;
+  if (m_name != ydn.crm.sugarcrm.ModuleName.CASES) {
+    until = ydn.time.getWeekend();
+  }
+  var query = this.detail_panel.genUpcomingQuery(m_name, until);
   this.getModel().send(ydn.crm.Ch.SReq.KEYS, query).addCallbacks(function(ans) {
     var query_result = /** @type {Array.<string>} */ (ans);
     var next = index + 1;
