@@ -47,3 +47,9 @@ ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getRelateFieldName = functio
 };
 
 
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getRelateModuleName = function() {
+  return ydn.crm.sugarcrm.ModuleName.ACCOUNTS;
+};

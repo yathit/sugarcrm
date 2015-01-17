@@ -55,7 +55,7 @@ var default_group_test = function(mn, nc, np) {
 
 function test_default_group_account() {
   var nc = ['', 'email', 'name', 'phone', 'billing_address', 'shipping_address'];
-  var np = ['created_by_name', 'assigned_user_name'];
+  var np = ['created_by_name'];
   default_group_test(ydn.crm.sugarcrm.ModuleName.ACCOUNTS, nc, np);
 }
 

@@ -47,3 +47,10 @@ ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getRelateFieldName = functio
 };
 
 
+/**
+ * @inheritDoc
+ */
+ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getRelateModuleName = function() {
+  return ydn.crm.sugarcrm.ModuleName.CONTACTS;
+};
+

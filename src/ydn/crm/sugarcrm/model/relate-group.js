@@ -38,6 +38,12 @@ ydn.crm.sugarcrm.model.RelateGroup.prototype.getRelateFieldName = goog.abstractM
 
 
 /**
+ * @return {ydn.crm.sugarcrm.ModuleName} name field of related record.
+ */
+ydn.crm.sugarcrm.model.RelateGroup.prototype.getRelateModuleName = goog.abstractMethod;
+
+
+/**
  * @inheritDoc
  */
 ydn.crm.sugarcrm.model.RelateGroup.prototype.hasGroupValue = function() {

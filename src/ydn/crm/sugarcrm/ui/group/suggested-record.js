@@ -80,9 +80,12 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.enterDocument = function() {
  * @private
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.onInputFocus_ = function(e) {
-  var m = this.getModel();
+  /**
+   * @type {ydn.crm.sugarcrm.model.RelateGroup}
+   */
+  var model = this.getModel();
   var sel = ydn.crm.sugarcrm.ui.widget.SelectRecord.getInstanceFor(
-      m.getMeta(), ydn.crm.sugarcrm.ModuleName.ACCOUNTS);
+      model.getMeta(), model.getRelateModuleName());
   sel.attach(this.getInput_().parentElement);
 };
 
@@ -116,6 +119,12 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.getInput_ = function() {
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.reset = function() {
   var input = this.getInput_();
   input.removeAttribute('data-id');
+  /**
+   * @type {ydn.crm.sugarcrm.model.RelateGroup}
+   */
+  var model = this.getModel();
+  input.setAttribute('placeholder', model.getGroupLabel());
+  input.setAttribute('title', model.getGroupLabel());
 };
 
 
@@ -148,8 +157,8 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.collectData = function() {
   var name_field = model.getRelateFieldName();
   var data = {
   };
-  data['account_id'] = input.getAttribute('data-id');
-  data['account_name'] = input.getAttribute('data-name');
+  data[id_field] = input.getAttribute('data-id');
+  data[name_field] = input.getAttribute('data-name');
   return data;
 };
 

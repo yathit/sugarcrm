@@ -18,8 +18,7 @@ var renderInput = function(mn) {
   var main = document.getElementById('main');
   var h3 = document.createElement('h3');
   h3.textContent = mn;
-  var t = ydn.ui.getTemplateById('select-record-template').content;
-  var root = t.cloneNode(true).firstElementChild;
+  var root = goog.soy.renderAsElement(templ.ydn.crm.inj.selectRecord, {});
   document.body.appendChild(h3);
   document.body.appendChild(root);
   var input = root.querySelector('input');

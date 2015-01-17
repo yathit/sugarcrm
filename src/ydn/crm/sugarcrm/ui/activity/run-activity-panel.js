@@ -22,7 +22,7 @@ ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
     setTimeout(function() {
       document.getElementById('user').textContent = sugar.getUser().getId();
       document.getElementById('user-name').textContent = sugar.getUser().getLabel();
-    }, 500)
+    }, 500);
     panel = new ydn.crm.sugarcrm.ui.activity.Panel(sugar);
     panel.render(div);
     break;
