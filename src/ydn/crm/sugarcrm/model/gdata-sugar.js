@@ -535,7 +535,7 @@ ydn.crm.sugarcrm.model.GDataSugar.list = function() {
               }
               var ac = user.getLoginEmail();
               return new ydn.crm.sugarcrm.model.GDataSugar(details.about,
-                  details.modulesInfo, ac, details.serverInfo, details.loginInfo);
+                  details.modulesInfo, ac, details.serverInfo, null, details.loginInfo);
             }, this);
             dfs.push(df);
           }

@@ -17,7 +17,12 @@
 /**
  * @fileoverview SugarCRM service model.
  *
- * Dispatch 'login' event.
+ * This is primary model to get any data from a SugarCRM. With given
+ * {@link SugarCrm.About}, this model will query remaining data from
+ * background page using persistent channel. See
+ * {@link ydn.crm.sugarcrm.model.Sugar#list} for initialing this model.
+ *
+ * Dispatch 'login', 'logout' and 'host-access` events.
  *                                                 `
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -36,7 +41,18 @@ goog.require('ydn.debug.error.ConstraintError');
 
 
 /**
- * SugarCRM server info
+ * SugarCRM service model.
+ * <pre>
+ *   ydn.crm.sugarcrm.model.Sugar.list().addCallback(function(models) {
+ *     var sugar = models[0];
+ *     if (sugar.isLogin()) {
+ *       var q = {'store': 'Contact', key: 'abc'};
+ *       sugar.send([q]).addCallback(function(data) {
+ *
+ *       });
+ *     }
+ *   });
+ * <pre>
  * @param {SugarCrm.About} about setup for particular domain.
  * @param {Array.<SugarCrm.ModuleInfo>|Object.<SugarCrm.ModuleInfo>} arr
  * @param {SugarCrm.ServerInfo=} opt_info
@@ -268,7 +284,8 @@ ydn.crm.sugarcrm.model.Sugar.prototype.updateStatus = function() {
 
 
 /**
- * @return {string} sugarcrm user name. This is About.userName
+ * @return {string} sugarcrm user name. This is `About.userName`, which is
+ * same as `getUser().value('user_name')`.
  * @see #getUser for getting login user record.
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.getUserName = function() {
@@ -475,7 +492,7 @@ ydn.crm.sugarcrm.model.Sugar.load = function(about) {
  * @return {!ydn.async.Deferred}
  */
 ydn.crm.sugarcrm.model.Sugar.prototype.send = function(req, opt_data) {
-  return ydn.msg.getChannel(ydn.msg.Group.SUGAR, this.getDomain()).send(req, opt_data);
+  return this.getChannel().send(req, opt_data);
 };
 
 
