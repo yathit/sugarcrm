@@ -21,7 +21,6 @@
 
 
 goog.provide('ydn.crm.sugarcrm.ui.record.Default');
-goog.require('ydn.crm.sugarcrm.ui.group.Account');
 goog.require('ydn.crm.sugarcrm.ui.group.Address');
 goog.require('ydn.crm.sugarcrm.ui.group.Appointment');
 goog.require('ydn.crm.sugarcrm.ui.group.AssignUser');
@@ -31,6 +30,7 @@ goog.require('ydn.crm.sugarcrm.ui.group.LazyGroupRenderer');
 goog.require('ydn.crm.sugarcrm.ui.group.List');
 goog.require('ydn.crm.sugarcrm.ui.group.Name');
 goog.require('ydn.crm.sugarcrm.ui.group.Phone');
+goog.require('ydn.crm.sugarcrm.ui.group.SuggestedRecord');
 goog.require('ydn.crm.sugarcrm.ui.record.Body');
 
 
@@ -69,7 +69,7 @@ ydn.crm.sugarcrm.ui.record.Default.prototype.createDom = function() {
       group = new ydn.crm.sugarcrm.ui.group.Email(email, dom);
     } else if (group_model instanceof ydn.crm.sugarcrm.model.AccountGroup) {
       var account = /** @type {ydn.crm.sugarcrm.model.AccountGroup} */ (group_model);
-      group = new ydn.crm.sugarcrm.ui.group.Account(account, dom);
+      group = new ydn.crm.sugarcrm.ui.group.SuggestedRecord(account, dom);
     } else if (group_model instanceof ydn.crm.sugarcrm.model.AddressGroup) {
       var address = /** @type {ydn.crm.sugarcrm.model.AddressGroup} */ (group_model);
       group = new ydn.crm.sugarcrm.ui.group.Address(address, dom);
