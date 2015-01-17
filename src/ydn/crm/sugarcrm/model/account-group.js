@@ -7,7 +7,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.model.AccountGroup');
-goog.require('ydn.crm.sugarcrm.model.BaseGroup');
+goog.require('ydn.crm.sugarcrm.model.RelateGroup');
 
 
 
@@ -15,13 +15,13 @@ goog.require('ydn.crm.sugarcrm.model.BaseGroup');
  * Group model for assigned_user_name fields.
  * @param {ydn.crm.sugarcrm.model.Record} parent
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.BaseGroup}
+ * @extends {ydn.crm.sugarcrm.model.RelateGroup}
  * @struct
  */
 ydn.crm.sugarcrm.model.AccountGroup = function(parent) {
   goog.base(this, parent, 'account');
 };
-goog.inherits(ydn.crm.sugarcrm.model.AccountGroup, ydn.crm.sugarcrm.model.BaseGroup);
+goog.inherits(ydn.crm.sugarcrm.model.AccountGroup, ydn.crm.sugarcrm.model.RelateGroup);
 
 
 /**
@@ -35,16 +35,16 @@ ydn.crm.sugarcrm.model.AccountGroup.prototype.getGroupLabel = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AccountGroup.prototype.hasGroupValue = function() {
-  return this.hasFieldValue('account_id');
+ydn.crm.sugarcrm.model.AccountGroup.prototype.getRelateFieldId = function() {
+  return 'account_id';
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AccountGroup.prototype.getGroupValue = function() {
-  return this.getStringValue('account_name');
+ydn.crm.sugarcrm.model.AccountGroup.prototype.getRelateFieldName = function() {
+  return 'account_name';
 };
 
 

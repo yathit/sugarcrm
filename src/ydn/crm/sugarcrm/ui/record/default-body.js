@@ -67,9 +67,6 @@ ydn.crm.sugarcrm.ui.record.Default.prototype.createDom = function() {
     if (group_model instanceof ydn.crm.sugarcrm.model.EmailGroup) {
       var email = /** @type {ydn.crm.sugarcrm.model.EmailGroup} */ (group_model);
       group = new ydn.crm.sugarcrm.ui.group.Email(email, dom);
-    } else if (group_model instanceof ydn.crm.sugarcrm.model.AccountGroup) {
-      var account = /** @type {ydn.crm.sugarcrm.model.AccountGroup} */ (group_model);
-      group = new ydn.crm.sugarcrm.ui.group.SuggestedRecord(account, dom);
     } else if (group_model instanceof ydn.crm.sugarcrm.model.AddressGroup) {
       var address = /** @type {ydn.crm.sugarcrm.model.AddressGroup} */ (group_model);
       group = new ydn.crm.sugarcrm.ui.group.Address(address, dom);
@@ -89,6 +86,10 @@ ydn.crm.sugarcrm.ui.record.Default.prototype.createDom = function() {
       } else {
         group = new ydn.crm.sugarcrm.ui.group.Group(name_group, dom);
       }
+    } else if (group_model instanceof ydn.crm.sugarcrm.model.RelateGroup) {
+      // relate group is generic group for 'Account', 'Contact', 'Leads', 'User', etc.
+      var account = /** @type {ydn.crm.sugarcrm.model.RelateGroup} */ (group_model);
+      group = new ydn.crm.sugarcrm.ui.group.SuggestedRecord(account, dom);
     } else if (group_model instanceof ydn.crm.sugarcrm.model.Group) {
       var gm = /** @type {ydn.crm.sugarcrm.model.Group} */ (group_model);
       var renderer = null;

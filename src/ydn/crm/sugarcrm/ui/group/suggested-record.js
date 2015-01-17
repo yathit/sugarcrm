@@ -16,7 +16,7 @@
 /**
  * @fileoverview Suggested record.
  *
- * A group control for relation. This control provide auto-suggestion input
+ * A group control for relate type. This control provide auto-suggestion input
  * of the relation record. The primary field is record id, such as, `account_id`,
  * `contact_id`, or `parent_id`.
  *
@@ -25,7 +25,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.ui.group.SuggestedRecord');
-goog.require('ydn.crm.sugarcrm.model.BaseGroup');
+goog.require('ydn.crm.sugarcrm.model.RelateGroup');
 goog.require('ydn.crm.sugarcrm.ui.group.AbstractGroup');
 goog.require('ydn.crm.sugarcrm.ui.widget.SelectRecord');
 goog.require('ydn.ui');
@@ -34,7 +34,7 @@ goog.require('ydn.ui');
 
 /**
  * Suggested record controller.
- * @param {ydn.crm.sugarcrm.model.BaseGroup} model
+ * @param {ydn.crm.sugarcrm.model.RelateGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
@@ -45,6 +45,13 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord = function(model, opt_dom) {
 
 };
 goog.inherits(ydn.crm.sugarcrm.ui.group.SuggestedRecord, ydn.crm.sugarcrm.ui.group.AbstractGroup);
+
+
+/**
+ * @return {ydn.crm.sugarcrm.model.RelateGroup}
+ * @override
+ */
+ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.getModel;
 
 
 /**
@@ -117,9 +124,13 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.reset = function() {
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.refresh = function() {
   var input = this.getInput_();
-  var name = this.getModel().valueAsString('account_name');
+  /**
+   * @type {ydn.crm.sugarcrm.model.RelateGroup}
+   */
+  var model = this.getModel();
+  var name = model.valueAsString(model.getRelateFieldName());
   input.value = name;
-  input.setAttribute('data-id', this.getModel().valueAsString('account_id'));
+  input.setAttribute('data-id', model.valueAsString(model.getRelateFieldId()));
   input.setAttribute('data-name', name);
 };
 
@@ -129,10 +140,17 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.refresh = function() {
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.collectData = function() {
   var input = this.getInput_();
-  return {
-    'account_id': input.getAttribute('data-id'),
-    'account_name': input.getAttribute('data-name')
+  /**
+   * @type {ydn.crm.sugarcrm.model.RelateGroup}
+   */
+  var model = this.getModel();
+  var id_field = model.getRelateFieldId();
+  var name_field = model.getRelateFieldName();
+  var data = {
   };
+  data['account_id'] = input.getAttribute('data-id');
+  data['account_name'] = input.getAttribute('data-name');
+  return data;
 };
 
 
@@ -141,7 +159,9 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.collectData = function() {
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.hasChanged = function() {
   var input = this.getInput_();
-  return input.getAttribute('data-id') != this.getModel().getStringValue('account_id');
+  var model = this.getModel();
+  var id_field = model.getRelateFieldId();
+  return input.getAttribute('data-id') != this.getModel().getStringValue(id_field);
 };
 
 
