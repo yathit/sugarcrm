@@ -19,6 +19,7 @@
  *
  * A specific renderer is selected depending on module type.
  * This is container for group panel and has some controls to viewing and editing.
+ *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
@@ -825,7 +826,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.reset = function() {
   this.body_panel.refresh();
   if (model.isNew()) {
     root.className = this.getCssClass() + ' ' + model.getModuleName() + ' ' +
-    ydn.crm.ui.CSS_CLASS_EMPTY;
+        ydn.crm.ui.CSS_CLASS_EMPTY;
   } else {
     root.className = this.getCssClass() + ' ' + model.getModuleName();
   }
