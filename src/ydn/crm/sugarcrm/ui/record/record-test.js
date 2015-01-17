@@ -117,6 +117,14 @@ function test_edit_email() {
 }
 
 
+function test_create_contacts() {
+  var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.CONTACTS, {});
+  var record_panel = new ydn.crm.sugarcrm.ui.record.Record(record);
+  record_panel.render(mock_el);
+  record_panel.simulateEdit({'name': 'Test 1'}, true);
+}
+
+
 
 
 

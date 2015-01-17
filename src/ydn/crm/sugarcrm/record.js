@@ -74,11 +74,22 @@ ydn.crm.sugarcrm.Record.prototype.key_path = 'id';
 
 
 /**
+ * Check the record is new, i.e., not exist in server.
  * @return {boolean} return record has valid record id.
  * @see #hasData to check existence of data.
  */
+ydn.crm.sugarcrm.Record.prototype.isNew = function() {
+  return !this.obj[this.key_path];
+};
+
+
+/**
+ * @return {boolean} return record has valid record id.
+ * @see #hasData to check existence of data.
+ * @deprecated use #isNew instead
+ */
 ydn.crm.sugarcrm.Record.prototype.hasRecord = function() {
-  return goog.isDefAndNotNull(this.obj[this.key_path]);
+  return !this.isNew();
 };
 
 

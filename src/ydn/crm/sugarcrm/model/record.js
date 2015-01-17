@@ -162,7 +162,7 @@ ydn.crm.sugarcrm.model.Record.prototype.valueAsString = function(name) {
  * @return {string}
  */
 ydn.crm.sugarcrm.model.Record.prototype.getLabel = function() {
-  return this.record.hasRecord() ? this.record.getLabel() : '';
+  return this.record.isNew() ? '' : this.record.getLabel();
 };
 
 
@@ -272,7 +272,7 @@ ydn.crm.sugarcrm.model.Record.prototype.save = function(obj) {
  * @return {!goog.async.Deferred<?ContactEntry>}
  */
 ydn.crm.sugarcrm.model.Record.prototype.findPairedGData = function() {
-  if (this.hasRecord()) {
+  if (!this.isNew()) {
     var q = {
       'domain': this.getDomain(),
       'module': this.getModuleName(),
@@ -299,9 +299,9 @@ ydn.crm.sugarcrm.model.Record.prototype.findPairedGData = function() {
  * @private
  */
 ydn.crm.sugarcrm.model.Record.prototype.updateRecord_ = function(patch) {
-  var old_id = this.record.hasRecord() ? this.record.getId() : null;
+  var old_id = this.record.isNew() ? null : this.record.getId();
   this.record.updateData(patch);
-  if (this.record.hasRecord()) {
+  if (!this.record.isNew()) {
     if (goog.isDefAndNotNull(patch.id)) {
       goog.asserts.assert(patch.id == this.getId(), 'updating record must ' +
           'not change id, from ' + this.getId() + ' to ' + patch.id);
@@ -343,7 +343,7 @@ ydn.crm.sugarcrm.model.Record.prototype.patch = function(patches) {
  * @return {!goog.async.Deferred}
  */
 ydn.crm.sugarcrm.model.Record.prototype.deleteRecord = function() {
-  if (!this.hasRecord()) {
+  if (this.isNew()) {
     return goog.async.Deferred.fail(new Error('record not defined.'));
   }
   var data = {
@@ -370,10 +370,10 @@ ydn.crm.sugarcrm.model.Record.prototype.disposeInternal = function() {
  * @return {?string} null if record is not set.
  */
 ydn.crm.sugarcrm.model.Record.prototype.getViewLink = function() {
-  if (this.record.hasRecord()) {
-    return this.parent.getRecordViewLink(this.getModuleName(), this.getId());
-  } else {
+  if (this.record.isNew()) {
     return null;
+  } else {
+    return this.parent.getRecordViewLink(this.getModuleName(), this.getId());
   }
 };
 
@@ -401,7 +401,7 @@ ydn.crm.sugarcrm.model.Record.prototype.setRecord = function(record) {
     // what if underlying data are different.
     return;
   } else if (!record) {
-    if (this.record.hasRecord()) {
+    if (!this.record.isNew()) {
       this.record.setData(null);
       this.dispatchEvent(new ydn.crm.sugarcrm.model.events.RecordChangeEvent(null, this));
     }
@@ -413,14 +413,14 @@ ydn.crm.sugarcrm.model.Record.prototype.setRecord = function(record) {
     this.record = record;
     this.dispatchEvent(new ydn.crm.sugarcrm.model.events.ModuleChangeEvent(old_module,
         this));
-  } else if (!record.hasRecord()) {
-    if (this.record.hasRecord()) {
+  } else if (record.isNew()) {
+    if (!this.record.isNew()) {
       var old_id = this.record.getId();
       this.record = record;
       this.dispatchEvent(new ydn.crm.sugarcrm.model.events.RecordChangeEvent(old_id, this));
     }
-  } else if (!this.record.hasRecord()) {
-    if (record.hasRecord()) {
+  } else if (this.record.isNew()) {
+    if (!record.isNew()) {
       this.record = record;
       this.dispatchEvent(new ydn.crm.sugarcrm.model.events.RecordChangeEvent(null, this));
     }
@@ -439,8 +439,18 @@ ydn.crm.sugarcrm.model.Record.prototype.setRecord = function(record) {
  * @return {boolean} return record has valid record id.
  * @see #hasData to check existence of data.
  */
+ydn.crm.sugarcrm.model.Record.prototype.isNew = function() {
+  return this.record.isNew();
+};
+
+
+/**
+ * @return {boolean} return record has valid record id.
+ * @see #hasData to check existence of data.
+ * @deprecated use #isNew instead.
+ */
 ydn.crm.sugarcrm.model.Record.prototype.hasRecord = function() {
-  return this.record.hasRecord();
+  return !this.record.isNew();
 };
 
 
@@ -534,7 +544,7 @@ if (goog.DEBUG) {
  * @return {!goog.async.Deferred.<ydn.gdata.m8.ContactEntry>}
  */
 ydn.crm.sugarcrm.model.Record.prototype.export2GData = function() {
-  if (!this.hasRecord()) {
+  if (this.isNew()) {
     return goog.async.Deferred.fail(new Error('no Record to export.'));
   }
   return this.parent.export2GData(this.record);

@@ -334,7 +334,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleRecordDelete = function(e) {
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.onExport = function(e) {
   var record = this.getModel();
-  if (record.hasRecord()) {
+  if (!record.isNew()) {
     var mid = ydn.crm.msg.Manager.addStatus('exporting...');
     record.export2GData().addCallbacks(function(x) {
       var acui = ydn.gmail.Utils.getGoogleAcui();
@@ -396,7 +396,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.onSaveClick = function(e) {
     }
     return;
   }
-  var is_new_record = !this.getModel().hasRecord();
+  var is_new_record = this.getModel().isNew();
   var patches = is_new_record ?
       this.body_panel.collectData() : this.body_panel.getPatch();
   if (patches) {
@@ -587,13 +587,13 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleInputChanged = function(e) {
     // event dispatcher may need to store the patches.
     // @see ydn.crm.sugarcrm.ui.group.Address#doEditorApplyDefault
     this.setDirty(true);
-  } else if (this.getModel().hasRecord()) {
+  } else if (this.getModel().isNew()) {
+    // for new record creation, should be in input mode.
+    this.setDirty(true);
+  } else {
     // patch is applied, so default is prevented.
     e.preventDefault();
     this.patch(e.patches);
-  } else {
-    // for new record creation, should be in input mode.
-    this.setDirty(true);
   }
 };
 
@@ -629,7 +629,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.patch = function(patches) {
    * @type {ydn.crm.sugarcrm.model.Record}
    */
   var model = this.getModel();
-  var is_new = !model.hasRecord();
+  var is_new = model.isNew();
   var status = is_new ? 'Creating ...' : 'Updating...';
   var mid = ydn.crm.msg.Manager.addStatus(status);
   if (ydn.crm.sugarcrm.ui.record.Record.DEBUG) {
@@ -823,11 +823,11 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.reset = function() {
   this.footer_panel.reset(this);
   this.body_panel.reset(this.getEditMode());
   this.body_panel.refresh();
-  if (model.hasRecord()) {
-    root.className = this.getCssClass() + ' ' + model.getModuleName();
-  } else {
+  if (model.isNew()) {
     root.className = this.getCssClass() + ' ' + model.getModuleName() + ' ' +
-        ydn.crm.ui.CSS_CLASS_EMPTY;
+    ydn.crm.ui.CSS_CLASS_EMPTY;
+  } else {
+    root.className = this.getCssClass() + ' ' + model.getModuleName();
   }
   this.postReset();
 };
@@ -848,12 +848,12 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.exitDocument = function() {
 ydn.crm.sugarcrm.ui.record.Record.prototype.refresh = function() {
   var model = this.getModel();
   if (ydn.crm.sugarcrm.ui.record.Record.DEBUG) {
-    window.console.log('Record:refresh:' + model + ' hasRecord:' + model.hasRecord());
+    window.console.log('Record:refresh:' + model + ' isNew:' + model.isNew());
   }
-  if (model.hasRecord()) {
-    this.getElement().classList.remove(ydn.crm.ui.CSS_CLASS_EMPTY);
-  } else {
+  if (model.isNew()) {
     this.getElement().classList.add(ydn.crm.ui.CSS_CLASS_EMPTY);
+  } else {
+    this.getElement().classList.remove(ydn.crm.ui.CSS_CLASS_EMPTY);
   }
   this.refreshHeader();
   this.footer_panel.reset(this);
@@ -1130,15 +1130,15 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.refreshHeader = function() {
     window.console.log('refreshHeader:' + m_name + ':' + record);
   }
   var ele_title = ele_header.querySelector('a.' + ydn.crm.sugarcrm.ui.record.CSS_HEADER_TITLE);
-  if (record.hasRecord()) {
+  if (record.isNew()) {
+    ele_title.innerHTML = '';
+    ele_title.href = '';
+    this.head_menu.setEnableMenuItem(ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE, false);
+  } else {
     ele_title.textContent = record.getLabel();
     ele_title.href = record.getViewLink();
     ele_title.target = record.getDomain();
     this.head_menu.setEnableMenuItem(ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE, true);
-  } else {
-    ele_title.innerHTML = '';
-    ele_title.href = '';
-    this.head_menu.setEnableMenuItem(ydn.crm.sugarcrm.ui.record.Record.MenuName.DUPLICATE, false);
   }
 };
 

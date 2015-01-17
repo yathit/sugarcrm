@@ -114,7 +114,7 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.handleChanged = function(e) {
    * @type {ydn.crm.sugarcrm.model.Record}
    */
   var model = this.getModel();
-  if (model.hasRecord()) {
+  if (!model.isNew()) {
     var sugar = model.getSugar();
     var req = ydn.crm.Ch.SReq.QUERY;
     var query = [{
@@ -124,10 +124,10 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.handleChanged = function(e) {
       'keyRange': ydn.db.KeyRange.starts([model.getModuleName(), model.getId()])
     }];
     sugar.send(req, query).addCallbacks(function(x) {
-      var arr = /** @type {Array.<CrmApp.ReqQuery>} */ (x);
+      var arr = /** @type {Array.<CrmApp.QueryResult>} */ (x);
       for (var i = 0; i < arr.length; i++) {
         /**
-         * @type {CrmApp.ReqQuery}
+         * @type {CrmApp.QueryResult}
          */
         var q = arr[i];
         if (q.result && q.result.length > 0) {

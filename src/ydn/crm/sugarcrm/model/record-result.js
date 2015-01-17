@@ -33,7 +33,7 @@ ydn.crm.sugarcrm.model.ResultRecord = function(parent, result) {
 
   goog.base(this, parent, r);
 
-  if (!this.record.hasRecord()) {
+  if (this.record.isNew()) {
     this.queryRecord_();
   }
 };
@@ -125,5 +125,5 @@ if (goog.DEBUG) {
  * @return {boolean}
  */
 ydn.crm.sugarcrm.model.ResultRecord.prototype.isEmpty = function() {
-  return !this.hasRecord() && !this.result;
+  return this.isNew() && !this.result;
 };
