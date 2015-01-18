@@ -66,8 +66,7 @@ function test_rendering_account_name() {
   var panel = new ydn.crm.sugarcrm.ui.record.Record(record);
   panel.render(mock_el);
 
-  var name_group = document.querySelector('div.record-group[name="name"]');
-  var name_el = name_group.querySelector('input.value');
+  var name_el = document.querySelector('.field[name="name"] input.value');
   assertEquals('name', obj.name, name_el.value);
 
 }
@@ -78,8 +77,10 @@ function test_normally_hide_setting() {
   panel.render(mock_el);
   var name_group = panel.body_panel.getChildByGroup('name');
   assertFalse('normally hide value of name group', name_group.isNormallyHide());
+  /*
   var team_group = panel.body_panel.getChildByGroup('team_name');
-  assertTrue('normally hide value of name group', team_group.isNormallyHide());
+  assertTrue('normally hide value of team_group group', team_group.isNormallyHide());
+  */
 }
 
 

@@ -111,9 +111,8 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.getModule = function() {
  * template.
  */
 ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.attach = function(el) {
-  goog.asserts.assert(el.classList.contains('select-record'));
   this.detach();
-  this.input_ = el.querySelector('input');
+  this.input_ = el.querySelector('.select-record input.value');
   this.input_handler.attachInput(this.input_);
 };
 
@@ -145,6 +144,7 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_ = {};
  */
 ydn.crm.sugarcrm.ui.widget.SelectRecord.getInstanceFor = function(meta, mn) {
   var domain = meta.getDomain();
+  goog.asserts.assert(mn);
   if (!ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_[domain]) {
     ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_[domain] =
         new ydn.crm.sugarcrm.ui.widget.SelectRecord(meta, mn);

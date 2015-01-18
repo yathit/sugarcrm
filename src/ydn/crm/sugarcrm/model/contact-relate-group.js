@@ -2,6 +2,7 @@
 /**
  * @fileoverview Relate group model for Account record type.
  *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 

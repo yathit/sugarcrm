@@ -33,7 +33,7 @@ goog.require('ydn.ui');
 
 
 /**
- * Suggested record controller.
+ * Suggested record component.
  * @param {ydn.crm.sugarcrm.model.RelateGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
@@ -69,9 +69,17 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.createDom = function() {
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.enterDocument = function() {
   ydn.crm.sugarcrm.ui.group.SuggestedRecord.base(this, 'enterDocument');
-  var input = this.getElement().querySelector('input');
+  var input = this.getInputElement();
   this.getHandler().listen(input, goog.events.EventType.FOCUS, this.onInputFocus_);
   this.getHandler().listen(input, goog.events.EventType.BLUR, this.onInputBlur);
+};
+
+
+/**
+ * @return {ydn.crm.sugarcrm.ModuleName}
+ */
+ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.getRelateModuleName = function() {
+  return this.getModel().getRelateModuleName();
 };
 
 
@@ -80,13 +88,13 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.enterDocument = function() {
  * @private
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.onInputFocus_ = function(e) {
-  /**
-   * @type {ydn.crm.sugarcrm.model.RelateGroup}
-   */
-  var model = this.getModel();
-  var sel = ydn.crm.sugarcrm.ui.widget.SelectRecord.getInstanceFor(
-      model.getMeta(), model.getRelateModuleName());
-  sel.attach(this.getInput_().parentElement);
+  var mn = this.getRelateModuleName();
+  var idx = ydn.crm.sugarcrm.CacheModules.indexOf(mn);
+  if (idx >= 0) {
+    var sel = ydn.crm.sugarcrm.ui.widget.SelectRecord.getInstanceFor(
+        this.getModel().getMeta(), mn);
+    sel.attach(this.getContentElement().querySelector('.select-record'));
+  }
 };
 
 
@@ -106,10 +114,10 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.onInputBlur = function(e) {
 
 /**
  * @return {Element}
- * @private
+ * @protected
  */
-ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.getInput_ = function() {
-  return this.getContentElement().querySelector('input');
+ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.getInputElement = function() {
+  return this.getContentElement().querySelector('.select-record input.value');
 };
 
 
@@ -117,7 +125,7 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.getInput_ = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.reset = function() {
-  var input = this.getInput_();
+  var input = this.getInputElement();
   input.removeAttribute('data-id');
   /**
    * @type {ydn.crm.sugarcrm.model.RelateGroup}
@@ -132,7 +140,7 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.reset = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.refresh = function() {
-  var input = this.getInput_();
+  var input = this.getInputElement();
   /**
    * @type {ydn.crm.sugarcrm.model.RelateGroup}
    */
@@ -148,7 +156,7 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.refresh = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.collectData = function() {
-  var input = this.getInput_();
+  var input = this.getInputElement();
   /**
    * @type {ydn.crm.sugarcrm.model.RelateGroup}
    */
@@ -167,7 +175,7 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.collectData = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.hasChanged = function() {
-  var input = this.getInput_();
+  var input = this.getInputElement();
   var model = this.getModel();
   var id_field = model.getRelateFieldId();
   return input.getAttribute('data-id') != this.getModel().getStringValue(id_field);

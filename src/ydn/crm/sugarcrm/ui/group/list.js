@@ -2,6 +2,8 @@
  * @fileoverview Panel for listed items.
  *
  * This module provide adding, linking and syncing.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 

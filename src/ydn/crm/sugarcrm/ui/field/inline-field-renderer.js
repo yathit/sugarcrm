@@ -1,5 +1,7 @@
 /**
  * @fileoverview Inline field renderer.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 

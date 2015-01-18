@@ -2,6 +2,8 @@
  * @fileoverview Group controller.
  *
  * Group controller manage changes in filed of the records.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 

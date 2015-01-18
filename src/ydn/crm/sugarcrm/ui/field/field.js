@@ -2,6 +2,8 @@
 
 /**
  * @fileoverview SugarCrm module field.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 

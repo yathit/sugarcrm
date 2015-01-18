@@ -29,6 +29,7 @@ goog.require('ydn.crm.sugarcrm.ui.group.Group');
 goog.require('ydn.crm.sugarcrm.ui.group.LazyGroupRenderer');
 goog.require('ydn.crm.sugarcrm.ui.group.List');
 goog.require('ydn.crm.sugarcrm.ui.group.Name');
+goog.require('ydn.crm.sugarcrm.ui.group.Parent');
 goog.require('ydn.crm.sugarcrm.ui.group.Phone');
 goog.require('ydn.crm.sugarcrm.ui.group.SuggestedRecord');
 goog.require('ydn.crm.sugarcrm.ui.record.Body');
@@ -76,6 +77,9 @@ ydn.crm.sugarcrm.ui.record.Default.prototype.createDom = function() {
     } else if (group_model instanceof ydn.crm.sugarcrm.model.AssignUserGroup) {
       var asg = /** @type {ydn.crm.sugarcrm.model.AssignUserGroup} */ (group_model);
       group = new ydn.crm.sugarcrm.ui.group.AssignUser(asg, dom);
+    } else if (group_model instanceof ydn.crm.sugarcrm.model.ParentRelateGroup) {
+      var parent = /** @type {ydn.crm.sugarcrm.model.ParentRelateGroup} */ (group_model);
+      group = new ydn.crm.sugarcrm.ui.group.Parent(parent, dom);
     } else if (group_model instanceof ydn.crm.sugarcrm.model.PhoneGroup) {
       var phone = /** @type {ydn.crm.sugarcrm.model.PhoneGroup} */ (group_model);
       group = new ydn.crm.sugarcrm.ui.group.Phone(phone, dom);

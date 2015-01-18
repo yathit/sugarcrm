@@ -75,27 +75,16 @@ function test_default_group_leads() {
 
 function test_default_group_calls() {
   var nc = ['name', 'appointment', 'assigned_user_name'];
-  var np = ['created_by_name', 'email', 'phone', 'primary_address'];
+  var np = ['created_by_name'];
   default_group_test(ydn.crm.sugarcrm.ModuleName.CALLS, nc, np);
 }
 
 function test_default_group_meetings() {
   var nc = ['name', 'appointment', 'assigned_user_name'];
-  var np = ['created_by_name', 'email', 'phone', 'primary_address'];
+  var np = ['created_by_name'];
   default_group_test(ydn.crm.sugarcrm.ModuleName.MEETINGS, nc, np);
 }
 
-function test_default_group_notes() {
-  var nc = ['name'];
-  var np = ['modified_by_name'];
-  default_group_test(ydn.crm.sugarcrm.ModuleName.NOTES, nc, np);
-}
-
-function test_default_group_tasks() {
-  var nc = ['name', 'appointment'];
-  var np = ['modified_by_name'];
-  default_group_test(ydn.crm.sugarcrm.ModuleName.TASKS, nc, np);
-}
 
 var default_field_test = function(mn, nc, np) {
   for (var i = 0; i < nc.length; i++) {

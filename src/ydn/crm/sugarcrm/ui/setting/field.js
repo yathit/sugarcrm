@@ -307,17 +307,14 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHide = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() {
-  if (['', 'name', 'account', 'appointment', 'assigned_user_name', 'contact'].indexOf(this.name) >= 0) {
-    return false;
-  } else if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
-    return ['billing_address', 'shipping_address', 'email', 'phone'].indexOf(this.name) == -1;
-  } else if (this.module == ydn.crm.sugarcrm.ModuleName.CONTACTS || this.module == ydn.crm.sugarcrm.ModuleName.LEADS) {
-    return ['primary_address', 'alt_address', 'email', 'phone'].indexOf(this.name) == -1;
-  } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
-    return ['assigned_user_name'].indexOf(this.name) == -1;
-  } else if (this.module == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
-    return ['amount'].indexOf(this.name) == -1;
-  } else {
+  var default_hide = ['created_by_name', 'modified_by_name', 'portal'];
+  if (default_hide.indexOf(this.name) >= 0) {
     return true;
+  } else if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS &&
+      ['parent'].indexOf(this.name) >= 0) {
+    return true;
+  } else {
+    // by default all groups are visible
+    return false;
   }
 };

@@ -33,6 +33,7 @@ goog.require('ydn.crm.sugarcrm.model.ContactRelateGroup');
 goog.require('ydn.crm.sugarcrm.model.EmailGroup');
 goog.require('ydn.crm.sugarcrm.model.Group');
 goog.require('ydn.crm.sugarcrm.model.NameGroup');
+goog.require('ydn.crm.sugarcrm.model.ParentRelateGroup');
 goog.require('ydn.crm.sugarcrm.model.PhoneGroup');
 goog.require('ydn.gdata.m8.ExternalId');
 goog.require('ydn.msg');
@@ -497,20 +498,20 @@ ydn.crm.sugarcrm.model.Record.prototype.getGroupModel = function(name) {
       this.groups_[name] = new ydn.crm.sugarcrm.model.NameGroup(this);
     } else if (name == 'account') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.AccountRelateGroup(this);
-    } else if (['address', 'alt_address', 'primary_address'].indexOf(name) >= 0) {
-      this.groups_[name] = new ydn.crm.sugarcrm.model.AddressGroup(this, name);
+    } else if (name == 'appointment') {
+      this.groups_[name] = new ydn.crm.sugarcrm.model.AppointmentGroup(this);
     } else if (name == 'assigned_user_name') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.AssignUserGroup(this);
     } else if (name == 'contact') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.ContactRelateGroup(this);
     } else if (name == 'email') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.EmailGroup(this);
+    } else if (name == 'parent') {
+      this.groups_[name] = new ydn.crm.sugarcrm.model.ParentRelateGroup(this);
     } else if (name == 'phone') {
       this.groups_[name] = new ydn.crm.sugarcrm.model.PhoneGroup(this);
-    } else if (name == 'appointment') {
-      this.groups_[name] = new ydn.crm.sugarcrm.model.AppointmentGroup(this);
-    } else if (name == 'phone') {
-      this.groups_[name] = new ydn.crm.sugarcrm.model.PhoneGroup(this);
+    } else if (/\w+_address/.test(String(name))) {
+      this.groups_[name] = new ydn.crm.sugarcrm.model.AddressGroup(this, name);
     } else {
       this.groups_[name] = new ydn.crm.sugarcrm.model.Group(this, name);
     }

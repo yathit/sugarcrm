@@ -2,6 +2,8 @@
  * @fileoverview Panel for name group fields.
  *
  * This module provide adding, linking and syncing.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
