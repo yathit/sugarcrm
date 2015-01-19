@@ -78,8 +78,9 @@ ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateFieldName = function
 ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateModuleName = function() {
   var mn = /** @type {ydn.crm.sugarcrm.ModuleName} */(this.valueAsString('parent_type'));
   if (!mn) {
-    return ydn.crm.sugarcrm.ModuleName.ACCOUNTS;
+    mn = ydn.crm.sugarcrm.ModuleName.ACCOUNTS;
   }
+  return mn;
 };
 
 

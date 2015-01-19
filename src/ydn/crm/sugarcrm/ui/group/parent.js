@@ -148,9 +148,8 @@ ydn.crm.sugarcrm.ui.group.Parent.prototype.collectData = function() {
    */
   var model = this.getModel();
   if (data) {
-    var sel_type = this.getTypeSelElement();
     var type_field = model.getRelateFieldType();
-    data[type_field] = sel_type.value;
+    data[type_field] = this.getRelateModuleName();
   }
   return data;
 };

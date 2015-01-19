@@ -313,6 +313,9 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() 
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS &&
       ['parent'].indexOf(this.name) >= 0) {
     return true;
+  } else if (this.module == ydn.crm.sugarcrm.ModuleName.NOTES &&
+      ['contact', 'account'].indexOf(this.name) >= 0) {
+    return true;
   } else {
     // by default all groups are visible
     return false;

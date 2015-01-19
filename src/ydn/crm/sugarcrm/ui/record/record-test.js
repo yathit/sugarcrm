@@ -87,13 +87,12 @@ function test_normally_hide_setting() {
 function test_edit_name() {
 
   var record = ydn.crm.test.createContactRecord(null);
+
   var record_panel = new ydn.crm.sugarcrm.ui.record.Record(record);
-
   record_panel.render(mock_el);
+
   var called = false;
-
   record_panel.patch = function(patch) {
-
     assertEquals('first name', 'Kyaw', patch['first_name']);
     assertEquals('last name', 'Tun', patch['last_name']);
     called = true;

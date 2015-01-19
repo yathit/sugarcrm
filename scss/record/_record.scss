@@ -16,6 +16,12 @@
     padding-left: 2px;
     border-left: thin solid lightblue;
   }
+
+  .content {
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }
 
 #field-table {
