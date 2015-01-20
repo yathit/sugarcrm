@@ -50,13 +50,6 @@ ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER = 'header';
 ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_FOOTER = 'footer';
 
 
-/**
- * @const
- * @type {string}
- */
-ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT = 'content';
-
-
 /** @return {string} */
 ydn.crm.sugarcrm.ui.group.GroupRenderer.prototype.getCssClass = function() {
   return ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS;
@@ -71,7 +64,7 @@ ydn.crm.sugarcrm.ui.group.GroupRenderer.prototype.createDom = function(ctrl) {
   var dom = ctrl.getDomHelper();
   var root = dom.createDom('div', this.getCssClass());
   var head = dom.createDom('div');
-  var content = dom.createDom('div', ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
+  var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(head);
   root.appendChild(content);
   ctrl.setElementInternal(root);

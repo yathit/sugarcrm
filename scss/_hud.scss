@@ -8,6 +8,12 @@ $hud-button-height: 38px;
   right: 0;
   top: 300px;
   z-index: 10;
+
+  .record-panel {
+    .content {
+      max-height: 250px;
+    }
+  }
 }
 
 .hud-button {

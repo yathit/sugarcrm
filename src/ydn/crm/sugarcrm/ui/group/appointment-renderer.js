@@ -42,7 +42,7 @@ ydn.crm.sugarcrm.ui.group.AppointmentRenderer.prototype.createDom = function(ctr
   var dom = ctrl.getDomHelper();
   var root = dom.createDom('div', this.getCssClass());
   var head = dom.createDom('div', ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER);
-  var content = dom.createDom('div', ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
+  var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(head);
   root.appendChild(content);
   ctrl.setElementInternal(root);

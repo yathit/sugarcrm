@@ -1,7 +1,7 @@
 /**
  * @fileoverview Panel for listed items.
  *
- * This module provide adding, linking and syncing.
+ * Each field is an row item.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -11,7 +11,6 @@ goog.provide('ydn.crm.sugarcrm.ui.group.List');
 goog.require('ydn.crm.sugarcrm');
 goog.require('ydn.crm.sugarcrm.model.Group');
 goog.require('ydn.crm.sugarcrm.ui.group.Group');
-goog.require('ydn.crm.sugarcrm.ui.group.ListRenderer');
 
 
 
@@ -33,7 +32,7 @@ goog.inherits(ydn.crm.sugarcrm.ui.group.List, ydn.crm.sugarcrm.ui.group.Group);
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.List.prototype.getContentElement = function() {
-  return goog.dom.getElementByClass(ydn.crm.sugarcrm.ui.group.ListRenderer.CSS_CONTENT_CLASS,
+  return goog.dom.getElementByClass(ydn.crm.ui.CSS_CLASS_CONTENT,
       this.getElement());
 };
 

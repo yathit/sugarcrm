@@ -112,7 +112,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.hasField = function(name) {
 
 /**
  * Get list of field name in this group.
- * @return {Array.<string>}
+ * @return {!Array.<string>}
  */
 ydn.crm.sugarcrm.model.BaseGroup.prototype.listFields = function() {
   var module_info = this.module.getModuleInfo();

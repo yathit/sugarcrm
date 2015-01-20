@@ -62,6 +62,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.createDom = function() {
       ydn.crm.sugarcrm.ui.group.Expander.CSS_HEADER_LABEL);
   if (ed) {
     label.setAttribute('type', 'text');
+    label.setAttribute('placeholder', model.getGroupLabel());
   }
   header.appendChild(label);
   header.appendChild(dom.createDom('span', 'center'));
@@ -70,7 +71,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.createDom = function() {
   btn.setAttribute('title', 'Edit');
   header.appendChild(btn);
   var content = this.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
+      ydn.crm.ui.CSS_CLASS_CONTENT);
   //
 };
 
@@ -95,7 +96,7 @@ ydn.crm.sugarcrm.ui.group.Expander.CSS_HEADER_LABEL = 'header-label';
  */
 ydn.crm.sugarcrm.ui.group.Expander.prototype.expand = function(val) {
   var content = this.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
+      ydn.crm.ui.CSS_CLASS_CONTENT);
   goog.style.setElementShown(content, val);
   var root = this.getElement();
   var label = this.getHeaderLabel();
@@ -187,7 +188,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.onExpandClick_ = function(ev) {
  */
 ydn.crm.sugarcrm.ui.group.Expander.prototype.isExpanded = function() {
   var content = this.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
+      ydn.crm.ui.CSS_CLASS_CONTENT);
   return goog.style.isElementShown(content);
 };
 

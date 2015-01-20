@@ -65,7 +65,7 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getSetting = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.getContentElement = function() {
-  return this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
+  return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
 };
 
 
@@ -131,7 +131,7 @@ ydn.crm.sugarcrm.ui.group.AbstractGroup.prototype.createDom = function() {
   var dom = this.getDomHelper();
   var root = dom.createDom('div', this.getCssClass());
   var head = dom.createDom('div', ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER);
-  var content = dom.createDom('div', ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_CONTENT);
+  var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(head);
   root.appendChild(content);
   this.setElementInternal(root);

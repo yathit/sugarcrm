@@ -43,13 +43,6 @@ ydn.crm.sugarcrm.ui.group.ListRenderer.prototype.getCssClass = function() {
 
 
 /**
- * @const
- * @type {string}
- */
-ydn.crm.sugarcrm.ui.group.ListRenderer.CSS_CONTENT_CLASS = 'content';
-
-
-/**
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.group.ListRenderer.prototype.createDom = function(x) {
@@ -65,7 +58,7 @@ ydn.crm.sugarcrm.ui.group.ListRenderer.prototype.createDom = function(x) {
   var head = dom.createDom('div');
   head.setAttribute('title', model.getGroupLabel());
   root.appendChild(head);
-  var content = dom.createDom('div', ydn.crm.sugarcrm.ui.group.ListRenderer.CSS_CONTENT_CLASS);
+  var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(head);
   root.appendChild(content);
 

@@ -1,7 +1,13 @@
 /**
  * @fileoverview Group controller.
  *
- * Group controller manage changes in filed of the records.
+ * Group controller manage changes in filed of the records using field
+ * controller. Field controller are created depending on type, such as email,
+ * phone. Override {@link #createFields} methods to change custom field model
+ * instantiation.
+ *
+ * This listen component ACTION from field controller and invoke
+ * {@link #onMenuAction} method. Default implementation is noop.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -23,7 +29,6 @@ goog.require('ydn.crm.sugarcrm.ui.group.AbstractGroup');
  * @extends {ydn.crm.sugarcrm.ui.group.AbstractGroup}
  */
 ydn.crm.sugarcrm.ui.group.Group = function(model, opt_dom) {
-
   goog.base(this, model, opt_dom);
 };
 goog.inherits(ydn.crm.sugarcrm.ui.group.Group, ydn.crm.sugarcrm.ui.group.AbstractGroup);
@@ -77,18 +82,6 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.createFields = function() {
     }
     this.addChild(field, true);
   }
-};
-
-
-/**
- * Attach handlers when the control become editable.
- * Superclass override to attach handlers. This will be called only when
- * handlers were not being attached.
- * @protected
- * @deprecated use enterDocument
- */
-ydn.crm.sugarcrm.ui.group.Group.prototype.attachHandlers = function() {
-
 };
 
 
@@ -197,7 +190,7 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.refresh = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(i));
     if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && !child) {
-      console.error(this + ' child ' + i + ' ' + child);
+      window.console.error(this + ' child ' + i + ' ' + child);
     }
     child.refresh();
   }
@@ -212,7 +205,7 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.reset = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(i));
     if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && !child) {
-      console.error(this + ' child ' + i + ' ' + child);
+      window.console.error(this + ' child ' + i + ' ' + child);
     }
     child.reset();
   }

@@ -318,7 +318,7 @@ ydn.crm.sugarcrm.ui.field.Field.prototype.handleInputBlur = function(e) {
 
 
 /**
- * @return {Object} patch to clear the field.
+ * @return {Object} patch to clear the field, default to `{fieldName: ''}`.
  */
 ydn.crm.sugarcrm.ui.field.Field.prototype.createClearPatch = function() {
   var obj = {};

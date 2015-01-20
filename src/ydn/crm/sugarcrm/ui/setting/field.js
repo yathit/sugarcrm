@@ -307,7 +307,7 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHide = function() {
  * @inheritDoc
  */
 ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() {
-  var default_hide = ['created_by_name', 'modified_by_name', 'portal'];
+  var default_hide = ['created_by_name', 'modified_by_name', 'portal', 'assistant'];
   if (default_hide.indexOf(this.name) >= 0) {
     return true;
   } else if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS &&
