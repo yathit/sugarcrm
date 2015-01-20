@@ -26,6 +26,7 @@
 
 goog.provide('ydn.crm.sugarcrm.ui.group.SuggestedRecord');
 goog.require('ydn.crm.sugarcrm.model.RelateGroup');
+goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
 goog.require('ydn.crm.sugarcrm.ui.group.AbstractGroup');
 goog.require('ydn.crm.sugarcrm.ui.widget.SelectRecord');
 goog.require('ydn.ui');
@@ -146,9 +147,16 @@ ydn.crm.sugarcrm.ui.group.SuggestedRecord.prototype.refresh = function() {
    */
   var model = this.getModel();
   var name = model.valueAsString(model.getRelateFieldName());
+  var id = model.valueAsString(model.getRelateFieldId());
   input.value = name;
-  input.setAttribute('data-id', model.valueAsString(model.getRelateFieldId()));
+  input.setAttribute('data-id', id);
   input.setAttribute('data-name', name);
+  var root = this.getElement();
+  if (id) {
+    root.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+  } else {
+    root.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+  }
 };
 
 

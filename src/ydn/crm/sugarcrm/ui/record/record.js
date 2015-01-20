@@ -45,7 +45,7 @@ goog.require('ydn.ui.MessageDialog');
 
 
 /**
- * Contact sidebar panel.
+ * SugarCRM record panel.
  * @param {ydn.crm.sugarcrm.model.Record} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @param {ydn.crm.sugarcrm.ui.record.Record=} opt_parent parent panel for for child record panel.
@@ -97,7 +97,7 @@ goog.inherits(ydn.crm.sugarcrm.ui.record.Record, goog.ui.Component);
 
 /**
  * @protected
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.logger =
     goog.log.getLogger('ydn.crm.sugarcrm.ui.record.Record');

@@ -193,6 +193,14 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.addResult_ = function(result) {
   }
   var n = this.result_panel.getChildCount();
   for (var i = 0; i < n; i++) {
+    var child = /** @type {ydn.crm.sugarcrm.ui.record.Record} */(
+        this.result_panel.getChildAt(i));
+    var model = /** @type {ydn.crm.sugarcrm.model.ResultRecord} */ (child.getModel());
+    if (model && model.valueAsString('id') == result.primaryKey) {
+      return;
+    }
+  }
+  for (var i = 0; i < n; i++) {
     var child = /** @type {ydn.crm.sugarcrm.ui.record.Record} */ (this.result_panel.getChildAt(i));
     var model = /** @type {ydn.crm.sugarcrm.model.ResultRecord} */ (child.getModel());
     if (model.isEmpty()) {
