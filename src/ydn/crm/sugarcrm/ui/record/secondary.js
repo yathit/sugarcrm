@@ -87,6 +87,7 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.attachChild = function(r) {
   var sugar = this.getModel().getSugar();
   var record_model = new ydn.crm.sugarcrm.model.Record(sugar, r);
   var child_panel = new ydn.crm.sugarcrm.ui.record.Record(record_model, this.getDomHelper());
+  child_panel.setEnableSecondary(ydn.crm.sugarcrm.ui.record.Record.EnableSecondary.DISABLED);
   this.addChild(child_panel, true);
 };
 

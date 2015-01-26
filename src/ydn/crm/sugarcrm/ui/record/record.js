@@ -78,18 +78,21 @@ ydn.crm.sugarcrm.ui.record.Record = function(model, opt_dom, opt_parent) {
    * @type {ydn.crm.sugarcrm.ui.record.Body}
    */
   this.body_panel = this.createBodyPanel();
+  this.enable_secondary = ydn.crm.sugarcrm.ui.record.Record.EnableSecondary.ENABLED;
   /**
-   * @final
    * @protected
    * @type {ydn.crm.sugarcrm.ui.record.Secondary}
    */
-  this.secondary_panel = new ydn.crm.sugarcrm.ui.record.Secondary(model, opt_dom);
+  this.secondary_panel = null;
   /**
    * @final
    * @protected
    * @type {ydn.crm.sugarcrm.ui.record.FooterRenderer}
    */
   this.footer_panel = ydn.crm.sugarcrm.ui.record.FooterRenderer.getInstance();
+
+
+  this.addChild(this.body_panel, true);
 
 };
 goog.inherits(ydn.crm.sugarcrm.ui.record.Record, goog.ui.Component);
@@ -182,6 +185,48 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getParentPanel = function() {
 
 
 /**
+ * @param {ydn.crm.sugarcrm.ui.record.Record.EnableSecondary} val
+ */
+ydn.crm.sugarcrm.ui.record.Record.prototype.setEnableSecondary = function(val) {
+  if (val == this.enable_secondary) {
+    return;
+  }
+  this.enable_secondary = val;
+  this.validateSecondaryPanel_();
+};
+
+
+/**
+ * validate secondary panel should be added or remove.
+ * @private
+ */
+ydn.crm.sugarcrm.ui.record.Record.prototype.validateSecondaryPanel_ = function() {
+  if (this.enable_secondary == ydn.crm.sugarcrm.ui.record.Record.EnableSecondary.ALWAYS ||
+      (this.enable_secondary == ydn.crm.sugarcrm.ui.record.Record.EnableSecondary.ENABLED &&
+      this.isActive())) {
+    if (!this.secondary_panel) {
+      this.secondary_panel = new ydn.crm.sugarcrm.ui.record.Secondary(
+          this.getModel(), this.getDomHelper());
+      this.addChild(this.secondary_panel, true);
+      if (this.isInDocument()) {
+        this.secondary_panel.reset();
+        this.secondary_panel.refresh();
+      }
+    }
+  } else if (this.enable_secondary == ydn.crm.sugarcrm.ui.record.Record.EnableSecondary.DISABLED ||
+      (this.enable_secondary == ydn.crm.sugarcrm.ui.record.Record.EnableSecondary.ENABLED &&
+      !this.isActive())) {
+    if (this.secondary_panel) {
+      this.removeChild(this.secondary_panel, true);
+      this.secondary_panel.dispose();
+      this.secondary_panel = null;
+    }
+  }
+
+};
+
+
+/**
  * @return {ydn.crm.sugarcrm.ui.record.Body}
  * @protected
  */
@@ -247,8 +292,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.createDom = function() {
   ele_header.appendChild(save_btn);
   this.head_menu.render(ele_header);
 
-  this.addChild(this.body_panel, true);
-  this.addChild(this.secondary_panel, true);
+  this.validateSecondaryPanel_();
 
   var footer = dom.createDom('div', ydn.crm.sugarcrm.ui.record.FooterRenderer.CSS_CLASS);
   root.appendChild(footer);
@@ -267,14 +311,13 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.enterDocument = function() {
    */
   var model = this.getModel();
 
-  // Note: we do not listen events on element of children of these component.
-  hd.listen(model, 'click', this.handleModuleChanged, false);
   var footer_ele = this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.record.FooterRenderer.CSS_CLASS);
   var menu_ele = this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD +
       ' .' + ydn.ui.FlyoutMenu.CSS_CLASS);
   hd.listen(model, ydn.crm.sugarcrm.model.events.Type.MODULE_CHANGE, this.handleModuleChanged);
   hd.listen(model, ydn.crm.sugarcrm.model.events.Type.RECORD_CHANGE, this.handleRecordChanged);
   hd.listen(model, ydn.crm.sugarcrm.model.events.Type.RECORD_UPDATE, this.handleRecordUpdated);
+  // Note: we do not listen events on element of children of these component.
   hd.listen(this.getContentElement(), goog.events.EventType.CLICK, this.handleContentClick, false);
   hd.listen(this, [ydn.crm.sugarcrm.ui.events.Type.CHANGE], this.handleInputChanged);
   hd.listen(menu_ele, 'click', this.handleHeaderMenuClick);
@@ -686,10 +729,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.getEditMode = function() {
  * @param {Event} e
  */
 ydn.crm.sugarcrm.ui.record.Record.prototype.handleContentClick = function(e) {
-  if (e.target.classList.contains(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE)) {
-    var group = this.body_panel.getGroupByFieldValueElement(/** @type {Element} */ (e.target));
-
-  }
+  this.setActive(true);
 };
 
 
@@ -758,7 +798,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.handleModuleChanged = function(e) {
   this.removeChild(this.body_panel, true);
   this.body_panel.dispose();
   this.body_panel = this.createBodyPanel();
-  this.addChildAt(this.body_panel, 1, true);
+  this.addChildAt(this.body_panel, 0, true);
   this.reset();
 };
 
@@ -830,6 +870,7 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.reset = function() {
   } else {
     root.className = this.getCssClass() + ' ' + model.getModuleName();
   }
+  this.validateSecondaryPanel_();
   this.postReset();
 };
 
@@ -859,6 +900,34 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.refresh = function() {
   this.refreshHeader();
   this.footer_panel.reset(this);
   this.body_panel.refresh();
+  if (this.secondary_panel) {
+    this.secondary_panel.refresh();
+  }
+};
+
+
+/**
+ * @return {boolean}
+ */
+ydn.crm.sugarcrm.ui.record.Record.prototype.isActive = function() {
+  return this.getElement().classList.contains(ydn.crm.ui.CSS_CLASS_ACTIVE);
+};
+
+
+/**
+ * Set active state. An active panel expand secondary, if it is enabled.
+ * @param {boolean} val
+ */
+ydn.crm.sugarcrm.ui.record.Record.prototype.setActive = function(val) {
+  if (val == this.isActive()) {
+    return;
+  }
+  if (val) {
+    this.getElement().classList.add(ydn.crm.ui.CSS_CLASS_ACTIVE);
+  } else {
+    this.getElement().classList.remove(ydn.crm.ui.CSS_CLASS_ACTIVE);
+  }
+  this.validateSecondaryPanel_();
 };
 
 
@@ -1158,3 +1227,11 @@ ydn.crm.sugarcrm.ui.record.Record.prototype.fillByMetaContact = function(meta) {
 };
 
 
+/**
+ * @enum {string}
+ */
+ydn.crm.sugarcrm.ui.record.Record.EnableSecondary = {
+  ALWAYS: 'a',
+  ENABLED: 'e',
+  DISABLED: 'd'
+};
