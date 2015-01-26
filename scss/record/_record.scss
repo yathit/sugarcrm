@@ -23,6 +23,10 @@
   }
 }
 
+.secondary:not(:hover) .record-panel:not(.active) .content {
+  display: none;
+}
+
 #field-table {
   td {
     text-align: center;

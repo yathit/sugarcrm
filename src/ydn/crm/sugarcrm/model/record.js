@@ -548,13 +548,36 @@ ydn.crm.sugarcrm.model.Record.prototype.export2GData = function() {
 
 
 /**
- * List related record.
+ * List related records.
+ * @param {number=} opt_top number of record to take from each module.
+ * default to 3.
+ * @param {number=} opt_limit limit total number of result. default to 5.
  * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ * @see #listEmbedded
  */
-ydn.crm.sugarcrm.model.Record.prototype.listRelated = function() {
+ydn.crm.sugarcrm.model.Record.prototype.listRelated = function(opt_top, opt_limit) {
   if (this.isNew()) {
     return goog.async.Deferred.succeed([]);
   }
-  return this.getChannel().send(ydn.crm.Ch.SReq.QUERY_RELATED, this.record.getData());
+  var data = {
+    'record': this.record.getData(),
+    'module': ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
+    'top': opt_top || 3,
+    'limit': opt_limit || 5
+  };
+  return this.getChannel().send(ydn.crm.Ch.SReq.QUERY_RELATED, data);
+};
+
+
+/**
+ * List embeded records.
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ * @see #listRelated
+ */
+ydn.crm.sugarcrm.model.Record.prototype.listEmbedded = function() {
+  if (this.isNew()) {
+    return goog.async.Deferred.succeed([]);
+  }
+  return this.getChannel().send(ydn.crm.Ch.SReq.QUERY_EMBEDDED, this.record.getData());
 };
 

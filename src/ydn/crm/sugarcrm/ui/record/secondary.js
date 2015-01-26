@@ -96,6 +96,15 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.attachChild = function(r) {
  * Reset
  */
 ydn.crm.sugarcrm.ui.record.Secondary.prototype.reset = function() {
+  this.disposeChildren();
+};
+
+
+/**
+ * Remove all children and dispose them.
+ * @protected
+ */
+ydn.crm.sugarcrm.ui.record.Secondary.prototype.disposeChildren = function() {
   while (this.hasChildren()) {
     var child = this.getChildAt(0);
     this.removeChild(child, true);
@@ -121,7 +130,8 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.refresh = function() {
       return;
     }
     root.setAttribute('data-id', model.getId());
-    model.listRelated().addCallbacks(function(arr) {
+    this.disposeChildren();
+    model.listEmbedded().addCallbacks(function(arr) {
       /**
        * @type {ydn.crm.sugarcrm.model.Record}
        */
