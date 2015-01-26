@@ -203,14 +203,6 @@ ydn.crm.sugarcrm.model.Record.prototype.getModuleInfo = function() {
 
 
 /**
- * @return {boolean} return true if the module is a primary module.
- */
-ydn.crm.sugarcrm.model.Record.prototype.isPrimary = function() {
-  return ydn.crm.sugarcrm.PRIMARY_MODULES.indexOf(this.getModuleName()) >= 0;
-};
-
-
-/**
  * @return {boolean} return true if the module represent a people.
  */
 ydn.crm.sugarcrm.model.Record.prototype.isPeople = function() {
@@ -553,3 +545,16 @@ ydn.crm.sugarcrm.model.Record.prototype.export2GData = function() {
   }
   return this.parent.export2GData(this.record);
 };
+
+
+/**
+ * List related record.
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ */
+ydn.crm.sugarcrm.model.Record.prototype.listRelated = function() {
+  if (this.isNew()) {
+    return goog.async.Deferred.succeed([]);
+  }
+  return this.getChannel().send(ydn.crm.Ch.SReq.QUERY_RELATED, this.record.getData());
+};
+

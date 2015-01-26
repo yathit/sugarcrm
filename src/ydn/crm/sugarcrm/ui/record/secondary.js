@@ -14,7 +14,7 @@
 
 
 /**
- * @fileoverview Secondary record panel show records which is link to
+ * @fileoverview Secondary record panel show records which is related to
  * given parent record.
  *
  *
@@ -32,7 +32,7 @@ goog.require('ydn.db.KeyRange');
  * @param {ydn.crm.sugarcrm.model.Record} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
- *  @struct
+ * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
@@ -41,6 +41,12 @@ ydn.crm.sugarcrm.ui.record.Secondary = function(model, opt_dom) {
   this.setModel(model);
 };
 goog.inherits(ydn.crm.sugarcrm.ui.record.Secondary, goog.ui.Component);
+
+
+/**
+ * @define {boolean} debug flag.
+ */
+ydn.crm.sugarcrm.ui.record.Secondary.DEBUG = false;
 
 
 /**
@@ -74,21 +80,6 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.createDom = function() {
 
 
 /**
- * @inheritDoc
- */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
-  var model = this.getModel();
-  if (model.isPrimary()) {
-    var hd = this.getHandler();
-    hd.listen(model, ydn.crm.sugarcrm.model.events.Type.MODULE_CHANGE, this.handleChanged);
-    hd.listen(model, ydn.crm.sugarcrm.model.events.Type.RECORD_CHANGE, this.handleChanged);
-    this.handleChanged(null);
-  }
-};
-
-
-/**
  * Attach child to the panel.
  * @param {!ydn.crm.sugarcrm.Record} r
  */
@@ -101,44 +92,38 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.attachChild = function(r) {
 
 
 /**
- * @protected
- * @param {*} e
+ * Reset
  */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.handleChanged = function(e) {
+ydn.crm.sugarcrm.ui.record.Secondary.prototype.reset = function() {
   while (this.hasChildren()) {
     var child = this.getChildAt(0);
     this.removeChild(child, true);
     child.dispose();
   }
+};
+
+
+/**
+ * Refresh UI.
+ */
+ydn.crm.sugarcrm.ui.record.Secondary.prototype.refresh = function() {
+
   /**
    * @type {ydn.crm.sugarcrm.model.Record}
    */
   var model = this.getModel();
+
   if (!model.isNew()) {
-    var sugar = model.getSugar();
-    var req = ydn.crm.Ch.SReq.QUERY;
-    var query = [{
-      'store': ydn.crm.sugarcrm.ModuleName.NOTES,
-      'index': 'parent',
-      'reverse': true,
-      'keyRange': ydn.db.KeyRange.starts([model.getModuleName(), model.getId()])
-    }];
-    sugar.send(req, query).addCallbacks(function(x) {
-      var arr = /** @type {Array.<CrmApp.QueryResult>} */ (x);
-      for (var i = 0; i < arr.length; i++) {
-        /**
-         * @type {CrmApp.QueryResult}
-         */
-        var q = arr[i];
-        if (q.result && q.result.length > 0) {
-          // window.console.log(q);
-          var obj = /** @type {SugarCrm.Record} */ (q.result[0]);
-          var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), ydn.crm.sugarcrm.ModuleName.NOTES, obj);
-          this.attachChild(r);
-        }
-      }
+    var root = this.getElement();
+    var data_id = root.getAttribute('data-id');
+    if (data_id == model.getId()) {
+      return;
+    }
+    root.setAttribute('data-id', model.getId());
+    model.listRelated().addCallbacks(function(x) {
+      window.console.log(x);
     }, function(e) {
-      throw e;
+      window.console.error(e);
     }, this);
   }
 };

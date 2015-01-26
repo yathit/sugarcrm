@@ -150,6 +150,8 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
       goog.style.setElementShown(panel.getElement(), false);
     }
     return goog.async.Deferred.fail(null);
+  } else {
+    goog.style.setElementShown(link_panel, false);
   }
   if (panel) {
     var model = panel.getModel();
