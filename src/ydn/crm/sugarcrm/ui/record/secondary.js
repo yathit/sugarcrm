@@ -121,8 +121,16 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.refresh = function() {
       return;
     }
     root.setAttribute('data-id', model.getId());
-    model.listRelated().addCallbacks(function(x) {
-      window.console.log(x);
+    model.listRelated().addCallbacks(function(arr) {
+      /**
+       * @type {ydn.crm.sugarcrm.model.Record}
+       */
+      var model = this.getModel();
+      for (var i = 0; i < arr.length; i++) {
+        var r = /** @type {!SugarCrm.Record} */(arr[i]);
+        var mn = /** @type {ydn.crm.sugarcrm.ModuleName} */ (r._module);
+        this.attachChild(new ydn.crm.sugarcrm.Record(model.getDomain(), mn, r));
+      }
     }, function(e) {
       window.console.error(e);
     }, this);
