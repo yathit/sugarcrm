@@ -6,24 +6,24 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.AddressGroup');
-goog.require('ydn.crm.sugarcrm.model.BaseGroup');
+goog.provide('ydn.crm.su.model.AddressGroup');
+goog.require('ydn.crm.su.model.BaseGroup');
 
 
 
 /**
  * Group model for 'address' group fields.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @param {string} group_name group name, should be 'alt_address', 'primary_address'
  * or 'address'.
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.BaseGroup}
+ * @extends {ydn.crm.su.model.BaseGroup}
  * @struct
  */
-ydn.crm.sugarcrm.model.AddressGroup = function(parent, group_name) {
+ydn.crm.su.model.AddressGroup = function(parent, group_name) {
   goog.base(this, parent, group_name);
 };
-goog.inherits(ydn.crm.sugarcrm.model.AddressGroup, ydn.crm.sugarcrm.model.BaseGroup);
+goog.inherits(ydn.crm.su.model.AddressGroup, ydn.crm.su.model.BaseGroup);
 
 
 /**
@@ -31,7 +31,7 @@ goog.inherits(ydn.crm.sugarcrm.model.AddressGroup, ydn.crm.sugarcrm.model.BaseGr
  * @param {string} fn address field name, such as 'city', 'country', etc.
  * @return {string}
  */
-ydn.crm.sugarcrm.model.AddressGroup.prototype.getValueByAddressField = function(fn) {
+ydn.crm.su.model.AddressGroup.prototype.getValueByAddressField = function(fn) {
   var field_name = this.getGroupName() + '_' + fn;
   return this.module.valueAsString(field_name);
 };
@@ -47,7 +47,7 @@ ydn.crm.sugarcrm.model.AddressGroup.prototype.getValueByAddressField = function(
  * @param {?string} street_2
  * @return {string}
  */
-ydn.crm.sugarcrm.model.AddressGroup.makeGroupValue = function(country, city, state,
+ydn.crm.su.model.AddressGroup.makeGroupValue = function(country, city, state,
     postalcode, street, street_2) {
 
 
@@ -84,7 +84,7 @@ ydn.crm.sugarcrm.model.AddressGroup.makeGroupValue = function(country, city, sta
  * @return {string}
  * @override
  */
-ydn.crm.sugarcrm.model.AddressGroup.prototype.getGroupValue = function() {
+ydn.crm.su.model.AddressGroup.prototype.getGroupValue = function() {
 
   // A typical SugarCRM address:
   /*
@@ -113,7 +113,7 @@ ydn.crm.sugarcrm.model.AddressGroup.prototype.getGroupValue = function() {
   var street = this.getValueByAddressField('street') || '';
   var street_2 = this.getValueByAddressField('street_2') || '';
 
-  return ydn.crm.sugarcrm.model.AddressGroup.makeGroupValue(country, city, state,
+  return ydn.crm.su.model.AddressGroup.makeGroupValue(country, city, state,
       code, street, street_2);
 };
 
@@ -121,10 +121,10 @@ ydn.crm.sugarcrm.model.AddressGroup.prototype.getGroupValue = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AddressGroup.prototype.getAdditionalOptions = function() {
+ydn.crm.su.model.AddressGroup.prototype.getAdditionalOptions = function() {
   return {
     label: 'Edit',
-    name: ydn.crm.sugarcrm.model.Field.Command.EDIT,
+    name: ydn.crm.su.model.Field.Command.EDIT,
     type: 'text'
   };
 };

@@ -151,7 +151,7 @@ ydn.crm.ui.SugarSetup.prototype.doLogin_ = function(e) {
  */
 ydn.crm.ui.SugarSetup.prototype.setModel = function(m) {
   goog.base(this, 'setModel', m);
-  var model = /** @type {ydn.crm.sugarcrm.model.Sugar} */ (m);
+  var model = /** @type {ydn.crm.su.model.Sugar} */ (m);
   var root = this.getElement();
   var input_domain = root.querySelector('input[name=domain]');
   if (model.isFixDomain()) {

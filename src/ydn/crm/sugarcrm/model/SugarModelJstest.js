@@ -28,8 +28,8 @@ SugarModelJsTest.prototype.test_bean_email = function() {
     "ydn$emails": ["kyaw@game.com", "kyaw@game.com"], "ydn$phones": [], "_module": "Leads"
   };
   var sugar = ydn.crm.test.createGDataSugar();
-  var record = new ydn.crm.sugarcrm.Record(sugar.getDomain(), data._module, data);
-  var model = new ydn.crm.sugarcrm.model.Record(sugar, record);
+  var record = new ydn.crm.su.Record(sugar.getDomain(), data._module, data);
+  var model = new ydn.crm.su.model.Record(sugar, record);
   var email_group = model.getGroupModel('email');
   assertObject('has email group', email_group);
   var fields = email_group.listFields();

@@ -6,28 +6,28 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.AssignUserGroup');
-goog.require('ydn.crm.sugarcrm.model.BaseGroup');
+goog.provide('ydn.crm.su.model.AssignUserGroup');
+goog.require('ydn.crm.su.model.BaseGroup');
 
 
 
 /**
  * Group model for assigned_user_name fields.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.BaseGroup}
+ * @extends {ydn.crm.su.model.BaseGroup}
  * @struct
  */
-ydn.crm.sugarcrm.model.AssignUserGroup = function(parent) {
+ydn.crm.su.model.AssignUserGroup = function(parent) {
   goog.base(this, parent, 'assigned_user_name');
 };
-goog.inherits(ydn.crm.sugarcrm.model.AssignUserGroup, ydn.crm.sugarcrm.model.BaseGroup);
+goog.inherits(ydn.crm.su.model.AssignUserGroup, ydn.crm.su.model.BaseGroup);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AssignUserGroup.prototype.getGroupLabel = function() {
+ydn.crm.su.model.AssignUserGroup.prototype.getGroupLabel = function() {
   return 'Assign user';
 };
 
@@ -35,7 +35,7 @@ ydn.crm.sugarcrm.model.AssignUserGroup.prototype.getGroupLabel = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AssignUserGroup.prototype.hasGroupValue = function() {
+ydn.crm.su.model.AssignUserGroup.prototype.hasGroupValue = function() {
   return this.hasFieldValue('assigned_user_id');
 };
 
@@ -43,7 +43,7 @@ ydn.crm.sugarcrm.model.AssignUserGroup.prototype.hasGroupValue = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AssignUserGroup.prototype.getGroupValue = function() {
+ydn.crm.su.model.AssignUserGroup.prototype.getGroupValue = function() {
   var name = this.getStringValue('assigned_user_name');
   if (name) {
     return name;

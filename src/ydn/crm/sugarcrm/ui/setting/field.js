@@ -19,26 +19,26 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.setting.Field');
-goog.provide('ydn.crm.sugarcrm.ui.setting.Group');
-goog.provide('ydn.crm.sugarcrm.ui.setting.Setting');
-goog.require('ydn.crm.sugarcrm');
+goog.provide('ydn.crm.su.ui.setting.Field');
+goog.provide('ydn.crm.su.ui.setting.Group');
+goog.provide('ydn.crm.su.ui.setting.Setting');
+goog.require('ydn.crm.su');
 goog.require('ydn.crm.ui.UserSetting');
 
 
 
 /**
  * SugarCRM field setting model.
- * @see ydn.crm.sugarcrm.ui.setting.create
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @see ydn.crm.su.ui.setting.create
+ * @param {ydn.crm.su.ModuleName} m_name
  * @param {string} name module field name.
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.setting.Setting = function(m_name, name) {
+ydn.crm.su.ui.setting.Setting = function(m_name, name) {
   /**
    * @final
-   * @type {ydn.crm.sugarcrm.ModuleName}
+   * @type {ydn.crm.su.ModuleName}
    */
   this.module = m_name;
   /**
@@ -52,7 +52,7 @@ ydn.crm.sugarcrm.ui.setting.Setting = function(m_name, name) {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.setting.Setting.prototype.getLabel = function() {
+ydn.crm.su.ui.setting.Setting.prototype.getLabel = function() {
   return this.name.toUpperCase();
 };
 
@@ -60,7 +60,7 @@ ydn.crm.sugarcrm.ui.setting.Setting.prototype.getLabel = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.setting.Setting.prototype.getName = function() {
+ydn.crm.su.ui.setting.Setting.prototype.getName = function() {
   return this.name;
 };
 
@@ -70,7 +70,7 @@ ydn.crm.sugarcrm.ui.setting.Setting.prototype.getName = function() {
  * @return {?CrmApp.SugarCrmSettingUnit}
  * @protected
  */
-ydn.crm.sugarcrm.ui.setting.Setting.prototype.getUserSetting = goog.abstractMethod;
+ydn.crm.su.ui.setting.Setting.prototype.getUserSetting = goog.abstractMethod;
 
 
 /**
@@ -78,19 +78,19 @@ ydn.crm.sugarcrm.ui.setting.Setting.prototype.getUserSetting = goog.abstractMeth
  * @return {CrmApp.SugarCrmSettingUnit}
  * @protected
  */
-ydn.crm.sugarcrm.ui.setting.Setting.prototype.createUserSetting = goog.abstractMethod;
+ydn.crm.su.ui.setting.Setting.prototype.createUserSetting = goog.abstractMethod;
 
 
 /**
  * @return {boolean}
  */
-ydn.crm.sugarcrm.ui.setting.Setting.prototype.getNormallyHide = goog.abstractMethod;
+ydn.crm.su.ui.setting.Setting.prototype.getNormallyHide = goog.abstractMethod;
 
 
 /**
  * @return {boolean}
  */
-ydn.crm.sugarcrm.ui.setting.Setting.prototype.getNormallyHideDefault = goog.abstractMethod;
+ydn.crm.su.ui.setting.Setting.prototype.getNormallyHideDefault = goog.abstractMethod;
 
 
 /**
@@ -99,7 +99,7 @@ ydn.crm.sugarcrm.ui.setting.Setting.prototype.getNormallyHideDefault = goog.abst
  * @return {!goog.async.Deferred}
  * @final
  */
-ydn.crm.sugarcrm.ui.setting.Setting.prototype.setNormallyHide = function(val) {
+ydn.crm.su.ui.setting.Setting.prototype.setNormallyHide = function(val) {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var setting = this.getUserSetting();
   var default_val = this.getNormallyHideDefault();
@@ -122,14 +122,14 @@ ydn.crm.sugarcrm.ui.setting.Setting.prototype.setNormallyHide = function(val) {
 
 /**
  * SugarCRM field setting model.
- * @see ydn.crm.sugarcrm.ui.setting.create
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @see ydn.crm.su.ui.setting.create
+ * @param {ydn.crm.su.ModuleName} m_name
  * @param {SugarCrm.ModuleField} field module field
  * @constructor
- * @extends {ydn.crm.sugarcrm.ui.setting.Setting}
+ * @extends {ydn.crm.su.ui.setting.Setting}
  * @struct
  */
-ydn.crm.sugarcrm.ui.setting.Field = function(m_name, field) {
+ydn.crm.su.ui.setting.Field = function(m_name, field) {
   goog.base(this, m_name, field.name);
   /**
    * @final
@@ -137,13 +137,13 @@ ydn.crm.sugarcrm.ui.setting.Field = function(m_name, field) {
    */
   this.field = field;
 };
-goog.inherits(ydn.crm.sugarcrm.ui.setting.Field, ydn.crm.sugarcrm.ui.setting.Setting);
+goog.inherits(ydn.crm.su.ui.setting.Field, ydn.crm.su.ui.setting.Setting);
 
 
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.setting.Field.prototype.getLabel = function() {
+ydn.crm.su.ui.setting.Field.prototype.getLabel = function() {
   return this.field.label || '';
 };
 
@@ -151,7 +151,7 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getLabel = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.setting.Field.prototype.getName = function() {
+ydn.crm.su.ui.setting.Field.prototype.getName = function() {
   return this.field.name || '';
 };
 
@@ -159,7 +159,7 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getName = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.setting.Field.prototype.getUserSetting = function() {
+ydn.crm.su.ui.setting.Field.prototype.getUserSetting = function() {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var all_setting = user_setting.getSugarCrmSetting();
   var module_setting = all_setting.Module[this.module];
@@ -172,7 +172,7 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getUserSetting = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.setting.Field.prototype.createUserSetting = function() {
+ydn.crm.su.ui.setting.Field.prototype.createUserSetting = function() {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var all_setting = user_setting.getSugarCrmSetting();
   var module_setting = all_setting.Module[this.module];
@@ -186,7 +186,7 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.createUserSetting = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
+ydn.crm.su.ui.setting.Field.prototype.getNormallyHide = function() {
   var setting = this.getUserSetting();
   if (setting && goog.isDef(setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE])) {
     return !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE];
@@ -199,7 +199,7 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
         }
       }
 
-      if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
+      if (this.module == ydn.crm.su.ModuleName.TASKS) {
         if (['date_due', 'date_start'].indexOf(this.field.group) >= 0) {
           if (['date_due_flag', 'date_start_flag'].indexOf(this.name) >= 0) {
             return true;
@@ -219,20 +219,20 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
 
       return false;
     } else {
-      if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS) {
+      if (this.module == ydn.crm.su.ModuleName.ACCOUNTS) {
         return ['name', 'website'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.sugarcrm.ModuleName.CALLS) {
+      } else if (this.module == ydn.crm.su.ModuleName.CALLS) {
         return ['name', 'date_start', 'date_end', 'status', 'description'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.sugarcrm.ModuleName.CASES) {
+      } else if (this.module == ydn.crm.su.ModuleName.CASES) {
         return ['name', 'description', 'priority', 'status', 'type'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.sugarcrm.ModuleName.NOTES) {
+      } else if (this.module == ydn.crm.su.ModuleName.NOTES) {
         return ['name', 'description'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
+      } else if (this.module == ydn.crm.su.ModuleName.MEETINGS) {
         return ['name', 'date_start', 'date_end', 'status', 'priority', 'description'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
+      } else if (this.module == ydn.crm.su.ModuleName.OPPORTUNITIES) {
         return ['name', 'amount', 'date_closed', 'sales_stage', 'account_name',
           'description', 'lead_source'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.sugarcrm.ModuleName.TASKS) {
+      } else if (this.module == ydn.crm.su.ModuleName.TASKS) {
         return ['name', 'status', 'priority', 'description'].indexOf(this.name) == -1;
       } else {
         return true;
@@ -245,22 +245,22 @@ ydn.crm.sugarcrm.ui.setting.Field.prototype.getNormallyHide = function() {
 
 /**
  * SugarCRM group setting model.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  * @param {string} name module field name
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.setting.Setting}
+ * @extends {ydn.crm.su.ui.setting.Setting}
  */
-ydn.crm.sugarcrm.ui.setting.Group = function(m_name, name) {
+ydn.crm.su.ui.setting.Group = function(m_name, name) {
   goog.base(this, m_name, name);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.setting.Group, ydn.crm.sugarcrm.ui.setting.Setting);
+goog.inherits(ydn.crm.su.ui.setting.Group, ydn.crm.su.ui.setting.Setting);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.setting.Group.prototype.getLabel = function() {
+ydn.crm.su.ui.setting.Group.prototype.getLabel = function() {
   return goog.base(this, 'getLabel').toUpperCase();
 };
 
@@ -268,7 +268,7 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getLabel = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.setting.Group.prototype.getUserSetting = function() {
+ydn.crm.su.ui.setting.Group.prototype.getUserSetting = function() {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var all_setting = user_setting.getSugarCrmSetting();
   var module_setting = all_setting.Module[this.module];
@@ -281,7 +281,7 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getUserSetting = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.setting.Group.prototype.createUserSetting = function() {
+ydn.crm.su.ui.setting.Group.prototype.createUserSetting = function() {
   var user_setting = ydn.crm.ui.UserSetting.getInstance();
   var all_setting = user_setting.getSugarCrmSetting();
   var module_setting = all_setting.Module[this.module];
@@ -295,7 +295,7 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.createUserSetting = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHide = function() {
+ydn.crm.su.ui.setting.Group.prototype.getNormallyHide = function() {
   var setting = this.getUserSetting();
   return setting ?
       !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE] :
@@ -306,14 +306,14 @@ ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHide = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.setting.Group.prototype.getNormallyHideDefault = function() {
+ydn.crm.su.ui.setting.Group.prototype.getNormallyHideDefault = function() {
   var default_hide = ['created_by_name', 'modified_by_name', 'portal', 'assistant'];
   if (default_hide.indexOf(this.name) >= 0) {
     return true;
-  } else if (this.module == ydn.crm.sugarcrm.ModuleName.ACCOUNTS &&
+  } else if (this.module == ydn.crm.su.ModuleName.ACCOUNTS &&
       ['parent'].indexOf(this.name) >= 0) {
     return true;
-  } else if (this.module == ydn.crm.sugarcrm.ModuleName.NOTES &&
+  } else if (this.module == ydn.crm.su.ModuleName.NOTES &&
       ['contact', 'account'].indexOf(this.name) >= 0) {
     return true;
   } else {

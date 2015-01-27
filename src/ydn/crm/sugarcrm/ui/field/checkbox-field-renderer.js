@@ -3,8 +3,8 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer');
-goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
+goog.provide('ydn.crm.su.ui.field.CheckboxFieldRenderer');
+goog.require('ydn.crm.su.ui.field.FieldRenderer');
 
 
 
@@ -12,29 +12,29 @@ goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
  * Create a new module record field.
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.field.FieldRenderer}
+ * @extends {ydn.crm.su.ui.field.FieldRenderer}
  */
-ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer = function() {
+ydn.crm.su.ui.field.CheckboxFieldRenderer = function() {
   goog.base(this);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer, ydn.crm.sugarcrm.ui.field.FieldRenderer);
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer);
+goog.inherits(ydn.crm.su.ui.field.CheckboxFieldRenderer, ydn.crm.su.ui.field.FieldRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.field.CheckboxFieldRenderer);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.DEBUG = false;
+ydn.crm.su.ui.field.CheckboxFieldRenderer.DEBUG = false;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.createDom = function(field) {
+ydn.crm.su.ui.field.CheckboxFieldRenderer.prototype.createDom = function(field) {
   var el = goog.base(this, 'createDom', field);
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Field}
+   * @type {ydn.crm.su.model.Field}
    */
   var model = field.getModel();
   var dom = field.getDomHelper();
@@ -51,7 +51,7 @@ ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.createDom = function(f
   if (calculated) {
     ele_value.setAttribute('disabled', 'true');
   }
-  ele_value.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  ele_value.classList.add(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   // ele_value.setAttribute('disabled', '1');
 
   el.appendChild(ele_value);
@@ -63,7 +63,7 @@ ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.createDom = function(f
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.refresh = function(ctrl) {
+ydn.crm.su.ui.field.CheckboxFieldRenderer.prototype.refresh = function(ctrl) {
   var ele_field = ctrl.getElement();
   var model = ctrl.getModel();
   goog.style.setElementShown(ele_field, !!model);
@@ -74,7 +74,7 @@ ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.refresh = function(ctr
   var is_def = goog.isString(value) ? !goog.string.isEmpty(value) :
       goog.isDefAndNotNull(value);
   // console.log(model.getFieldName() + ' ' + value);
-  var ele_value = ele_field.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  var ele_value = ele_field.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
 
   if (model.getType() == 'bool' && !goog.isBoolean(value)) {
     if (value == '1' || value == 'on' || value == 'true') {
@@ -85,14 +85,14 @@ ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.refresh = function(ctr
   }
   ele_value.value = value;
 
-  if (ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.DEBUG) {
+  if (ydn.crm.su.ui.field.CheckboxFieldRenderer.DEBUG) {
     window.console.log(model.getFieldName(), model.getType(), value);
   }
 
   if (is_def) {
-    ele_field.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    ele_field.classList.remove(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   } else {
-    ele_field.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    ele_field.classList.add(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   }
 
   if (!model.getGroupName() && ctrl.getSetting().getNormallyHide()) {
@@ -103,12 +103,12 @@ ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.refresh = function(ctr
 
 /**
  * Collect data.
- * @param {ydn.crm.sugarcrm.ui.field.Field} ctrl
+ * @param {ydn.crm.su.ui.field.Field} ctrl
  * @return {*} return value of the element.
  */
-ydn.crm.sugarcrm.ui.field.CheckboxFieldRenderer.prototype.collectValue = function(ctrl) {
+ydn.crm.su.ui.field.CheckboxFieldRenderer.prototype.collectValue = function(ctrl) {
   var ele = ctrl.getContentElement();
-  var ele_value = ele.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  var ele_value = ele.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   if (ele_value.tagName == goog.dom.TagName.LABEL ||
       ele_value.tagName == goog.dom.TagName.SPAN || ele_value.tagName == goog.dom.TagName.DIV) {
     return ele_value.textContent;

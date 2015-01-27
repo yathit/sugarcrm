@@ -5,7 +5,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.ListRenderer');
+goog.provide('ydn.crm.su.ui.group.ListRenderer');
 goog.require('goog.ui.ControlRenderer');
 
 
@@ -14,47 +14,47 @@ goog.require('goog.ui.ControlRenderer');
  * Panel renderer for listed items.
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.GroupRenderer}
+ * @extends {ydn.crm.su.ui.group.GroupRenderer}
  */
-ydn.crm.sugarcrm.ui.group.ListRenderer = function() {
+ydn.crm.su.ui.group.ListRenderer = function() {
   goog.base(this);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.ListRenderer, ydn.crm.sugarcrm.ui.group.GroupRenderer);
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.group.ListRenderer);
+goog.inherits(ydn.crm.su.ui.group.ListRenderer, ydn.crm.su.ui.group.GroupRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.group.ListRenderer);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.group.ListRenderer.DEBUG = false;
+ydn.crm.su.ui.group.ListRenderer.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.group.ListRenderer.CSS_CLASS = 'list';
+ydn.crm.su.ui.group.ListRenderer.CSS_CLASS = 'list';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.group.ListRenderer.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.group.ListRenderer.CSS_CLASS;
+ydn.crm.su.ui.group.ListRenderer.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.group.ListRenderer.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.ListRenderer.prototype.createDom = function(x) {
+ydn.crm.su.ui.group.ListRenderer.prototype.createDom = function(x) {
   var dom = x.getDomHelper();
   var root = dom.createDom('div', this.getCssClass());
-  var ctrl = /** @type {ydn.crm.sugarcrm.ui.group.List} */ (x);
+  var ctrl = /** @type {ydn.crm.su.ui.group.List} */ (x);
   /**
-   * @type {ydn.crm.sugarcrm.model.Group}
+   * @type {ydn.crm.su.model.Group}
    */
   var model = ctrl.getModel();
   root.setAttribute('name', model.getGroupName());
-  root.classList.add(ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS);
+  root.classList.add(ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS);
   var head = dom.createDom('div');
   head.setAttribute('title', model.getGroupLabel());
   root.appendChild(head);
@@ -69,7 +69,7 @@ ydn.crm.sugarcrm.ui.group.ListRenderer.prototype.createDom = function(x) {
   for (var i = 0; i < fields.length; i++) {
     var name = fields[i];
     var field_model = model.createOrGetFieldModel(name);
-    var field = new ydn.crm.sugarcrm.ui.field.Field(field_model, null, dom);
+    var field = new ydn.crm.su.ui.field.Field(field_model, null, dom);
     ctrl.addChild(field, true);
   }
 

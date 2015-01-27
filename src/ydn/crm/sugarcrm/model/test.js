@@ -3,15 +3,15 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.test');
-goog.require('ydn.crm.sugarcrm.model.Record');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.provide('ydn.crm.su.model.test');
+goog.require('ydn.crm.su.model.Record');
+goog.require('ydn.crm.su.model.Sugar');
 
 
 /**
  * @type {SugarCrm.About}
  */
-ydn.crm.sugarcrm.model.test.sugarCrmAbout = /** @type {SugarCrm.About} */ (/** @type {Object} */ ({
+ydn.crm.su.model.test.sugarCrmAbout = /** @type {SugarCrm.About} */ (/** @type {Object} */ ({
   'baseUrl': 'https://kitvvz6401.trial.sugarcrm.com',
   'domain': 'kitvvz6401.trial.sugarcrm.com',
   'userName': 'jane',
@@ -23,7 +23,7 @@ ydn.crm.sugarcrm.model.test.sugarCrmAbout = /** @type {SugarCrm.About} */ (/** @
 /**
  * @type {Array.<SugarCrm.ModuleInfo>}
  */
-ydn.crm.sugarcrm.model.test.sugarCrmModuleInfos = [
+ydn.crm.su.model.test.sugarCrmModuleInfos = [
   {
     'module_name': 'Documents',
     'table_name': 'documents',
@@ -10232,7 +10232,7 @@ ydn.crm.sugarcrm.model.test.sugarCrmModuleInfos = [
 ];
 
 
-ydn.crm.sugarcrm.model.test.record = {
+ydn.crm.su.model.test.record = {
   'assigned_user_name': 'will',
   'modified_by_name': 'jane',
   'created_by_name': 'admin',
@@ -10367,23 +10367,23 @@ ydn.crm.sugarcrm.model.test.record = {
 };
 
 
-ydn.crm.sugarcrm.model.test.createSugar = function() {
-  var sugar = new ydn.crm.sugarcrm.model.Sugar(ydn.crm.sugarcrm.model.test.sugarCrmAbout,
-      ydn.crm.sugarcrm.model.test.sugarCrmModuleInfos);
+ydn.crm.su.model.test.createSugar = function() {
+  var sugar = new ydn.crm.su.model.Sugar(ydn.crm.su.model.test.sugarCrmAbout,
+      ydn.crm.su.model.test.sugarCrmModuleInfos);
   return sugar;
 };
 
-ydn.crm.sugarcrm.model.test.channel =
+ydn.crm.su.model.test.channel =
 
 
 /**
  * Create a record.
- * @param {ydn.crm.sugarcrm.model.Sugar=} sugar
- * @return {ydn.crm.sugarcrm.model.Record}
+ * @param {ydn.crm.su.model.Sugar=} sugar
+ * @return {ydn.crm.su.model.Record}
  */
-ydn.crm.sugarcrm.model.test.createRecord = function(sugar) {
-  sugar = sugar || ydn.crm.sugarcrm.model.test.createSugar();
-  var r = new ydn.crm.sugarcrm.Record(sugar.domain,
-      ydn.crm.sugarcrm.ModuleName.CONTACTS, ydn.crm.sugarcrm.model.test.record);
-  return ydn.crm.sugarcrm.model.Record(sugar, r);
+ydn.crm.su.model.test.createRecord = function(sugar) {
+  sugar = sugar || ydn.crm.su.model.test.createSugar();
+  var r = new ydn.crm.su.Record(sugar.domain,
+      ydn.crm.su.ModuleName.CONTACTS, ydn.crm.su.model.test.record);
+  return ydn.crm.su.model.Record(sugar, r);
 };

@@ -7,38 +7,38 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.Array');
-goog.require('ydn.crm.sugarcrm');
-goog.require('ydn.crm.sugarcrm.model.Array');
-goog.require('ydn.crm.sugarcrm.ui.group.Group');
+goog.provide('ydn.crm.su.ui.group.Array');
+goog.require('ydn.crm.su');
+goog.require('ydn.crm.su.model.Array');
+goog.require('ydn.crm.su.ui.group.Group');
 
 
 
 /**
  * Panel for listed items of same type.
- * @param {ydn.crm.sugarcrm.model.Array} model
+ * @param {ydn.crm.su.model.Array} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.Group}
+ * @extends {ydn.crm.su.ui.group.Group}
  */
-ydn.crm.sugarcrm.ui.group.Array = function(model, opt_dom) {
-  ydn.crm.sugarcrm.ui.group.Array.base(this, 'constructor', model, opt_dom);
+ydn.crm.su.ui.group.Array = function(model, opt_dom) {
+  ydn.crm.su.ui.group.Array.base(this, 'constructor', model, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Array, ydn.crm.sugarcrm.ui.group.Group);
+goog.inherits(ydn.crm.su.ui.group.Array, ydn.crm.su.ui.group.Group);
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Array}
+ * @return {ydn.crm.su.model.Array}
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Array.prototype.getModel;
+ydn.crm.su.ui.group.Array.prototype.getModel;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Array.prototype.createFields = function() {
+ydn.crm.su.ui.group.Array.prototype.createFields = function() {
 
 };
 

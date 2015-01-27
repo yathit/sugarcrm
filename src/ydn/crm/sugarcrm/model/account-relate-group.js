@@ -20,28 +20,28 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.AccountRelateGroup');
-goog.require('ydn.crm.sugarcrm.model.RelateGroup');
+goog.provide('ydn.crm.su.model.AccountRelateGroup');
+goog.require('ydn.crm.su.model.RelateGroup');
 
 
 
 /**
  * Relate group model for Account record type.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.RelateGroup}
+ * @extends {ydn.crm.su.model.RelateGroup}
  * @struct
  */
-ydn.crm.sugarcrm.model.AccountRelateGroup = function(parent) {
+ydn.crm.su.model.AccountRelateGroup = function(parent) {
   goog.base(this, parent, 'account');
 };
-goog.inherits(ydn.crm.sugarcrm.model.AccountRelateGroup, ydn.crm.sugarcrm.model.RelateGroup);
+goog.inherits(ydn.crm.su.model.AccountRelateGroup, ydn.crm.su.model.RelateGroup);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getGroupLabel = function() {
+ydn.crm.su.model.AccountRelateGroup.prototype.getGroupLabel = function() {
   return 'Account';
 };
 
@@ -49,7 +49,7 @@ ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getGroupLabel = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getRelateFieldId = function() {
+ydn.crm.su.model.AccountRelateGroup.prototype.getRelateFieldId = function() {
   return 'account_id';
 };
 
@@ -57,7 +57,7 @@ ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getRelateFieldId = function(
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getRelateFieldName = function() {
+ydn.crm.su.model.AccountRelateGroup.prototype.getRelateFieldName = function() {
   return 'account_name';
 };
 
@@ -65,6 +65,6 @@ ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getRelateFieldName = functio
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.AccountRelateGroup.prototype.getRelateModuleName = function() {
-  return ydn.crm.sugarcrm.ModuleName.ACCOUNTS;
+ydn.crm.su.model.AccountRelateGroup.prototype.getRelateModuleName = function() {
+  return ydn.crm.su.ModuleName.ACCOUNTS;
 };

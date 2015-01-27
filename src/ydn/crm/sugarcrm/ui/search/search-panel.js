@@ -3,32 +3,32 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.SearchPanel');
+goog.provide('ydn.crm.su.ui.SearchPanel');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuItem');
 goog.require('goog.ui.Toolbar');
 goog.require('goog.ui.ToolbarSelect');
 goog.require('wgui.TextInput');
-goog.require('ydn.crm.sugarcrm.model.ResultRecord');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
-goog.require('ydn.crm.sugarcrm.ui.record.Record');
+goog.require('ydn.crm.su.model.ResultRecord');
+goog.require('ydn.crm.su.model.Sugar');
+goog.require('ydn.crm.su.ui.record.Record');
 
 
 
 /**
  * Panel to synchronize SugarCRM and GData Contact.
- * @param {ydn.crm.sugarcrm.model.Sugar} model
+ * @param {ydn.crm.su.model.Sugar} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.SearchPanel = function(model, opt_dom) {
+ydn.crm.su.ui.SearchPanel = function(model, opt_dom) {
   goog.base(this, opt_dom);
-  goog.asserts.assertInstanceof(model, ydn.crm.sugarcrm.model.Sugar,
-      'model must be ydn.crm.sugarcrm.model.Sugar instance');
+  goog.asserts.assertInstanceof(model, ydn.crm.su.model.Sugar,
+      'model must be ydn.crm.su.model.Sugar instance');
   this.setModel(model);
   /**
    * @protected
@@ -41,7 +41,7 @@ ydn.crm.sugarcrm.ui.SearchPanel = function(model, opt_dom) {
    */
   this.toolbar = null;
   /**
-   * @type {Array.<ydn.crm.sugarcrm.ui.SearchPanel.SearchTask>}
+   * @type {Array.<ydn.crm.su.ui.SearchPanel.SearchTask>}
    * @private
    */
   this.search_tasks_ = [];
@@ -53,39 +53,39 @@ ydn.crm.sugarcrm.ui.SearchPanel = function(model, opt_dom) {
   this.total_tasks_ = 0;
 
 };
-goog.inherits(ydn.crm.sugarcrm.ui.SearchPanel, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.SearchPanel, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.SearchPanel.DEBUG = false;
+ydn.crm.su.ui.SearchPanel.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Sugar}
+ * @return {ydn.crm.su.model.Sugar}
  * @override
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.getModel;
+ydn.crm.su.ui.SearchPanel.prototype.getModel;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.SearchPanel.CSS_CLASS = 'search-panel';
+ydn.crm.su.ui.SearchPanel.CSS_CLASS = 'search-panel';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.SearchPanel.CSS_CLASS;
+ydn.crm.su.ui.SearchPanel.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.SearchPanel.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.createDom = function() {
+ydn.crm.su.ui.SearchPanel.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var dom = this.dom_;
   var root = this.getElement();
@@ -94,8 +94,8 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.createDom = function() {
   root.appendChild(header);
   this.toolbar = new goog.ui.Toolbar(null, null, dom);
   var record_types = new goog.ui.Menu(dom);
-  for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
-    record_types.addChild(new goog.ui.MenuItem(ydn.crm.sugarcrm.CacheModules[i]), true);
+  for (var i = 0; i < ydn.crm.su.CacheModules.length; i++) {
+    record_types.addChild(new goog.ui.MenuItem(ydn.crm.su.CacheModules[i]), true);
   }
   var tbn = new goog.ui.ToolbarSelect('Module', record_types, null, dom);
   this.toolbar.addChild(tbn, true);
@@ -117,7 +117,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.createDom = function() {
  * Set toolbar options.
  * @param {!Object} options
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.setToolbarOptions = function(options) {
+ydn.crm.su.ui.SearchPanel.prototype.setToolbarOptions = function(options) {
   var show_module = options['module'];
   if (goog.isBoolean(show_module)) {
     this.toolbar.getChildAt(0).setVisible(show_module);
@@ -128,7 +128,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.setToolbarOptions = function(options) 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.enterDocument = function() {
+ydn.crm.su.ui.SearchPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var search_input = /** @type {wgui.TextInput} */ (this.toolbar.getChildAt(1));
   this.getHandler().listen(search_input, goog.ui.Component.EventType.ACTION, this.handleAction, true);
@@ -138,7 +138,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.enterDocument = function() {
 /**
  * @return {?string}
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.getRecordType = function() {
+ydn.crm.su.ui.SearchPanel.prototype.getRecordType = function() {
   var sel = /** @type {goog.ui.ToolbarSelect} */ (this.toolbar.getChildAt(0));
   var item = sel.getSelectedItem();
   return item ? item.getCaption() : null;
@@ -149,13 +149,13 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.getRecordType = function() {
  * Clear results.
  * @private
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.clearResult_ = function() {
+ydn.crm.su.ui.SearchPanel.prototype.clearResult_ = function() {
   for (var i = this.result_panel.getChildCount() - 1; i >= 0; i--) {
-    var child = /** @type {ydn.crm.sugarcrm.ui.record.Record} */ (this.result_panel.getChildAt(i));
+    var child = /** @type {ydn.crm.su.ui.record.Record} */ (this.result_panel.getChildAt(i));
     /**
-     * @type {ydn.crm.sugarcrm.model.ResultRecord}
+     * @type {ydn.crm.su.model.ResultRecord}
      */
-    var model = /** @type {ydn.crm.sugarcrm.model.ResultRecord} */ (child.getModel());
+    var model = /** @type {ydn.crm.su.model.ResultRecord} */ (child.getModel());
     model.clear();
   }
   this.total_tasks_ = 0;
@@ -169,14 +169,14 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.clearResult_ = function() {
  *   taskNo: number
  * }}
  */
-ydn.crm.sugarcrm.ui.SearchPanel.SearchTask;
+ydn.crm.su.ui.SearchPanel.SearchTask;
 
 
 /**
  * @const
  * @type {number}
  */
-ydn.crm.sugarcrm.ui.SearchPanel.MAX_PANELS = 30;
+ydn.crm.su.ui.SearchPanel.MAX_PANELS = 30;
 
 
 /**
@@ -184,8 +184,8 @@ ydn.crm.sugarcrm.ui.SearchPanel.MAX_PANELS = 30;
  * @param {DbFullTextSearchResult} result
  * @private
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.addResult_ = function(result) {
-  if (ydn.crm.sugarcrm.ui.SearchPanel.DEBUG) {
+ydn.crm.su.ui.SearchPanel.prototype.addResult_ = function(result) {
+  if (ydn.crm.su.ui.SearchPanel.DEBUG) {
     goog.global.console.log(result);
   }
   if (!result) {
@@ -193,32 +193,32 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.addResult_ = function(result) {
   }
   var n = this.result_panel.getChildCount();
   for (var i = 0; i < n; i++) {
-    var child = /** @type {ydn.crm.sugarcrm.ui.record.Record} */(
+    var child = /** @type {ydn.crm.su.ui.record.Record} */(
         this.result_panel.getChildAt(i));
-    var model = /** @type {ydn.crm.sugarcrm.model.ResultRecord} */ (child.getModel());
+    var model = /** @type {ydn.crm.su.model.ResultRecord} */ (child.getModel());
     if (model && model.valueAsString('id') == result.primaryKey) {
       return;
     }
   }
   for (var i = 0; i < n; i++) {
-    var child = /** @type {ydn.crm.sugarcrm.ui.record.Record} */ (this.result_panel.getChildAt(i));
-    var model = /** @type {ydn.crm.sugarcrm.model.ResultRecord} */ (child.getModel());
+    var child = /** @type {ydn.crm.su.ui.record.Record} */ (this.result_panel.getChildAt(i));
+    var model = /** @type {ydn.crm.su.model.ResultRecord} */ (child.getModel());
     if (model.isEmpty()) {
       model.setResult(result);
       return;
     }
   }
-  if (n > ydn.crm.sugarcrm.ui.SearchPanel.MAX_PANELS) {
-    var banney = /** @type {ydn.crm.sugarcrm.ui.record.Record} */ (this.result_panel.getChildAt(0));
+  if (n > ydn.crm.su.ui.SearchPanel.MAX_PANELS) {
+    var banney = /** @type {ydn.crm.su.ui.record.Record} */ (this.result_panel.getChildAt(0));
     /**
-     * @type {ydn.crm.sugarcrm.model.ResultRecord}
+     * @type {ydn.crm.su.model.ResultRecord}
      */
-    var model = /** @type {ydn.crm.sugarcrm.model.ResultRecord} */ (banney.getModel());
+    var model = /** @type {ydn.crm.su.model.ResultRecord} */ (banney.getModel());
     model.setResult(result);
   } else {
     // create new result panel.
-    var m = new ydn.crm.sugarcrm.model.ResultRecord(this.getModel(), result);
-    var ch = new ydn.crm.sugarcrm.ui.record.Record(m, this.dom_);
+    var m = new ydn.crm.su.model.ResultRecord(this.getModel(), result);
+    var ch = new ydn.crm.su.ui.record.Record(m, this.dom_);
     this.result_panel.addChild(ch, true);
   }
 
@@ -232,18 +232,18 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.addResult_ = function(result) {
  * @param {string} q
  * @private
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.updateSearchFor_ = function(m_name, index, q) {
-  if (ydn.crm.sugarcrm.ui.SearchPanel.DEBUG) {
+ydn.crm.su.ui.SearchPanel.prototype.updateSearchFor_ = function(m_name, index, q) {
+  if (ydn.crm.su.ui.SearchPanel.DEBUG) {
     window.console.log(m_name, index, q);
   }
 
   this.getModel().listRecords(m_name, index, q, true).addCallbacks(function(arr) {
-    if (ydn.crm.sugarcrm.ui.SearchPanel.DEBUG) {
+    if (ydn.crm.su.ui.SearchPanel.DEBUG) {
       window.console.log(m_name, index, q, arr);
     }
     var result = arr[0];
     if (result['result'][0]) {
-      var module_name = ydn.crm.sugarcrm.toModuleName(result['store']);
+      var module_name = ydn.crm.su.toModuleName(result['store']);
       var record = /** @type {SugarCrm.Record} */ (result['result'][0]);
       var key = record['id'];
       goog.asserts.assertString(key, 'key not found in ' + record);
@@ -260,7 +260,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.updateSearchFor_ = function(m_name, in
     }
     this.updateSearch_();
   }, function(e) {
-    if (ydn.crm.sugarcrm.ui.SearchPanel.DEBUG) {
+    if (ydn.crm.su.ui.SearchPanel.DEBUG) {
       window.console.log(m_name, index, q, e);
     }
     this.updateSearch_();
@@ -273,7 +273,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.updateSearchFor_ = function(m_name, in
  * @param {number} x fraction.
  * @return {string} css property for linear-gradient
  */
-ydn.crm.sugarcrm.ui.SearchPanel.computeBackground = function(x) {
+ydn.crm.su.ui.SearchPanel.computeBackground = function(x) {
 
   var dx = x + 0.1;
   var s = [];
@@ -295,14 +295,14 @@ ydn.crm.sugarcrm.ui.SearchPanel.computeBackground = function(x) {
  * @param {number} pending_count
  * @private
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.showStartProgress_ = function(pending_count) {
+ydn.crm.su.ui.SearchPanel.prototype.showStartProgress_ = function(pending_count) {
   if (this.total_tasks_ == 0) {
     this.total_tasks_ = pending_count;
   }
   var progress = 100 * (this.total_tasks_ - pending_count) / this.total_tasks_;
   var el = this.getSearchInput().getElement();
   var input = goog.dom.getElementsByTagNameAndClass('input', null, el)[0];
-  input.style.background = ydn.crm.sugarcrm.ui.SearchPanel.computeBackground(progress);
+  input.style.background = ydn.crm.su.ui.SearchPanel.computeBackground(progress);
 };
 
 
@@ -312,14 +312,14 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.showStartProgress_ = function(pending_
  * is available, current result are clear.
  * @private
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.updateSearch_ = function() {
+ydn.crm.su.ui.SearchPanel.prototype.updateSearch_ = function() {
   var task = this.search_tasks_[0];
   if (!task) {
     return;
   }
   task.taskNo++; // update task no. it always starts with -1.
   /*
-  if (ydn.crm.sugarcrm.ui.SearchPanel.DEBUG) {
+  if (ydn.crm.su.ui.SearchPanel.DEBUG) {
     window.console.log('updateSearch_ ' + JSON.stringify(task));
   }
   */
@@ -373,7 +373,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.updateSearch_ = function() {
  * @protected
  * @return {wgui.TextInput}
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.getSearchInput = function() {
+ydn.crm.su.ui.SearchPanel.prototype.getSearchInput = function() {
   return /** @type {wgui.TextInput} */ (this.toolbar.getChildAt(1));
 };
 
@@ -381,7 +381,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.getSearchInput = function() {
 /**
  * @param {Event} e
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.handleAction = function(e) {
+ydn.crm.su.ui.SearchPanel.prototype.handleAction = function(e) {
   var search_input = this.getSearchInput();
   var query = search_input.getContent();
   this.clearResult_();
@@ -397,9 +397,9 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.handleAction = function(e) {
           taskNo: -1
         };
       } else {
-        for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
+        for (var i = 0; i < ydn.crm.su.CacheModules.length; i++) {
           this.search_tasks_[i] = {
-            module: ydn.crm.sugarcrm.CacheModules[i],
+            module: ydn.crm.su.CacheModules[i],
             q: query,
             taskNo: -1
           };
@@ -415,7 +415,7 @@ ydn.crm.sugarcrm.ui.SearchPanel.prototype.handleAction = function(e) {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.SearchPanel.prototype.getContentElement = function() {
+ydn.crm.su.ui.SearchPanel.prototype.getContentElement = function() {
   return goog.dom.getElementByClass(goog.getCssName('content'), this.getElement());
 };
 

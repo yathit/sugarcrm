@@ -21,7 +21,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.ActivityHud');
+goog.provide('ydn.crm.su.ui.ActivityHud');
 
 
 
@@ -33,7 +33,7 @@ goog.provide('ydn.crm.sugarcrm.ui.ActivityHud');
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.ActivityHud = function(container, width, height) {
+ydn.crm.su.ui.ActivityHud = function(container, width, height) {
   /**
    * @protected
    * @type {number}
@@ -65,11 +65,11 @@ ydn.crm.sugarcrm.ui.ActivityHud = function(container, width, height) {
   /**
    * Represent layer for Meetings, Calls, Opportunities and Tasks
    * @protected
-   * @type {Object.<ydn.crm.sugarcrm.ui.ActivityLayer>}
+   * @type {Object.<ydn.crm.su.ui.ActivityLayer>}
    */
   this.activity_layer = {};
   for (var name in layers) {
-    var lay = new ydn.crm.sugarcrm.ui.ActivityLayer(this, name, layers[name]);
+    var lay = new ydn.crm.su.ui.ActivityLayer(this, name, layers[name]);
     this.activity_layer[name] = lay;
     this.stage.add(lay.layer);
   }
@@ -81,14 +81,14 @@ ydn.crm.sugarcrm.ui.ActivityHud = function(container, width, height) {
  * @protected
  * @type {number}
  */
-ydn.crm.sugarcrm.ui.ActivityHud.prototype.borderWidth = 2;
+ydn.crm.su.ui.ActivityHud.prototype.borderWidth = 2;
 
 
 /**
  * @protected
  * @return {number}
  */
-ydn.crm.sugarcrm.ui.ActivityHud.prototype.getPanelWidth = function() {
+ydn.crm.su.ui.ActivityHud.prototype.getPanelWidth = function() {
   return 20 - this.borderWidth * 2;
 };
 
@@ -96,9 +96,9 @@ ydn.crm.sugarcrm.ui.ActivityHud.prototype.getPanelWidth = function() {
 /**
  * Get an activity.
  * @param {string} name
- * @return {ydn.crm.sugarcrm.ui.ActivityLayer}
+ * @return {ydn.crm.su.ui.ActivityLayer}
  */
-ydn.crm.sugarcrm.ui.ActivityHud.prototype.getActivity = function(name) {
+ydn.crm.su.ui.ActivityHud.prototype.getActivity = function(name) {
   return this.activity_layer[name];
 };
 
@@ -106,17 +106,17 @@ ydn.crm.sugarcrm.ui.ActivityHud.prototype.getActivity = function(name) {
 
 /**
  * Activity layer.
- * @param {ydn.crm.sugarcrm.ui.ActivityHud} parent
+ * @param {ydn.crm.su.ui.ActivityHud} parent
  * @param {string} name
  * @param {Object} obj offset y.
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.ActivityLayer = function(parent, name, obj) {
+ydn.crm.su.ui.ActivityLayer = function(parent, name, obj) {
   /**
    * @final
    * @protected
-   * @type {ydn.crm.sugarcrm.ui.ActivityHud}
+   * @type {ydn.crm.su.ui.ActivityHud}
    */
   this.parent = parent;
 
@@ -164,7 +164,7 @@ ydn.crm.sugarcrm.ui.ActivityLayer = function(parent, name, obj) {
 /**
  * @param {number} count
  */
-ydn.crm.sugarcrm.ui.ActivityLayer.prototype.setCount = function(count) {
+ydn.crm.su.ui.ActivityLayer.prototype.setCount = function(count) {
   this.count_text_.text(count + '');
   this.count_text_.offsetX(this.count_text_.width() / 2);
   this.layer.draw();

@@ -2,7 +2,7 @@
  * @fileoverview Model change event.
  */
 
-goog.provide('ydn.crm.sugarcrm.model.events');
+goog.provide('ydn.crm.su.model.events');
 
 
 /**
@@ -11,7 +11,7 @@ goog.provide('ydn.crm.sugarcrm.model.events');
  * Note: these event type string are exported.
  * @enum {string}
  */
-ydn.crm.sugarcrm.model.events.Type = {
+ydn.crm.su.model.events.Type = {
   CONTEXT_CHANGE: 'context-change',
   CONTEXT_DATA_CHANGE: 'context-data-change',
   CONTEXT_GDATA_CHANGE: 'context-gdata-change',
@@ -26,41 +26,41 @@ ydn.crm.sugarcrm.model.events.Type = {
 /**
  * List of all events dispatched by Sugar model.
  * @const
- * @type {Array.<ydn.crm.sugarcrm.model.events.Type>}
+ * @type {Array.<ydn.crm.su.model.events.Type>}
  */
-ydn.crm.sugarcrm.model.events.TYPES_SUGAR = [
-  ydn.crm.sugarcrm.model.events.Type.CONTEXT_DATA_CHANGE,
-  ydn.crm.sugarcrm.model.events.Type.RECORD_CHANGE,
-  ydn.crm.sugarcrm.model.events.Type.GDATA_CHANGE
+ydn.crm.su.model.events.TYPES_SUGAR = [
+  ydn.crm.su.model.events.Type.CONTEXT_DATA_CHANGE,
+  ydn.crm.su.model.events.Type.RECORD_CHANGE,
+  ydn.crm.su.model.events.Type.GDATA_CHANGE
 ];
 
 
 /**
  * List of all events dispatched by Module model.
  * @const
- * @type {Array.<ydn.crm.sugarcrm.model.events.Type>}
+ * @type {Array.<ydn.crm.su.model.events.Type>}
  */
-ydn.crm.sugarcrm.model.events.TYPES_MODULE = [
-  ydn.crm.sugarcrm.model.events.Type.MODULE_CHANGE,
-  ydn.crm.sugarcrm.model.events.Type.RECORD_CHANGE,
-  ydn.crm.sugarcrm.model.events.Type.RECORD_UPDATE
+ydn.crm.su.model.events.TYPES_MODULE = [
+  ydn.crm.su.model.events.Type.MODULE_CHANGE,
+  ydn.crm.su.model.events.Type.RECORD_CHANGE,
+  ydn.crm.su.model.events.Type.RECORD_UPDATE
 ];
 
 
 
 /**
  * Event for sugar models.
- * @param {ydn.crm.sugarcrm.model.events.Type} event_type event type.
+ * @param {ydn.crm.su.model.events.Type} event_type event type.
  * @param {Object=} opt_event_target target.
  * @extends {goog.events.Event}
  * @constructor
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.model.events.Event = function(event_type, opt_event_target) {
+ydn.crm.su.model.events.Event = function(event_type, opt_event_target) {
   goog.base(this, event_type, opt_event_target);
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.Event, goog.events.Event);
+goog.inherits(ydn.crm.su.model.events.Event, goog.events.Event);
 
 
 
@@ -69,16 +69,16 @@ goog.inherits(ydn.crm.sugarcrm.model.events.Event, goog.events.Event);
  * @param {?ydn.crm.inj.Context} context new contact data.
  * @param {ydn.gdata.m8.ContactEntry=} opt_gdata contact gdata of matching email with
  * context.
- * @param {ydn.crm.sugarcrm.Record=} opt_record SugarCRM record of matching email with
+ * @param {ydn.crm.su.Record=} opt_record SugarCRM record of matching email with
  * @param {YdnCrm.SyncRecord=} opt_sync Sync record.
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.Event}
+ * @extends {ydn.crm.su.model.events.Event}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.ContextChangeEvent = function(context,
+ydn.crm.su.model.events.ContextChangeEvent = function(context,
     opt_gdata, opt_record, opt_sync, opt_event_target) {
-  goog.base(this, ydn.crm.sugarcrm.model.events.Type.CONTEXT_CHANGE, opt_event_target);
+  goog.base(this, ydn.crm.su.model.events.Type.CONTEXT_CHANGE, opt_event_target);
   /**
    * @final
    * @type {?ydn.crm.inj.Context}
@@ -91,7 +91,7 @@ ydn.crm.sugarcrm.model.events.ContextChangeEvent = function(context,
   this.gdata = opt_gdata || null;
   /**
    * @final
-   * @type {?ydn.crm.sugarcrm.Record}
+   * @type {?ydn.crm.su.Record}
    */
   this.record = opt_record || null;
 
@@ -101,7 +101,7 @@ ydn.crm.sugarcrm.model.events.ContextChangeEvent = function(context,
    */
   this.sync = opt_sync || null;
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.ContextChangeEvent, ydn.crm.sugarcrm.model.events.Event);
+goog.inherits(ydn.crm.su.model.events.ContextChangeEvent, ydn.crm.su.model.events.Event);
 
 
 
@@ -109,19 +109,19 @@ goog.inherits(ydn.crm.sugarcrm.model.events.ContextChangeEvent, ydn.crm.sugarcrm
  * Event when inbox contact data change.
  * @param {ydn.crm.inj.Context} contact new contact data.
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.Event}
+ * @extends {ydn.crm.su.model.events.Event}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.ContextDataChangeEvent = function(contact, opt_event_target) {
-  goog.base(this, ydn.crm.sugarcrm.model.events.Type.CONTEXT_DATA_CHANGE, opt_event_target);
+ydn.crm.su.model.events.ContextDataChangeEvent = function(contact, opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.Type.CONTEXT_DATA_CHANGE, opt_event_target);
   /**
    * @final
    * @type {ydn.crm.inj.Context}
    */
   this.contact = contact;
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.ContextDataChangeEvent, ydn.crm.sugarcrm.model.events.Event);
+goog.inherits(ydn.crm.su.model.events.ContextDataChangeEvent, ydn.crm.su.model.events.Event);
 
 
 
@@ -131,12 +131,12 @@ goog.inherits(ydn.crm.sugarcrm.model.events.ContextDataChangeEvent, ydn.crm.suga
  * @param {ydn.crm.inj.Context} contact new contact data.
  * @param {!Array.<ydn.gdata.m8.ContactEntry>} contacts
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.Event}
+ * @extends {ydn.crm.su.model.events.Event}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.ContextGDataChangeEvent = function(domain, contact, contacts, opt_event_target) {
-  goog.base(this, ydn.crm.sugarcrm.model.events.Type.CONTEXT_GDATA_CHANGE, opt_event_target);
+ydn.crm.su.model.events.ContextGDataChangeEvent = function(domain, contact, contacts, opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.Type.CONTEXT_GDATA_CHANGE, opt_event_target);
   /**
    * @type {string}
    * @final
@@ -155,15 +155,15 @@ ydn.crm.sugarcrm.model.events.ContextGDataChangeEvent = function(domain, contact
    */
   this.contacts = contacts;
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.ContextGDataChangeEvent, ydn.crm.sugarcrm.model.events.Event);
+goog.inherits(ydn.crm.su.model.events.ContextGDataChangeEvent, ydn.crm.su.model.events.Event);
 
 
 /**
  * Pop out GData of relevant module.
- * @param {ydn.crm.sugarcrm.ModuleName} name
+ * @param {ydn.crm.su.ModuleName} name
  * @return {ydn.gdata.m8.ContactEntry} if contact is available.
  */
-ydn.crm.sugarcrm.model.events.ContextGDataChangeEvent.prototype.pop = function(name) {
+ydn.crm.su.model.events.ContextGDataChangeEvent.prototype.pop = function(name) {
   for (var i = 0; i < this.contacts.length; i++) {
     var contact = this.contacts[i];
     var xp = contact.getExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
@@ -182,12 +182,12 @@ ydn.crm.sugarcrm.model.events.ContextGDataChangeEvent.prototype.pop = function(n
  * applied at the time of call.
  * @param {?string} old_id the new value.
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.Event}
+ * @extends {ydn.crm.su.model.events.Event}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.RecordChangeEvent = function(old_id, opt_event_target) {
-  goog.base(this, ydn.crm.sugarcrm.model.events.Type.RECORD_CHANGE, opt_event_target);
+ydn.crm.su.model.events.RecordChangeEvent = function(old_id, opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.Type.RECORD_CHANGE, opt_event_target);
 
   /**
    * @final
@@ -195,29 +195,29 @@ ydn.crm.sugarcrm.model.events.RecordChangeEvent = function(old_id, opt_event_tar
    */
   this.old_id = old_id;
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.RecordChangeEvent, ydn.crm.sugarcrm.model.events.Event);
+goog.inherits(ydn.crm.su.model.events.RecordChangeEvent, ydn.crm.su.model.events.Event);
 
 
 
 /**
  * Event when sugarcrm record change in a module. The update has already being
  * applied at the time of call.
- * @param {ydn.crm.sugarcrm.ModuleName?} module
+ * @param {ydn.crm.su.ModuleName?} module
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.Event}
+ * @extends {ydn.crm.su.model.events.Event}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.ModuleChangeEvent = function(module,
+ydn.crm.su.model.events.ModuleChangeEvent = function(module,
                                                         opt_event_target) {
-  goog.base(this, ydn.crm.sugarcrm.model.events.Type.MODULE_CHANGE, opt_event_target);
+  goog.base(this, ydn.crm.su.model.events.Type.MODULE_CHANGE, opt_event_target);
   /**
    * @final
-   * @type {?ydn.crm.sugarcrm.ModuleName} old module name.
+   * @type {?ydn.crm.su.ModuleName} old module name.
    */
   this.module = module;
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.ModuleChangeEvent, ydn.crm.sugarcrm.model.events.Event);
+goog.inherits(ydn.crm.su.model.events.ModuleChangeEvent, ydn.crm.su.model.events.Event);
 
 
 
@@ -225,28 +225,28 @@ goog.inherits(ydn.crm.sugarcrm.model.events.ModuleChangeEvent, ydn.crm.sugarcrm.
  * Event when sugarcrm record change in a module. The update has already being
  * applied.
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.Event}
+ * @extends {ydn.crm.su.model.events.Event}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.RecordUpdatedEvent = function(opt_event_target) {
-  goog.base(this, ydn.crm.sugarcrm.model.events.Type.RECORD_UPDATE, opt_event_target);
+ydn.crm.su.model.events.RecordUpdatedEvent = function(opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.Type.RECORD_UPDATE, opt_event_target);
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.RecordUpdatedEvent, ydn.crm.sugarcrm.model.events.Event);
+goog.inherits(ydn.crm.su.model.events.RecordUpdatedEvent, ydn.crm.su.model.events.Event);
 
 
 
 /**
  * Event when gdata contact entry link to the sugarcrm record change in a module.
- * @param {ydn.crm.sugarcrm.model.events.Type} type
+ * @param {ydn.crm.su.model.events.Type} type
  * @param {ydn.gdata.m8.ContactEntry} old_record
  * @param {ydn.gdata.m8.ContactEntry} new_record
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.Event}
+ * @extends {ydn.crm.su.model.events.Event}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.GDataEvent = function(type, old_record, new_record, opt_event_target) {
+ydn.crm.su.model.events.GDataEvent = function(type, old_record, new_record, opt_event_target) {
   goog.base(this, type, opt_event_target);
   /**
    * @final
@@ -259,7 +259,7 @@ ydn.crm.sugarcrm.model.events.GDataEvent = function(type, old_record, new_record
    */
   this.new_record = new_record;
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.GDataEvent, ydn.crm.sugarcrm.model.events.Event);
+goog.inherits(ydn.crm.su.model.events.GDataEvent, ydn.crm.su.model.events.Event);
 
 
 
@@ -268,14 +268,14 @@ goog.inherits(ydn.crm.sugarcrm.model.events.GDataEvent, ydn.crm.sugarcrm.model.e
  * @param {ydn.gdata.m8.ContactEntry} old_record
  * @param {ydn.gdata.m8.ContactEntry} new_record
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.GDataEvent}
+ * @extends {ydn.crm.su.model.events.GDataEvent}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.GDataChangedEvent = function(old_record, new_record, opt_event_target) {
-  goog.base(this, ydn.crm.sugarcrm.model.events.Type.GDATA_CHANGE, old_record, new_record, opt_event_target);
+ydn.crm.su.model.events.GDataChangedEvent = function(old_record, new_record, opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.Type.GDATA_CHANGE, old_record, new_record, opt_event_target);
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.GDataChangedEvent, ydn.crm.sugarcrm.model.events.GDataEvent);
+goog.inherits(ydn.crm.su.model.events.GDataChangedEvent, ydn.crm.su.model.events.GDataEvent);
 
 
 
@@ -284,13 +284,13 @@ goog.inherits(ydn.crm.sugarcrm.model.events.GDataChangedEvent, ydn.crm.sugarcrm.
  * @param {ydn.gdata.m8.ContactEntry} old_record
  * @param {ydn.gdata.m8.ContactEntry} new_record
  * @param {Object=} opt_event_target target.
- * @extends {ydn.crm.sugarcrm.model.events.GDataEvent}
+ * @extends {ydn.crm.su.model.events.GDataEvent}
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.events.GDataUpdatedEvent = function(old_record, new_record, opt_event_target) {
-  goog.base(this, ydn.crm.sugarcrm.model.events.Type.GDATA_UPDATED, old_record, new_record, opt_event_target);
+ydn.crm.su.model.events.GDataUpdatedEvent = function(old_record, new_record, opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.Type.GDATA_UPDATED, old_record, new_record, opt_event_target);
 };
-goog.inherits(ydn.crm.sugarcrm.model.events.GDataUpdatedEvent, ydn.crm.sugarcrm.model.events.GDataEvent);
+goog.inherits(ydn.crm.su.model.events.GDataUpdatedEvent, ydn.crm.su.model.events.GDataEvent);
 
 

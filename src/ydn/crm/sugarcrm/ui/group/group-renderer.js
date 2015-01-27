@@ -5,10 +5,10 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.GroupRenderer');
-goog.require('ydn.crm.sugarcrm.ui.field.Email');
-goog.require('ydn.crm.sugarcrm.ui.field.Field');
-goog.require('ydn.crm.sugarcrm.ui.field.Phone');
+goog.provide('ydn.crm.su.ui.group.GroupRenderer');
+goog.require('ydn.crm.su.ui.field.Email');
+goog.require('ydn.crm.su.ui.field.Field');
+goog.require('ydn.crm.su.ui.field.Phone');
 
 
 
@@ -17,50 +17,50 @@ goog.require('ydn.crm.sugarcrm.ui.field.Phone');
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.group.GroupRenderer = function() {
+ydn.crm.su.ui.group.GroupRenderer = function() {
 
 };
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.group.GroupRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.group.GroupRenderer);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.group.GroupRenderer.DEBUG = false;
+ydn.crm.su.ui.group.GroupRenderer.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS = 'record-group';
+ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS = 'record-group';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER = 'header';
+ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER = 'header';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_FOOTER = 'footer';
+ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_FOOTER = 'footer';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.group.GroupRenderer.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS;
+ydn.crm.su.ui.group.GroupRenderer.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS;
 };
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.group.Group} ctrl
+ * @param {ydn.crm.su.ui.group.Group} ctrl
  * @return {Element}
  */
-ydn.crm.sugarcrm.ui.group.GroupRenderer.prototype.createDom = function(ctrl) {
+ydn.crm.su.ui.group.GroupRenderer.prototype.createDom = function(ctrl) {
   var dom = ctrl.getDomHelper();
   var root = dom.createDom('div', this.getCssClass());
   var head = dom.createDom('div');
@@ -72,7 +72,7 @@ ydn.crm.sugarcrm.ui.group.GroupRenderer.prototype.createDom = function(ctrl) {
   root.setAttribute('name', group_name);
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Group}
+   * @type {ydn.crm.su.model.Group}
    */
   var model = ctrl.getModel();
   var groups = model.listFields();
@@ -80,14 +80,14 @@ ydn.crm.sugarcrm.ui.group.GroupRenderer.prototype.createDom = function(ctrl) {
     var name = groups[i];
     var field_model = model.createOrGetFieldModel(name);
     var field;
-    if (field_model instanceof ydn.crm.sugarcrm.model.EmailField) {
-      var email = /** @type {ydn.crm.sugarcrm.model.EmailField} */(field_model);
-      field = new ydn.crm.sugarcrm.ui.field.Email(email, dom);
-    } else if (field_model instanceof ydn.crm.sugarcrm.model.PhoneField) {
-      var phone = /** @type {ydn.crm.sugarcrm.model.PhoneField} */(field_model);
-      field = new ydn.crm.sugarcrm.ui.field.Phone(phone, dom);
+    if (field_model instanceof ydn.crm.su.model.EmailField) {
+      var email = /** @type {ydn.crm.su.model.EmailField} */(field_model);
+      field = new ydn.crm.su.ui.field.Email(email, dom);
+    } else if (field_model instanceof ydn.crm.su.model.PhoneField) {
+      var phone = /** @type {ydn.crm.su.model.PhoneField} */(field_model);
+      field = new ydn.crm.su.ui.field.Phone(phone, dom);
     } else {
-      field = new ydn.crm.sugarcrm.ui.field.Field(field_model, null, dom);
+      field = new ydn.crm.su.ui.field.Field(field_model, null, dom);
     }
     ctrl.addChild(field, true);
   }
@@ -101,13 +101,13 @@ ydn.crm.sugarcrm.ui.group.GroupRenderer.prototype.createDom = function(ctrl) {
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.group.Group} ctrl
+ * @param {ydn.crm.su.ui.group.Group} ctrl
  */
-ydn.crm.sugarcrm.ui.group.GroupRenderer.prototype.refresh = function(ctrl) {
+ydn.crm.su.ui.group.GroupRenderer.prototype.refresh = function(ctrl) {
 
   for (var i = 0; i < ctrl.getChildCount(); i++) {
-    var child = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (ctrl.getChildAt(i));
-    if (ydn.crm.sugarcrm.ui.group.GroupRenderer.DEBUG && !child) {
+    var child = /** @type {ydn.crm.su.ui.field.Field} */ (ctrl.getChildAt(i));
+    if (ydn.crm.su.ui.group.GroupRenderer.DEBUG && !child) {
       window.console.error(this + ' child ' + i + ' ' + child);
     }
     child.refresh();

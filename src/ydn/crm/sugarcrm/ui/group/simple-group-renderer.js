@@ -4,8 +4,8 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer');
-goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
+goog.provide('ydn.crm.su.ui.group.SimpleGroupRenderer');
+goog.require('ydn.crm.su.ui.field.FieldRenderer');
 
 
 
@@ -14,28 +14,28 @@ goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer = function() {
+ydn.crm.su.ui.group.SimpleGroupRenderer = function() {
 };
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.group.SimpleGroupRenderer);
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.group.SimpleGroup} ctrl
+ * @param {ydn.crm.su.ui.group.SimpleGroup} ctrl
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.decorate = function(ctrl) {
+ydn.crm.su.ui.group.SimpleGroupRenderer.prototype.decorate = function(ctrl) {
   /**
-   * @type {ydn.crm.sugarcrm.model.BaseGroup}
+   * @type {ydn.crm.su.model.BaseGroup}
    */
   var model = ctrl.getModel();
   var dom = ctrl.getDomHelper();
 
-  var root = dom.createDom('div', ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS);
+  var root = dom.createDom('div', ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS);
 
   var label = model.getGroupLabel();
 
   var ele_value = dom.createDom('input', {
     'type': 'text',
-    'class': ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE,
+    'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE,
     'title': label,
     'placeholder': label
   });
@@ -44,21 +44,21 @@ ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.decorate = function(ctrl
   var options = model.getAdditionalOptions();
   if (goog.isArray(options)) {
     var more_el = dom.createDom('div', {
-      'class': ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON + ' ' +
+      'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON + ' ' +
           ydn.crm.ui.CSS_CLASS_MORE_MENU
     });
     root.appendChild(more_el);
     ydn.ui.FlyoutMenu.decoratePopupMenu(more_el, options);
   } else if (goog.isObject(options)) {
     var opt = /** @type {ydn.ui.FlyoutMenu.ItemOption} */ (options);
-    var cls = opt.name == ydn.crm.sugarcrm.model.Field.Command ?
-        ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_ACTION_DELETE :
-        ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_ACTION_DETAIL;
+    var cls = opt.name == ydn.crm.su.model.Field.Command ?
+        ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_ACTION_DELETE :
+        ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_ACTION_DETAIL;
     var action = dom.createDom('div', {
-      'class': ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON + ' ' + cls,
+      'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON + ' ' + cls,
       'title': opt.label
     });
-    var icon_name = cls == ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_ACTION_DELETE ?
+    var icon_name = cls == ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_ACTION_DELETE ?
         'delete' : 'more-horiz';
     var svg = ydn.crm.ui.createSvgIcon(icon_name);
     action.appendChild(svg);
@@ -72,33 +72,33 @@ ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.decorate = function(ctrl
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.group.SimpleGroup} ctrl
+ * @param {ydn.crm.su.ui.group.SimpleGroup} ctrl
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.getInputValue = function(ctrl) {
+ydn.crm.su.ui.group.SimpleGroupRenderer.prototype.getInputValue = function(ctrl) {
   var content = ctrl.getContentElement();
-  var input = content.querySelector('input.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  var input = content.querySelector('input.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   return input.value;
 };
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.group.SimpleGroup} ctrl
+ * @param {ydn.crm.su.ui.group.SimpleGroup} ctrl
  * @param {string} val
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.setInputValue = function(ctrl, val) {
+ydn.crm.su.ui.group.SimpleGroupRenderer.prototype.setInputValue = function(ctrl, val) {
   var content = ctrl.getContentElement();
-  var input = content.querySelector('input.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  var input = content.querySelector('input.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   input.value = val;
 };
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.group.SimpleGroup} ctrl
+ * @param {ydn.crm.su.ui.group.SimpleGroup} ctrl
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.refresh = function(ctrl) {
+ydn.crm.su.ui.group.SimpleGroupRenderer.prototype.refresh = function(ctrl) {
   /**
-   * @type {ydn.crm.sugarcrm.model.BaseGroup}
+   * @type {ydn.crm.su.model.BaseGroup}
    */
   var model = ctrl.getModel();
   var content = ctrl.getContentElement();
@@ -107,7 +107,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.refresh = function(ctrl)
     return;
   }
   var ele_field = content.querySelector('.' +
-      ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+      ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   var value = model.getGroupValue();
   if (ele_field.tagName == goog.dom.TagName.INPUT) {
     ele_field.value = value;
@@ -125,8 +125,8 @@ ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.prototype.refresh = function(ctrl)
       goog.isDefAndNotNull(value);
   var root = ctrl.getElement();
   if (is_def) {
-    root.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    root.classList.remove(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   } else {
-    root.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    root.classList.add(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   }
 };

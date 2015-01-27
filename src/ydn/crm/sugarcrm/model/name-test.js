@@ -1,10 +1,10 @@
-goog.provide('ydn.crm.sugarcrm.model.NameTest');
-goog.setTestOnly('ydn.crm.sugarcrm.model.NameTest');
+goog.provide('ydn.crm.su.model.NameTest');
+goog.setTestOnly('ydn.crm.su.model.NameTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.model.Record');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.require('ydn.crm.su.model.Record');
+goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.test');
 
 
@@ -15,11 +15,11 @@ function setUp() {
 
 /**
  * @param {Object} obj
- * @return {ydn.crm.sugarcrm.model.NameGroup}
+ * @return {ydn.crm.su.model.NameGroup}
  */
 var makeNameGroup = function(obj) {
   var record = ydn.crm.test.createContactRecord(null, obj);
-  return /** @type {ydn.crm.sugarcrm.model.NameGroup} */ (record.getGroupModel('name'));
+  return /** @type {ydn.crm.su.model.NameGroup} */ (record.getGroupModel('name'));
 };
 
 function test_label_full_name() {

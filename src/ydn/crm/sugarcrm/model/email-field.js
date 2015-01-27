@@ -22,38 +22,38 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.EmailField');
-goog.require('ydn.crm.sugarcrm.model.Field');
+goog.provide('ydn.crm.su.model.EmailField');
+goog.require('ydn.crm.su.model.Field');
 goog.require('ydn.object');
 
 
 
 /**
  * Group model for 'email' group fields.
- * @param {ydn.crm.sugarcrm.model.EmailGroup} parent
+ * @param {ydn.crm.su.model.EmailGroup} parent
  * @param {string} field name
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.Field}
+ * @extends {ydn.crm.su.model.Field}
  * @struct
  */
-ydn.crm.sugarcrm.model.EmailField = function(parent, field) {
+ydn.crm.su.model.EmailField = function(parent, field) {
   goog.base(this, parent, field);
 };
-goog.inherits(ydn.crm.sugarcrm.model.EmailField, ydn.crm.sugarcrm.model.Field);
+goog.inherits(ydn.crm.su.model.EmailField, ydn.crm.su.model.Field);
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.EmailGroup}
+ * @return {ydn.crm.su.model.EmailGroup}
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.getParentModel = function() {
-  return /** @type {ydn.crm.sugarcrm.model.EmailGroup} */ (this.parent);
+ydn.crm.su.model.EmailField.prototype.getParentModel = function() {
+  return /** @type {ydn.crm.su.model.EmailGroup} */ (this.parent);
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.getStringValue = function() {
+ydn.crm.su.model.EmailField.prototype.getStringValue = function() {
   var email_model = this.getParentModel();
   return email_model.getFieldValueByEmailId(this.field_name);
 };
@@ -62,7 +62,7 @@ ydn.crm.sugarcrm.model.EmailField.prototype.getStringValue = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.hasFieldValue = function() {
+ydn.crm.su.model.EmailField.prototype.hasFieldValue = function() {
   var email_model = this.getParentModel();
   return email_model.hasFieldValue(this.field_name);
 };
@@ -71,7 +71,7 @@ ydn.crm.sugarcrm.model.EmailField.prototype.hasFieldValue = function() {
 /**
  * @return {?boolean}
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.isOptOut = function() {
+ydn.crm.su.model.EmailField.prototype.isOptOut = function() {
   var email_model = this.getParentModel();
   return email_model.isOptOut(this.field_name);
 };
@@ -80,7 +80,7 @@ ydn.crm.sugarcrm.model.EmailField.prototype.isOptOut = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.getFieldInfo = function() {
+ydn.crm.su.model.EmailField.prototype.getFieldInfo = function() {
   return this.parent.getFieldInfo(this.field_name) ||
       this.parent.getFieldInfo('email');
 };
@@ -89,7 +89,7 @@ ydn.crm.sugarcrm.model.EmailField.prototype.getFieldInfo = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.patch = function(email) {
+ydn.crm.su.model.EmailField.prototype.patch = function(email) {
   if (!email) {
     return null; // we don't delete on update
   }
@@ -133,7 +133,7 @@ ydn.crm.sugarcrm.model.EmailField.prototype.patch = function(email) {
  * Get a patch for given email.
  * @return {Object} null if no path required.
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.removeEmail = function() {
+ydn.crm.su.model.EmailField.prototype.removeEmail = function() {
   var email_model = this.getParentModel();
   if (email_model.isBean()) {
     // bean format
@@ -167,14 +167,14 @@ ydn.crm.sugarcrm.model.EmailField.prototype.removeEmail = function() {
  * Extra field like, phone number, address, email are deletable.
  * @return {Array.<ydn.ui.FlyoutMenu.ItemOption>}
  */
-ydn.crm.sugarcrm.model.EmailField.prototype.getMoreOptions = function() {
+ydn.crm.su.model.EmailField.prototype.getMoreOptions = function() {
   // Note: only InputFieldRenderer display delete button.
   return [
     {
-      name: ydn.crm.sugarcrm.model.Field.Command.REMOVE,
+      name: ydn.crm.su.model.Field.Command.REMOVE,
       label: 'Remove'
     }, {
-      name: ydn.crm.sugarcrm.model.Field.Command.OPT_OUT,
+      name: ydn.crm.su.model.Field.Command.OPT_OUT,
       label: 'Opt out',
       type: 'bool',
       value: this.isOptOut()

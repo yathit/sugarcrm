@@ -20,48 +20,48 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.widget.SelectRecord');
+goog.provide('ydn.crm.su.ui.widget.SelectRecord');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.ac.ArrayMatcher');
 goog.require('goog.ui.ac.AutoComplete');
 goog.require('goog.ui.ac.Renderer');
-goog.require('ydn.crm.sugarcrm.ui.widget.RecordMatcher');
-goog.require('ydn.crm.sugarcrm.ui.widget.RichInputHandler');
-goog.require('ydn.crm.sugarcrm.ui.widget.RowRenderer');
+goog.require('ydn.crm.su.ui.widget.RecordMatcher');
+goog.require('ydn.crm.su.ui.widget.RichInputHandler');
+goog.require('ydn.crm.su.ui.widget.RowRenderer');
 goog.require('ydn.crm.ui');
 
 
 
 /**
  * Record selector.
- * @param {ydn.crm.sugarcrm.Meta} meta
- * @param {ydn.crm.sugarcrm.ModuleName=} opt_m_name default to Accounts module.
+ * @param {ydn.crm.su.Meta} meta
+ * @param {ydn.crm.su.ModuleName=} opt_m_name default to Accounts module.
  * @param {boolean=} opt_multi multiple field selector.
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi) {
+ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi) {
 
   /**
    * @final
-   * @type {ydn.crm.sugarcrm.Meta}
+   * @type {ydn.crm.su.Meta}
    * @protected
    */
   this.sugar = meta;
 
-  var m_name = opt_m_name || ydn.crm.sugarcrm.ModuleName.ACCOUNTS;
+  var m_name = opt_m_name || ydn.crm.su.ModuleName.ACCOUNTS;
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.ui.widget.RecordMatcher}
+   * @type {ydn.crm.su.ui.widget.RecordMatcher}
    */
-  this.matcher = new ydn.crm.sugarcrm.ui.widget.RecordMatcher(meta, m_name);
-  var r = ydn.crm.sugarcrm.ui.widget.RowRenderer.getInstance();
+  this.matcher = new ydn.crm.su.ui.widget.RecordMatcher(meta, m_name);
+  var r = ydn.crm.su.ui.widget.RowRenderer.getInstance();
   var renderer = new goog.ui.ac.Renderer(undefined, r);
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.ui.widget.RichInputHandler}
+   * @type {ydn.crm.su.ui.widget.RichInputHandler}
    */
-  this.input_handler = new ydn.crm.sugarcrm.ui.widget.RichInputHandler(meta,
+  this.input_handler = new ydn.crm.su.ui.widget.RichInputHandler(meta,
       null, null, !!opt_multi, 300);
   /**
    * @type {goog.ui.ac.AutoComplete}
@@ -83,23 +83,23 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi) 
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.CSS_CLASS = 'select-record';
+ydn.crm.su.ui.widget.SelectRecord.CSS_CLASS = 'select-record';
 
 
 /**
  * Set record module.
- * @param {ydn.crm.sugarcrm.ModuleName} mn
+ * @param {ydn.crm.su.ModuleName} mn
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.setModule = function(mn) {
+ydn.crm.su.ui.widget.SelectRecord.prototype.setModule = function(mn) {
   this.matcher.setModule(mn);
 };
 
 
 /**
  * Get record module.
- * @return {ydn.crm.sugarcrm.ModuleName} mn
+ * @return {ydn.crm.su.ModuleName} mn
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.getModule = function() {
+ydn.crm.su.ui.widget.SelectRecord.prototype.getModule = function() {
   return this.matcher.getModule();
 };
 
@@ -110,7 +110,7 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.getModule = function() {
  * @param {Element} el select record Element build by `select-record-template`
  * template.
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.attach = function(el) {
+ydn.crm.su.ui.widget.SelectRecord.prototype.attach = function(el) {
   this.detach();
   this.input_ = el.querySelector('.select-record input.value');
   this.input_handler.attachInput(this.input_);
@@ -120,7 +120,7 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.attach = function(el) {
 /**
  * Detach current input element.
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.detach = function() {
+ydn.crm.su.ui.widget.SelectRecord.prototype.detach = function() {
   if (this.input_) {
     this.input_handler.detachInput(this.input_);
     this.input_ = null;
@@ -130,26 +130,26 @@ ydn.crm.sugarcrm.ui.widget.SelectRecord.prototype.detach = function() {
 
 
 /**
- * @type {Object<!ydn.crm.sugarcrm.ui.widget.SelectRecord>}
+ * @type {Object<!ydn.crm.su.ui.widget.SelectRecord>}
  * @private
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_ = {};
+ydn.crm.su.ui.widget.SelectRecord.ins_ = {};
 
 
 /**
  * Get select record instance.
- * @param {ydn.crm.sugarcrm.Meta} meta
- * @param {ydn.crm.sugarcrm.ModuleName} mn
- * @return {!ydn.crm.sugarcrm.ui.widget.SelectRecord}
+ * @param {ydn.crm.su.Meta} meta
+ * @param {ydn.crm.su.ModuleName} mn
+ * @return {!ydn.crm.su.ui.widget.SelectRecord}
  */
-ydn.crm.sugarcrm.ui.widget.SelectRecord.getInstanceFor = function(meta, mn) {
+ydn.crm.su.ui.widget.SelectRecord.getInstanceFor = function(meta, mn) {
   var domain = meta.getDomain();
   goog.asserts.assert(mn);
-  if (!ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_[domain]) {
-    ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_[domain] =
-        new ydn.crm.sugarcrm.ui.widget.SelectRecord(meta, mn);
+  if (!ydn.crm.su.ui.widget.SelectRecord.ins_[domain]) {
+    ydn.crm.su.ui.widget.SelectRecord.ins_[domain] =
+        new ydn.crm.su.ui.widget.SelectRecord(meta, mn);
   }
-  var sr = ydn.crm.sugarcrm.ui.widget.SelectRecord.ins_[domain];
+  var sr = ydn.crm.su.ui.widget.SelectRecord.ins_[domain];
   sr.detach();
   sr.setModule(mn);
   return sr;

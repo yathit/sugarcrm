@@ -25,28 +25,28 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.activity.Panel');
+goog.provide('ydn.crm.su.ui.activity.Panel');
 goog.require('goog.date.relative');
 goog.require('goog.ui.Tab');
 goog.require('goog.ui.TabBar');
 goog.require('ydn.crm.msg.Manager');
-goog.require('ydn.crm.sugarcrm.ui.NewRecord');
-goog.require('ydn.crm.sugarcrm.ui.SearchPanel');
-goog.require('ydn.crm.sugarcrm.ui.activity.DetailPanel');
-goog.require('ydn.crm.sugarcrm.utils');
+goog.require('ydn.crm.su.ui.NewRecord');
+goog.require('ydn.crm.su.ui.SearchPanel');
+goog.require('ydn.crm.su.ui.activity.DetailPanel');
+goog.require('ydn.crm.su.utils');
 
 
 
 /**
  * Contact sidebar panel.
- * @param {ydn.crm.sugarcrm.model.Sugar} model
+ * @param {ydn.crm.su.model.Sugar} model
  * @param {goog.dom.DomHelper} dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.activity.Panel = function(model, dom) {
+ydn.crm.su.ui.activity.Panel = function(model, dom) {
   goog.base(this, dom);
   this.setModel(model);
 
@@ -57,59 +57,59 @@ ydn.crm.sugarcrm.ui.activity.Panel = function(model, dom) {
   this.tabbar = new goog.ui.TabBar(goog.ui.TabBar.Location.TOP, undefined, dom);
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.ui.activity.DetailPanel}
+   * @type {ydn.crm.su.ui.activity.DetailPanel}
    */
-  this.detail_panel = new ydn.crm.sugarcrm.ui.activity.DetailPanel(model, dom);
+  this.detail_panel = new ydn.crm.su.ui.activity.DetailPanel(model, dom);
 
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.ui.SearchPanel}
+   * @type {ydn.crm.su.ui.SearchPanel}
    */
-  this.search = new ydn.crm.sugarcrm.ui.SearchPanel(model, dom);
+  this.search = new ydn.crm.su.ui.SearchPanel(model, dom);
 
-  var new_record = new ydn.crm.sugarcrm.model.Record(model,
-      new ydn.crm.sugarcrm.Record(model.getDomain(), ydn.crm.sugarcrm.DEFAULT_MODULE));
+  var new_record = new ydn.crm.su.model.Record(model,
+      new ydn.crm.su.Record(model.getDomain(), ydn.crm.su.DEFAULT_MODULE));
 
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.ui.NewRecord}
+   * @type {ydn.crm.su.ui.NewRecord}
    */
-  this.new_record = new ydn.crm.sugarcrm.ui.NewRecord(new_record, dom);
+  this.new_record = new ydn.crm.su.ui.NewRecord(new_record, dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.activity.Panel, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.activity.Panel, goog.ui.Component);
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Sugar}
+ * @return {ydn.crm.su.model.Sugar}
  * @override
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.getModel;
+ydn.crm.su.ui.activity.Panel.prototype.getModel;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS = 'activity-panel';
+ydn.crm.su.ui.activity.Panel.CSS_CLASS = 'activity-panel';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_TAB_LABEL = 'activity-tab-label';
+ydn.crm.su.ui.activity.Panel.CSS_CLASS_TAB_LABEL = 'activity-tab-label';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS;
+ydn.crm.su.ui.activity.Panel.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.activity.Panel.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.getContentElement = function() {
+ydn.crm.su.ui.activity.Panel.prototype.getContentElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
 };
 
@@ -118,27 +118,27 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.getContentElement = function() {
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_SEARCH = 'activity-search';
+ydn.crm.su.ui.activity.Panel.CSS_CLASS_SEARCH = 'activity-search';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_FEED = 'activity-feed';
+ydn.crm.su.ui.activity.Panel.CSS_CLASS_FEED = 'activity-feed';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_NEW = 'new';
+ydn.crm.su.ui.activity.Panel.CSS_CLASS_NEW = 'new';
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.createDom = function() {
+ydn.crm.su.ui.activity.Panel.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var dom = this.dom_;
   var root = this.getElement();
@@ -155,7 +155,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.createDom = function() {
   search_tab.setTooltip('Search');
   this.tabbar.addChild(search_tab, true);
   search_tab.getContentElement().classList.add(
-      ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_SEARCH);
+      ydn.crm.su.ui.activity.Panel.CSS_CLASS_SEARCH);
 
   var new_el = dom.createDom('div');
   var new_svg = ydn.crm.ui.createSvgIcon('plus');
@@ -164,7 +164,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.createDom = function() {
   new_tab.setTooltip('Create a new record');
   this.tabbar.addChild(new_tab, true);
   new_tab.getContentElement().classList.add(
-      ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_NEW);
+      ydn.crm.su.ui.activity.Panel.CSS_CLASS_NEW);
 
   var feed_el = dom.createDom('div');
   var feed_svg = ydn.crm.ui.createSvgIcon('rss');
@@ -173,14 +173,14 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.createDom = function() {
   feed_tab.setTooltip('Activity feed');
   this.tabbar.addChild(feed_tab, true);
   feed_tab.getContentElement().classList.add(
-      ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_FEED);
+      ydn.crm.su.ui.activity.Panel.CSS_CLASS_FEED);
 
-  for (var i = 0; i < ydn.crm.sugarcrm.ACTIVITY_MODULES.length; i++) {
-    var module_name = ydn.crm.sugarcrm.ACTIVITY_MODULES[i];
+  for (var i = 0; i < ydn.crm.su.ACTIVITY_MODULES.length; i++) {
+    var module_name = ydn.crm.su.ACTIVITY_MODULES[i];
     // var caption = module_name.substr(0, 2);
     var icon_name = module_name;
     var svg = ydn.crm.ui.createSvgIcon(icon_name);
-    var ele = dom.createDom('div', ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_TAB_LABEL, svg);
+    var ele = dom.createDom('div', ydn.crm.su.ui.activity.Panel.CSS_CLASS_TAB_LABEL, svg);
     var tab = new goog.ui.Tab(ele);
     tab.setTooltip(module_name);
     this.tabbar.addChild(tab, true);
@@ -198,16 +198,16 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.enterDocument = function() {
+ydn.crm.su.ui.activity.Panel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var sugar = this.getModel();
   // Listen events
   var hd = this.getHandler();
-  hd.listen(sugar, ydn.crm.sugarcrm.model.Sugar.Event.LOGIN, this.updaterLater_);
+  hd.listen(sugar, ydn.crm.su.model.Sugar.Event.LOGIN, this.updaterLater_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.SELECT, this.handleTabSelect_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.UNSELECT, this.handleTabUnSelect_);
-  hd.listen(this.detail_panel, ydn.crm.sugarcrm.events.EventType.VIEW_RECORD, this.onViewRecord_);
-  hd.listen(this.detail_panel, ydn.crm.sugarcrm.events.EventType.NEW_RECORD, this.onNewRecord_);
+  hd.listen(this.detail_panel, ydn.crm.su.events.EventType.VIEW_RECORD, this.onViewRecord_);
+  hd.listen(this.detail_panel, ydn.crm.su.events.EventType.NEW_RECORD, this.onNewRecord_);
   goog.style.setElementShown(this.getElement(), false);
   goog.style.setElementShown(this.new_record.getElement(), false);
   goog.style.setElementShown(this.detail_panel.getElement(), false);
@@ -222,7 +222,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.enterDocument = function() {
  * @param {goog.events.Event} e
  * @private
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabUnSelect_ = function(e) {
+ydn.crm.su.ui.activity.Panel.prototype.handleTabUnSelect_ = function(e) {
   this.detail_panel.clear();
 };
 
@@ -230,7 +230,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabUnSelect_ = function(e) {
 /**
  * @enum {number} tab index.
  */
-ydn.crm.sugarcrm.ui.activity.Panel.TabIndex = {
+ydn.crm.su.ui.activity.Panel.TabIndex = {
   SEARCH: 0,
   NEW: 1,
   FEED: 2,
@@ -245,13 +245,13 @@ ydn.crm.sugarcrm.ui.activity.Panel.TabIndex = {
  * @param {goog.events.Event} e
  * @private
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
+ydn.crm.su.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
   var idx = this.tabbar.getSelectedTabIndex();
-  if (idx == ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.SEARCH) {
+  if (idx == ydn.crm.su.ui.activity.Panel.TabIndex.SEARCH) {
     goog.style.setElementShown(this.search.getElement(), true);
     goog.style.setElementShown(this.new_record.getElement(), false);
     goog.style.setElementShown(this.detail_panel.getElement(), false);
-  } else if (idx == ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.NEW) {
+  } else if (idx == ydn.crm.su.ui.activity.Panel.TabIndex.NEW) {
     goog.style.setElementShown(this.search.getElement(), false);
     goog.style.setElementShown(this.new_record.getElement(), true);
     goog.style.setElementShown(this.detail_panel.getElement(), false);
@@ -259,10 +259,10 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
     goog.style.setElementShown(this.search.getElement(), false);
     goog.style.setElementShown(this.new_record.getElement(), false);
     goog.style.setElementShown(this.detail_panel.getElement(), true);
-    if (idx == ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.FEED) {
+    if (idx == ydn.crm.su.ui.activity.Panel.TabIndex.FEED) {
       this.detail_panel.renderActivity();
     } else {
-      var m_name = ydn.crm.sugarcrm.ACTIVITY_MODULES[idx - 3];
+      var m_name = ydn.crm.su.ACTIVITY_MODULES[idx - 3];
       this.detail_panel.renderUpcoming(m_name).addCallback(function(cnt) {
         this.setCount(m_name, cnt);
       }, this);
@@ -272,32 +272,32 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
 
 
 /**
- * @param {ydn.crm.sugarcrm.events.RecordViewEvent} ev
+ * @param {ydn.crm.su.events.RecordViewEvent} ev
  * @private
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.onViewRecord_ = function(ev) {
+ydn.crm.su.ui.activity.Panel.prototype.onViewRecord_ = function(ev) {
   this.showRecord(ev.module, ev.id);
 };
 
 
 /**
- * @param {ydn.crm.sugarcrm.events.NewRecordEvent} ev
+ * @param {ydn.crm.su.events.NewRecordEvent} ev
  * @private
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.onNewRecord_ = function(ev) {
+ydn.crm.su.ui.activity.Panel.prototype.onNewRecord_ = function(ev) {
   this.showNewRecord(ev.module);
 };
 
 
 /**
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  * @param {SugarCrm.Record} obj
  * @private
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.showRecord_ = function(m_name, obj) {
+ydn.crm.su.ui.activity.Panel.prototype.showRecord_ = function(m_name, obj) {
   var sugar = this.getModel();
-  var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), m_name, obj);
-  var record = /** @type {ydn.crm.sugarcrm.model.Record} */ (
+  var r = new ydn.crm.su.Record(sugar.getDomain(), m_name, obj);
+  var record = /** @type {ydn.crm.su.model.Record} */ (
       this.new_record.getModel());
   record.setRecord(r);
 };
@@ -305,12 +305,12 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.showRecord_ = function(m_name, obj)
 
 /**
  * Show record.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  * @param {string} id
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
+ydn.crm.su.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
   this.tabbar.setSelectedTabIndex(
-      ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.NEW);
+      ydn.crm.su.ui.activity.Panel.TabIndex.NEW);
   var ch = this.getModel().getChannel();
   var query = {
     'module': m_name,
@@ -323,7 +323,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
   }, function(e) {
     var msg = '' + e;
     var mid = ydn.crm.msg.Manager.addStatus('Fail to load a ' + m_name, msg);
-    var sugar = /** @type {ydn.crm.sugarcrm.model.Sugar} */ (this.getModel());
+    var sugar = /** @type {ydn.crm.su.model.Sugar} */ (this.getModel());
     var href = sugar.getRecordViewLink(m_name, id);
     ydn.crm.msg.Manager.setLink(mid, href, id);
   }, this);
@@ -332,11 +332,11 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
 
 /**
  * Show a new record creation on New Record panel.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.showNewRecord = function(m_name) {
+ydn.crm.su.ui.activity.Panel.prototype.showNewRecord = function(m_name) {
   this.tabbar.setSelectedTabIndex(
-      ydn.crm.sugarcrm.ui.activity.Panel.TabIndex.NEW);
+      ydn.crm.su.ui.activity.Panel.TabIndex.NEW);
   this.new_record.newRecord(m_name);
 };
 
@@ -345,7 +345,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.showNewRecord = function(m_name) {
  * Call updateActivity_ after a while.
  * @private
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.updaterLater_ = function() {
+ydn.crm.su.ui.activity.Panel.prototype.updaterLater_ = function() {
   var me = this;
   setTimeout(function() {
     me.updateActivity_();
@@ -361,12 +361,12 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.updaterLater_ = function() {
  * 0 and continue to next after a time out. If over all activity modules, this stop.
  * @private
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.updateActivity_ = function() {
+ydn.crm.su.ui.activity.Panel.prototype.updateActivity_ = function() {
 
   this.getModel().send(ydn.crm.Ch.SReq.ACTIVITY_STREAM).addCallbacks(function(ans) {
     if (ans.length > 0) {
       // Note: result are sorted by date_modified in descending ordering.
-      var since = ydn.crm.sugarcrm.utils.parseDate(ans[ans.length - 1]['date_modified']);
+      var since = ydn.crm.su.utils.parseDate(ans[ans.length - 1]['date_modified']);
       goog.style.setElementShown(this.getElement(), true);
       this.setActivityCount(ans.length, since);
     }
@@ -383,15 +383,15 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.updateActivity_ = function() {
  * 0 and continue to next after a time out. If over all activity modules, this stop.
  * @private
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
+ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
     opt_continue, opt_idx) {
   var index = opt_idx || 0;
-  var m_name = ydn.crm.sugarcrm.ACTIVITY_MODULES[index];
+  var m_name = ydn.crm.su.ACTIVITY_MODULES[index];
   if (!m_name) {
     return;
   }
   var until = null;
-  if (m_name != ydn.crm.sugarcrm.ModuleName.CASES) {
+  if (m_name != ydn.crm.su.ModuleName.CASES) {
     until = ydn.time.getWeekend();
   }
   var query = this.detail_panel.genUpcomingQuery(m_name, until);
@@ -415,7 +415,7 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
  * @param {number} cnt
  * @param {Date} since
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.setActivityCount = function(cnt, since) {
+ydn.crm.su.ui.activity.Panel.prototype.setActivityCount = function(cnt, since) {
   var tab = /** @type {goog.ui.Tab} */ (this.tabbar.getChildAt(2));
   var ele = tab.getContentElement().firstElementChild;
   if (cnt > 0) {
@@ -428,16 +428,16 @@ ydn.crm.sugarcrm.ui.activity.Panel.prototype.setActivityCount = function(cnt, si
 
 
 /**
- * @param {ydn.crm.sugarcrm.ModuleName} name
+ * @param {ydn.crm.su.ModuleName} name
  * @param {number} cnt
  */
-ydn.crm.sugarcrm.ui.activity.Panel.prototype.setCount = function(name, cnt) {
-  var idx = ydn.crm.sugarcrm.ACTIVITY_MODULES.indexOf(name);
+ydn.crm.su.ui.activity.Panel.prototype.setCount = function(name, cnt) {
+  var idx = ydn.crm.su.ACTIVITY_MODULES.indexOf(name);
   var tab = /** @type {goog.ui.Tab} */ (this.tabbar.getChildAt(idx + 3));
   var ele = tab.getContentElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.activity.Panel.CSS_CLASS_TAB_LABEL);
+      ydn.crm.su.ui.activity.Panel.CSS_CLASS_TAB_LABEL);
   var tooltip = cnt ? cnt + ' ' : 'No ';
-  if (name == ydn.crm.sugarcrm.ModuleName.CASES) {
+  if (name == ydn.crm.su.ModuleName.CASES) {
     tooltip += 'Cases assigned to you.';
   } else {
     tooltip += 'upcoming ' + name + ' in this week.';

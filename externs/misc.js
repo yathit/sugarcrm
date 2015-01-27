@@ -43,13 +43,13 @@ CrmApp.TextQuery = function() {};
 
 
 /**
- * @type {string} `ydn.crm.sugarcrm.ModuleName`
+ * @type {string} `ydn.crm.su.ModuleName`
  */
 CrmApp.TextQuery.prototype.store;
 
 
 /**
- * @type {string} See `ydn.crm.sugarcrm.Schema` for available indexes.
+ * @type {string} See `ydn.crm.su.Schema` for available indexes.
  */
 CrmApp.TextQuery.prototype.index;
 
@@ -121,13 +121,13 @@ CrmApp.ReqQuery = function() {};
 
 
 /**
- * @type {string} `ydn.crm.sugarcrm.ModuleName`
+ * @type {string} `ydn.crm.su.ModuleName`
  */
 CrmApp.ReqQuery.prototype.store;
 
 
 /**
- * @type {string} See `ydn.crm.sugarcrm.Schema` for available indexes.
+ * @type {string} See `ydn.crm.su.Schema` for available indexes.
  */
 CrmApp.ReqQuery.prototype.index;
 

@@ -19,24 +19,24 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.Field');
-goog.require('ydn.crm.sugarcrm.Record');
-goog.require('ydn.crm.sugarcrm.gdata');
+goog.provide('ydn.crm.su.model.Field');
+goog.require('ydn.crm.su.Record');
+goog.require('ydn.crm.su.gdata');
 
 
 
 /**
  * SugarCRM module record model.
- * @param {ydn.crm.sugarcrm.model.Group} parent
+ * @param {ydn.crm.su.model.Group} parent
  * @param {string} field name
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.Field = function(parent, field) {
+ydn.crm.su.model.Field = function(parent, field) {
   /**
    * @final
    * @protected
-   * @type {ydn.crm.sugarcrm.model.Group}
+   * @type {ydn.crm.su.model.Group}
    */
   this.parent = parent;
   /**
@@ -51,17 +51,17 @@ ydn.crm.sugarcrm.model.Field = function(parent, field) {
 
 
 /**
- * @return {ydn.crm.sugarcrm.Meta}
+ * @return {ydn.crm.su.Meta}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getMeta = function() {
+ydn.crm.su.model.Field.prototype.getMeta = function() {
   return this.parent.getMeta();
 };
 
 
 /**
- * @return {ydn.crm.sugarcrm.ModuleName}
+ * @return {ydn.crm.su.ModuleName}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getModuleName = function() {
+ydn.crm.su.model.Field.prototype.getModuleName = function() {
   return this.parent.getModuleName();
 };
 
@@ -69,7 +69,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getModuleName = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getFieldName = function() {
+ydn.crm.su.model.Field.prototype.getFieldName = function() {
   return this.field_name;
 };
 
@@ -78,7 +78,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getFieldName = function() {
  * Get module info.
  * @return {SugarCrm.ModuleField}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getFieldInfo = function() {
+ydn.crm.su.model.Field.prototype.getFieldInfo = function() {
   return this.parent.getFieldInfo(this.field_name);
 };
 
@@ -87,7 +87,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getFieldInfo = function() {
  * Get group name.
  * @return {string}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getGroupName = function() {
+ydn.crm.su.model.Field.prototype.getGroupName = function() {
   var info = this.getFieldInfo();
   return info ? info.group : '';
 };
@@ -99,7 +99,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getGroupName = function() {
  * @param {string} field_name
  * @return {string}
  */
-ydn.crm.sugarcrm.model.Field.getFieldId = function(module_name, field_name) {
+ydn.crm.su.model.Field.getFieldId = function(module_name, field_name) {
   return module_name + '-' + field_name;
 };
 
@@ -108,8 +108,8 @@ ydn.crm.sugarcrm.model.Field.getFieldId = function(module_name, field_name) {
  * Get unique field id within sugarcrm instance.
  * @return {string}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getFieldId = function() {
-  return ydn.crm.sugarcrm.model.Field.getFieldId(this.parent.getModuleName(),
+ydn.crm.su.model.Field.prototype.getFieldId = function() {
+  return ydn.crm.su.model.Field.getFieldId(this.parent.getModuleName(),
       this.field_name);
 };
 
@@ -118,17 +118,17 @@ ydn.crm.sugarcrm.model.Field.prototype.getFieldId = function() {
  * Get field value for string type.
  * @return {?string} `null` if not a string value or field value is not set.
  */
-ydn.crm.sugarcrm.model.Field.prototype.getStringValue = function() {
+ydn.crm.su.model.Field.prototype.getStringValue = function() {
   return this.parent.module.getStringValue(this.field_name);
 };
 
 
 /**
  * Get default field value.
- * @return {?ydn.crm.sugarcrm.RecordValue} `null` if no default value set.
+ * @return {?ydn.crm.su.RecordValue} `null` if no default value set.
  * @see #getDefaultStringValue
  */
-ydn.crm.sugarcrm.model.Field.prototype.getDefaultFieldValue = function() {
+ydn.crm.su.model.Field.prototype.getDefaultFieldValue = function() {
   return this.parent.getDefaultFieldValue(this.field_name);
 };
 
@@ -138,7 +138,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getDefaultFieldValue = function() {
  * @return {?string}
  * @see #getDefaultFieldValue
  */
-ydn.crm.sugarcrm.model.Field.prototype.getDefaultStringValue = function() {
+ydn.crm.su.model.Field.prototype.getDefaultStringValue = function() {
   var s = this.getDefaultFieldValue();
   return goog.isString(s) ? s : null;
 };
@@ -146,9 +146,9 @@ ydn.crm.sugarcrm.model.Field.prototype.getDefaultStringValue = function() {
 
 /**
  * Get raw field value.
- * @return {ydn.crm.sugarcrm.RecordValue}
+ * @return {ydn.crm.su.RecordValue}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getField = function() {
+ydn.crm.su.model.Field.prototype.getField = function() {
   return this.parent.module.value(this.field_name);
 };
 
@@ -156,7 +156,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getField = function() {
 /**
  * @return {boolean} true if field has value set.
  */
-ydn.crm.sugarcrm.model.Field.prototype.hasFieldValue = function() {
+ydn.crm.su.model.Field.prototype.hasFieldValue = function() {
   return this.parent.module.hasValue(this.field_name);
 };
 
@@ -165,7 +165,7 @@ ydn.crm.sugarcrm.model.Field.prototype.hasFieldValue = function() {
  * Get SugarCRM field options.
  * @return {!Object.<SugarCrm.NameValue>}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getOptions = function() {
+ydn.crm.su.model.Field.prototype.getOptions = function() {
   var info = this.getFieldInfo();
   return info.options || {};
 };
@@ -175,7 +175,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getOptions = function() {
  * Get field label.
  * @return {string} field label, default to SugarCrm.ModuleField#label.
  */
-ydn.crm.sugarcrm.model.Field.prototype.getLabel = function() {
+ydn.crm.su.model.Field.prototype.getLabel = function() {
   var info = this.getFieldInfo();
   return goog.isString(info.label) ? info.label.replace(/:$/, '') : info.label;
 };
@@ -186,7 +186,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getLabel = function() {
  * @return {string} default to 'varchar'
  * @see #getInputType
  */
-ydn.crm.sugarcrm.model.Field.prototype.getType = function() {
+ydn.crm.su.model.Field.prototype.getType = function() {
   var info = this.getFieldInfo();
   return info ? info.type || 'varchar' : 'varchar';
 };
@@ -196,7 +196,7 @@ ydn.crm.sugarcrm.model.Field.prototype.getType = function() {
  * Check the field value is calculated or not.
  * @return {boolean}
  */
-ydn.crm.sugarcrm.model.Field.prototype.isCalculated = function() {
+ydn.crm.su.model.Field.prototype.isCalculated = function() {
   var setting = this.getFieldInfo();
   return setting ? !!setting['calculated'] : false;
 };
@@ -206,7 +206,7 @@ ydn.crm.sugarcrm.model.Field.prototype.isCalculated = function() {
  * Check the field value is required or not.
  * @return {boolean}
  */
-ydn.crm.sugarcrm.model.Field.prototype.isRequired = function() {
+ydn.crm.su.model.Field.prototype.isRequired = function() {
   var setting = this.getFieldInfo();
   return setting ? setting['required'] == '1' : false;
 };
@@ -216,7 +216,7 @@ ydn.crm.sugarcrm.model.Field.prototype.isRequired = function() {
  * Menu commands.
  * @enum {string}
  */
-ydn.crm.sugarcrm.model.Field.Command = {
+ydn.crm.su.model.Field.Command = {
   ADD: 'add',
   EDIT: 'edit',
   OPT_OUT: 'optout',
@@ -230,7 +230,7 @@ ydn.crm.sugarcrm.model.Field.Command = {
  * Extra field like, phone number, address, email are deletable.
  * @return {Array.<ydn.ui.FlyoutMenu.ItemOption>}
  */
-ydn.crm.sugarcrm.model.Field.prototype.getMoreOptions = function() {
+ydn.crm.su.model.Field.prototype.getMoreOptions = function() {
   return [];
 };
 
@@ -239,7 +239,7 @@ if (goog.DEBUG) {
   /**
    * @inheritDoc
    */
-  ydn.crm.sugarcrm.model.Field.prototype.toString = function() {
+  ydn.crm.su.model.Field.prototype.toString = function() {
     return this.parent + ';Field:' + this.field_name;
   };
 }
@@ -250,7 +250,7 @@ if (goog.DEBUG) {
  * @param {*} value input value.
  * @return {?Object} patch object. `null` if patch is not necessary.
  */
-ydn.crm.sugarcrm.model.Field.prototype.patch = function(value) {
+ydn.crm.su.model.Field.prototype.patch = function(value) {
   if (this.isCalculated()) {
     return null;
   }

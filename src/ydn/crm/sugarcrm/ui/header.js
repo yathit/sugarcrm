@@ -21,102 +21,102 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.Header');
+goog.provide('ydn.crm.su.ui.Header');
 goog.require('goog.events.KeyHandler');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.base');
-goog.require('ydn.crm.sugarcrm');
-goog.require('ydn.crm.sugarcrm.ui.activity.Panel');
+goog.require('ydn.crm.su');
+goog.require('ydn.crm.su.ui.activity.Panel');
 
 
 
 /**
  * SugarCRM header panel.
- * @param {ydn.crm.sugarcrm.model.Sugar} model
+ * @param {ydn.crm.su.model.Sugar} model
  * @param {goog.dom.DomHelper} dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.Header = function(model, dom) {
+ydn.crm.su.ui.Header = function(model, dom) {
   goog.base(this, dom);
   this.setModel(model);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.Header, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.Header, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.Header.DEBUG = false;
+ydn.crm.su.ui.Header.DEBUG = false;
 
 
 /**
  * @define {boolean} whether to use iframe.
  */
-ydn.crm.sugarcrm.ui.Header.USE_IFRAME = false;
+ydn.crm.su.ui.Header.USE_IFRAME = false;
 
 
 /**
  * @define {boolean} whether to use popup.
  */
-ydn.crm.sugarcrm.ui.Header.USE_POPUP = false;
+ydn.crm.su.ui.Header.USE_POPUP = false;
 
 
 /**
  * @protected
  * @type {goog.debug.Logger}
  */
-ydn.crm.sugarcrm.ui.Header.prototype.logger =
-    goog.log.getLogger('ydn.crm.sugarcrm.ui.Header');
+ydn.crm.su.ui.Header.prototype.logger =
+    goog.log.getLogger('ydn.crm.su.ui.Header');
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Sugar}
+ * @return {ydn.crm.su.model.Sugar}
  * @override
  */
-ydn.crm.sugarcrm.ui.Header.prototype.getModel;
+ydn.crm.su.ui.Header.prototype.getModel;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.Header.CSS_CLASS_CONTENT = 'sugar-header-content';
+ydn.crm.su.ui.Header.CSS_CLASS_CONTENT = 'sugar-header-content';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.Header.CSS_CLASS = 'sugar-header';
+ydn.crm.su.ui.Header.CSS_CLASS = 'sugar-header';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.Header.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.Header.CSS_CLASS;
+ydn.crm.su.ui.Header.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.Header.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.Header.prototype.getContentElement = function() {
-  return this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.Header.CSS_CLASS_CONTENT);
+ydn.crm.su.ui.Header.prototype.getContentElement = function() {
+  return this.getElement().querySelector('.' + ydn.crm.su.ui.Header.CSS_CLASS_CONTENT);
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.Header.prototype.createDom = function() {
+ydn.crm.su.ui.Header.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   var ctrl = this;
   /**
-   * @type {ydn.crm.sugarcrm.model.Sugar}
+   * @type {ydn.crm.su.model.Sugar}
    */
   var model = this.getModel();
   var dom = this.getDomHelper();
@@ -131,11 +131,11 @@ ydn.crm.sugarcrm.ui.Header.prototype.createDom = function() {
     'title': 'SugarCRM'}, [div_svg, a]);
   root.appendChild(ele_title);
   var grants = [];
-  if (!ydn.crm.sugarcrm.ui.Header.USE_IFRAME) {
+  if (!ydn.crm.su.ui.Header.USE_IFRAME) {
     var href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE) + '#credentials';
     var target = 'option-page';
     var msg = 'Setup host permission';
-    if (ydn.crm.sugarcrm.ui.Header.USE_POPUP) {
+    if (ydn.crm.su.ui.Header.USE_POPUP) {
       href = chrome.extension.getURL(ydn.crm.base.HOST_PERMISSION_PAGE) + '?' + model.getDomain();
       target = 'host-permission';
       msg = 'Grant host permission';
@@ -161,14 +161,14 @@ ydn.crm.sugarcrm.ui.Header.prototype.createDom = function() {
   var div_password = dom.createDom('div', null, [ps]);
   var div_msg = dom.createDom('div', 'message');
   var div_login = dom.createDom('div', 'login-form', [div_username, div_password, div_msg]);
-  var content_ele = dom.createDom('div', ydn.crm.sugarcrm.ui.Header.CSS_CLASS_CONTENT);
+  var content_ele = dom.createDom('div', ydn.crm.su.ui.Header.CSS_CLASS_CONTENT);
   root.appendChild(div_login);
   root.appendChild(content_ele);
   goog.style.setElementShown(div_grant, !model.hasHostPermission());
   goog.style.setElementShown(div_login, !model.isLogin());
   goog.style.setElementShown(content_ele, this.getModel().hasHostPermission());
 
-  var activity_panel = new ydn.crm.sugarcrm.ui.activity.Panel(model, dom);
+  var activity_panel = new ydn.crm.su.ui.activity.Panel(model, dom);
   this.addChild(activity_panel, true);
 };
 
@@ -176,7 +176,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.Header.prototype.enterDocument = function() {
+ydn.crm.su.ui.Header.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var root = this.getElement();
   var handler = this.getHandler();
@@ -185,18 +185,18 @@ ydn.crm.sugarcrm.ui.Header.prototype.enterDocument = function() {
   var kh = new goog.events.KeyHandler(div_login);
   handler.listen(kh, goog.events.KeyHandler.EventType.KEY, this.handleLogin);
   var a_grant = grant.querySelector('a');
-  if (ydn.crm.sugarcrm.ui.Header.USE_POPUP) {
+  if (ydn.crm.su.ui.Header.USE_POPUP) {
     handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
   } else {
     handler.listen(a_grant, 'click', this.onGrantHostPermission);
   }
 
-  handler.listen(this.getModel(), ydn.crm.sugarcrm.model.Sugar.Event.HOST_ACCESS_GRANT,
+  handler.listen(this.getModel(), ydn.crm.su.model.Sugar.Event.HOST_ACCESS_GRANT,
       this.handleHostGrant);
-  handler.listen(this.getModel(), ydn.crm.sugarcrm.model.Sugar.Event.LOGIN,
+  handler.listen(this.getModel(), ydn.crm.su.model.Sugar.Event.LOGIN,
       this.handleModelLogin);
 
-  if (ydn.crm.sugarcrm.ui.Header.USE_IFRAME) {
+  if (ydn.crm.su.ui.Header.USE_IFRAME) {
     window.console.log('injecting iframe');
     this.injectGrantIframe_(this.getModel().getDomain());
   }
@@ -207,7 +207,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.enterDocument = function() {
  * Handle grant host permission grant.
  * @param {goog.events.BrowserEvent} e
  */
-ydn.crm.sugarcrm.ui.Header.prototype.onGrantHostPermission = function(e) {
+ydn.crm.su.ui.Header.prototype.onGrantHostPermission = function(e) {
   e.preventDefault();
   var model = this.getModel();
   var domain = model.getDomain();
@@ -235,7 +235,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.onGrantHostPermission = function(e) {
 /**
  * @param {goog.events.BrowserEvent} e
  */
-ydn.crm.sugarcrm.ui.Header.prototype.handleModelLogin = function(e) {
+ydn.crm.su.ui.Header.prototype.handleModelLogin = function(e) {
   var div_login = this.getElement().querySelector('.login-form');
   goog.style.setElementShown(div_login, !this.getModel().isLogin());
 };
@@ -245,12 +245,12 @@ ydn.crm.sugarcrm.ui.Header.prototype.handleModelLogin = function(e) {
  * Listen model event for host grant access.
  * @param {Event} e
  */
-ydn.crm.sugarcrm.ui.Header.prototype.handleHostGrant = function(e) {
+ydn.crm.su.ui.Header.prototype.handleHostGrant = function(e) {
   var grant = this.getElement().querySelector('.host-permission');
   var has_per = this.getModel().hasHostPermission();
   goog.style.setElementShown(grant, !has_per);
   goog.style.setElementShown(this.getContentElement(), has_per);
-  if (ydn.crm.sugarcrm.ui.Header.USE_IFRAME && !has_per) {
+  if (ydn.crm.su.ui.Header.USE_IFRAME && !has_per) {
     this.injectGrantIframe_(this.getModel().getDomain());
   }
 };
@@ -259,11 +259,11 @@ ydn.crm.sugarcrm.ui.Header.prototype.handleHostGrant = function(e) {
 /**
  * @param {goog.events.KeyEvent} keyEvent
  */
-ydn.crm.sugarcrm.ui.Header.prototype.handleLogin = function(keyEvent) {
+ydn.crm.su.ui.Header.prototype.handleLogin = function(keyEvent) {
   if (keyEvent.keyCode == goog.events.KeyCodes.ENTER) {
     var root = this.getElement();
     var div_login = root.querySelector('.login-form');
-    var model = /** @type {ydn.crm.sugarcrm.model.Sugar} */ (this.getModel());
+    var model = /** @type {ydn.crm.su.model.Sugar} */ (this.getModel());
     var un = div_login.querySelector('input[name=username]').value;
     var ps = div_login.querySelector('input[name=password]').value;
     var msg = div_login.querySelector('.message');
@@ -286,7 +286,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.handleLogin = function(keyEvent) {
  * @param {string} domain
  * @private
  */
-ydn.crm.sugarcrm.ui.Header.prototype.injectGrantIframe_ = function(domain) {
+ydn.crm.su.ui.Header.prototype.injectGrantIframe_ = function(domain) {
   domain = encodeURIComponent(domain);
   var grant = this.getElement().querySelector('.host-permission');
   var iframe_ele = grant.querySelector('IFRAME');
@@ -298,7 +298,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.injectGrantIframe_ = function(domain) {
       grant.removeChild(iframe_ele);
     }
   }
-  if (ydn.crm.sugarcrm.ui.Header.DEBUG) {
+  if (ydn.crm.su.ui.Header.DEBUG) {
     window.console.log('injected host permiossion iframe for ' + domain);
   }
   var iframe_url = chrome.extension.getURL(ydn.crm.base.HOST_PERMISSION_PAGE);
@@ -307,7 +307,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.injectGrantIframe_ = function(domain) {
   iframe_ele.setAttribute('name', 'host-permission');
   iframe_ele.src = iframe_url + '?' + domain;
   grant.appendChild(iframe_ele);
-  if (ydn.crm.sugarcrm.ui.Header.DEBUG) {
+  if (ydn.crm.su.ui.Header.DEBUG) {
     window.console.log(grant, iframe_ele);
   }
 };
@@ -316,7 +316,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.injectGrantIframe_ = function(domain) {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.Header.prototype.getDomain = function() {
+ydn.crm.su.ui.Header.prototype.getDomain = function() {
   return this.getModel().getDomain();
 };
 
@@ -325,8 +325,8 @@ ydn.crm.sugarcrm.ui.Header.prototype.getDomain = function() {
  * Update
  * @protected
  */
-ydn.crm.sugarcrm.ui.Header.prototype.handleSugarChanged = function() {
-  var model = /** @type {ydn.crm.sugarcrm.model.Sugar} */ (this.getModel());
+ydn.crm.su.ui.Header.prototype.handleSugarChanged = function() {
+  var model = /** @type {ydn.crm.su.model.Sugar} */ (this.getModel());
   goog.asserts.assert(model, 'empty model?');
   var domain = model.getDomain();
   goog.asserts.assertString(domain, 'domain must be provided.');
@@ -352,7 +352,7 @@ ydn.crm.sugarcrm.ui.Header.prototype.handleSugarChanged = function() {
     });
   }
   if (model.isLogin() && !model.hasHostPermission()) {
-    if (ydn.crm.sugarcrm.ui.Header.USE_IFRAME) {
+    if (ydn.crm.su.ui.Header.USE_IFRAME) {
       this.injectGrantIframe_(domain);
     } else {
       var hp_url = chrome.extension.getURL(ydn.crm.base.HOST_PERMISSION_PAGE);
@@ -366,13 +366,13 @@ ydn.crm.sugarcrm.ui.Header.prototype.handleSugarChanged = function() {
 
 
 /**
- * @return {ydn.crm.sugarcrm.ui.activity.Panel}
+ * @return {ydn.crm.su.ui.activity.Panel}
  * @private
  */
-ydn.crm.sugarcrm.ui.Header.prototype.getActivityPanel_ = function() {
+ydn.crm.su.ui.Header.prototype.getActivityPanel_ = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    if (child instanceof ydn.crm.sugarcrm.ui.activity.Panel) {
+    if (child instanceof ydn.crm.su.ui.activity.Panel) {
       return child;
     }
   }
@@ -382,10 +382,10 @@ ydn.crm.sugarcrm.ui.Header.prototype.getActivityPanel_ = function() {
 
 /**
  * Show record.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  * @param {string} id
  */
-ydn.crm.sugarcrm.ui.Header.prototype.showRecord = function(m_name, id) {
+ydn.crm.su.ui.Header.prototype.showRecord = function(m_name, id) {
   this.getActivityPanel_().showRecord(m_name, id);
 };
 

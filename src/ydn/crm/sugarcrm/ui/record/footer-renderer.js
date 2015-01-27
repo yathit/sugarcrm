@@ -21,7 +21,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.record.FooterRenderer');
+goog.provide('ydn.crm.su.ui.record.FooterRenderer');
 
 
 
@@ -30,33 +30,33 @@ goog.provide('ydn.crm.sugarcrm.ui.record.FooterRenderer');
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.record.FooterRenderer = function() {
+ydn.crm.su.ui.record.FooterRenderer = function() {
 };
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.record.FooterRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.record.FooterRenderer);
 
 
 /**
  * @const
  * @type {string} CSS class name for secondary records panel.
  */
-ydn.crm.sugarcrm.ui.record.FooterRenderer.CSS_CLASS = 'record-footer';
+ydn.crm.su.ui.record.FooterRenderer.CSS_CLASS = 'record-footer';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.FooterRenderer.CSS_CLASS_MESSAGE = 'message';
+ydn.crm.su.ui.record.FooterRenderer.CSS_CLASS_MESSAGE = 'message';
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.record.Record} ctrl
+ * @param {ydn.crm.su.ui.record.Record} ctrl
  */
-ydn.crm.sugarcrm.ui.record.FooterRenderer.prototype.createDom = function(ctrl) {
+ydn.crm.su.ui.record.FooterRenderer.prototype.createDom = function(ctrl) {
   var dom = ctrl.getDomHelper();
   var ele = this.getFooterElement(ctrl.getElement());
 
-  var msg = dom.createDom('div', ydn.crm.sugarcrm.ui.record.FooterRenderer.CSS_CLASS_MESSAGE);
+  var msg = dom.createDom('div', ydn.crm.su.ui.record.FooterRenderer.CSS_CLASS_MESSAGE);
 
   ele.appendChild(msg);
 };
@@ -66,8 +66,8 @@ ydn.crm.sugarcrm.ui.record.FooterRenderer.prototype.createDom = function(ctrl) {
  * @param {Element} ele
  * @return {Element}
  */
-ydn.crm.sugarcrm.ui.record.FooterRenderer.prototype.getFooterElement = function(ele) {
-  return ele.querySelector('.' + ydn.crm.sugarcrm.ui.record.FooterRenderer.CSS_CLASS);
+ydn.crm.su.ui.record.FooterRenderer.prototype.getFooterElement = function(ele) {
+  return ele.querySelector('.' + ydn.crm.su.ui.record.FooterRenderer.CSS_CLASS);
 };
 
 
@@ -76,18 +76,18 @@ ydn.crm.sugarcrm.ui.record.FooterRenderer.prototype.getFooterElement = function(
  * @param {Element} ele
  * @return {Element}
  */
-ydn.crm.sugarcrm.ui.record.FooterRenderer.prototype.getMsgElement = function(ele) {
+ydn.crm.su.ui.record.FooterRenderer.prototype.getMsgElement = function(ele) {
   return ele.querySelector(
-      '.' + ydn.crm.sugarcrm.ui.record.FooterRenderer.CSS_CLASS + ' div.' +
-          ydn.crm.sugarcrm.ui.record.FooterRenderer.CSS_CLASS_MESSAGE + '');
+      '.' + ydn.crm.su.ui.record.FooterRenderer.CSS_CLASS + ' div.' +
+          ydn.crm.su.ui.record.FooterRenderer.CSS_CLASS_MESSAGE + '');
 };
 
 
 /**
  * Reset UI for new model.
- * @param {ydn.crm.sugarcrm.ui.record.Record} ctrl
+ * @param {ydn.crm.su.ui.record.Record} ctrl
  */
-ydn.crm.sugarcrm.ui.record.FooterRenderer.prototype.reset = function(ctrl) {
+ydn.crm.su.ui.record.FooterRenderer.prototype.reset = function(ctrl) {
   var msg = this.getMsgElement(ctrl.getElement());
   msg.textContent = '';
   msg.classList.remove(ydn.crm.ui.CSS_CLASS_ERROR);

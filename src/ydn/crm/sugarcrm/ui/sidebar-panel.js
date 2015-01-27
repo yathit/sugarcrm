@@ -7,7 +7,7 @@
 
 goog.provide('ydn.crm.ui.SidebarPanel');
 goog.require('goog.ui.Component');
-goog.require('ydn.crm.sugarcrm.ui.SugarPanel');
+goog.require('ydn.crm.su.ui.SugarPanel');
 
 
 
@@ -126,18 +126,18 @@ ydn.crm.ui.SidebarPanel.prototype.enterDocument = function() {
 
 
 /**
- * @return {?ydn.crm.sugarcrm.ui.SugarPanel}
+ * @return {?ydn.crm.su.ui.SugarPanel}
  * @protected
  */
 ydn.crm.ui.SidebarPanel.prototype.getSugarCrmPanel = function() {
-  return /** @type {ydn.crm.sugarcrm.ui.SugarPanel} */ (this.getChildAt(0)) || null;
+  return /** @type {ydn.crm.su.ui.SugarPanel} */ (this.getChildAt(0)) || null;
 };
 
 
 /**
  * Set SugarCRM.
  * @param {?SugarCrm.About} about
- * @return {!goog.async.Deferred<ydn.crm.sugarcrm.model.GDataSugar>}
+ * @return {!goog.async.Deferred<ydn.crm.su.model.GDataSugar>}
  */
 ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
   var link_panel = this.getHeaderElement().querySelector('.' +
@@ -175,12 +175,12 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
     }
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
-      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
     var ac = us.getLoginEmail();
-    var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,
+    var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
-    panel = new ydn.crm.sugarcrm.ui.SugarPanel(sugar, this.dom_);
+    panel = new ydn.crm.su.ui.SugarPanel(sugar, this.dom_);
     goog.log.fine(this.logger, 'sugar panel ' + about.domain + ' added.');
     this.addChild(panel, true);
     goog.style.setElementShown(link_panel, false);
@@ -200,7 +200,7 @@ ydn.crm.ui.SidebarPanel.prototype.setVisible = function(val) {
 
 /**
  * Show record.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  * @param {string} id
  */
 ydn.crm.ui.SidebarPanel.prototype.showRecord = function(m_name, id) {

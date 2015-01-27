@@ -6,8 +6,8 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.IRecordObserver');
-goog.require('ydn.crm.sugarcrm');
+goog.provide('ydn.crm.su.IRecordObserver');
+goog.require('ydn.crm.su');
 
 
 
@@ -15,7 +15,7 @@ goog.require('ydn.crm.sugarcrm');
  * Listen change in SugarCRM Record for synchronization.
  * @interface
  */
-ydn.crm.sugarcrm.IRecordObserver = function() {
+ydn.crm.su.IRecordObserver = function() {
 
 };
 
@@ -23,7 +23,7 @@ ydn.crm.sugarcrm.IRecordObserver = function() {
 /**
  * Listener on record change.
  * @param {string} domain
- * @param {ydn.crm.sugarcrm.ModuleName} module
+ * @param {ydn.crm.su.ModuleName} module
  * @param {!Array.<!SugarCrm.Record>|!SugarCrm.Record} records
  */
-ydn.crm.sugarcrm.IRecordObserver.prototype.onRecordChange = function(domain, module, records) {};
+ydn.crm.su.IRecordObserver.prototype.onRecordChange = function(domain, module, records) {};

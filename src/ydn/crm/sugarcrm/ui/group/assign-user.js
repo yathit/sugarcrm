@@ -5,46 +5,46 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.AssignUser');
-goog.require('ydn.crm.sugarcrm');
-goog.require('ydn.crm.sugarcrm.model.AssignUserGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.AssignUserRenderer');
-goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
+goog.provide('ydn.crm.su.ui.group.AssignUser');
+goog.require('ydn.crm.su');
+goog.require('ydn.crm.su.model.AssignUserGroup');
+goog.require('ydn.crm.su.ui.group.AssignUserRenderer');
+goog.require('ydn.crm.su.ui.group.SimpleGroup');
 
 
 
 /**
  * Panel for name group fields.
- * @param {ydn.crm.sugarcrm.model.AssignUserGroup} model
+ * @param {ydn.crm.su.model.AssignUserGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.SimpleGroup}
+ * @extends {ydn.crm.su.ui.group.SimpleGroup}
  */
-ydn.crm.sugarcrm.ui.group.AssignUser = function(model, opt_dom) {
-  var r = ydn.crm.sugarcrm.ui.group.AssignUserRenderer.getInstance();
+ydn.crm.su.ui.group.AssignUser = function(model, opt_dom) {
+  var r = ydn.crm.su.ui.group.AssignUserRenderer.getInstance();
   goog.base(this, model, r, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.AssignUser, ydn.crm.sugarcrm.ui.group.SimpleGroup);
+goog.inherits(ydn.crm.su.ui.group.AssignUser, ydn.crm.su.ui.group.SimpleGroup);
 
 
 /**
  * @define {boolean} debug flag
  */
-ydn.crm.sugarcrm.ui.group.AssignUser.DEBUG = false;
+ydn.crm.su.ui.group.AssignUser.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.AssignUserGroup}
+ * @return {ydn.crm.su.model.AssignUserGroup}
  * @override
  */
-ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getModel;
+ydn.crm.su.ui.group.AssignUser.prototype.getModel;
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.AssignUser.prototype.hasChanged = function() {
+ydn.crm.su.ui.group.AssignUser.prototype.hasChanged = function() {
   var val = this.renderer.getInputValue(this);
   var org = this.getModel().getGroupValue();
   return val != org;
@@ -54,7 +54,7 @@ ydn.crm.sugarcrm.ui.group.AssignUser.prototype.hasChanged = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.AssignUser.prototype.collectData = function() {
+ydn.crm.su.ui.group.AssignUser.prototype.collectData = function() {
   var val = this.renderer.getInputValue(this);
   if (val) {
     var obj = {'assigned_user_name': val};
@@ -76,7 +76,7 @@ ydn.crm.sugarcrm.ui.group.AssignUser.prototype.collectData = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getPatch = function() {
+ydn.crm.su.ui.group.AssignUser.prototype.getPatch = function() {
   if (this.hasChanged()) {
     return this.collectData();
   } else {
@@ -89,9 +89,9 @@ ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getPatch = function() {
  * Get datalist element id. If the element does not exist, create a new one.
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getDataListId = function() {
+ydn.crm.su.ui.group.AssignUser.prototype.getDataListId = function() {
   /**
-   * @type {ydn.crm.sugarcrm.model.AssignUserGroup}
+   * @type {ydn.crm.su.model.AssignUserGroup}
    */
   var model = this.getModel();
   var id = model.getMeta().getDomain() + '-assign-user-datalist-id';
@@ -102,10 +102,10 @@ ydn.crm.sugarcrm.ui.group.AssignUser.prototype.getDataListId = function() {
     document.body.appendChild(el);
     var ch = model.getMeta().getChannel();
     var q = {
-      'module': ydn.crm.sugarcrm.ModuleName.USERS
+      'module': ydn.crm.su.ModuleName.USERS
     };
     ch.send(ydn.crm.Ch.SReq.LIST_NAME, q).addCallbacks(function(arr) {
-      if (ydn.crm.sugarcrm.ui.group.AssignUser.DEBUG) {
+      if (ydn.crm.su.ui.group.AssignUser.DEBUG) {
         window.console.log(arr);
       }
       var el = document.getElementById(id);

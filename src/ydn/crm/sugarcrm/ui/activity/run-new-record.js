@@ -17,11 +17,11 @@ var st = new ydn.crm.msg.StatusBar();
 st.render(document.getElementById('status'));
 ydn.crm.msg.Manager.addConsumer(st);
 
-ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
+ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
   for (var i = 0; i < models.length; i++) {
-    sugar = /** @type {ydn.crm.sugarcrm.model.GDataSugar} */ (models[i]);
+    sugar = /** @type {ydn.crm.su.model.GDataSugar} */ (models[i]);
     document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
-    panel = new ydn.crm.sugarcrm.ui.activity.NewRecord(sugar);
+    panel = new ydn.crm.su.ui.activity.NewRecord(sugar);
     panel.render(div);
     break;
   }

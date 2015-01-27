@@ -6,31 +6,31 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.EmailGroup');
-goog.require('ydn.crm.sugarcrm.Meta');
-goog.require('ydn.crm.sugarcrm.model.EmailField');
-goog.require('ydn.crm.sugarcrm.model.Group');
+goog.provide('ydn.crm.su.model.EmailGroup');
+goog.require('ydn.crm.su.Meta');
+goog.require('ydn.crm.su.model.EmailField');
+goog.require('ydn.crm.su.model.Group');
 goog.require('ydn.object');
 
 
 
 /**
  * Group model for 'email' group fields.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.Group}
+ * @extends {ydn.crm.su.model.Group}
  * @struct
  */
-ydn.crm.sugarcrm.model.EmailGroup = function(parent) {
+ydn.crm.su.model.EmailGroup = function(parent) {
   goog.base(this, parent, 'email');
 };
-goog.inherits(ydn.crm.sugarcrm.model.EmailGroup, ydn.crm.sugarcrm.model.Group);
+goog.inherits(ydn.crm.su.model.EmailGroup, ydn.crm.su.model.Group);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.EmailGroup.prototype.listFields = function() {
+ydn.crm.su.model.EmailGroup.prototype.listFields = function() {
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     // Bean format
@@ -60,12 +60,12 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.listFields = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.EmailGroup.prototype.createOrGetFieldModel = function(name) {
+ydn.crm.su.model.EmailGroup.prototype.createOrGetFieldModel = function(name) {
   var f = this.getFieldModelByName(name);
   if (f) {
     return f;
   }
-  f = new ydn.crm.sugarcrm.model.EmailField(this, name);
+  f = new ydn.crm.su.model.EmailField(this, name);
   this.fields.push(f);
   return f;
 };
@@ -74,7 +74,7 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.createOrGetFieldModel = function(nam
 /**
  * @return {boolean}
  */
-ydn.crm.sugarcrm.model.EmailGroup.prototype.isBean = function() {
+ydn.crm.su.model.EmailGroup.prototype.isBean = function() {
   var email = this.module.value('email');
   if (goog.isDef(email)) {
     return goog.isArray(email);
@@ -89,7 +89,7 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.isBean = function() {
  * @param {string} name
  * @return {boolean}
  */
-ydn.crm.sugarcrm.model.EmailGroup.prototype.hasField = function(name) {
+ydn.crm.su.model.EmailGroup.prototype.hasField = function(name) {
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
@@ -107,7 +107,7 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.hasField = function(name) {
  * @return {boolean} return `true` if field has value set.
  * @see #hasField
  */
-ydn.crm.sugarcrm.model.EmailGroup.prototype.hasFieldValue = function(name) {
+ydn.crm.su.model.EmailGroup.prototype.hasFieldValue = function(name) {
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
@@ -129,7 +129,7 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.hasFieldValue = function(name) {
  * @param {string} name
  * @return {?string}
  */
-ydn.crm.sugarcrm.model.EmailGroup.prototype.getFieldValueByEmailId = function(name) {
+ydn.crm.su.model.EmailGroup.prototype.getFieldValueByEmailId = function(name) {
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
@@ -151,7 +151,7 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.getFieldValueByEmailId = function(na
  * @param {string} name
  * @return {?boolean}
  */
-ydn.crm.sugarcrm.model.EmailGroup.prototype.isOptOut = function(name) {
+ydn.crm.su.model.EmailGroup.prototype.isOptOut = function(name) {
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
@@ -174,7 +174,7 @@ ydn.crm.sugarcrm.model.EmailGroup.prototype.isOptOut = function(name) {
  * Get all emails as normalized form of EmailBean.
  * @return {Array.<SugarCrm.EmailField>} list of all emails.
  */
-ydn.crm.sugarcrm.model.EmailGroup.prototype.getEmails = function() {
+ydn.crm.su.model.EmailGroup.prototype.getEmails = function() {
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     // Bean format

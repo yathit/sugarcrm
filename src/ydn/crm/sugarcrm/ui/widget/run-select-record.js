@@ -23,17 +23,17 @@ var renderInput = function(mn) {
   document.body.appendChild(root);
   var input = root.querySelector('input');
   input.onfocus = function(e) {
-    var sel = ydn.crm.sugarcrm.ui.widget.SelectRecord.getInstanceFor(sugar, mn);
+    var sel = ydn.crm.su.ui.widget.SelectRecord.getInstanceFor(sugar, mn);
     sel.attach(root);
   };
 };
 
-ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
-  sugar = /** @type {ydn.crm.sugarcrm.model.GDataSugar} */ (models[0]);
+ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
+  sugar = /** @type {ydn.crm.su.model.GDataSugar} */ (models[0]);
   document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
 
-  for (var i = 0; i < ydn.crm.sugarcrm.PEOPLE_MODULES.length; i++) {
-    renderInput(ydn.crm.sugarcrm.PEOPLE_MODULES[i]);
+  for (var i = 0; i < ydn.crm.su.PEOPLE_MODULES.length; i++) {
+    renderInput(ydn.crm.su.PEOPLE_MODULES[i]);
   }
 }, function(e) {
   throw e;

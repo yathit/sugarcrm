@@ -1,12 +1,12 @@
-goog.provide('ydn.crm.sugarcrm.ui.field.FieldTest');
-goog.setTestOnly('ydn.crm.sugarcrm.ui.field.FieldTest');
+goog.provide('ydn.crm.su.ui.field.FieldTest');
+goog.setTestOnly('ydn.crm.su.ui.field.FieldTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
-goog.require('ydn.crm.sugarcrm.ui.field.Field');
-goog.require('ydn.crm.sugarcrm.ui.group.Email');
-goog.require('ydn.crm.sugarcrm.ui.group.Appointment');
+goog.require('ydn.crm.su.model.Sugar');
+goog.require('ydn.crm.su.ui.field.Field');
+goog.require('ydn.crm.su.ui.group.Email');
+goog.require('ydn.crm.su.ui.group.Appointment');
 goog.require('ydn.crm.test');
 
 var mock_el = document.createElement('div');
@@ -28,7 +28,7 @@ function test_bool_rendering() {
   var record = ydn.crm.test.createContactRecord();
   var group = record.getGroupModel('');
   var field = group.createOrGetFieldModel('my_favorite');
-  var panel = new ydn.crm.sugarcrm.ui.field.Field(field);
+  var panel = new ydn.crm.su.ui.field.Field(field);
   panel.render(mock_el);
 
   assertFalse('original value', panel.getValue());
@@ -41,7 +41,7 @@ function test_bool_rendering_default() {
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('');
   var field = group.createOrGetFieldModel('my_favorite');
-  var panel = new ydn.crm.sugarcrm.ui.field.Field(field);
+  var panel = new ydn.crm.su.ui.field.Field(field);
   panel.render(mock_el);
 
   assertUndefined('original value', panel.getValue());
@@ -55,7 +55,7 @@ function test_email() {
   var exp_email1 = obj['email'][0]['email_address'];
   var exp_email2 = obj['email'][1]['email_address'];
   var model = record.getGroupModel('email');
-  var ctrl = new ydn.crm.sugarcrm.ui.group.Email(model);
+  var ctrl = new ydn.crm.su.ui.group.Email(model);
   ctrl.render(mock_el);
   ctrl.refresh();
 
@@ -67,11 +67,11 @@ function test_email() {
 
 function test_data_start() {
   var sugar = ydn.crm.test.createSugar();
-  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.su.ModuleName.CALLS);
   var model = record.getGroupModel('appointment');
-  assertTrue(model.hasField(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START));
-  var start = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START);
-  var ctrl = new ydn.crm.sugarcrm.ui.field.Field(start);
+  assertTrue(model.hasField(ydn.crm.su.model.AppointmentGroup.FieldName.START));
+  var start = model.createOrGetFieldModel(ydn.crm.su.model.AppointmentGroup.FieldName.START);
+  var ctrl = new ydn.crm.su.ui.field.Field(start);
   ctrl.render(mock_el);
   ctrl.refresh();
 
@@ -82,10 +82,10 @@ function test_data_start() {
 
 function test_data_start_change() {
   var sugar = ydn.crm.test.createSugar();
-  var record = ydn.crm.test.createRecord(sugar, ydn.crm.sugarcrm.ModuleName.CALLS);
+  var record = ydn.crm.test.createRecord(sugar, ydn.crm.su.ModuleName.CALLS);
   var model = record.getGroupModel('appointment');
-  var start = model.createOrGetFieldModel(ydn.crm.sugarcrm.model.AppointmentGroup.FieldName.START);
-  var ctrl = new ydn.crm.sugarcrm.ui.field.Field(start);
+  var start = model.createOrGetFieldModel(ydn.crm.su.model.AppointmentGroup.FieldName.START);
+  var ctrl = new ydn.crm.su.ui.field.Field(start);
   ctrl.render(mock_el);
   ctrl.refresh();
 

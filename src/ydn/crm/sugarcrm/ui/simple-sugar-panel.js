@@ -30,11 +30,11 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.SimpleSugarPanel');
+goog.provide('ydn.crm.su.ui.SimpleSugarPanel');
 goog.require('goog.log');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.Ch');
-goog.require('ydn.crm.sugarcrm.model.GDataSugar');
+goog.require('ydn.crm.su.model.GDataSugar');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.json');
 
@@ -42,79 +42,79 @@ goog.require('ydn.json');
 
 /**
  * Contact sidebar panel.
- * @param {ydn.crm.sugarcrm.model.GDataSugar} model
+ * @param {ydn.crm.su.model.GDataSugar} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel = function(model, opt_dom) {
+ydn.crm.su.ui.SimpleSugarPanel = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
 
 };
-goog.inherits(ydn.crm.sugarcrm.ui.SimpleSugarPanel, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.SimpleSugarPanel, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.DEBUG = false;
+ydn.crm.su.ui.SimpleSugarPanel.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.CSS_CLASS_HEAD = 'sugar-panel-head';
+ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_HEAD = 'sugar-panel-head';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.CSS_CLASS_CONTENT = 'sugar-panel-content';
+ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_CONTENT = 'sugar-panel-content';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.CSS_CLASS = 'sugar-panel';
+ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS = 'sugar-panel';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.SimpleSugarPanel.CSS_CLASS;
+ydn.crm.su.ui.SimpleSugarPanel.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getContentElement = function() {
-  return this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.SimpleSugarPanel.CSS_CLASS_CONTENT);
+ydn.crm.su.ui.SimpleSugarPanel.prototype.getContentElement = function() {
+  return this.getElement().querySelector('.' + ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_CONTENT);
 };
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.GDataSugar}
+ * @return {ydn.crm.su.model.GDataSugar}
  * @override
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getModel;
+ydn.crm.su.ui.SimpleSugarPanel.prototype.getModel;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.createDom = function() {
+ydn.crm.su.ui.SimpleSugarPanel.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var dom = this.dom_;
   var root = this.getElement();
   goog.dom.classlist.add(root, this.getCssClass());
-  var head_ele = dom.createDom('div', ydn.crm.sugarcrm.ui.SimpleSugarPanel.CSS_CLASS_HEAD);
-  var content_ele = dom.createDom('div', ydn.crm.sugarcrm.ui.SimpleSugarPanel.CSS_CLASS_CONTENT);
+  var head_ele = dom.createDom('div', ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_HEAD);
+  var content_ele = dom.createDom('div', ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_CONTENT);
   root.appendChild(head_ele);
   root.appendChild(content_ele);
   // goog.style.setElementShown(content_ele, false);
@@ -125,23 +125,23 @@ ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.enterDocument = function() {
+ydn.crm.su.ui.SimpleSugarPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  if (ydn.crm.sugarcrm.ui.SimpleSugarPanel.DEBUG) {
+  if (ydn.crm.su.ui.SimpleSugarPanel.DEBUG) {
     window.console.log('SimpleSugarPanel:enterDocument:' + this.getModel());
   }
-  this.getHandler().listen(this.getModel(), [ydn.crm.sugarcrm.model.events.Type.GDATA_CHANGE],
+  this.getHandler().listen(this.getModel(), [ydn.crm.su.model.events.Type.GDATA_CHANGE],
       this.handleOnGDataChanged);
 };
 
 
 /**
  * @protected
- * @param {ydn.crm.sugarcrm.model.events.GDataEvent} e
+ * @param {ydn.crm.su.model.events.GDataEvent} e
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.handleOnGDataChanged = function(e) {
+ydn.crm.su.ui.SimpleSugarPanel.prototype.handleOnGDataChanged = function(e) {
   var sugar = this.getModel();
-  if (ydn.crm.sugarcrm.ui.SimpleSugarPanel.DEBUG) {
+  if (ydn.crm.su.ui.SimpleSugarPanel.DEBUG) {
     window.console.log(e, sugar.getContextGmail());
   }
   var has_context = !!sugar.getContextGmail();
@@ -153,15 +153,15 @@ ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.handleOnGDataChanged = function(e
  * @protected
  * @type {goog.log.Logger}
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.logger =
-    goog.log.getLogger('ydn.crm.sugarcrm.ui.SimpleSugarPanel');
+ydn.crm.su.ui.SimpleSugarPanel.prototype.logger =
+    goog.log.getLogger('ydn.crm.su.ui.SimpleSugarPanel');
 
 
 /**
  * Get background message channel.
  * @return {!ydn.msg.Channel}
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getChannel = function() {
+ydn.crm.su.ui.SimpleSugarPanel.prototype.getChannel = function() {
   return ydn.msg.getChannel(ydn.msg.Group.SUGAR, this.getDomainName());
 };
 
@@ -169,6 +169,6 @@ ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getChannel = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.SimpleSugarPanel.prototype.getDomainName = function() {
+ydn.crm.su.ui.SimpleSugarPanel.prototype.getDomainName = function() {
   return this.getModel().getDomain();
 };

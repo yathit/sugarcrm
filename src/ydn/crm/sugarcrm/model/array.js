@@ -20,28 +20,28 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.Array');
-goog.require('ydn.crm.sugarcrm.model.Group');
-goog.require('ydn.crm.sugarcrm.model.Field');
+goog.provide('ydn.crm.su.model.Array');
+goog.require('ydn.crm.su.model.Group');
+goog.require('ydn.crm.su.model.Field');
 
 
 
 /**
  * SugarCRM group model composes of field with same types.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @param {string} group_name
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.Group}
+ * @extends {ydn.crm.su.model.Group}
  * @struct
  */
-ydn.crm.sugarcrm.model.Array = function(parent, group_name) {
+ydn.crm.su.model.Array = function(parent, group_name) {
   goog.base(this, parent, group_name);
 };
-goog.inherits(ydn.crm.sugarcrm.model.Array, ydn.crm.sugarcrm.model.Group);
+goog.inherits(ydn.crm.su.model.Array, ydn.crm.su.model.Group);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.Array.DEBUG = false;
+ydn.crm.su.model.Array.DEBUG = false;
 

@@ -7,23 +7,23 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.Email');
+goog.provide('ydn.crm.su.ui.group.Email');
 goog.require('goog.ui.PopupMenu');
-goog.require('ydn.crm.sugarcrm');
-goog.require('ydn.crm.sugarcrm.model.EmailGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.Group');
+goog.require('ydn.crm.su');
+goog.require('ydn.crm.su.model.EmailGroup');
+goog.require('ydn.crm.su.ui.group.Group');
 
 
 
 /**
  * Panel for name group fields.
- * @param {ydn.crm.sugarcrm.model.EmailGroup} model
+ * @param {ydn.crm.su.model.EmailGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.Group}
+ * @extends {ydn.crm.su.ui.group.Group}
  */
-ydn.crm.sugarcrm.ui.group.Email = function(model, opt_dom) {
+ydn.crm.su.ui.group.Email = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
   /**
    * @type {goog.ui.PopupMenu}
@@ -31,20 +31,20 @@ ydn.crm.sugarcrm.ui.group.Email = function(model, opt_dom) {
    */
   this.popup_menu_ = null;
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Email, ydn.crm.sugarcrm.ui.group.Group);
+goog.inherits(ydn.crm.su.ui.group.Email, ydn.crm.su.ui.group.Group);
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.EmailGroup}
+ * @return {ydn.crm.su.model.EmailGroup}
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Email.prototype.getModel;
+ydn.crm.su.ui.group.Email.prototype.getModel;
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Email.prototype.reset = function() {
+ydn.crm.su.ui.group.Email.prototype.reset = function() {
   // we have to remove child, Field, because their name, i.e., bean id
   // are not same for different record.
   for (var i = this.getChildCount() - 1; i >= 0; i--) {
@@ -63,7 +63,7 @@ ydn.crm.sugarcrm.ui.group.Email.prototype.reset = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Email.prototype.collectData = function() {
-  var patch = ydn.crm.sugarcrm.ui.group.Email.base(this, 'collectData');
+ydn.crm.su.ui.group.Email.prototype.collectData = function() {
+  var patch = ydn.crm.su.ui.group.Email.base(this, 'collectData');
   return patch;
 };

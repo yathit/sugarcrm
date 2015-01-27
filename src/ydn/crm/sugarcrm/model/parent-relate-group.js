@@ -22,28 +22,28 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.ParentRelateGroup');
-goog.require('ydn.crm.sugarcrm.model.RelateGroup');
+goog.provide('ydn.crm.su.model.ParentRelateGroup');
+goog.require('ydn.crm.su.model.RelateGroup');
 
 
 
 /**
  * Relate group model for parent fields.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.RelateGroup}
+ * @extends {ydn.crm.su.model.RelateGroup}
  * @struct
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup = function(parent) {
+ydn.crm.su.model.ParentRelateGroup = function(parent) {
   goog.base(this, parent, 'parent');
 };
-goog.inherits(ydn.crm.sugarcrm.model.ParentRelateGroup, ydn.crm.sugarcrm.model.RelateGroup);
+goog.inherits(ydn.crm.su.model.ParentRelateGroup, ydn.crm.su.model.RelateGroup);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getGroupLabel = function() {
+ydn.crm.su.model.ParentRelateGroup.prototype.getGroupLabel = function() {
   return 'Related to';
 };
 
@@ -51,7 +51,7 @@ ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getGroupLabel = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateFieldType = function() {
+ydn.crm.su.model.ParentRelateGroup.prototype.getRelateFieldType = function() {
   return 'parent_type';
 };
 
@@ -59,7 +59,7 @@ ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateFieldType = function
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateFieldId = function() {
+ydn.crm.su.model.ParentRelateGroup.prototype.getRelateFieldId = function() {
   return 'parent_id';
 };
 
@@ -67,7 +67,7 @@ ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateFieldId = function()
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateFieldName = function() {
+ydn.crm.su.model.ParentRelateGroup.prototype.getRelateFieldName = function() {
   return 'parent_name';
 };
 
@@ -75,10 +75,10 @@ ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateFieldName = function
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateModuleName = function() {
-  var mn = /** @type {ydn.crm.sugarcrm.ModuleName} */(this.valueAsString('parent_type'));
+ydn.crm.su.model.ParentRelateGroup.prototype.getRelateModuleName = function() {
+  var mn = /** @type {ydn.crm.su.ModuleName} */(this.valueAsString('parent_type'));
   if (!mn) {
-    mn = ydn.crm.sugarcrm.ModuleName.ACCOUNTS;
+    mn = ydn.crm.su.ModuleName.ACCOUNTS;
   }
   return mn;
 };
@@ -88,7 +88,7 @@ ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getRelateModuleName = functio
  * List parent type options or list of relate module names.
  * @return {Array<string>} list of values of `parent_type` options field.
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getParentTypeOptions = function() {
+ydn.crm.su.model.ParentRelateGroup.prototype.getParentTypeOptions = function() {
   var info = this.getFieldInfo('parent_type');
   var options = [];
   if (info && info.options) {
@@ -106,7 +106,7 @@ ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getParentTypeOptions = functi
  * @return {string} return default parent type value. Empty string return if
  * not default parent type present.
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getDefaultParentType = function() {
+ydn.crm.su.model.ParentRelateGroup.prototype.getDefaultParentType = function() {
   var info = this.getFieldInfo('parent_type');
   if (info && info.options) {
     for (var i in info.options) {
@@ -120,14 +120,14 @@ ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.getDefaultParentType = functi
 /**
  * Look up option value to module name.
  * @param {string} val
- * @return {?ydn.crm.sugarcrm.ModuleName}
+ * @return {?ydn.crm.su.ModuleName}
  */
-ydn.crm.sugarcrm.model.ParentRelateGroup.prototype.optionValue2ModuleName = function(val) {
+ydn.crm.su.model.ParentRelateGroup.prototype.optionValue2ModuleName = function(val) {
   var info = this.getFieldInfo('parent_type');
   if (info && info.options) {
     for (var i in info.options) {
       if (info.options[i].value == val) {
-        return /** @type {ydn.crm.sugarcrm.ModuleName} */(info.options[i].name);
+        return /** @type {ydn.crm.su.ModuleName} */(info.options[i].name);
       }
     }
   }

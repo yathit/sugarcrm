@@ -1,9 +1,9 @@
-goog.provide('ydn.crm.sugarcrm.UtilsTest');
-goog.setTestOnly('ydn.crm.sugarcrm.UtilsTest');
+goog.provide('ydn.crm.su.UtilsTest');
+goog.setTestOnly('ydn.crm.su.UtilsTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.utils');
+goog.require('ydn.crm.su.utils');
 
 
 var mock = document.createElement('div');
@@ -20,8 +20,8 @@ function tearDown() {
 
 function test_date_conversion() {
   var s = '2013-09-20 22:10:00';
-  var d = ydn.crm.sugarcrm.utils.parseDate(s);
-  var s2 = ydn.crm.sugarcrm.utils.toDateString(d);
+  var d = ydn.crm.su.utils.parseDate(s);
+  var s2 = ydn.crm.su.utils.toDateString(d);
   assertEquals(s, s2);
 }
 
@@ -31,8 +31,8 @@ function test_datetime_input() {
   mock.appendChild(input);
   input.type = 'datetime-local';
   var date_start = '2014-12-13 05:15:00';
-  input.value = ydn.crm.sugarcrm.utils.toDateTimeLocalString(date_start);
-  var input_date = ydn.crm.sugarcrm.utils.fromDateTimeLocalString(input.valueAsNumber);
+  input.value = ydn.crm.su.utils.toDateTimeLocalString(date_start);
+  var input_date = ydn.crm.su.utils.fromDateTimeLocalString(input.valueAsNumber);
   assertEquals(date_start, input_date);
 }
 

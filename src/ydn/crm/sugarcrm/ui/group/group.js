@@ -13,44 +13,44 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.Group');
+goog.provide('ydn.crm.su.ui.group.Group');
 goog.require('goog.ui.Dialog');
-goog.require('ydn.crm.sugarcrm.model.Group');
-goog.require('ydn.crm.sugarcrm.ui.group.AbstractGroup');
+goog.require('ydn.crm.su.model.Group');
+goog.require('ydn.crm.su.ui.group.AbstractGroup');
 
 
 
 /**
  * Group controller.
- * @param {ydn.crm.sugarcrm.model.Group} model
+ * @param {ydn.crm.su.model.Group} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.AbstractGroup}
+ * @extends {ydn.crm.su.ui.group.AbstractGroup}
  */
-ydn.crm.sugarcrm.ui.group.Group = function(model, opt_dom) {
+ydn.crm.su.ui.group.Group = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Group, ydn.crm.sugarcrm.ui.group.AbstractGroup);
+goog.inherits(ydn.crm.su.ui.group.Group, ydn.crm.su.ui.group.AbstractGroup);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.group.Group.DEBUG = false;
+ydn.crm.su.ui.group.Group.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Group}
+ * @return {ydn.crm.su.model.Group}
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.getModel;
+ydn.crm.su.ui.group.Group.prototype.getModel;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.createDom = function() {
+ydn.crm.su.ui.group.Group.prototype.createDom = function() {
   goog.base(this, 'createDom');
 
   this.createFields();
@@ -60,9 +60,9 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.createDom = function() {
 /**
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.createFields = function() {
+ydn.crm.su.ui.group.Group.prototype.createFields = function() {
   /**
-   * @type {ydn.crm.sugarcrm.model.Group}
+   * @type {ydn.crm.su.model.Group}
    */
   var model = this.getModel();
   var dom = this.getDomHelper();
@@ -71,14 +71,14 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.createFields = function() {
     var name = fields[i];
     var field_model = model.createOrGetFieldModel(name);
     var field;
-    if (field_model instanceof ydn.crm.sugarcrm.model.EmailField) {
-      var email = /** @type {ydn.crm.sugarcrm.model.EmailField} */(field_model);
-      field = new ydn.crm.sugarcrm.ui.field.Email(email, dom);
-    } else if (field_model instanceof ydn.crm.sugarcrm.model.PhoneField) {
-      var phone = /** @type {ydn.crm.sugarcrm.model.PhoneField} */(field_model);
-      field = new ydn.crm.sugarcrm.ui.field.Phone(phone, dom);
+    if (field_model instanceof ydn.crm.su.model.EmailField) {
+      var email = /** @type {ydn.crm.su.model.EmailField} */(field_model);
+      field = new ydn.crm.su.ui.field.Email(email, dom);
+    } else if (field_model instanceof ydn.crm.su.model.PhoneField) {
+      var phone = /** @type {ydn.crm.su.model.PhoneField} */(field_model);
+      field = new ydn.crm.su.ui.field.Phone(phone, dom);
     } else {
-      field = new ydn.crm.sugarcrm.ui.field.Field(field_model, null, dom);
+      field = new ydn.crm.su.ui.field.Field(field_model, null, dom);
     }
     this.addChild(field, true);
   }
@@ -88,20 +88,20 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.createFields = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.enterDocument = function() {
+ydn.crm.su.ui.group.Group.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
-  this.getHandler().listen(this, ydn.crm.sugarcrm.ui.events.Type.ACTION,
+  this.getHandler().listen(this, ydn.crm.su.ui.events.Type.ACTION,
       this.onMenuAction);
 
 };
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.events.FieldMenuActionEvent} ma
+ * @param {ydn.crm.su.ui.events.FieldMenuActionEvent} ma
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.onMenuAction = function(ma) {
+ydn.crm.su.ui.group.Group.prototype.onMenuAction = function(ma) {
 
 };
 
@@ -109,11 +109,11 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.onMenuAction = function(ma) {
 /**
  * Get field component by field name.
  * @param {string} name
- * @return {ydn.crm.sugarcrm.ui.field.Field}
+ * @return {ydn.crm.su.ui.field.Field}
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.getFieldByName = function(name) {
+ydn.crm.su.ui.group.Group.prototype.getFieldByName = function(name) {
   for (var j = 0; j < this.getChildCount(); j++) {
-    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    var f = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(j));
     if (f.getFieldName() == name) {
       return f;
     }
@@ -125,10 +125,10 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.getFieldByName = function(name) {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.collectData = function() {
+ydn.crm.su.ui.group.Group.prototype.collectData = function() {
   var obj = null;
   for (var j = 0; j < this.getChildCount(); j++) {
-    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    var f = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(j));
     var value = f.collectData();
     if (!goog.isNull(value)) {
       if (!obj) {
@@ -137,7 +137,7 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.collectData = function() {
       obj[f.getFieldName()] = value;
     }
   }
-  if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && obj) {
+  if (ydn.crm.su.ui.group.Group.DEBUG && obj) {
     window.console.log(this, obj);
   }
   return obj;
@@ -147,9 +147,9 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.collectData = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.hasChanged = function() {
+ydn.crm.su.ui.group.Group.prototype.hasChanged = function() {
   for (var j = 0; j < this.getChildCount(); j++) {
-    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    var f = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(j));
     if (f.hasChanged()) {
       return true;
     }
@@ -161,10 +161,10 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.hasChanged = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.getPatch = function() {
+ydn.crm.su.ui.group.Group.prototype.getPatch = function() {
   var obj = null;
   for (var j = 0; j < this.getChildCount(); j++) {
-    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    var f = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(j));
     if (!f.hasChanged()) {
       continue;
     }
@@ -176,7 +176,7 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.getPatch = function() {
       obj[f.getFieldName()] = value;
     }
   }
-  if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && obj) {
+  if (ydn.crm.su.ui.group.Group.DEBUG && obj) {
     window.console.log(this, obj);
   }
   return obj;
@@ -186,10 +186,10 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.getPatch = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.refresh = function() {
+ydn.crm.su.ui.group.Group.prototype.refresh = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
-    var child = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(i));
-    if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && !child) {
+    var child = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(i));
+    if (ydn.crm.su.ui.group.Group.DEBUG && !child) {
       window.console.error(this + ' child ' + i + ' ' + child);
     }
     child.refresh();
@@ -200,11 +200,11 @@ ydn.crm.sugarcrm.ui.group.Group.prototype.refresh = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Group.prototype.reset = function() {
+ydn.crm.su.ui.group.Group.prototype.reset = function() {
   goog.base(this, 'reset');
   for (var i = 0; i < this.getChildCount(); i++) {
-    var child = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(i));
-    if (ydn.crm.sugarcrm.ui.group.Group.DEBUG && !child) {
+    var child = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(i));
+    if (ydn.crm.su.ui.group.Group.DEBUG && !child) {
       window.console.error(this + ' child ' + i + ' ' + child);
     }
     child.reset();

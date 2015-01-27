@@ -38,13 +38,13 @@
         for (var i = 0; i < sugarCrmModuleInfos.length; i++) {
             mod_infos[sugarCrmModuleInfos[i].module_name] = sugarCrmModuleInfos[i];
         }
-        var sugar = new ydn.crm.sugarcrm.model.Sugar(about, mod_infos);
+        var sugar = new ydn.crm.su.model.Sugar(about, mod_infos);
         var mockQueryRecords = function(module, order) {
           return goog.async.Deferred.succeed([]);
         };
         var rep = new goog.testing.PropertyReplacer();
         rep.replace(sugar, 'listRecords', mockQueryRecords);
-        var panel = new ydn.crm.sugarcrm.ui.SyncPanel(null, sugar);
+        var panel = new ydn.crm.su.ui.SyncPanel(null, sugar);
 
         ydn.msg.main_ = new ydn.msg.MockPipe('main', main_pre);
 

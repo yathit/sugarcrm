@@ -20,7 +20,7 @@
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
-goog.provide('ydn.crm.sugarcrm.Meta');
+goog.provide('ydn.crm.su.Meta');
 
 
 
@@ -28,59 +28,59 @@ goog.provide('ydn.crm.sugarcrm.Meta');
  * SugarCRM meta data.
  * @interface
  */
-ydn.crm.sugarcrm.Meta = function() {};
+ydn.crm.su.Meta = function() {};
 
 
 /**
  * @return {string} SugarCrm Version
  */
-ydn.crm.sugarcrm.Meta.prototype.getVersion = function() {};
+ydn.crm.su.Meta.prototype.getVersion = function() {};
 
 
 /**
  * @return {?boolean} true if SugarCrm backend has version 7.
  */
-ydn.crm.sugarcrm.Meta.prototype.isVersion7 = function() {};
+ydn.crm.su.Meta.prototype.isVersion7 = function() {};
 
 
 /**
  * @return {string} instance domain of sugarcrm.
  */
-ydn.crm.sugarcrm.Meta.prototype.getDomain = function() {};
+ydn.crm.su.Meta.prototype.getDomain = function() {};
 
 
 /**
- * @return {!ydn.crm.sugarcrm.Record} login user record.
+ * @return {!ydn.crm.su.Record} login user record.
  */
-ydn.crm.sugarcrm.Meta.prototype.getUser = function() {};
+ydn.crm.su.Meta.prototype.getUser = function() {};
 
 
 /**
  * @return {ydn.msg.Channel} instance domain of sugarcrm.
  */
-ydn.crm.sugarcrm.Meta.prototype.getChannel = function() {};
+ydn.crm.su.Meta.prototype.getChannel = function() {};
 
 
 /**
  * Query module information.
- * @param {ydn.crm.sugarcrm.ModuleName} name
+ * @param {ydn.crm.su.ModuleName} name
  * @return {SugarCrm.ModuleInfo}
  */
-ydn.crm.sugarcrm.Meta.prototype.getModuleInfo = function(name) {};
+ydn.crm.su.Meta.prototype.getModuleInfo = function(name) {};
 
 
 /**
  * @return {boolean} check login status.
  */
-ydn.crm.sugarcrm.Meta.prototype.isLogin = function() {};
+ydn.crm.su.Meta.prototype.isLogin = function() {};
 
 
 /**
  * Get url for contact entry of given id
- * @param {ydn.crm.sugarcrm.ModuleName} module
+ * @param {ydn.crm.su.ModuleName} module
  * @param {string} id
  * @return {string}
  */
-ydn.crm.sugarcrm.Meta.prototype.getRecordViewLink = function(module, id) {
+ydn.crm.su.Meta.prototype.getRecordViewLink = function(module, id) {
 
 };

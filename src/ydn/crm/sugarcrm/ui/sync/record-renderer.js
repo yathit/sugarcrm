@@ -49,7 +49,7 @@ ydn.crm.inj.sugar.RecordRenderer.prototype.getCssClass = function() {
  */
 ydn.crm.inj.sugar.RecordRenderer.prototype.createDom = function(x) {
   var root = goog.base(this, 'createDom', x);
-  var body = /** @type {ydn.crm.sugarcrm.ui.Record} */ (x);
+  var body = /** @type {ydn.crm.su.ui.Record} */ (x);
 
 
   return root;

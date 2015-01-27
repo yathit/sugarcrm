@@ -2,7 +2,7 @@
  * @fileoverview About this file
  */
 
-ydn.crm.sugarcrm.ui.activity.DetailPanel.DEBUG =  true;
+ydn.crm.su.ui.activity.DetailPanel.DEBUG =  true;
 ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 ydn.msg.initPipe('popup');
@@ -14,16 +14,16 @@ inj.style.maxWidth = '20em';
 var div = document.getElementById('activity-root');
 ydn.crm.shared.logger.info('activity panel test')
 
-ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
+ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
   for (var i = 0; i < models.length; i++) {
-    sugar = /** @type {ydn.crm.sugarcrm.model.GDataSugar} */ (models[i]);
+    sugar = /** @type {ydn.crm.su.model.GDataSugar} */ (models[i]);
     // console.log(sugar.getUser());
     document.getElementById('domain').textContent = sugar.getDomain();
     setTimeout(function() {
       document.getElementById('user').textContent = sugar.getUser().getId();
       document.getElementById('user-name').textContent = sugar.getUser().getLabel();
     }, 500);
-    panel = new ydn.crm.sugarcrm.ui.activity.Panel(sugar);
+    panel = new ydn.crm.su.ui.activity.Panel(sugar);
     panel.render(div);
     break;
   }

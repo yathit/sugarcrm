@@ -21,7 +21,7 @@ goog.require('ydn.crm.inj.Context');
 goog.require('ydn.crm.inj.Task');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
-goog.require('ydn.crm.sugarcrm.ui.SimpleSugarPanel');
+goog.require('ydn.crm.su.ui.SimpleSugarPanel');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.msg.Message');
@@ -185,15 +185,15 @@ ydn.crm.ui.SugarWrapperPanel.prototype.validateSugarPanels_ = function(name) {
   return df.addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
-      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
     var ac = us.getLoginEmail();
-    var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,
+    var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     if (!this.hasSugarPanel(name)) {
       // remove other sugars panel
       for (var j = this.getChildCount() - 1; j >= 0; j--) {
-        var panel = /** @type {ydn.crm.sugarcrm.ui.SimpleSugarPanel} */ (
+        var panel = /** @type {ydn.crm.su.ui.SimpleSugarPanel} */ (
             this.removeChildAt(j, true));
         panel.dispose();
         var model = panel.getModel();
@@ -210,11 +210,11 @@ ydn.crm.ui.SugarWrapperPanel.prototype.validateSugarPanels_ = function(name) {
 
 /**
  * Add sugarcrm panel as child component.
- * @param {ydn.crm.sugarcrm.model.GDataSugar} sugar
+ * @param {ydn.crm.su.model.GDataSugar} sugar
  * @protected
  */
 ydn.crm.ui.SugarWrapperPanel.prototype.addSugarPanel = function(sugar) {
-  var panel = new ydn.crm.sugarcrm.ui.SimpleSugarPanel(sugar, this.dom_);
+  var panel = new ydn.crm.su.ui.SimpleSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
   if (ydn.crm.ui.SugarWrapperPanel.DEBUG) {
     window.console.info('simple sugar panel ' + sugar.getDomain() +
@@ -225,14 +225,14 @@ ydn.crm.ui.SugarWrapperPanel.prototype.addSugarPanel = function(sugar) {
 
 /**
  * Get active sugarcrm model.
- * @return {ydn.crm.sugarcrm.model.Sugar}
+ * @return {ydn.crm.su.model.Sugar}
  */
 ydn.crm.ui.SugarWrapperPanel.prototype.getSugarModelClone = function() {
   var model = null;
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
-      var ssp = /** @type {ydn.crm.sugarcrm.ui.SimpleSugarPanel} */ (ch);
+    if (ch instanceof ydn.crm.su.ui.SimpleSugarPanel) {
+      var ssp = /** @type {ydn.crm.su.ui.SimpleSugarPanel} */ (ch);
       model = ssp.getModel();
       if (model.isLogin()) {
         return model.clone();
@@ -245,13 +245,13 @@ ydn.crm.ui.SugarWrapperPanel.prototype.getSugarModelClone = function() {
 
 /**
  * Check existence of sugarcrm instance on the panel.
- * @return {ydn.crm.sugarcrm.ui.SimpleSugarPanel}
+ * @return {ydn.crm.su.ui.SimpleSugarPanel}
  * @private
  */
 ydn.crm.ui.SugarWrapperPanel.prototype.getSugarPanel_ = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
+    if (ch instanceof ydn.crm.su.ui.SimpleSugarPanel) {
       return ch;
     }
   }
@@ -267,7 +267,7 @@ ydn.crm.ui.SugarWrapperPanel.prototype.getSugarPanel_ = function() {
 ydn.crm.ui.SugarWrapperPanel.prototype.hasSugarPanel = function(name) {
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
+    if (ch instanceof ydn.crm.su.ui.SimpleSugarPanel) {
       if (ch.getDomainName() == name) {
         return true;
       }
@@ -306,7 +306,7 @@ ydn.crm.ui.SugarWrapperPanel.prototype.updateSugarPanels = function(sugars) {
   var dfs = [];
   for (var i = this.getChildCount() - 1; i >= 0; i--) {
     var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
+    if (ch instanceof ydn.crm.su.ui.SimpleSugarPanel) {
       var domain = ch.getModel().getDomain();
       var has_it = sugars.indexOf(domain) >= 0;
       if (!has_it) {
@@ -354,7 +354,7 @@ ydn.crm.ui.SugarWrapperPanel.prototype.setVisible = function(val) {
 
 /**
  * Show record.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  * @param {string} id
  * @return {boolean} `true` if shown the record.
  */

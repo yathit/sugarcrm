@@ -22,43 +22,43 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.Group');
-goog.require('ydn.crm.sugarcrm.model.BaseGroup');
-goog.require('ydn.crm.sugarcrm.model.Field');
+goog.provide('ydn.crm.su.model.Group');
+goog.require('ydn.crm.su.model.BaseGroup');
+goog.require('ydn.crm.su.model.Field');
 
 
 
 /**
  * SugarCRM module group model composes of Field models.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @param {string} group_name
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.BaseGroup}
+ * @extends {ydn.crm.su.model.BaseGroup}
  * @struct
  */
-ydn.crm.sugarcrm.model.Group = function(parent, group_name) {
+ydn.crm.su.model.Group = function(parent, group_name) {
   goog.base(this, parent, group_name);
   /**
-   * @type {Array.<!ydn.crm.sugarcrm.model.Field>}
+   * @type {Array.<!ydn.crm.su.model.Field>}
    * @protected
    */
   this.fields = [];
 };
-goog.inherits(ydn.crm.sugarcrm.model.Group, ydn.crm.sugarcrm.model.BaseGroup);
+goog.inherits(ydn.crm.su.model.Group, ydn.crm.su.model.BaseGroup);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.Group.DEBUG = false;
+ydn.crm.su.model.Group.DEBUG = false;
 
 
 /**
  * Create a new field model if the field present in the record.
  * @param {string} name
- * @return {!ydn.crm.sugarcrm.model.Field}
+ * @return {!ydn.crm.su.model.Field}
  */
-ydn.crm.sugarcrm.model.Group.prototype.createOrGetFieldModel = function(name) {
+ydn.crm.su.model.Group.prototype.createOrGetFieldModel = function(name) {
   var f = this.getFieldModelByName(name);
   if (f) {
     return f;
@@ -71,7 +71,7 @@ ydn.crm.sugarcrm.model.Group.prototype.createOrGetFieldModel = function(name) {
     goog.asserts.assert(!field_info.group,
         name + ' not in group ' + this.group_name);
   }
-  f = new ydn.crm.sugarcrm.model.Field(this, name);
+  f = new ydn.crm.su.model.Field(this, name);
   this.fields.push(f);
   return f;
 };
@@ -80,9 +80,9 @@ ydn.crm.sugarcrm.model.Group.prototype.createOrGetFieldModel = function(name) {
 /**
  * Get field model at given index.
  * @param {string} name
- * @return {ydn.crm.sugarcrm.model.Field}
+ * @return {ydn.crm.su.model.Field}
  */
-ydn.crm.sugarcrm.model.Group.prototype.getFieldModelByName = function(name) {
+ydn.crm.su.model.Group.prototype.getFieldModelByName = function(name) {
   for (var i = 0; i < this.fields.length; i++) {
     if (this.fields[i].getFieldName() == name) {
       return this.fields[i];

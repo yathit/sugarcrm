@@ -22,47 +22,47 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.RelateGroup');
-goog.require('ydn.crm.sugarcrm.model.BaseGroup');
+goog.provide('ydn.crm.su.model.RelateGroup');
+goog.require('ydn.crm.su.model.BaseGroup');
 
 
 
 /**
  * Group model for assigned_user_name fields.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @param {string} group_name Group name.
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.BaseGroup}
+ * @extends {ydn.crm.su.model.BaseGroup}
  * @struct
  */
-ydn.crm.sugarcrm.model.RelateGroup = function(parent, group_name) {
+ydn.crm.su.model.RelateGroup = function(parent, group_name) {
   goog.base(this, parent, group_name);
 };
-goog.inherits(ydn.crm.sugarcrm.model.RelateGroup, ydn.crm.sugarcrm.model.BaseGroup);
+goog.inherits(ydn.crm.su.model.RelateGroup, ydn.crm.su.model.BaseGroup);
 
 
 /**
  * @return {string} id field id of related record.
  */
-ydn.crm.sugarcrm.model.RelateGroup.prototype.getRelateFieldId = goog.abstractMethod;
+ydn.crm.su.model.RelateGroup.prototype.getRelateFieldId = goog.abstractMethod;
 
 
 /**
  * @return {string} name field of related record.
  */
-ydn.crm.sugarcrm.model.RelateGroup.prototype.getRelateFieldName = goog.abstractMethod;
+ydn.crm.su.model.RelateGroup.prototype.getRelateFieldName = goog.abstractMethod;
 
 
 /**
- * @return {ydn.crm.sugarcrm.ModuleName} module name field of related record.
+ * @return {ydn.crm.su.ModuleName} module name field of related record.
  */
-ydn.crm.sugarcrm.model.RelateGroup.prototype.getRelateModuleName = goog.abstractMethod;
+ydn.crm.su.model.RelateGroup.prototype.getRelateModuleName = goog.abstractMethod;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.RelateGroup.prototype.hasGroupValue = function() {
+ydn.crm.su.model.RelateGroup.prototype.hasGroupValue = function() {
   return this.hasFieldValue(this.getRelateFieldId());
 };
 
@@ -70,6 +70,6 @@ ydn.crm.sugarcrm.model.RelateGroup.prototype.hasGroupValue = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.RelateGroup.prototype.getGroupValue = function() {
+ydn.crm.su.model.RelateGroup.prototype.getGroupValue = function() {
   return this.getStringValue(this.getRelateFieldName());
 };

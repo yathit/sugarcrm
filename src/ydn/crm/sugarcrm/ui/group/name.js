@@ -5,50 +5,50 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.Name');
-goog.require('ydn.crm.sugarcrm');
-goog.require('ydn.crm.sugarcrm.model.NameGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.Expander');
+goog.provide('ydn.crm.su.ui.group.Name');
+goog.require('ydn.crm.su');
+goog.require('ydn.crm.su.model.NameGroup');
+goog.require('ydn.crm.su.ui.group.Expander');
 
 
 
 /**
  * Panel for name group fields.
- * @param {ydn.crm.sugarcrm.model.NameGroup} model
+ * @param {ydn.crm.su.model.NameGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.Expander}
+ * @extends {ydn.crm.su.ui.group.Expander}
  */
-ydn.crm.sugarcrm.ui.group.Name = function(model, opt_dom) {
+ydn.crm.su.ui.group.Name = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Name, ydn.crm.sugarcrm.ui.group.Expander);
+goog.inherits(ydn.crm.su.ui.group.Name, ydn.crm.su.ui.group.Expander);
 
 
 /**
  * @define {boolean} debug flag
  */
-ydn.crm.sugarcrm.ui.group.Name.DEBUG = false;
+ydn.crm.su.ui.group.Name.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.NameGroup}
+ * @return {ydn.crm.su.model.NameGroup}
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Name.prototype.getModel;
+ydn.crm.su.ui.group.Name.prototype.getModel;
 
 
 /**
  * @protected
  * @return {*}
  */
-ydn.crm.sugarcrm.ui.group.Name.prototype.getEditorTemplateData = function() {
+ydn.crm.su.ui.group.Name.prototype.getEditorTemplateData = function() {
 
   var model = this.getModel();
   var data;
   if (model.hasField('full_name')) {
-    var sal = ydn.crm.sugarcrm.ui.field.FieldRenderer.getDataList(model.getModuleName(),
+    var sal = ydn.crm.su.ui.field.FieldRenderer.getDataList(model.getModuleName(),
         model.getFieldInfo('salutation'));
     data = [
       {
@@ -89,6 +89,6 @@ ydn.crm.sugarcrm.ui.group.Name.prototype.getEditorTemplateData = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Name.prototype.fillByMetaContact = function(meta) {
+ydn.crm.su.ui.group.Name.prototype.fillByMetaContact = function(meta) {
   throw new Error('Not impl');
 };

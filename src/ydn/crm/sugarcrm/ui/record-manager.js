@@ -4,105 +4,105 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.ModuleManager');
+goog.provide('ydn.crm.su.ui.ModuleManager');
 goog.require('goog.events.KeyHandler');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.base');
-goog.require('ydn.crm.sugarcrm');
+goog.require('ydn.crm.su');
 
 
 
 /**
  * Contact sidebar panel.
  * @param {goog.dom.DomHelper} dom
- * @param {ydn.crm.sugarcrm.model.Sugar} model
+ * @param {ydn.crm.su.model.Sugar} model
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.ModuleManager = function(dom, model) {
+ydn.crm.su.ui.ModuleManager = function(dom, model) {
   goog.base(this, dom);
   this.setModel(model);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.ModuleManager, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.ModuleManager, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.ModuleManager.DEBUG = false;
+ydn.crm.su.ui.ModuleManager.DEBUG = false;
 
 
 /**
  * @protected
  * @type {goog.debug.Logger}
  */
-ydn.crm.sugarcrm.ui.ModuleManager.prototype.logger =
-    goog.log.getLogger('ydn.crm.sugarcrm.ui.ModuleManager');
+ydn.crm.su.ui.ModuleManager.prototype.logger =
+    goog.log.getLogger('ydn.crm.su.ui.ModuleManager');
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Sugar}
+ * @return {ydn.crm.su.model.Sugar}
  * @override
  */
-ydn.crm.sugarcrm.ui.ModuleManager.prototype.getModel;
+ydn.crm.su.ui.ModuleManager.prototype.getModel;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.ModuleManager.CSS_CLASS = 'record-manager';
+ydn.crm.su.ui.ModuleManager.CSS_CLASS = 'record-manager';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.ModuleManager.CSS_CLASS_HEAD = 'head';
+ydn.crm.su.ui.ModuleManager.CSS_CLASS_HEAD = 'head';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.ModuleManager.CSS_CLASS_CONTENT = 'content';
+ydn.crm.su.ui.ModuleManager.CSS_CLASS_CONTENT = 'content';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.ModuleManager.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.ModuleManager.CSS_CLASS;
+ydn.crm.su.ui.ModuleManager.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.ModuleManager.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.ModuleManager.prototype.getContentElement = function() {
-  return this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.ModuleManager.CSS_CLASS_CONTENT);
+ydn.crm.su.ui.ModuleManager.prototype.getContentElement = function() {
+  return this.getElement().querySelector('.' + ydn.crm.su.ui.ModuleManager.CSS_CLASS_CONTENT);
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.ModuleManager.prototype.createDom = function() {
+ydn.crm.su.ui.ModuleManager.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   /**
-   * @type {ydn.crm.sugarcrm.model.Sugar}
+   * @type {ydn.crm.su.model.Sugar}
    */
   var model = this.getModel();
   var dom = this.getDomHelper();
   goog.dom.classes.add(root, this.getCssClass());
-  var head = dom.createDom('div', ydn.crm.sugarcrm.ui.ModuleManager.CSS_CLASS_HEAD);
-  var content = dom.createDom('div', ydn.crm.sugarcrm.ui.ModuleManager.CSS_CLASS_CONTENT);
+  var head = dom.createDom('div', ydn.crm.su.ui.ModuleManager.CSS_CLASS_HEAD);
+  var content = dom.createDom('div', ydn.crm.su.ui.ModuleManager.CSS_CLASS_CONTENT);
   root.appendChild(head);
   root.appendChild(content);
 
-  var search = new ydn.crm.sugarcrm.ui.SearchPanel(dom, model);
+  var search = new ydn.crm.su.ui.SearchPanel(dom, model);
   this.addChild(search, true);
 };
 
@@ -110,7 +110,7 @@ ydn.crm.sugarcrm.ui.ModuleManager.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.ModuleManager.prototype.enterDocument = function() {
+ydn.crm.su.ui.ModuleManager.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var root = this.getElement();
   var handler = this.getHandler();
@@ -123,7 +123,7 @@ ydn.crm.sugarcrm.ui.ModuleManager.prototype.enterDocument = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.ModuleManager.prototype.getDomain = function() {
+ydn.crm.su.ui.ModuleManager.prototype.getDomain = function() {
   return this.getModel().getDomain();
 };
 

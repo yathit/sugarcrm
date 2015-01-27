@@ -22,57 +22,57 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.record.Secondary');
+goog.provide('ydn.crm.su.ui.record.Secondary');
 goog.require('ydn.db.KeyRange');
 
 
 
 /**
  * Secondary record panel
- * @param {ydn.crm.sugarcrm.model.Record} model
+ * @param {ydn.crm.su.model.Record} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.record.Secondary = function(model, opt_dom) {
+ydn.crm.su.ui.record.Secondary = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.record.Secondary, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.record.Secondary, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.record.Secondary.DEBUG = false;
+ydn.crm.su.ui.record.Secondary.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Record}
+ * @return {ydn.crm.su.model.Record}
  * @override
  */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.getModel;
+ydn.crm.su.ui.record.Secondary.prototype.getModel;
 
 
 /**
  * @const
  * @type {string} CSS class name for secondary records panel.
  */
-ydn.crm.sugarcrm.ui.record.Secondary.CSS_CLASS = 'secondary';
+ydn.crm.su.ui.record.Secondary.CSS_CLASS = 'secondary';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.record.Secondary.CSS_CLASS;
+ydn.crm.su.ui.record.Secondary.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.record.Secondary.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.createDom = function() {
+ydn.crm.su.ui.record.Secondary.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   root.classList.add(this.getCssClass());
@@ -81,13 +81,13 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.createDom = function() {
 
 /**
  * Attach child to the panel.
- * @param {!ydn.crm.sugarcrm.Record} r
+ * @param {!ydn.crm.su.Record} r
  */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.attachChild = function(r) {
+ydn.crm.su.ui.record.Secondary.prototype.attachChild = function(r) {
   var sugar = this.getModel().getSugar();
-  var record_model = new ydn.crm.sugarcrm.model.Record(sugar, r);
-  var child_panel = new ydn.crm.sugarcrm.ui.record.Record(record_model, this.getDomHelper());
-  child_panel.setEnableSecondary(ydn.crm.sugarcrm.ui.record.Record.EnableSecondary.DISABLED);
+  var record_model = new ydn.crm.su.model.Record(sugar, r);
+  var child_panel = new ydn.crm.su.ui.record.Record(record_model, this.getDomHelper());
+  child_panel.setEnableSecondary(ydn.crm.su.ui.record.Record.EnableSecondary.DISABLED);
   this.addChild(child_panel, true);
 };
 
@@ -95,7 +95,7 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.attachChild = function(r) {
 /**
  * Reset
  */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.reset = function() {
+ydn.crm.su.ui.record.Secondary.prototype.reset = function() {
   this.disposeChildren();
 };
 
@@ -104,7 +104,7 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.reset = function() {
  * Remove all children and dispose them.
  * @protected
  */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.disposeChildren = function() {
+ydn.crm.su.ui.record.Secondary.prototype.disposeChildren = function() {
   while (this.hasChildren()) {
     var child = this.getChildAt(0);
     this.removeChild(child, true);
@@ -116,10 +116,10 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.disposeChildren = function() {
 /**
  * Refresh UI.
  */
-ydn.crm.sugarcrm.ui.record.Secondary.prototype.refresh = function() {
+ydn.crm.su.ui.record.Secondary.prototype.refresh = function() {
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Record}
+   * @type {ydn.crm.su.model.Record}
    */
   var model = this.getModel();
 
@@ -133,13 +133,13 @@ ydn.crm.sugarcrm.ui.record.Secondary.prototype.refresh = function() {
     this.disposeChildren();
     model.listEmbedded().addCallbacks(function(arr) {
       /**
-       * @type {ydn.crm.sugarcrm.model.Record}
+       * @type {ydn.crm.su.model.Record}
        */
       var model = this.getModel();
       for (var i = 0; i < arr.length; i++) {
         var r = /** @type {!SugarCrm.Record} */(arr[i]);
-        var mn = /** @type {ydn.crm.sugarcrm.ModuleName} */ (r._module);
-        this.attachChild(new ydn.crm.sugarcrm.Record(model.getDomain(), mn, r));
+        var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
+        this.attachChild(new ydn.crm.su.Record(model.getDomain(), mn, r));
       }
     }, function(e) {
       window.console.error(e);

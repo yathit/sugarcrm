@@ -23,7 +23,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.record.Head');
+goog.provide('ydn.crm.su.ui.record.Head');
 goog.require('goog.ui.CheckBoxMenuItem');
 goog.require('goog.ui.ColorMenuButton');
 goog.require('goog.ui.Css3ButtonRenderer');
@@ -31,14 +31,14 @@ goog.require('goog.ui.CustomButton');
 goog.require('goog.ui.ToggleButton');
 goog.require('goog.ui.Toolbar');
 goog.require('goog.ui.decorate');
-goog.require('ydn.crm.sugarcrm.ui.events');
-goog.require('ydn.crm.sugarcrm.ui.setting.Field');
+goog.require('ydn.crm.su.ui.events');
+goog.require('ydn.crm.su.ui.setting.Field');
 
 
 
 /**
  * Record header renderer.
- * @param {ydn.crm.sugarcrm.model.Record} model
+ * @param {ydn.crm.su.model.Record} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
@@ -46,7 +46,7 @@ goog.require('ydn.crm.sugarcrm.ui.setting.Field');
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @deprecated Render in Record itself.
  */
-ydn.crm.sugarcrm.ui.record.Head = function(model, opt_dom) {
+ydn.crm.su.ui.record.Head = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
 
@@ -56,101 +56,101 @@ ydn.crm.sugarcrm.ui.record.Head = function(model, opt_dom) {
    */
   this.head_visible_ = true;
 };
-goog.inherits(ydn.crm.sugarcrm.ui.record.Head, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.record.Head, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.record.Head.DEBUG = false;
+ydn.crm.su.ui.record.Head.DEBUG = false;
 
 
 /**
  * @const
  * @type {string} CSS class name for secondary records panel.
  */
-ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS = 'record-header';
+ydn.crm.su.ui.record.Head.CSS_CLASS = 'record-header';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_TITLE = 'title';
+ydn.crm.su.ui.record.Head.CSS_CLASS_TITLE = 'title';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_ICON = 'icon';
+ydn.crm.su.ui.record.Head.CSS_CLASS_ICON = 'icon';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_SYNCED = 'synced';
+ydn.crm.su.ui.record.Head.CSS_CLASS_SYNCED = 'synced';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_EDIT = 'edit-button';
+ydn.crm.su.ui.record.Head.CSS_CLASS_EDIT = 'edit-button';
 
 
 /**
  * @const
  * @type {string} CSS class name for viewing record.
  */
-ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_NEW_ITEM = 'new-item';
+ydn.crm.su.ui.record.Head.CSS_CLASS_NEW_ITEM = 'new-item';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_ACTIVATED = 'activated';
+ydn.crm.su.ui.record.Head.CSS_CLASS_ACTIVATED = 'activated';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.Head.NAME_DETAIL = 'detail';
+ydn.crm.su.ui.record.Head.NAME_DETAIL = 'detail';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_SELECT_FIELD = 'select-field';
+ydn.crm.su.ui.record.Head.CSS_CLASS_SELECT_FIELD = 'select-field';
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Record}
+ * @return {ydn.crm.su.model.Record}
  * @override
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.getModel;
+ydn.crm.su.ui.record.Head.prototype.getModel;
 
 
 /**
  * @protected
  * @type {goog.debug.Logger}
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.logger =
-    goog.log.getLogger('ydn.crm.sugarcrm.ui.record.Head');
+ydn.crm.su.ui.record.Head.prototype.logger =
+    goog.log.getLogger('ydn.crm.su.ui.record.Head');
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.createDom = function() {
+ydn.crm.su.ui.record.Head.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var dom = this.getDomHelper();
   /**
-   * @type {ydn.crm.sugarcrm.model.Record}
+   * @type {ydn.crm.su.model.Record}
    */
   var model = this.getModel();
   var m_name = model.getModuleName();
@@ -158,15 +158,15 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.createDom = function() {
   var ele_content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
 
   var title = dom.createDom('a', {
-    'class': ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_TITLE,
+    'class': ydn.crm.su.ui.record.Head.CSS_CLASS_TITLE,
     'title': 'Open in SugarCRM'
   });
 
-  var icon = dom.createDom('span', ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_ICON,
-      ydn.crm.sugarcrm.toModuleSymbol(m_name));
+  var icon = dom.createDom('span', ydn.crm.su.ui.record.Head.CSS_CLASS_ICON,
+      ydn.crm.su.toModuleSymbol(m_name));
 
   var option_svg = ydn.crm.ui.createSvgIcon('pencil');
-  var option = dom.createDom('div', ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_EDIT,
+  var option = dom.createDom('div', ydn.crm.su.ui.record.Head.CSS_CLASS_EDIT,
       option_svg);
   option.classList.add('svg-button');
 
@@ -176,7 +176,7 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.createDom = function() {
   ele_header.appendChild(option);
 
   var root = this.getElement();
-  root.classList.add(ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS);
+  root.classList.add(ydn.crm.su.ui.record.Head.CSS_CLASS);
   root.appendChild(ele_header);
   root.appendChild(ele_content);
 
@@ -186,11 +186,11 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.enterDocument = function() {
+ydn.crm.su.ui.record.Head.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   goog.style.setElementShown(this.getHeadElement(), this.head_visible_);
   var hd = this.getHandler();
-  var edit_ele = this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_EDIT);
+  var edit_ele = this.getElement().querySelector('.' + ydn.crm.su.ui.record.Head.CSS_CLASS_EDIT);
   hd.listen(edit_ele, goog.events.EventType.CLICK, this.handleEditClick, false);
 
   // toolbar handlers are listen in showToolbar method.
@@ -201,7 +201,7 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.enterDocument = function() {
  * Show toolbar, if not renderred, it will be render.
  * @protected
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.showToolbar = function() {
+ydn.crm.su.ui.record.Head.prototype.showToolbar = function() {
   var toolbar = this.getChildAt(0);
   if (toolbar) {
     goog.style.setElementShown(this.getContentElement(), true);
@@ -209,7 +209,7 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.showToolbar = function() {
   }
   toolbar = new goog.ui.Toolbar(undefined, undefined, this.getDomHelper());
   /**
-   * @type {ydn.crm.sugarcrm.model.Record}
+   * @type {ydn.crm.su.model.Record}
    */
   var model = this.getModel();
   var m_name = model.getModuleName();
@@ -217,8 +217,8 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.showToolbar = function() {
   // new record
   var new_record = new goog.ui.Select('New');
   new_record.setTooltip('Create a new record');
-  for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
-    var name = ydn.crm.sugarcrm.CacheModules[i];
+  for (var i = 0; i < ydn.crm.su.CacheModules.length; i++) {
+    var name = ydn.crm.su.CacheModules[i];
     var item = new goog.ui.Option(name);
     new_record.addItem(item);
   }
@@ -232,11 +232,11 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.showToolbar = function() {
   for (var name in module_info.module_fields) {
     var field = module_info.module_fields[name];
     var group = field.group;
-    var setting_model = new ydn.crm.sugarcrm.ui.setting.Field(field);
+    var setting_model = new ydn.crm.su.ui.setting.Field(field);
     if (group) {
       if (groups.indexOf(group) == -1) {
         groups.push(group);
-        setting_model = new ydn.crm.sugarcrm.ui.setting.Group(group);
+        setting_model = new ydn.crm.su.ui.setting.Group(group);
       } else {
         continue;
       }
@@ -275,26 +275,26 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.showToolbar = function() {
 /**
  * @param {goog.events.Event} e
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.onSave = function(e) {
-  this.dispatchEvent(ydn.crm.sugarcrm.ui.events.Type.SAVE);
+ydn.crm.su.ui.record.Head.prototype.onSave = function(e) {
+  this.dispatchEvent(ydn.crm.su.ui.events.Type.SAVE);
 };
 
 
 /**
  * @param {goog.events.Event} e
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.handleDisplayMenuAction = function(e) {
+ydn.crm.su.ui.record.Head.prototype.handleDisplayMenuAction = function(e) {
 
   if (e.target instanceof goog.ui.CheckBoxMenuItem) {
     var item = /** @type {goog.ui.CheckBoxMenuItem} */ (e.target);
-    var model = /** @type {!ydn.crm.sugarcrm.ui.setting.Setting} */ (item.getModel());
+    var model = /** @type {!ydn.crm.su.ui.setting.Setting} */ (item.getModel());
     var old_val = model.getNormallyHide();
     var new_val = !old_val;
     model.setNormallyHide(new_val);
-    var sce = new ydn.crm.sugarcrm.ui.events.SettingChangeEvent(model,
+    var sce = new ydn.crm.su.ui.events.SettingChangeEvent(model,
         ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE, new_val);
     this.dispatchEvent(sce);
-    if (ydn.crm.sugarcrm.ui.record.Head.DEBUG) {
+    if (ydn.crm.su.ui.record.Head.DEBUG) {
       window.console.log('action', model, new_val);
     }
     e.preventDefault();
@@ -307,10 +307,10 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.handleDisplayMenuAction = function(e) 
  * Change edit mode.
  * @param {goog.events.Event} e
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.handleEditClick = function(e) {
+ydn.crm.su.ui.record.Head.prototype.handleEditClick = function(e) {
   var btn = e.currentTarget;
   var is_active = btn.classList.contains(ydn.crm.ui.CSS_CLASS_ACTIVE);
-  this.dispatchEvent(new ydn.crm.sugarcrm.ui.events.EditEvent(!is_active));
+  this.dispatchEvent(new ydn.crm.su.ui.events.EditEvent(!is_active));
 };
 
 
@@ -318,8 +318,8 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.handleEditClick = function(e) {
  * Change edit mode.
  * @param {boolean} val
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.setEditMode = function(val) {
-  var btn = this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_EDIT);
+ydn.crm.su.ui.record.Head.prototype.setEditMode = function(val) {
+  var btn = this.getElement().querySelector('.' + ydn.crm.su.ui.record.Head.CSS_CLASS_EDIT);
   if (val) {
     btn.classList.add(ydn.crm.ui.CSS_CLASS_ACTIVE);
     this.showToolbar();
@@ -333,21 +333,21 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.setEditMode = function(val) {
 /**
  * Reset UI for new model.
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.reset = function() {
+ydn.crm.su.ui.record.Head.prototype.reset = function() {
   var root = this.getElement();
   var show_annotate_ui = this.getModel().isPeople();
   var new_btns = this.getElement().querySelectorAll('.' +
-      ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_NEW_ITEM);
+      ydn.crm.su.ui.record.Head.CSS_CLASS_NEW_ITEM);
   for (var i = new_btns.length - 1; i >= 0; i--) {
     goog.style.setElementShown(new_btns[i], show_annotate_ui);
   }
   var record = this.getModel();
   var m_name = record.getModuleName();
-  if (ydn.crm.sugarcrm.ui.record.Head.DEBUG) {
+  if (ydn.crm.su.ui.record.Head.DEBUG) {
     window.console.log('HeadRenderer:reset:' + m_name + ':' + record);
   }
   var header = this.getHeadElement();
-  var icon = goog.dom.getElementByClass(ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_ICON,
+  var icon = goog.dom.getElementByClass(ydn.crm.su.ui.record.Head.CSS_CLASS_ICON,
       header);
   icon.textContent = m_name.substring(0, 2);
 
@@ -370,14 +370,14 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.reset = function() {
 
 /**
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.refresh = function() {
+ydn.crm.su.ui.record.Head.prototype.refresh = function() {
   /**
-   * @type {ydn.crm.sugarcrm.model.Record}
+   * @type {ydn.crm.su.model.Record}
    */
   var record = this.getModel();
   var m_name = record.getModuleName();
   var ele_title = this.getTitleElement();
-  if (ydn.crm.sugarcrm.ui.record.Head.DEBUG) {
+  if (ydn.crm.su.ui.record.Head.DEBUG) {
     window.console.log('HeadRenderer:refresh:' + m_name + ':' + record);
   }
   if (record.hasRecord()) {
@@ -394,7 +394,7 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.refresh = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.getContentElement = function() {
+ydn.crm.su.ui.record.Head.prototype.getContentElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
 };
 
@@ -402,7 +402,7 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.getContentElement = function() {
 /**
  * @return {Element}
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.getHeadElement = function() {
+ydn.crm.su.ui.record.Head.prototype.getHeadElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD);
 };
 
@@ -410,15 +410,15 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.getHeadElement = function() {
 /**
  * @return {Element}
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.getTitleElement = function() {
-  return this.getElement().querySelector('.' + ydn.crm.sugarcrm.ui.record.Head.CSS_CLASS_TITLE);
+ydn.crm.su.ui.record.Head.prototype.getTitleElement = function() {
+  return this.getElement().querySelector('.' + ydn.crm.su.ui.record.Head.CSS_CLASS_TITLE);
 };
 
 
 /**
  * @return {?goog.ui.Toolbar}
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.getToolbar = function() {
+ydn.crm.su.ui.record.Head.prototype.getToolbar = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
     if (child instanceof goog.ui.Toolbar) {
@@ -432,7 +432,7 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.getToolbar = function() {
 /**
  * @return {?goog.ui.Button}
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.getSaveButton = function() {
+ydn.crm.su.ui.record.Head.prototype.getSaveButton = function() {
   var toolbar = this.getToolbar();
   if (!toolbar) {
     return null;
@@ -444,7 +444,7 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.getSaveButton = function() {
 /**
  * @param {boolean} val
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.setHeadVisible = function(val) {
+ydn.crm.su.ui.record.Head.prototype.setHeadVisible = function(val) {
   this.head_visible_ = !!val;
   if (this.isInDocument()) {
     goog.style.setElementShown(this.getHeadElement(), this.head_visible_);
@@ -456,11 +456,11 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.setHeadVisible = function(val) {
  * Set record content dirty so that save button is enable.
  * @param {boolean} val
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.setDirty = function(val) {
+ydn.crm.su.ui.record.Head.prototype.setDirty = function(val) {
   var save_btn = this.getSaveButton();
   if (save_btn) {
     save_btn.setEnabled(val);
-  } else if (ydn.crm.sugarcrm.ui.record.Head.DEBUG) {
+  } else if (ydn.crm.su.ui.record.Head.DEBUG) {
     window.console.warn('No toolbar to set dirty');
   }
 };
@@ -469,7 +469,7 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.setDirty = function(val) {
 /**
  * @return {goog.ui.Select}
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.getNewRecord = function() {
+ydn.crm.su.ui.record.Head.prototype.getNewRecord = function() {
   var toolbar = this.getToolbar();
   goog.asserts.assert(toolbar, 'Toolbar not ready');
   return /** @type {goog.ui.Select} */ (toolbar.getChildAt(0));
@@ -480,10 +480,10 @@ ydn.crm.sugarcrm.ui.record.Head.prototype.getNewRecord = function() {
  * @protected
  * @param {goog.events.Event} e
  */
-ydn.crm.sugarcrm.ui.record.Head.prototype.onNewRecordSelect = function(e) {
+ydn.crm.su.ui.record.Head.prototype.onNewRecordSelect = function(e) {
   var select = this.getNewRecord();
-  var m_name = /** @type {ydn.crm.sugarcrm.ModuleName} */ (select.getValue());
-  this.dispatchEvent(new ydn.crm.sugarcrm.ui.events.NewRecord(m_name));
+  var m_name = /** @type {ydn.crm.su.ModuleName} */ (select.getValue());
+  this.dispatchEvent(new ydn.crm.su.ui.events.NewRecord(m_name));
 };
 
 

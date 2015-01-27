@@ -11,11 +11,11 @@ NameJsTest.prototype.setUp = function() {
 
 /**
  * @param {Object} obj
- * @return {ydn.crm.sugarcrm.model.NameGroup}
+ * @return {ydn.crm.su.model.NameGroup}
  */
 NameJsTest.prototype.makeNameGroup = function(obj) {
   var record = ydn.crm.test.createContactRecord(null, obj);
-  return /** @type {ydn.crm.sugarcrm.model.NameGroup} */ (record.getGroupModel('name'));
+  return /** @type {ydn.crm.su.model.NameGroup} */ (record.getGroupModel('name'));
 };
 
 

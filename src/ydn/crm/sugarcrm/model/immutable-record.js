@@ -22,10 +22,10 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.ImmutableRecord');
+goog.provide('ydn.crm.su.model.ImmutableRecord');
 
-goog.require('ydn.crm.sugarcrm.Record');
-goog.require('ydn.crm.sugarcrm.model.Record');
+goog.require('ydn.crm.su.Record');
+goog.require('ydn.crm.su.model.Record');
 
 
 
@@ -35,46 +35,46 @@ goog.require('ydn.crm.sugarcrm.model.Record');
  * <pre>
  *   var module = sugar.getModuleModel();
  * </pre>
- * @param {ydn.crm.sugarcrm.model.Sugar} parent
- * @param {ydn.crm.sugarcrm.ModuleName} module_name
+ * @param {ydn.crm.su.model.Sugar} parent
+ * @param {ydn.crm.su.ModuleName} module_name
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.Record}
+ * @extends {ydn.crm.su.model.Record}
  * @struct
  */
-ydn.crm.sugarcrm.model.ImmutableRecord = function(parent, module_name) {
-  var r = new ydn.crm.sugarcrm.Record(parent.getDomain(), module_name);
+ydn.crm.su.model.ImmutableRecord = function(parent, module_name) {
+  var r = new ydn.crm.su.Record(parent.getDomain(), module_name);
   goog.base(this, parent, r);
 
   /**
    * @final
    * @protected
-   * @type {ydn.crm.sugarcrm.ModuleName}
+   * @type {ydn.crm.su.ModuleName}
    */
   this.module_name = module_name;
 
 };
-goog.inherits(ydn.crm.sugarcrm.model.ImmutableRecord, ydn.crm.sugarcrm.model.Record);
+goog.inherits(ydn.crm.su.model.ImmutableRecord, ydn.crm.su.model.Record);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.ImmutableRecord.DEBUG = false;
+ydn.crm.su.model.ImmutableRecord.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.ModuleName}
+ * @return {ydn.crm.su.ModuleName}
  */
-ydn.crm.sugarcrm.model.ImmutableRecord.prototype.getModuleName = function() {
+ydn.crm.su.model.ImmutableRecord.prototype.getModuleName = function() {
   return this.module_name;
 };
 
 
 /**
  * Set sugarcrm record. This will dispatch ModuleRecordChangeEvent.
- * @param {ydn.crm.sugarcrm.Record} record sugarcrm record entry.
+ * @param {ydn.crm.su.Record} record sugarcrm record entry.
  */
-ydn.crm.sugarcrm.model.ImmutableRecord.prototype.setRecord = function(record) {
+ydn.crm.su.model.ImmutableRecord.prototype.setRecord = function(record) {
   // check valid record.
   if (record && record.getModule() != this.module_name) {
     throw new Error('Module name must be ' + this.module_name + ' but found ' +
@@ -88,8 +88,8 @@ if (goog.DEBUG) {
   /**
    * @inheritDoc
    */
-  ydn.crm.sugarcrm.model.ImmutableRecord.prototype.toString = function() {
-    return 'ydn.crm.sugarcrm.model.ImmutableRecord:' + this.module_name +
+  ydn.crm.su.model.ImmutableRecord.prototype.toString = function() {
+    return 'ydn.crm.su.model.ImmutableRecord:' + this.module_name +
         (this.record ? ':' + this.record : '');
   };
 }

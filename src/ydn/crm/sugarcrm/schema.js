@@ -21,8 +21,8 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.Schema');
-goog.require('ydn.crm.sugarcrm.History');
+goog.provide('ydn.crm.su.Schema');
+goog.require('ydn.crm.su.History');
 goog.require('ydn.db.Storage');
 goog.require('ydn.db.crud.Storage.text');
 goog.require('ydn.string');
@@ -36,7 +36,7 @@ goog.require('ydn.string');
  * @param {Object} user_data user setting data.
  * @constructor
  */
-ydn.crm.sugarcrm.Schema = function(name, info, user_data) {
+ydn.crm.su.Schema = function(name, info, user_data) {
   /**
    * @protected
    * @final
@@ -68,7 +68,7 @@ ydn.crm.sugarcrm.Schema = function(name, info, user_data) {
  * @const
  * @type {Object}
  */
-ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
+ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Accounts': {
     'FullTextIndex': {
       'name': ['name']
@@ -201,8 +201,8 @@ ydn.crm.sugarcrm.Schema.DEFAULT_SETTING = {
  * @param {string} name
  * @return {Object}
  */
-ydn.crm.sugarcrm.Schema.prototype.getSetting = function(name) {
-  return this.setting_data[name] || ydn.crm.sugarcrm.Schema.DEFAULT_SETTING[name] || {};
+ydn.crm.su.Schema.prototype.getSetting = function(name) {
+  return this.setting_data[name] || ydn.crm.su.Schema.DEFAULT_SETTING[name] || {};
 };
 
 
@@ -212,7 +212,7 @@ ydn.crm.sugarcrm.Schema.prototype.getSetting = function(name) {
  * @return {Object}
  * @protected
  */
-ydn.crm.sugarcrm.Schema.prototype.getGeneratorIndex = function(name) {
+ydn.crm.su.Schema.prototype.getGeneratorIndex = function(name) {
   var setting = this.getSetting(name);
   return setting['GeneratorIndex'] || {};
 };
@@ -225,7 +225,7 @@ ydn.crm.sugarcrm.Schema.prototype.getGeneratorIndex = function(name) {
  * @return {IndexSchema?}
  * @protected
  */
-ydn.crm.sugarcrm.Schema.prototype.buildGeneratorIndex = function(fields, index) {
+ydn.crm.su.Schema.prototype.buildGeneratorIndex = function(fields, index) {
   if (index == 'ydn$emails') {
     return /** @type {IndexSchema} */ (/** @type {Object} */ ({
       name: index,
@@ -295,7 +295,7 @@ ydn.crm.sugarcrm.Schema.prototype.buildGeneratorIndex = function(fields, index) 
  * @param {string} module_name
  * @return {StoreSchema}
  */
-ydn.crm.sugarcrm.Schema.prototype.getStoreSchema = function(module_name) {
+ydn.crm.su.Schema.prototype.getStoreSchema = function(module_name) {
   if (this.schema) {
     for (var i = 0; i < this.schema.stores.length; i++) {
       if (this.schema.stores[i].name == module_name) {
@@ -342,7 +342,7 @@ ydn.crm.sugarcrm.Schema.prototype.getStoreSchema = function(module_name) {
  * @param {string} ft_name
  * @return {string}
  */
-ydn.crm.sugarcrm.Schema.makeFullTextStoreName = function(module_name, ft_name) {
+ydn.crm.su.Schema.makeFullTextStoreName = function(module_name, ft_name) {
   return 'ft-' + module_name + '-' + ft_name;
 };
 
@@ -351,18 +351,18 @@ ydn.crm.sugarcrm.Schema.makeFullTextStoreName = function(module_name, ft_name) {
  * Get YDN-DB database schema.
  * @return {DatabaseSchema}
  */
-ydn.crm.sugarcrm.Schema.prototype.getSchema = function() {
+ydn.crm.su.Schema.prototype.getSchema = function() {
   if (this.schema) {
     return this.schema;
   }
 
   var schema = {
     fullTextCatalogs: [],
-    stores: [ydn.crm.sugarcrm.History.getSchema(), {
+    stores: [ydn.crm.su.History.getSchema(), {
       name: 'Meta'
     }]
   };
-  var stores = ydn.crm.sugarcrm.CacheModules;
+  var stores = ydn.crm.su.CacheModules;
   for (var i = 0; i < stores.length; i++) {
     var module_name = stores[i];
     schema.stores.push(this.getStoreSchema(module_name));
@@ -372,7 +372,7 @@ ydn.crm.sugarcrm.Schema.prototype.getSchema = function() {
       for (var ft_name in ss['FullTextIndex']) {
         var ft_sources = ss['FullTextIndex'][ft_name];
         if (ft_sources.length > 0) {
-          var ft_store_name = ydn.crm.sugarcrm.Schema.makeFullTextStoreName(module_name, ft_name);
+          var ft_store_name = ydn.crm.su.Schema.makeFullTextStoreName(module_name, ft_name);
           var fullTextCatalog = /** @type {FullTextCatalog} */ (/** @type {Object} */ ({
             name: ft_store_name,
             lang: 'en',

@@ -3,7 +3,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.field.FieldRenderer');
+goog.provide('ydn.crm.su.ui.field.FieldRenderer');
 goog.require('goog.dom.TagName');
 goog.require('goog.dom.forms');
 goog.require('ydn.ui.FlyoutMenu');
@@ -16,70 +16,70 @@ goog.require('ydn.ui.FlyoutMenu');
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer = function() {
+ydn.crm.su.ui.field.FieldRenderer = function() {
 
 };
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.field.FieldRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.field.FieldRenderer);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.DEBUG = false;
+ydn.crm.su.ui.field.FieldRenderer.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY = 'empty';
+ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY = 'empty';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE = 'value';
+ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE = 'value';
 
 
 /**
  * @const
  * @type {string} button show on hover.
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON = 'hover-button';
+ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON = 'hover-button';
 
 
 /**
  * @const
  * @type {string} trash icon button for deleting field value.
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_ACTION_DETAIL = 'detail-field';
+ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_ACTION_DETAIL = 'detail-field';
 
 
 /**
  * @const
  * @type {string} trash icon button for deleting field value.
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_ACTION_DELETE = 'delete-field';
+ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_ACTION_DELETE = 'delete-field';
 
 
 /**
  * @const
  * @type {string} confirm again for deleting field value
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_CONFIRM = 'confirm';
+ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_CONFIRM = 'confirm';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS = 'field';
+ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS = 'field';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS;
+ydn.crm.su.ui.field.FieldRenderer.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS;
 };
 
 
@@ -87,7 +87,7 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.getCssClass = function() {
  * A quick UID.
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.UID = 'ydnf-';
+ydn.crm.su.ui.field.FieldRenderer.UID = 'ydnf-';
 
 
 /**
@@ -96,9 +96,9 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.UID = 'ydnf-';
  * @param {SugarCrm.ModuleField} mf field info.
  * @return {?string} datalist id, null if field info is does not have option list.
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.getDataList = function(mn, mf) {
-  var id = ydn.crm.sugarcrm.ui.field.FieldRenderer.UID +
-      ydn.crm.sugarcrm.model.Field.getFieldId(mn, mf.name);
+ydn.crm.su.ui.field.FieldRenderer.getDataList = function(mn, mf) {
+  var id = ydn.crm.su.ui.field.FieldRenderer.UID +
+      ydn.crm.su.model.Field.getFieldId(mn, mf.name);
   if (mf.options) {
     if (!document.getElementById(id)) {
       var datalist = document.createElement('datalist');
@@ -120,13 +120,13 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.getDataList = function(mn, mf) {
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.field.Field} field
+ * @param {ydn.crm.su.ui.field.Field} field
  * @return {Element}
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.createDom = function(field) {
+ydn.crm.su.ui.field.FieldRenderer.prototype.createDom = function(field) {
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Field}
+   * @type {ydn.crm.su.model.Field}
    */
   var model = field.getModel();
   var dom = field.getDomHelper();
@@ -140,12 +140,12 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.createDom = function(field) {
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.field.Field} ctrl controller.
+ * @param {ydn.crm.su.ui.field.Field} ctrl controller.
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
+ydn.crm.su.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
   var ele_field = ctrl.getElement();
   /**
-   * @type {ydn.crm.sugarcrm.model.Field}
+   * @type {ydn.crm.su.model.Field}
    */
   var model = ctrl.getModel();
   goog.style.setElementShown(ele_field, !!model);
@@ -154,7 +154,7 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
   }
   var value = model.getStringValue();
   ele_field.textContent = value;
-  if (ydn.crm.sugarcrm.ui.field.FieldRenderer.DEBUG) {
+  if (ydn.crm.su.ui.field.FieldRenderer.DEBUG) {
     window.console.log(model.getFieldName(), model.getType(), value);
   }
   var label = model.getLabel();
@@ -166,9 +166,9 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
 
   var is_def = model.hasFieldValue();
   if (is_def) {
-    ele_field.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    ele_field.classList.remove(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   } else {
-    ele_field.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    ele_field.classList.add(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   }
 
   if (!model.getGroupName() && ctrl.getSetting().getNormallyHide()) {
@@ -181,10 +181,10 @@ ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
 
 /**
  * Collect data.
- * @param {ydn.crm.sugarcrm.ui.field.Field} ctrl
+ * @param {ydn.crm.su.ui.field.Field} ctrl
  * @return {*} return value of the element.
  */
-ydn.crm.sugarcrm.ui.field.FieldRenderer.prototype.collectValue = function(ctrl) {
+ydn.crm.su.ui.field.FieldRenderer.prototype.collectValue = function(ctrl) {
   var ele = ctrl.getContentElement();
   return ele.textContent;
 };

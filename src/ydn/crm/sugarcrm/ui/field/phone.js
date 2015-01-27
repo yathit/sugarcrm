@@ -22,29 +22,29 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.field.Phone');
-goog.require('ydn.crm.sugarcrm.ui.field.Field');
+goog.provide('ydn.crm.su.ui.field.Phone');
+goog.require('ydn.crm.su.ui.field.Field');
 
 
 
 /**
  * Panel for listed items.
- * @param {ydn.crm.sugarcrm.model.PhoneField} model
+ * @param {ydn.crm.su.model.PhoneField} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.field.Field}
+ * @extends {ydn.crm.su.ui.field.Field}
  */
-ydn.crm.sugarcrm.ui.field.Phone = function(model, opt_dom) {
-  var renderer = ydn.crm.sugarcrm.ui.field.InputFieldRenderer.getInstance();
+ydn.crm.su.ui.field.Phone = function(model, opt_dom) {
+  var renderer = ydn.crm.su.ui.field.InputFieldRenderer.getInstance();
   goog.base(this, model, renderer, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.field.Phone, ydn.crm.sugarcrm.ui.field.Field);
+goog.inherits(ydn.crm.su.ui.field.Phone, ydn.crm.su.ui.field.Field);
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.PhoneField}
+ * @return {ydn.crm.su.model.PhoneField}
  * @override
  */
-ydn.crm.sugarcrm.ui.field.Phone.prototype.getModel;
+ydn.crm.su.ui.field.Phone.prototype.getModel;
 

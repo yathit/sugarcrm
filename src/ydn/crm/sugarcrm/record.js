@@ -22,8 +22,8 @@
 
 
 
-goog.provide('ydn.crm.sugarcrm.Record');
-goog.require('ydn.crm.sugarcrm');
+goog.provide('ydn.crm.su.Record');
+goog.require('ydn.crm.su');
 
 
 
@@ -31,12 +31,12 @@ goog.require('ydn.crm.sugarcrm');
  * SugarCRM Record wrapper object.
  * @param {string} domain SugarCRM instance identifier as domain name,
  * eg: "fjochv4737.trial.sugarcrm.eu".
- * @param {ydn.crm.sugarcrm.ModuleName} module
+ * @param {ydn.crm.su.ModuleName} module
  * @param {SugarCrm.Record=} opt_obj name SugarCRM record entry.
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.Record = function(domain, module, opt_obj) {
+ydn.crm.su.Record = function(domain, module, opt_obj) {
   /**
    * @final
    * @type {string}
@@ -45,7 +45,7 @@ ydn.crm.sugarcrm.Record = function(domain, module, opt_obj) {
   /**
    * @final
    * @protected
-   * @type {ydn.crm.sugarcrm.ModuleName}
+   * @type {ydn.crm.su.ModuleName}
    */
   this.module = module;
 
@@ -55,14 +55,14 @@ ydn.crm.sugarcrm.Record = function(domain, module, opt_obj) {
    * @type {!SugarCrm.Record}
    */
   this.obj = opt_obj || /** @type {!SugarCrm.Record} */ ({});
-  // this.key_path = module == ydn.crm.sugarcrm.ModuleName.EMAIL_TEXT ? 'email_id' : 'id';
+  // this.key_path = module == ydn.crm.su.ModuleName.EMAIL_TEXT ? 'email_id' : 'id';
 };
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.Record.DEBUG = false;
+ydn.crm.su.Record.DEBUG = false;
 
 
 /**
@@ -70,7 +70,7 @@ ydn.crm.sugarcrm.Record.DEBUG = false;
  * @final
  * @type {string}
  */
-ydn.crm.sugarcrm.Record.prototype.key_path = 'id';
+ydn.crm.su.Record.prototype.key_path = 'id';
 
 
 /**
@@ -78,7 +78,7 @@ ydn.crm.sugarcrm.Record.prototype.key_path = 'id';
  * @return {boolean} return record has valid record id.
  * @see #hasData to check existence of data.
  */
-ydn.crm.sugarcrm.Record.prototype.isNew = function() {
+ydn.crm.su.Record.prototype.isNew = function() {
   return !this.obj[this.key_path];
 };
 
@@ -88,7 +88,7 @@ ydn.crm.sugarcrm.Record.prototype.isNew = function() {
  * @see #hasData to check existence of data.
  * @deprecated use #isNew instead
  */
-ydn.crm.sugarcrm.Record.prototype.hasRecord = function() {
+ydn.crm.su.Record.prototype.hasRecord = function() {
   return !this.isNew();
 };
 
@@ -97,7 +97,7 @@ ydn.crm.sugarcrm.Record.prototype.hasRecord = function() {
  * @return {boolean} return record has any data.
  * @see #hasRecord to check valid record.
  */
-ydn.crm.sugarcrm.Record.prototype.hasData = function() {
+ydn.crm.su.Record.prototype.hasData = function() {
   return Object.keys(this.obj).length > 0;
 };
 
@@ -105,15 +105,15 @@ ydn.crm.sugarcrm.Record.prototype.hasData = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.Record.prototype.getDomain = function() {
+ydn.crm.su.Record.prototype.getDomain = function() {
   return this.domain;
 };
 
 
 /**
- * @return {ydn.crm.sugarcrm.ModuleName}
+ * @return {ydn.crm.su.ModuleName}
  */
-ydn.crm.sugarcrm.Record.prototype.getModule = function() {
+ydn.crm.su.Record.prototype.getModule = function() {
   return this.module;
 };
 
@@ -121,7 +121,7 @@ ydn.crm.sugarcrm.Record.prototype.getModule = function() {
 /**
  * @return {!SugarCrm.Record}
  */
-ydn.crm.sugarcrm.Record.prototype.getData = function() {
+ydn.crm.su.Record.prototype.getData = function() {
   return this.obj;
 };
 
@@ -131,9 +131,9 @@ ydn.crm.sugarcrm.Record.prototype.getData = function() {
  * @param {?SugarCrm.Record} obj if obj is specify, it must have a valid id.
  * To set empty record, use null value, i.e, setData(null);.
  */
-ydn.crm.sugarcrm.Record.prototype.setData = function(obj) {
+ydn.crm.su.Record.prototype.setData = function(obj) {
   if (obj) {
-    if (ydn.crm.sugarcrm.Record.DEBUG && !obj[this.key_path]) {
+    if (ydn.crm.su.Record.DEBUG && !obj[this.key_path]) {
       window.console.log(obj);
     }
     goog.asserts.assertString(obj[this.key_path], 'id missing in record');
@@ -146,7 +146,7 @@ ydn.crm.sugarcrm.Record.prototype.setData = function(obj) {
  * Merge data.
  * @param {SugarCrm.Record} obj
  */
-ydn.crm.sugarcrm.Record.prototype.updateData = function(obj) {
+ydn.crm.su.Record.prototype.updateData = function(obj) {
   if (obj) {
     if (!this.obj) {
       this.obj = /** @type {!SugarCrm.Record} */ (/** @type {Object} */ ({}));
@@ -162,9 +162,9 @@ ydn.crm.sugarcrm.Record.prototype.updateData = function(obj) {
  * @return {string}
  * @throws assertion if id not set.
  */
-ydn.crm.sugarcrm.Record.prototype.getId = function() {
+ydn.crm.su.Record.prototype.getId = function() {
   var id = this.obj[this.key_path];
-  if (ydn.crm.sugarcrm.Record.DEBUG && !id) {
+  if (ydn.crm.su.Record.DEBUG && !id) {
     window.console.log(this.obj);
   }
   goog.asserts.assert(id, 'getting empty id of a record');
@@ -176,9 +176,9 @@ ydn.crm.sugarcrm.Record.prototype.getId = function() {
  * Get record modified date.
  * @return {number}
  */
-ydn.crm.sugarcrm.Record.prototype.getUpdated = function() {
+ydn.crm.su.Record.prototype.getUpdated = function() {
   if (this.obj) {
-    return +ydn.crm.sugarcrm.utils.parseDate(this.obj['date_modified']);
+    return +ydn.crm.su.utils.parseDate(this.obj['date_modified']);
   } else {
     return NaN;
   }
@@ -189,10 +189,10 @@ ydn.crm.sugarcrm.Record.prototype.getUpdated = function() {
  * Get deadline.
  * @return {Date}
  */
-ydn.crm.sugarcrm.Record.prototype.getDeadline = function() {
+ydn.crm.su.Record.prototype.getDeadline = function() {
   if (this.obj) {
-    var field = ydn.crm.sugarcrm.Record.getFieldNameForDeadline(this.module);
-    return ydn.crm.sugarcrm.utils.parseDate(this.obj[field]);
+    var field = ydn.crm.su.Record.getFieldNameForDeadline(this.module);
+    return ydn.crm.su.utils.parseDate(this.obj[field]);
   } else {
     return new Date('NaN');
   }
@@ -201,25 +201,25 @@ ydn.crm.sugarcrm.Record.prototype.getDeadline = function() {
 
 /**
  * Return index name for determining deadline.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  * @return {string}
  */
-ydn.crm.sugarcrm.Record.getIndexForDeadline = function(m_name) {
-  return 'assigned_user_id, ' + ydn.crm.sugarcrm.Record.getFieldNameForDeadline(m_name);
+ydn.crm.su.Record.getIndexForDeadline = function(m_name) {
+  return 'assigned_user_id, ' + ydn.crm.su.Record.getFieldNameForDeadline(m_name);
 };
 
 
 /**
  * Return field name for determining deadline.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.ModuleName} m_name
  * @return {string}
  */
-ydn.crm.sugarcrm.Record.getFieldNameForDeadline = function(m_name) {
-  if (m_name == ydn.crm.sugarcrm.ModuleName.TASKS) {
+ydn.crm.su.Record.getFieldNameForDeadline = function(m_name) {
+  if (m_name == ydn.crm.su.ModuleName.TASKS) {
     return 'date_due';
-  } else if (m_name == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
+  } else if (m_name == ydn.crm.su.ModuleName.OPPORTUNITIES) {
     return 'date_closed';
-  } else if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
+  } else if (m_name == ydn.crm.su.ModuleName.CASES) {
     return 'date_modified';
   } else {
     return 'date_start';
@@ -230,10 +230,10 @@ ydn.crm.sugarcrm.Record.getFieldNameForDeadline = function(m_name) {
 /**
  * Return noun form of the module.
  * Eg: `Contacts` return as `Contact`.
- * @param {ydn.crm.sugarcrm.ModuleName} name
+ * @param {ydn.crm.su.ModuleName} name
  * @return {string}
  */
-ydn.crm.sugarcrm.Record.moduleAsNoun = function(name) {
+ydn.crm.su.Record.moduleAsNoun = function(name) {
   return name.replace(/ies$/, 'y').replace(/s$/, '');
 };
 
@@ -241,17 +241,17 @@ ydn.crm.sugarcrm.Record.moduleAsNoun = function(name) {
 /**
  * Return verb form of the module.
  * Eg: `Meetings` return as `Meet`, `Opportinities` return 'Close'.
- * @param {ydn.crm.sugarcrm.ModuleName} name
+ * @param {ydn.crm.su.ModuleName} name
  * @return {string}
  */
-ydn.crm.sugarcrm.Record.moduleAsVerb = function(name) {
-  if (name == ydn.crm.sugarcrm.ModuleName.CALLS) {
+ydn.crm.su.Record.moduleAsVerb = function(name) {
+  if (name == ydn.crm.su.ModuleName.CALLS) {
     return 'call';
-  } else if (name == ydn.crm.sugarcrm.ModuleName.TASKS) {
+  } else if (name == ydn.crm.su.ModuleName.TASKS) {
     return 'finish';
-  } else if (name == ydn.crm.sugarcrm.ModuleName.MEETINGS) {
+  } else if (name == ydn.crm.su.ModuleName.MEETINGS) {
     return 'meet';
-  } else if (name == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
+  } else if (name == ydn.crm.su.ModuleName.OPPORTUNITIES) {
     return 'close';
   } else {
     return 'do';
@@ -263,7 +263,7 @@ ydn.crm.sugarcrm.Record.moduleAsVerb = function(name) {
  * Get suitable title of this record.
  * @return {string}
  */
-ydn.crm.sugarcrm.Record.prototype.getLabel = function() {
+ydn.crm.su.Record.prototype.getLabel = function() {
   if (!this.obj) {
     return '';
   }
@@ -287,7 +287,7 @@ ydn.crm.sugarcrm.Record.prototype.getLabel = function() {
  * List of field names.
  * @return {Array.<string>}
  */
-ydn.crm.sugarcrm.Record.prototype.names = function() {
+ydn.crm.su.Record.prototype.names = function() {
   return Object.keys(this.obj);
 };
 
@@ -295,15 +295,15 @@ ydn.crm.sugarcrm.Record.prototype.names = function() {
 /**
  * @typedef {(!Array|string|boolean|undefined)}
  */
-ydn.crm.sugarcrm.RecordValue;
+ydn.crm.su.RecordValue;
 
 
 /**
  * Get record field value.
  * @param {string} name
- * @return {ydn.crm.sugarcrm.RecordValue}
+ * @return {ydn.crm.su.RecordValue}
  */
-ydn.crm.sugarcrm.Record.prototype.value = function(name) {
+ydn.crm.su.Record.prototype.value = function(name) {
   return this.obj[name];
 };
 
@@ -313,7 +313,7 @@ ydn.crm.sugarcrm.Record.prototype.value = function(name) {
  * @param {string} name field name
  * @return {?string} a string field value.
  */
-ydn.crm.sugarcrm.Record.prototype.getStringValue = function(name) {
+ydn.crm.su.Record.prototype.getStringValue = function(name) {
   var s = this.obj[name];
   return /** @type {?string} */ (goog.isString(s) ? s : null);
 };
@@ -324,7 +324,7 @@ ydn.crm.sugarcrm.Record.prototype.getStringValue = function(name) {
  * @return {boolean} `true` if record schema has valid field value.
  * @see {#hasValue}
  */
-ydn.crm.sugarcrm.Record.prototype.hasField = function(name) {
+ydn.crm.su.Record.prototype.hasField = function(name) {
   // todo: should use schema.
   return this.obj.hasOwnProperty(name);
 };
@@ -335,7 +335,7 @@ ydn.crm.sugarcrm.Record.prototype.hasField = function(name) {
  * @return {boolean} `true` if field value is define and not null.
  * @see {#hasField}
  */
-ydn.crm.sugarcrm.Record.prototype.hasValue = function(name) {
+ydn.crm.su.Record.prototype.hasValue = function(name) {
   return goog.isDefAndNotNull(this.obj[name]);
 };
 
@@ -346,7 +346,7 @@ ydn.crm.sugarcrm.Record.prototype.hasValue = function(name) {
  * @param {string} name
  * @param {*} value
  */
-ydn.crm.sugarcrm.Record.prototype.setValue = function(name, value) {
+ydn.crm.su.Record.prototype.setValue = function(name, value) {
   if (!this.obj) {
     this.obj = /** @type {!SugarCrm.Record} */ (/** @type {Object} */({}));
   }
@@ -357,7 +357,7 @@ ydn.crm.sugarcrm.Record.prototype.setValue = function(name, value) {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.Record.prototype.toJSON = function() {
+ydn.crm.su.Record.prototype.toJSON = function() {
   return {
     'domain': this.domain,
     'module': this.module,
@@ -372,7 +372,7 @@ ydn.crm.sugarcrm.Record.prototype.toJSON = function() {
  * @return {!Array<string>}
  * @see getEmail
  */
-ydn.crm.sugarcrm.Record.getEmails = function(record) {
+ydn.crm.su.Record.getEmails = function(record) {
   var emails = [];
   if (record['email1']) {
     emails.push(record['email1']);
@@ -399,7 +399,7 @@ ydn.crm.sugarcrm.Record.getEmails = function(record) {
  * @return {string} empty string if no email.
  * @see #getEmails
  */
-ydn.crm.sugarcrm.Record.getEmail = function(record) {
+ydn.crm.su.Record.getEmail = function(record) {
   if (record['email1']) {
     return record['email1'];
   }
@@ -416,10 +416,10 @@ ydn.crm.sugarcrm.Record.getEmail = function(record) {
 /**
  * Deserialize JSON object.
  * @param {!Object} json
- * @return {!ydn.crm.sugarcrm.Record}
+ * @return {!ydn.crm.su.Record}
  */
-ydn.crm.sugarcrm.Record.fromJSON = function(json) {
-  return new ydn.crm.sugarcrm.Record(json['domain'], json['module'], json['obj']);
+ydn.crm.su.Record.fromJSON = function(json) {
+  return new ydn.crm.su.Record(json['domain'], json['module'], json['obj']);
 };
 
 
@@ -427,7 +427,7 @@ if (goog.DEBUG) {
   /**
    * @inheritDoc
    */
-  ydn.crm.sugarcrm.Record.prototype.toString = function() {
+  ydn.crm.su.Record.prototype.toString = function() {
     var id = this.obj ? this.obj[this.key_path] : undefined;
     return 'Record:' + this.module + ':' + id;
   };

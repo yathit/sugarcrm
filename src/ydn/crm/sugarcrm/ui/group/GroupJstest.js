@@ -15,7 +15,7 @@ GroupUiJsTest.prototype.test_email_edit = function(queue) {
 
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('email');
-  var panel = new ydn.crm.sugarcrm.ui.group.Email(group);
+  var panel = new ydn.crm.su.ui.group.Email(group);
   panel.render(document.body);
   panel.simulateEditByField('email', 'abc@example.com');
 
@@ -30,7 +30,7 @@ GroupUiJsTest.prototype.test_phone_edit = function(queue) {
 
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('phone');
-  var panel = new ydn.crm.sugarcrm.ui.group.Phone(group);
+  var panel = new ydn.crm.su.ui.group.Phone(group);
   panel.render(document.body);
   panel.simulateEditByField('phone_home', '12345678');
 

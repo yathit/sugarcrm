@@ -1,10 +1,10 @@
-goog.provide('ydn.crm.sugarcrm.model.FieldTest');
-goog.setTestOnly('ydn.crm.sugarcrm.model.FieldTest');
+goog.provide('ydn.crm.su.model.FieldTest');
+goog.setTestOnly('ydn.crm.su.model.FieldTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.model.Record');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.require('ydn.crm.su.model.Record');
+goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.test');
 
 

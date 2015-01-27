@@ -6,22 +6,22 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.Expander');
+goog.provide('ydn.crm.su.ui.group.Expander');
 goog.require('goog.ui.Dialog');
-goog.require('ydn.crm.sugarcrm.model.Group');
-goog.require('ydn.crm.sugarcrm.ui.group.Group');
+goog.require('ydn.crm.su.model.Group');
+goog.require('ydn.crm.su.ui.group.Group');
 
 
 
 /**
  * A group controller with expendable edit panel.
- * @param {ydn.crm.sugarcrm.model.Group} model
+ * @param {ydn.crm.su.model.Group} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.Group}
+ * @extends {ydn.crm.su.ui.group.Group}
  */
-ydn.crm.sugarcrm.ui.group.Expander = function(model, opt_dom) {
+ydn.crm.su.ui.group.Expander = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
   /**
    * Patch object on edit.
@@ -35,31 +35,31 @@ ydn.crm.sugarcrm.ui.group.Expander = function(model, opt_dom) {
    */
   this.keyHandler = null;
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Expander, ydn.crm.sugarcrm.ui.group.Group);
+goog.inherits(ydn.crm.su.ui.group.Expander, ydn.crm.su.ui.group.Group);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.group.Expander.DEBUG = false;
+ydn.crm.su.ui.group.Expander.DEBUG = false;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.createDom = function() {
+ydn.crm.su.ui.group.Expander.prototype.createDom = function() {
   goog.base(this, 'createDom');
 
   var header = this.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER);
-  header.classList.add(ydn.crm.sugarcrm.ui.group.Expander.CSS_CLASS);
+      ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER);
+  header.classList.add(ydn.crm.su.ui.group.Expander.CSS_CLASS);
   var dom = this.getDomHelper();
   var model = this.getModel();
   // model should not be null, but here make it robust while in DOM creation.
   var ed = model ? model.isGroupValueEditable() : false;
   var tag = ed ? 'input' : 'span';
   var label = dom.createDom(tag,
-      ydn.crm.sugarcrm.ui.group.Expander.CSS_HEADER_LABEL);
+      ydn.crm.su.ui.group.Expander.CSS_HEADER_LABEL);
   if (ed) {
     label.setAttribute('type', 'text');
     label.setAttribute('placeholder', model.getGroupLabel());
@@ -80,21 +80,21 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.createDom = function() {
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.group.Expander.CSS_CLASS = 'expander';
+ydn.crm.su.ui.group.Expander.CSS_CLASS = 'expander';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.group.Expander.CSS_HEADER_LABEL = 'header-label';
+ydn.crm.su.ui.group.Expander.CSS_HEADER_LABEL = 'header-label';
 
 
 /**
  * Hide or show expander.
  * @param {boolean} val
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.expand = function(val) {
+ydn.crm.su.ui.group.Expander.prototype.expand = function(val) {
   var content = this.getElement().querySelector('.' +
       ydn.crm.ui.CSS_CLASS_CONTENT);
   goog.style.setElementShown(content, val);
@@ -121,17 +121,17 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.expand = function(val) {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.enterDocument = function() {
+ydn.crm.su.ui.group.Expander.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var btn = this.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' .' +
+      ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' .' +
       ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
   this.getHandler().listen(btn, 'click', this.onExpandClick_);
   var input = this.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
+      ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
   if (input) {
     var header = this.getElement().querySelector('.' +
-        ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER);
+        ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER);
     header.classList.add('field-like');
     this.getHandler().listen(input, 'blur', this.onLabelChanged);
     this.keyHandler = new goog.events.KeyHandler(input);
@@ -144,7 +144,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.enterDocument = function() {
  * @param {goog.events.KeyEvent} k
  * @private
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.onInputKey_ = function(k) {
+ydn.crm.su.ui.group.Expander.prototype.onInputKey_ = function(k) {
   if (k.keyCode == goog.events.KeyCodes.ENTER) {
     this.onLabelChanged(k);
   }
@@ -155,14 +155,14 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.onInputKey_ = function(k) {
  * @param {goog.events.Event} ev
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.onLabelChanged = function(ev) {
+ydn.crm.su.ui.group.Expander.prototype.onLabelChanged = function(ev) {
 
   var model = this.getModel();
   var input = this.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
+      ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
   var patch = model.setGroupValue(input.value);
   if (patch) {
-    var ce = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patch, this);
+    var ce = new ydn.crm.su.ui.events.ChangedEvent(patch, this);
     this.dispatchEvent(ce);
     if (!ce.defaultPrevented) {
       if (!this.patches) {
@@ -178,7 +178,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.onLabelChanged = function(ev) {
  * @param {goog.events.Event} ev
  * @private
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.onExpandClick_ = function(ev) {
+ydn.crm.su.ui.group.Expander.prototype.onExpandClick_ = function(ev) {
   this.expand(!this.isExpanded());
 };
 
@@ -186,7 +186,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.onExpandClick_ = function(ev) {
 /**
  * @return {boolean}
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.isExpanded = function() {
+ydn.crm.su.ui.group.Expander.prototype.isExpanded = function() {
   var content = this.getElement().querySelector('.' +
       ydn.crm.ui.CSS_CLASS_CONTENT);
   return goog.style.isElementShown(content);
@@ -197,17 +197,17 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.isExpanded = function() {
  * @protected
  * @return {Element} could be input or span.
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.getHeaderLabel = function() {
+ydn.crm.su.ui.group.Expander.prototype.getHeaderLabel = function() {
   return this.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' .' +
-      ydn.crm.sugarcrm.ui.group.Expander.CSS_HEADER_LABEL);
+      ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' .' +
+      ydn.crm.su.ui.group.Expander.CSS_HEADER_LABEL);
 };
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.refresh = function() {
+ydn.crm.su.ui.group.Expander.prototype.refresh = function() {
   goog.base(this, 'refresh');
   var label = this.getHeaderLabel();
   var value = this.isExpanded() ? 'Edit name' : this.getModel().getGroupValue();
@@ -222,7 +222,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.refresh = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.reset = function() {
+ydn.crm.su.ui.group.Expander.prototype.reset = function() {
   goog.base(this, 'reset');
   this.expand(false);
   var label = this.getHeaderLabel();
@@ -233,7 +233,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.reset = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.disposeInternal = function() {
+ydn.crm.su.ui.group.Expander.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
   if (this.keyHandler) {
     this.keyHandler.dispose();
@@ -245,7 +245,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.disposeInternal = function() {
 /**
 * @inheritDoc
 */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.collectData = function() {
+ydn.crm.su.ui.group.Expander.prototype.collectData = function() {
   var out = goog.base(this, 'collectData');
   if (this.patches) {
     var new_out = {};
@@ -268,7 +268,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.collectData = function() {
 /**
 * @inheritDoc
 */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.hasChanged = function() {
+ydn.crm.su.ui.group.Expander.prototype.hasChanged = function() {
   if (this.patches) {
     return true;
   }
@@ -279,7 +279,7 @@ ydn.crm.sugarcrm.ui.group.Expander.prototype.hasChanged = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Expander.prototype.getPatch = function() {
+ydn.crm.su.ui.group.Expander.prototype.getPatch = function() {
   var out = goog.base(this, 'getPatch');
   if (this.patches) {
     var new_out = {};

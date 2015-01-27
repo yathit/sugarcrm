@@ -17,7 +17,7 @@
  *
  */
 
-goog.provide('ydn.crm.sugarcrm.ui.widget.RichInputHandler');
+goog.provide('ydn.crm.su.ui.widget.RichInputHandler');
 
 goog.require('goog.ui.ac.InputHandler');
 
@@ -26,7 +26,7 @@ goog.require('goog.ui.ac.InputHandler');
 /**
  * Class for managing the interaction between an autocomplete object and a
  * text-input or textarea.
- * @param {ydn.crm.sugarcrm.Meta} meta
+ * @param {ydn.crm.su.Meta} meta
  * @param {?string=} opt_separators Seperators to split multiple entries.
  * @param {?string=} opt_literals Characters used to delimit text literals.
  * @param {?boolean=} opt_multi Whether to allow multiple entries
@@ -36,17 +36,17 @@ goog.require('goog.ui.ac.InputHandler');
  * @constructor
  * @extends {goog.ui.ac.InputHandler}
  */
-ydn.crm.sugarcrm.ui.widget.RichInputHandler = function(meta, opt_separators,
+ydn.crm.su.ui.widget.RichInputHandler = function(meta, opt_separators,
     opt_literals, opt_multi, opt_throttleTime) {
   goog.ui.ac.InputHandler.call(this, opt_separators, opt_literals,
       opt_multi, opt_throttleTime);
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.Meta}
+   * @type {ydn.crm.su.Meta}
    */
   this.meta = meta;
 };
-goog.inherits(ydn.crm.sugarcrm.ui.widget.RichInputHandler, goog.ui.ac.InputHandler);
+goog.inherits(ydn.crm.su.ui.widget.RichInputHandler, goog.ui.ac.InputHandler);
 
 
 /**
@@ -55,8 +55,8 @@ goog.inherits(ydn.crm.sugarcrm.ui.widget.RichInputHandler, goog.ui.ac.InputHandl
  * @return {boolean} Whether to suppress the update event.
  * @override
  */
-ydn.crm.sugarcrm.ui.widget.RichInputHandler.prototype.selectRow = function(row) {
-  var suppressUpdate = ydn.crm.sugarcrm.ui.widget.RichInputHandler.superClass_
+ydn.crm.su.ui.widget.RichInputHandler.prototype.selectRow = function(row) {
+  var suppressUpdate = ydn.crm.su.ui.widget.RichInputHandler.superClass_
       .selectRow.call(this, row);
   var input = this.ac_.getTarget();
   var record = /** @type {SugarCrm.Record} */(row);
@@ -65,7 +65,7 @@ ydn.crm.sugarcrm.ui.widget.RichInputHandler.prototype.selectRow = function(row) 
   input.setAttribute('data-name', record.name);
   var a = input.nextElementSibling;
   if (a.tagName == 'A' && record._module) {
-    var mn = /** @type {ydn.crm.sugarcrm.ModuleName} */(record._module);
+    var mn = /** @type {ydn.crm.su.ModuleName} */(record._module);
     a.href = this.meta.getRecordViewLink(mn, record.id);
     goog.style.setElementShown(a, true);
   }

@@ -1,10 +1,10 @@
-goog.provide('ydn.crm.sugarcrm.ui.group.ExpanderTest');
-goog.setTestOnly('ydn.crm.sugarcrm.ui.group.ExpanderTest');
+goog.provide('ydn.crm.su.ui.group.ExpanderTest');
+goog.setTestOnly('ydn.crm.su.ui.group.ExpanderTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
-goog.require('ydn.crm.sugarcrm.ui.group.Name');
+goog.require('ydn.crm.su.model.Sugar');
+goog.require('ydn.crm.su.ui.group.Name');
 goog.require('ydn.crm.test');
 
 var attach_el = document.getElementById('attach-el');
@@ -22,7 +22,7 @@ function test_name_edit() {
 
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('name');
-  var panel = new ydn.crm.sugarcrm.ui.group.Name(group);
+  var panel = new ydn.crm.su.ui.group.Name(group);
   panel.render(attach_el);
   panel.simulateEditByField('first_name', 'Kyaw');
 
@@ -34,7 +34,7 @@ function test_name_edit() {
 
 var editGroupLabel = function(panel, label) {
   var input = panel.getElement().querySelector('.' +
-      ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
+      ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
   input.value = label;
   panel.onLabelChanged(new goog.events.Event('blur'));
 };
@@ -43,7 +43,7 @@ function test_input_change() {
 
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('name');
-  var panel = new ydn.crm.sugarcrm.ui.group.Name(group);
+  var panel = new ydn.crm.su.ui.group.Name(group);
   panel.render(attach_el);
   editGroupLabel(panel, 'Kyaw Tun');
   assertTrue('edited', panel.hasChanged());
@@ -53,7 +53,7 @@ function test_patch_by_group_label() {
 
   var record = ydn.crm.test.createContactRecord();
   var group = record.getGroupModel('name');
-  var panel = new ydn.crm.sugarcrm.ui.group.Name(group);
+  var panel = new ydn.crm.su.ui.group.Name(group);
   panel.render(attach_el);
   editGroupLabel(panel, 'Kyaw Tun');
   var data = panel.getPatch();
@@ -65,7 +65,7 @@ function test_collect_by_group_label() {
 
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('name');
-  var panel = new ydn.crm.sugarcrm.ui.group.Name(group);
+  var panel = new ydn.crm.su.ui.group.Name(group);
   panel.render(attach_el);
   editGroupLabel(panel, 'Kyaw Tun');
   var data = panel.collectData();

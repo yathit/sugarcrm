@@ -18,7 +18,7 @@
  *
  * New record creation panel is displayed when search event received but
  * there is no existing data in SugarCRM or Gmail contact.
- * This component listen @see {ydn.crm.sugarcrm.model.events.ContextChangeEvent}
+ * This component listen @see {ydn.crm.su.model.events.ContextChangeEvent}
  * from the model for user interaction.
  *
  * This panel does not have search UI.
@@ -27,53 +27,53 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.NewRecord');
-goog.require('ydn.crm.sugarcrm.ui.record.Record');
+goog.provide('ydn.crm.su.ui.NewRecord');
+goog.require('ydn.crm.su.ui.record.Record');
 
 
 
 /**
  * New record create panel.
- * @param {ydn.crm.sugarcrm.model.Record} model
+ * @param {ydn.crm.su.model.Record} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.record.Record}
+ * @extends {ydn.crm.su.ui.record.Record}
  */
-ydn.crm.sugarcrm.ui.NewRecord = function(model, opt_dom) {
+ydn.crm.su.ui.NewRecord = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.NewRecord, ydn.crm.sugarcrm.ui.record.Record);
+goog.inherits(ydn.crm.su.ui.NewRecord, ydn.crm.su.ui.record.Record);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.NewRecord.DEBUG = false;
+ydn.crm.su.ui.NewRecord.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.NewRecord.CSS_CLASS = 'new-record';
+ydn.crm.su.ui.NewRecord.CSS_CLASS = 'new-record';
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.NewRecord.prototype.getCssClass = function() {
-  return goog.base(this, 'getCssClass') + ' ' + ydn.crm.sugarcrm.ui.NewRecord.CSS_CLASS;
+ydn.crm.su.ui.NewRecord.prototype.getCssClass = function() {
+  return goog.base(this, 'getCssClass') + ' ' + ydn.crm.su.ui.NewRecord.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.NewRecord.prototype.enterDocument = function() {
+ydn.crm.su.ui.NewRecord.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var model = this.getModel();
-  this.getHandler().listen(model.parent, ydn.crm.sugarcrm.model.events.Type.CONTEXT_CHANGE,
+  this.getHandler().listen(model.parent, ydn.crm.su.model.events.Type.CONTEXT_CHANGE,
       this.onContextChange_);
   this.setEditMode(true);
 };
@@ -81,14 +81,14 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.enterDocument = function() {
 
 /**
  * @private
- * @param {ydn.crm.sugarcrm.model.events.ContextChangeEvent} e
+ * @param {ydn.crm.su.model.events.ContextChangeEvent} e
  */
-ydn.crm.sugarcrm.ui.NewRecord.prototype.onContextChange_ = function(e) {
+ydn.crm.su.ui.NewRecord.prototype.onContextChange_ = function(e) {
   var model = this.getModel();
   if (e.record || e.gdata) {
     // hide this new record creation panel.
     goog.style.setElementShown(this.getElement(), false);
-    if (ydn.crm.sugarcrm.ui.NewRecord.DEBUG) {
+    if (ydn.crm.su.ui.NewRecord.DEBUG) {
       var ms = e.record ? ' record' : ' ';
       if (e.gdata) {
         ms += ' gdata';
@@ -97,7 +97,7 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.onContextChange_ = function(e) {
     }
   } else {
 
-    var record = new ydn.crm.sugarcrm.Record(model.getDomain(), model.getModuleName());
+    var record = new ydn.crm.su.Record(model.getDomain(), model.getModuleName());
     model.setRecord(record);
     this.setEditMode(true);
     if (e.context && e.context.kind == ydn.crm.inj.Context.Kind.SEARCH) {
@@ -110,13 +110,13 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.onContextChange_ = function(e) {
       this.simulateEdit(patch);
       this.socialFill(e.context);
       goog.style.setElementShown(this.getElement(), true);
-      if (ydn.crm.sugarcrm.ui.NewRecord.DEBUG) {
+      if (ydn.crm.su.ui.NewRecord.DEBUG) {
         window.console.info(this + ' show on context change for ' +
             (email || full_name));
       }
     } else {
       goog.style.setElementShown(this.getElement(), false);
-      if (ydn.crm.sugarcrm.ui.NewRecord.DEBUG) {
+      if (ydn.crm.su.ui.NewRecord.DEBUG) {
         if (!e.context) {
           window.console.info(this + ' hiding on context change for null context');
         } else {
@@ -132,7 +132,7 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.onContextChange_ = function(e) {
  * Update UI inputs with social data.
  * @param {?ydn.crm.inj.Context} context
  */
-ydn.crm.sugarcrm.ui.NewRecord.prototype.socialFill = function(context) {
+ydn.crm.su.ui.NewRecord.prototype.socialFill = function(context) {
   if (!context || !context.getEmail()) {
     return;
   }
@@ -156,15 +156,15 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.socialFill = function(context) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.NewRecord.prototype.getNewModuleList = function() {
-  return ydn.crm.sugarcrm.EDITABLE_MODULES;
+ydn.crm.su.ui.NewRecord.prototype.getNewModuleList = function() {
+  return ydn.crm.su.EDITABLE_MODULES;
 };
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.NewRecord.prototype.getDuplicateModuleList = function() {
+ydn.crm.su.ui.NewRecord.prototype.getDuplicateModuleList = function() {
   return [];
 };
 
@@ -172,7 +172,7 @@ ydn.crm.sugarcrm.ui.NewRecord.prototype.getDuplicateModuleList = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.NewRecord.prototype.setEditMode = function(val) {
+ydn.crm.su.ui.NewRecord.prototype.setEditMode = function(val) {
   goog.base(this, 'setEditMode', true);
 };
 
@@ -180,7 +180,7 @@ if (goog.DEBUG) {
   /**
    * @override
    */
-  ydn.crm.sugarcrm.ui.NewRecord.prototype.toString = function() {
+  ydn.crm.su.ui.NewRecord.prototype.toString = function() {
     return 'NewRecord';
   };
 }

@@ -25,14 +25,14 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ContextWidget');
+goog.provide('ydn.crm.su.ContextWidget');
 goog.require('goog.async.Delay');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.gmail.ComposeObserver');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.Template');
-goog.require('ydn.crm.sugarcrm.model.GDataSugar');
-goog.require('ydn.crm.sugarcrm.ui.ContextSugarPanel');
+goog.require('ydn.crm.su.model.GDataSugar');
+goog.require('ydn.crm.su.ui.ContextSugarPanel');
 goog.require('ydn.gmail.Utils');
 
 
@@ -40,7 +40,7 @@ goog.require('ydn.gmail.Utils');
 /**
  * Context sidebar widget rendered inside context container.
  * <pre>
- *   var widget = new ydn.crm.sugarcrm.ContextWidget(gob, cob);
+ *   var widget = new ydn.crm.su.ContextWidget(gob, cob);
  *   widget.render(el);
  * </pre>
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
@@ -51,7 +51,7 @@ goog.require('ydn.gmail.Utils');
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ContextWidget = function(gmail_observer, observer, opt_dom) {
+ydn.crm.su.ContextWidget = function(gmail_observer, observer, opt_dom) {
   goog.base(this, opt_dom);
 
   /**
@@ -76,7 +76,7 @@ ydn.crm.sugarcrm.ContextWidget = function(gmail_observer, observer, opt_dom) {
       ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
       this.onGmailContextEvent_);
 };
-goog.inherits(ydn.crm.sugarcrm.ContextWidget, goog.ui.Component);
+goog.inherits(ydn.crm.su.ContextWidget, goog.ui.Component);
 
 
 /**
@@ -84,7 +84,7 @@ goog.inherits(ydn.crm.sugarcrm.ContextWidget, goog.ui.Component);
  * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
  * @private
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.onGmailContextEvent_ = function(e) {
+ydn.crm.su.ContextWidget.prototype.onGmailContextEvent_ = function(e) {
 
   this.updateForNewContact(e.context);
 
@@ -94,22 +94,22 @@ ydn.crm.sugarcrm.ContextWidget.prototype.onGmailContextEvent_ = function(e) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ContextWidget.DEBUG = false;
+ydn.crm.su.ContextWidget.DEBUG = false;
 
 
 /**
  * @type {boolean}
  * @private
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.show_toolbar_ = false;
+ydn.crm.su.ContextWidget.prototype.show_toolbar_ = false;
 
 
 /**
  * @protected
  * @type {goog.log.Logger}
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.logger =
-    goog.log.getLogger('ydn.crm.sugarcrm.ContextWidget');
+ydn.crm.su.ContextWidget.prototype.logger =
+    goog.log.getLogger('ydn.crm.su.ContextWidget');
 
 
 /**
@@ -117,46 +117,46 @@ ydn.crm.sugarcrm.ContextWidget.prototype.logger =
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ContextWidget.ID_EMAILS = 'all-emails';
+ydn.crm.su.ContextWidget.ID_EMAILS = 'all-emails';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_TRAGET = 'target-email';
+ydn.crm.su.ContextWidget.CSS_CLASS_TRAGET = 'target-email';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
+ydn.crm.su.ContextWidget.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_NO_SUGAR_PANEL = 'no-sugar-panel';
+ydn.crm.su.ContextWidget.CSS_CLASS_NO_SUGAR_PANEL = 'no-sugar-panel';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ContextWidget.CSS_CLASS = 'context-sidebar';
+ydn.crm.su.ContextWidget.CSS_CLASS = 'context-sidebar';
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
+ydn.crm.su.ContextWidget.prototype.createDom = function() {
   goog.base(this, 'createDom');
   // status bar
   var root = this.getElement();
   var dom = this.getDomHelper();
-  root.classList.add(ydn.crm.sugarcrm.ContextWidget.CSS_CLASS);
+  root.classList.add(ydn.crm.su.ContextWidget.CSS_CLASS);
   var header = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(header);
@@ -165,11 +165,11 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
   // render header
 
   var no_sugar_login = dom.createDom('div',
-      ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_NO_SUGAR_PANEL);
+      ydn.crm.su.ContextWidget.CSS_CLASS_NO_SUGAR_PANEL);
   var a = dom.createElement('a');
   a.textContent = 'Setup SugarCRM';
   a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
-  a.className = ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_SUGAR_SETUP_LINK + ' maia-button blue';
+  a.className = ydn.crm.su.ContextWidget.CSS_CLASS_SUGAR_SETUP_LINK + ' maia-button blue';
   a.setAttribute('data-window-height', '600');
   a.setAttribute('data-window-width', '800');
   no_sugar_login.appendChild(a);
@@ -180,11 +180,11 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
   // toolbar
   var toolbar = dom.createDom('div', 'toolbar flex-bar');
   goog.style.setElementShown(toolbar,
-      ydn.crm.sugarcrm.ContextWidget.prototype.show_toolbar_);
+      ydn.crm.su.ContextWidget.prototype.show_toolbar_);
 
   var emails_list = dom.createDom('input',
-      ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_TRAGET);
-  emails_list.setAttribute('list', ydn.crm.sugarcrm.ContextWidget.ID_EMAILS);
+      ydn.crm.su.ContextWidget.CSS_CLASS_TRAGET);
+  emails_list.setAttribute('list', ydn.crm.su.ContextWidget.ID_EMAILS);
   toolbar.appendChild(emails_list);
 
   var svg_search = ydn.crm.ui.createSvgIcon('search');
@@ -193,9 +193,9 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
   toolbar.appendChild(search);
   header.appendChild(toolbar);
 
-  if (!document.getElementById(ydn.crm.sugarcrm.ContextWidget.ID_EMAILS)) {
+  if (!document.getElementById(ydn.crm.su.ContextWidget.ID_EMAILS)) {
     var list = document.createElement('datalist');
-    list.id = ydn.crm.sugarcrm.ContextWidget.ID_EMAILS;
+    list.id = ydn.crm.su.ContextWidget.ID_EMAILS;
     document.body.appendChild(list);
   }
 };
@@ -204,7 +204,7 @@ ydn.crm.sugarcrm.ContextWidget.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.enterDocument = function() {
+ydn.crm.su.ContextWidget.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var handler = this.getHandler();
   var head = this.getElement().querySelector('.toolbar');
@@ -220,8 +220,8 @@ ydn.crm.sugarcrm.ContextWidget.prototype.enterDocument = function() {
 /**
  * @param {ydn.crm.gmail.GmailObserver.PageChangeEvent} e
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.onGmailPageChanged = function(e) {
-  if (ydn.crm.sugarcrm.ContextWidget.DEBUG) {
+ydn.crm.su.ContextWidget.prototype.onGmailPageChanged = function(e) {
+  if (ydn.crm.su.ContextWidget.DEBUG) {
     window.console.info(e.page_type);
   }
   if (e.page_type == ydn.gmail.Utils.GmailViewState.EMAIL) {
@@ -234,8 +234,8 @@ ydn.crm.sugarcrm.ContextWidget.prototype.onGmailPageChanged = function(e) {
  * @param {goog.events.Event} e
  * @protected
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.onSearch = function(e) {
-  var target = this.getElement().querySelector('input.' + ydn.crm.sugarcrm.ContextWidget.CSS_CLASS_TRAGET);
+ydn.crm.su.ContextWidget.prototype.onSearch = function(e) {
+  var target = this.getElement().querySelector('input.' + ydn.crm.su.ContextWidget.CSS_CLASS_TRAGET);
   var value = target.value;
   var email = value.indexOf('@') > 0 ? value : undefined;
   var name = !email ? value : undefined;
@@ -250,9 +250,9 @@ ydn.crm.sugarcrm.ContextWidget.prototype.onSearch = function(e) {
 /**
  * @protected
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.updateEmailDataList = function() {
+ydn.crm.su.ContextWidget.prototype.updateEmailDataList = function() {
   var emails = ydn.gmail.Utils.sniffAllEmailsInDocument();
-  var list = document.getElementById(ydn.crm.sugarcrm.ContextWidget.ID_EMAILS);
+  var list = document.getElementById(ydn.crm.su.ContextWidget.ID_EMAILS);
   list.innerHTML = '';
   for (var i = 0; i < emails.length; i++) {
     var option = document.createElement('option');
@@ -265,7 +265,7 @@ ydn.crm.sugarcrm.ContextWidget.prototype.updateEmailDataList = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.disposeInternal = function() {
+ydn.crm.su.ContextWidget.prototype.disposeInternal = function() {
   this.email_list_updator_.dispose();
   this.email_list_updator_ = null;
   goog.base(this, 'disposeInternal');
@@ -273,9 +273,9 @@ ydn.crm.sugarcrm.ContextWidget.prototype.disposeInternal = function() {
 
 
 /**
- * @param {?ydn.crm.sugarcrm.model.GDataSugar} sugar
+ * @param {?ydn.crm.su.model.GDataSugar} sugar
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.setSugarCrm = function(sugar) {
+ydn.crm.su.ContextWidget.prototype.setSugarCrm = function(sugar) {
 
   var ex_panel = this.getSugarPanel_();
   if (ex_panel) {
@@ -286,7 +286,7 @@ ydn.crm.sugarcrm.ContextWidget.prototype.setSugarCrm = function(sugar) {
     this.removeChild(ex_panel, true);
     ex_panel.dispose();
     ex_model.dispose();
-    if (ydn.crm.sugarcrm.ContextWidget.DEBUG) {
+    if (ydn.crm.su.ContextWidget.DEBUG) {
       window.console.info('Existing sugar panel disposed.');
     }
     this.gmail_template_.dispose();
@@ -300,9 +300,9 @@ ydn.crm.sugarcrm.ContextWidget.prototype.setSugarCrm = function(sugar) {
   this.gmail_template_ = new ydn.crm.gmail.Template(sugar);
   this.gmail_template_.setObserver(this.compose_observer_);
 
-  var panel = new ydn.crm.sugarcrm.ui.ContextSugarPanel(sugar, this.dom_);
+  var panel = new ydn.crm.su.ui.ContextSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
-  if (ydn.crm.sugarcrm.ContextWidget.DEBUG) {
+  if (ydn.crm.su.ContextWidget.DEBUG) {
     window.console.info('context sugar panel ' + sugar.getDomain() +
         ' initialized');
   }
@@ -311,15 +311,15 @@ ydn.crm.sugarcrm.ContextWidget.prototype.setSugarCrm = function(sugar) {
 
 
 /**
- * @return {?ydn.crm.sugarcrm.ui.ContextSugarPanel}
+ * @return {?ydn.crm.su.ui.ContextSugarPanel}
  * @private
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.getSugarPanel_ = function() {
+ydn.crm.su.ContextWidget.prototype.getSugarPanel_ = function() {
   var cn = this.getChildCount();
   for (var i = 0; i < cn; i++) {
     var child = this.getChildAt(i);
-    if (child instanceof ydn.crm.sugarcrm.ui.ContextSugarPanel) {
-      return /** @type {ydn.crm.sugarcrm.ui.ContextSugarPanel} */ (child);
+    if (child instanceof ydn.crm.su.ui.ContextSugarPanel) {
+      return /** @type {ydn.crm.su.ui.ContextSugarPanel} */ (child);
     }
   }
   return null;
@@ -331,15 +331,15 @@ ydn.crm.sugarcrm.ContextWidget.prototype.getSugarPanel_ = function() {
  * @param {ydn.crm.inj.Context} cm set `null` to flash out.
  * @protected
  */
-ydn.crm.sugarcrm.ContextWidget.prototype.updateForNewContact = function(cm) {
+ydn.crm.su.ContextWidget.prototype.updateForNewContact = function(cm) {
 
   var child = this.getSugarPanel_();
   if (child) {
     /**
-     * @type {ydn.crm.sugarcrm.model.GDataSugar}
+     * @type {ydn.crm.su.model.GDataSugar}
      */
     var sugar = child.getModel();
-    if (ydn.crm.sugarcrm.ContextWidget.DEBUG) {
+    if (ydn.crm.su.ContextWidget.DEBUG) {
       window.console.log('updating new contact', cm);
     }
     sugar.update(cm);

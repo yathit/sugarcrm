@@ -17,7 +17,7 @@
  * @fileoverview SugarCRM model with gmail context.
  *
  * <pre>
- *   var gs = new ydn.crm.sugarcrm.model.GDataSugar(about, info, email);
+ *   var gs = new ydn.crm.su.model.GDataSugar(about, info, email);
  *   // Controllers will listen for model changes.
  *   goog.events.listen(gs, 'context-change', listener);
  *   // Main app will update context from gmail
@@ -29,9 +29,9 @@
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
-goog.provide('ydn.crm.sugarcrm.model.GDataSugar');
+goog.provide('ydn.crm.su.model.GDataSugar');
 goog.require('ydn.crm.inj.Context');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.require('ydn.crm.su.model.Sugar');
 
 
 
@@ -44,10 +44,10 @@ goog.require('ydn.crm.sugarcrm.model.Sugar');
  * @param {SugarCrm.Record=} opt_user login user info.
  * @param {SugarCrm.LoginRecord=} opt_login_info login user info.
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.Sugar}
+ * @extends {ydn.crm.su.model.Sugar}
  * @struct
  */
-ydn.crm.sugarcrm.model.GDataSugar = function(about, modules_info, gdata_account,
+ydn.crm.su.model.GDataSugar = function(about, modules_info, gdata_account,
                                              opt_info, opt_user, opt_login_info) {
   goog.base(this, about, modules_info, opt_info, opt_user, opt_login_info);
   /**
@@ -65,7 +65,7 @@ ydn.crm.sugarcrm.model.GDataSugar = function(about, modules_info, gdata_account,
   this.contact_ = null;
   /**
    * Record from matching context email.
-   * @type {?ydn.crm.sugarcrm.Record}
+   * @type {?ydn.crm.su.Record}
    * @private
    */
   this.record_ = null;
@@ -82,29 +82,29 @@ ydn.crm.sugarcrm.model.GDataSugar = function(about, modules_info, gdata_account,
   this.sync_ = null;
 
 };
-goog.inherits(ydn.crm.sugarcrm.model.GDataSugar, ydn.crm.sugarcrm.model.Sugar);
+goog.inherits(ydn.crm.su.model.GDataSugar, ydn.crm.su.model.Sugar);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.GDataSugar.DEBUG = false;
+ydn.crm.su.model.GDataSugar.DEBUG = false;
 
 
 /**
  * @return {ydn.gdata.m8.ContactEntry} return GData contact that is not associate
  * with any module.
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.getGData = function() {
+ydn.crm.su.model.GDataSugar.prototype.getGData = function() {
   return this.contact_;
 };
 
 
 /**
- * @return {?ydn.crm.sugarcrm.Record} return sugarcrm record which has same email as
+ * @return {?ydn.crm.su.Record} return sugarcrm record which has same email as
  * context email
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.getRecord = function() {
+ydn.crm.su.model.GDataSugar.prototype.getRecord = function() {
   return this.record_;
 };
 
@@ -113,7 +113,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.getRecord = function() {
  * @return {ydn.crm.inj.Context} return context contact from gmail panel
  * with any module.
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.getContext = function() {
+ydn.crm.su.model.GDataSugar.prototype.getContext = function() {
   return this.context_;
 };
 
@@ -121,7 +121,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.getContext = function() {
 /**
  * @return {string} return a google account id, an email address.
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.getGDataAccount = function() {
+ydn.crm.su.model.GDataSugar.prototype.getGDataAccount = function() {
   return this.gdata_account;
 };
 
@@ -129,7 +129,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.getGDataAccount = function() {
 /**
  * @return {?string}
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.getContextGmail = function() {
+ydn.crm.su.model.GDataSugar.prototype.getContextGmail = function() {
   return this.context_ ? this.context_.getEmail() : null;
 };
 
@@ -138,7 +138,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.getContextGmail = function() {
  * Link GData Contact to sugar record
  * @return {!goog.async.Deferred<YdnCrm.SyncRecord>}
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.linkGDataToRecord = function() {
+ydn.crm.su.model.GDataSugar.prototype.linkGDataToRecord = function() {
   if (!this.record_) {
     throw new Error('No SugarCRM Record to link with Gmail contact.');
   }
@@ -158,11 +158,11 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.linkGDataToRecord = function() {
   var df1 = this.getChannel().send(ydn.crm.Ch.SReq.LINK, data);
   return df1.addCallback(function(x) {
     var sync = /** @type {YdnCrm.SyncRecord} */(x);
-    if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+    if (ydn.crm.su.model.GDataSugar.DEBUG) {
       window.console.log('link', sync);
     }
     this.sync_ = sync;
-    var ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(this.context_,
+    var ev = new ydn.crm.su.model.events.ContextChangeEvent(this.context_,
         this.contact_, this.record_, sync);
     this.dispatchEvent(ev);
   }, this);
@@ -174,7 +174,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.linkGDataToRecord = function() {
  * Remove external id link GData Contact to sugar record.
  * @return {!goog.async.Deferred}
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGDataToRecord = function() {
+ydn.crm.su.model.GDataSugar.prototype.unlinkGDataToRecord = function() {
   if (!this.record_) {
     throw new Error('No SugarCRM Record to unlink with Gmail contact.');
   }
@@ -189,12 +189,12 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGDataToRecord = function() {
 
   var df1 = this.getChannel().send(ydn.crm.Ch.SReq.UNLINK, this.sync_);
   return df1.addCallback(function(ok) {
-    if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+    if (ydn.crm.su.model.GDataSugar.DEBUG) {
       window.console.log('unlink', ok);
     }
     if (ok) {
       this.sync_ = null;
-      var ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(this.context_,
+      var ev = new ydn.crm.su.model.events.ContextChangeEvent(this.context_,
           this.contact_, this.record_, this.sync_);
       this.dispatchEvent(ev);
     }
@@ -208,7 +208,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGDataToRecord = function() {
  * @return {!goog.async.Deferred}
  * @deprecated use unlinkGDataToRecord instead
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGData_old = function() {
+ydn.crm.su.model.GDataSugar.prototype.unlinkGData_old = function() {
   var sugar_id = this.record_.getId();
   var module_name = this.record_.getModule();
   // window.console.log(record);
@@ -231,11 +231,11 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGData_old = function() {
   };
   var df1 = this.getChannel().send(ydn.crm.Ch.SReq.UNLINK, data);
   return df1.addCallback(function(entry) {
-    if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+    if (ydn.crm.su.model.GDataSugar.DEBUG) {
       window.console.log('unlink', entry);
     }
     this.contact_ = new ydn.gdata.m8.ContactEntry(entry);
-    var ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(this.context_,
+    var ev = new ydn.crm.su.model.events.ContextChangeEvent(this.context_,
         this.contact_, this.record_);
     this.dispatchEvent(ev);
   }, this);
@@ -245,10 +245,10 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.unlinkGData_old = function() {
 
 /**
  * Import from gdata to a new sugar entry.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name people module name.
- * @return {!goog.async.Deferred<ydn.crm.sugarcrm.Record>} Return newly created record.
+ * @param {ydn.crm.su.ModuleName} m_name people module name.
+ * @return {!goog.async.Deferred<ydn.crm.su.Record>} Return newly created record.
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.importToSugar = function(m_name) {
+ydn.crm.su.model.GDataSugar.prototype.importToSugar = function(m_name) {
   if (this.record_) {
     throw new Error('already imported as ' + this.record_.getId() +
         ' in ' + this.record_.getModule());
@@ -257,7 +257,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.importToSugar = function(m_name) {
   if (!contact) {
     throw new Error('no contact gdata to import?');
   }
-  if (ydn.crm.sugarcrm.PEOPLE_MODULES.indexOf(m_name) == -1) {
+  if (ydn.crm.su.PEOPLE_MODULES.indexOf(m_name) == -1) {
     throw new Error('invalid module name: ' + m_name);
   }
   var req = ydn.crm.Ch.SReq.IMPORT_GDATA;
@@ -266,15 +266,15 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.importToSugar = function(m_name) {
     'kind': contact.getKind(),
     'gdataId': contact.getId()
   };
-  if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+  if (ydn.crm.su.model.GDataSugar.DEBUG) {
     window.console.info('sending ' + req + ' ' + JSON.stringify(data));
   }
   return this.getChannel().send(req, data).addCallback(function(data) {
-    if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+    if (ydn.crm.su.model.GDataSugar.DEBUG) {
       window.console.log(data);
     }
-    this.record_ = new ydn.crm.sugarcrm.Record(this.getDomain(), m_name, data);
-    var ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(this.context_,
+    this.record_ = new ydn.crm.su.Record(this.getDomain(), m_name, data);
+    var ev = new ydn.crm.su.model.events.ContextChangeEvent(this.context_,
         this.contact_, this.record_);
     this.dispatchEvent(ev);
     return this.record_;
@@ -284,15 +284,15 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.importToSugar = function(m_name) {
 
 /**
  * Export SugarCRM record to Gmail contact
- * @param {!ydn.crm.sugarcrm.Record} record The SugarCRM record to export.
+ * @param {!ydn.crm.su.Record} record The SugarCRM record to export.
  * @return {!goog.async.Deferred.<ydn.gdata.m8.ContactEntry>} ContactEntry return
  * newly created contact entry.
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.export2GData = function(record) {
+ydn.crm.su.model.GDataSugar.prototype.export2GData = function(record) {
   return goog.base(this, 'export2GData', record).addCallback(function(entry) {
     var old_contact = this.contact_;
     this.contact_ = entry;
-    var ev = new ydn.crm.sugarcrm.model.events.GDataUpdatedEvent(old_contact, this.contact_, this);
+    var ev = new ydn.crm.su.model.events.GDataUpdatedEvent(old_contact, this.contact_, this);
     this.dispatchEvent(ev);
   }, this);
 };
@@ -303,7 +303,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.export2GData = function(record) {
  * @param {?ydn.crm.inj.Context} cm found in sniffing gmail thread.
  * @return {!goog.async.Deferred}
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.update = function(cm) {
+ydn.crm.su.model.GDataSugar.prototype.update = function(cm) {
   if (this.isLogin()) {
     return this.updateContext_(cm);
   } else {
@@ -324,13 +324,13 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.update = function(cm) {
  * @return {!goog.async.Deferred}
  * @private
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.processRecord_ = function(cm, opt_contact) {
+ydn.crm.su.model.GDataSugar.prototype.processRecord_ = function(cm, opt_contact) {
 
   var email = cm.getEmail();
   var query = [];
-  for (var i = 0; i < ydn.crm.sugarcrm.PEOPLE_MODULES.length; i++) {
+  for (var i = 0; i < ydn.crm.su.PEOPLE_MODULES.length; i++) {
     query[i] = {
-      'store': ydn.crm.sugarcrm.PEOPLE_MODULES[i],
+      'store': ydn.crm.su.PEOPLE_MODULES[i],
       'index': 'ydn$emails',
       'key': email
     };
@@ -340,19 +340,19 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.processRecord_ = function(cm, opt_co
     var query_results = /** @type {Array.<SugarCrm.Query>} */ (x);
     for (var j = 0; j < query_results.length; j++) {
       var query_result = query_results[j];
-      if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+      if (ydn.crm.su.model.GDataSugar.DEBUG) {
         var n = query_result.result ? query_result.result.length : 0;
         window.console.log(this + ' receiving sugarcrm ' + n + ' query result for ' +
             email + ' to ' + query_result.store, query_result);
       }
       if (query_result.result[0]) {
-        var m_name = /** @type {ydn.crm.sugarcrm.ModuleName} */ (query_result.store);
-        var r = new ydn.crm.sugarcrm.Record(this.getDomain(), m_name,
+        var m_name = /** @type {ydn.crm.su.ModuleName} */ (query_result.store);
+        var r = new ydn.crm.su.Record(this.getDomain(), m_name,
             query_result.result[0]);
-        return new ydn.crm.sugarcrm.model.events.ContextChangeEvent(cm, opt_contact, r);
+        return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact, r);
       }
     }
-    return new ydn.crm.sugarcrm.model.events.ContextChangeEvent(cm, opt_contact);
+    return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact);
   }, this);
 };
 
@@ -361,7 +361,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.processRecord_ = function(cm, opt_co
  * Check gdata and record are in synced.
  * @return {boolean}
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.isInSynced = function() {
+ydn.crm.su.model.GDataSugar.prototype.isInSynced = function() {
   if (!this.contact_ || !this.record_) {
     return false;
   }
@@ -378,7 +378,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.isInSynced = function() {
  * @return {!goog.async.Deferred}
  * @private
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.processSync_ = function(cm, contact) {
+ydn.crm.su.model.GDataSugar.prototype.processSync_ = function(cm, contact) {
   var xp = contact.getExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
       this.getDomain());
   if (xp) {
@@ -389,14 +389,14 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.processSync_ = function(cm, contact)
     }];
     return this.getChannel().send(ydn.crm.Ch.SReq.QUERY, id_query).addCallback(function(x) {
       var result = /** @type {SugarCrm.Query} */ (x[0]);
-      if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+      if (ydn.crm.su.model.GDataSugar.DEBUG) {
         window.console.log(result);
       }
       if (result && result.result[0]) {
-        var m_name = /** @type {ydn.crm.sugarcrm.ModuleName} */ (result.store);
-        var r = new ydn.crm.sugarcrm.Record(this.getDomain(), m_name,
+        var m_name = /** @type {ydn.crm.su.ModuleName} */ (result.store);
+        var r = new ydn.crm.su.Record(this.getDomain(), m_name,
             result.result[0]);
-        return new ydn.crm.sugarcrm.model.events.ContextChangeEvent(cm, contact, r);
+        return new ydn.crm.su.model.events.ContextChangeEvent(cm, contact, r);
       } else {
         if (goog.DEBUG) {
           window.console.warn('link id: ' + xp.record_id + ' no longer available, deleting..');
@@ -417,7 +417,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.processSync_ = function(cm, contact)
  * @return {!goog.async.Deferred}
  * @private
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.processContact_ = function(cm) {
+ydn.crm.su.model.GDataSugar.prototype.processContact_ = function(cm) {
 
   if (cm) {
     var email = cm.getEmail();
@@ -429,7 +429,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.processContact_ = function(cm) {
         return new ydn.gdata.m8.ContactEntry(x);
       });
       var scores = cm.score(contacts);
-      if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+      if (ydn.crm.su.model.GDataSugar.DEBUG) {
         window.console.log(results, scores, contacts);
       }
       if (contacts[0]) {
@@ -439,7 +439,7 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.processContact_ = function(cm) {
       }
     }, this);
   } else {
-    var null_ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(null);
+    var null_ev = new ydn.crm.su.model.events.ContextChangeEvent(null);
     return goog.async.Deferred.succeed(null_ev);
   }
 };
@@ -451,12 +451,12 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.processContact_ = function(cm) {
  * @return {!goog.async.Deferred}
  * @private
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.updateContext_ = function(cm) {
-  if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+ydn.crm.su.model.GDataSugar.prototype.updateContext_ = function(cm) {
+  if (ydn.crm.su.model.GDataSugar.DEBUG) {
     window.console.log(this + ' update context for ' + cm);
   }
   return this.processContact_(cm).addCallbacks(function(ev) {
-    var cce = /** @type {ydn.crm.sugarcrm.model.events.ContextChangeEvent} */ (ev);
+    var cce = /** @type {ydn.crm.su.model.events.ContextChangeEvent} */ (ev);
     this.contact_ = cce.gdata;
     this.context_ = cce.context;
     this.record_ = cce.record;
@@ -472,8 +472,8 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.updateContext_ = function(cm) {
  * @param {ydn.crm.inj.Context} cm found in sniffing gmail thread.
  * @private
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.update_ = function(cm) {
-  if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+ydn.crm.su.model.GDataSugar.prototype.update_ = function(cm) {
+  if (ydn.crm.su.model.GDataSugar.DEBUG) {
     window.console.log(this + ' update for ' + cm);
   }
   var old_contact = this.contact_;
@@ -491,24 +491,24 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.update_ = function(cm) {
         return new ydn.gdata.m8.ContactEntry(x);
       });
       var scores = this.context_.score(contacts);
-      if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+      if (ydn.crm.su.model.GDataSugar.DEBUG) {
         window.console.log(results, scores, contacts);
       }
       // Note: Module listener will pop out `contacts` if they are associated with the module
-      var gc = new ydn.crm.sugarcrm.model.events.ContextGDataChangeEvent(this.getDomain(),
+      var gc = new ydn.crm.su.model.events.ContextGDataChangeEvent(this.getDomain(),
           this.context_, contacts, this);
       this.dispatchEvent(gc);
       // a contact entry not associated with GData record.
       this.contact_ = gc.contacts[0] || null;
-      var ev = new ydn.crm.sugarcrm.model.events.GDataChangedEvent(old_contact, this.contact_, this);
+      var ev = new ydn.crm.su.model.events.GDataChangedEvent(old_contact, this.contact_, this);
       this.dispatchEvent(ev);
     }, function(e) {
       throw e;
     }, this);
   } else {
-    var gc = new ydn.crm.sugarcrm.model.events.ContextGDataChangeEvent(this.getDomain(), null, [], this);
+    var gc = new ydn.crm.su.model.events.ContextGDataChangeEvent(this.getDomain(), null, [], this);
     this.dispatchEvent(gc);
-    var ev = new ydn.crm.sugarcrm.model.events.GDataChangedEvent(old_contact, this.contact_, this);
+    var ev = new ydn.crm.su.model.events.GDataChangedEvent(old_contact, this.contact_, this);
     this.dispatchEvent(ev);
   }
 };
@@ -516,9 +516,9 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.update_ = function(cm) {
 
 /**
  * Get list of sugarcrm instance, of which login.
- * @return {!goog.async.Deferred<ydn.crm.sugarcrm.model.GDataSugar>}
+ * @return {!goog.async.Deferred<ydn.crm.su.model.GDataSugar>}
  */
-ydn.crm.sugarcrm.model.GDataSugar.list = function() {
+ydn.crm.su.model.GDataSugar.list = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
   return user.onReady().branch().addCallback(function() {
 
@@ -531,10 +531,10 @@ ydn.crm.sugarcrm.model.GDataSugar.list = function() {
             var df = ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
               var details = /** @type {SugarCrm.Details} */ (x);
               for (var i = 0; i < details.modulesInfo.length; i++) {
-                ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+                ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
               }
               var ac = user.getLoginEmail();
-              return new ydn.crm.sugarcrm.model.GDataSugar(details.about,
+              return new ydn.crm.su.model.GDataSugar(details.about,
                   details.modulesInfo, ac, details.serverInfo, null, details.loginInfo);
             }, this);
             dfs.push(df);
@@ -549,10 +549,10 @@ ydn.crm.sugarcrm.model.GDataSugar.list = function() {
 
 /**
  * Add context inbox contact to a new sugar entry.
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
- * @return {!goog.async.Deferred} Return {ydn.crm.sugarcrm.Record} on success.
+ * @param {ydn.crm.su.ModuleName} m_name
+ * @return {!goog.async.Deferred} Return {ydn.crm.su.Record} on success.
  */
-ydn.crm.sugarcrm.model.GDataSugar.prototype.addToSugar = function(m_name) {
+ydn.crm.su.model.GDataSugar.prototype.addToSugar = function(m_name) {
   if (this.record_) {
     return goog.async.Deferred.fail('already exist as ' + this.record_.getId() +
         ' in ' + this.record_.getModule());
@@ -583,16 +583,16 @@ ydn.crm.sugarcrm.model.GDataSugar.prototype.addToSugar = function(m_name) {
     'module': m_name,
     'record': new_record
   };
-  if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+  if (ydn.crm.su.model.GDataSugar.DEBUG) {
     window.console.log('sending ' + req + ' ' + JSON.stringify(data));
   }
 
   return this.getChannel().send(req, data).addCallback(function(data) {
-    if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+    if (ydn.crm.su.model.GDataSugar.DEBUG) {
       window.console.log(data);
     }
-    this.record_ = new ydn.crm.sugarcrm.Record(this.getDomain(), m_name, data);
-    var ev = new ydn.crm.sugarcrm.model.events.ContextChangeEvent(this.context_,
+    this.record_ = new ydn.crm.su.Record(this.getDomain(), m_name, data);
+    var ev = new ydn.crm.su.model.events.ContextChangeEvent(this.context_,
         this.contact_, this.record_);
     this.dispatchEvent(ev);
   }, this);

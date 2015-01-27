@@ -20,25 +20,25 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.widget.RecordMatcher');
+goog.provide('ydn.crm.su.ui.widget.RecordMatcher');
 
 
 
 /**
- * @param {ydn.crm.sugarcrm.Meta} meta
- * @param {ydn.crm.sugarcrm.ModuleName} m_name
+ * @param {ydn.crm.su.Meta} meta
+ * @param {ydn.crm.su.ModuleName} m_name
  * @constructor
  * Implements {@link goog.ui.ac.AutoComplete.Matcher}
  */
-ydn.crm.sugarcrm.ui.widget.RecordMatcher = function(meta, m_name) {
+ydn.crm.su.ui.widget.RecordMatcher = function(meta, m_name) {
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.Meta}
+   * @type {ydn.crm.su.Meta}
    */
   this.meta = meta;
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.ModuleName}
+   * @type {ydn.crm.su.ModuleName}
    */
   this.module = m_name;
 };
@@ -47,7 +47,7 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher = function(meta, m_name) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG = false;
+ydn.crm.su.ui.widget.RecordMatcher.DEBUG = false;
 
 
 /**
@@ -61,7 +61,7 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG = false;
  *     matching.
  * @param {string=} opt_fullString The full string from the input box.
  */
-ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
+ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     function(token, maxMatches, matchHandler, opt_fullString) {
   if (!token || token.length == 0) {
     matchHandler(token, []);
@@ -90,7 +90,7 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     this.meta.getChannel().send(ydn.crm.Ch.SReq.SEARCH, fq)
   ]);
   dfs.addCallbacks(function(x) {
-    if (ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG) {
+    if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
       window.console.log(x);
     }
     var arr = /** @type {Array<CrmApp.QueryResult>} */(x[0][1]);
@@ -120,7 +120,7 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     for (var i = 0; i < res.length; i++) {
       add(res[i].record);
     }
-    if (ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG) {
+    if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
       window.console.log(out.map(function(x) {return {id: x.id, name: x.name}}));
     }
     matchHandler(token, out);
@@ -134,24 +134,24 @@ ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.requestMatchingRows =
 /**
  * @return {boolean}
  */
-ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.isRowDisabled = function() {
+ydn.crm.su.ui.widget.RecordMatcher.prototype.isRowDisabled = function() {
   return false;
 };
 
 
 /**
  * Set record module.
- * @param {ydn.crm.sugarcrm.ModuleName} mn
+ * @param {ydn.crm.su.ModuleName} mn
  */
-ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.setModule = function(mn) {
+ydn.crm.su.ui.widget.RecordMatcher.prototype.setModule = function(mn) {
   this.module = mn;
 };
 
 
 /**
  * Get record module.
- * @return {ydn.crm.sugarcrm.ModuleName} mn
+ * @return {ydn.crm.su.ModuleName} mn
  */
-ydn.crm.sugarcrm.ui.widget.RecordMatcher.prototype.getModule = function() {
+ydn.crm.su.ui.widget.RecordMatcher.prototype.getModule = function() {
   return this.module;
 };

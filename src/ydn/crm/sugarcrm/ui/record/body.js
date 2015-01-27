@@ -21,44 +21,44 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.record.Body');
+goog.provide('ydn.crm.su.ui.record.Body');
 
 
 
 /**
  * Record body panel.
- * @param {ydn.crm.sugarcrm.model.Record} model
+ * @param {ydn.crm.su.model.Record} model
  * @param {goog.dom.DomHelper} dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.record.Body = function(model, dom) {
+ydn.crm.su.ui.record.Body = function(model, dom) {
   goog.base(this, dom);
   this.setModel(model);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.record.Body, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.record.Body, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.record.Body.DEBUG = false;
+ydn.crm.su.ui.record.Body.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Record}
+ * @return {ydn.crm.su.model.Record}
  * @override
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.getModel;
+ydn.crm.su.ui.record.Body.prototype.getModel;
 
 
 /**
  * Change edit mode.
  * @param {boolean} val
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.setEditMode = function(val) {
+ydn.crm.su.ui.record.Body.prototype.setEditMode = function(val) {
   var root = this.getElement();
   if (val) {
     root.classList.add(ydn.crm.ui.CSS_CLASS_EDIT);
@@ -72,12 +72,12 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.setEditMode = function(val) {
 
 /**
  * @param {string} field_name
- * @return {ydn.crm.sugarcrm.ui.field.Field}
+ * @return {ydn.crm.su.ui.field.Field}
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.getFieldByName = function(field_name) {
+ydn.crm.su.ui.record.Body.prototype.getFieldByName = function(field_name) {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.Group} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.Group} */ (child);
     var field = g.getFieldByName(field_name);
     if (field) {
       return field;
@@ -89,10 +89,10 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getFieldByName = function(field_name) 
 
 /**
  * @param {string} field_name
- * @return {ydn.crm.sugarcrm.ui.group.Group}
+ * @return {ydn.crm.su.ui.group.Group}
  * @see #getChildByGroup
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.getGroupByFieldName = function(field_name) {
+ydn.crm.su.ui.record.Body.prototype.getGroupByFieldName = function(field_name) {
   var model = this.getModel();
   var info = model.getFieldInfo(field_name);
   if (!info) {
@@ -101,7 +101,7 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getGroupByFieldName = function(field_n
   var group_name = info.group || '';
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.Group} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.Group} */ (child);
     if (g.getGroupName() == group_name) {
       return g;
     }
@@ -113,13 +113,13 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getGroupByFieldName = function(field_n
 /**
  * Get child group component by group name.
  * @param {string} group_name
- * @return {ydn.crm.sugarcrm.ui.group.Group}
+ * @return {ydn.crm.su.ui.group.Group}
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.getChildByGroup = function(group_name) {
+ydn.crm.su.ui.record.Body.prototype.getChildByGroup = function(group_name) {
 
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.Group} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.Group} */ (child);
     if (g.getGroupName() == group_name) {
       return g;
     }
@@ -130,14 +130,14 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getChildByGroup = function(group_name)
 
 /**
  * @param {Element} ele
- * @return {ydn.crm.sugarcrm.ui.group.Group?}
+ * @return {ydn.crm.su.ui.group.Group?}
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.getGroupByFieldValueElement = function(ele) {
-  var group_ele = goog.dom.getAncestorByClass(ele, ydn.crm.sugarcrm.ui.group.GroupRenderer.CSS_CLASS);
+ydn.crm.su.ui.record.Body.prototype.getGroupByFieldValueElement = function(ele) {
+  var group_ele = goog.dom.getAncestorByClass(ele, ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS);
   if (group_ele) {
     for (var i = 0; i < this.getChildCount(); i++) {
       var child = this.getChildAt(i);
-      var g = /** @type {ydn.crm.sugarcrm.ui.group.Group} */ (child);
+      var g = /** @type {ydn.crm.su.ui.group.Group} */ (child);
       // here we compare Element, but not class name, because, we want to make sure this element
       // is belong to this control.
       if (g.getElement() == group_ele) {
@@ -152,7 +152,7 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getGroupByFieldValueElement = function
 /**
  * @return {boolean} true if edit mode.
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.getEditMode = function() {
+ydn.crm.su.ui.record.Body.prototype.getEditMode = function() {
   return this.getElement().classList.contains(ydn.crm.ui.CSS_CLASS_EDIT);
 };
 
@@ -162,12 +162,12 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getEditMode = function() {
  * Record id many change or or user setting, but record type does not change.
  * @param {boolean} edit_mode
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.reset = function(edit_mode) {
+ydn.crm.su.ui.record.Body.prototype.reset = function(edit_mode) {
   var root = this.getElement();
   this.setEditMode(edit_mode);
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.Group} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.Group} */ (child);
     g.reset();
   }
 };
@@ -177,19 +177,19 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.reset = function(edit_mode) {
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS = 'record-body';
+ydn.crm.su.ui.record.Body.CSS_CLASS = 'record-body';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.record.Body.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.record.Body.CSS_CLASS;
+ydn.crm.su.ui.record.Body.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.record.Body.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.createDom = function() {
+ydn.crm.su.ui.record.Body.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   root.classList.add(this.getCssClass());
@@ -201,10 +201,10 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.createDom = function() {
  * Change if user change fields.
  * @return {boolean}
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.hasChanged = function() {
+ydn.crm.su.ui.record.Body.prototype.hasChanged = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.AbstractGroup} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.AbstractGroup} */ (child);
     if (g.hasChanged()) {
       return true;
     }
@@ -217,11 +217,11 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.hasChanged = function() {
  * Return data from UI values. Return null, if invalid data present.
  * @return {?SugarCrm.Record} null if data is not valid.
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.collectData = function() {
+ydn.crm.su.ui.record.Body.prototype.collectData = function() {
   var obj = null;
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.AbstractGroup} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.AbstractGroup} */ (child);
     var value = g.collectData();
     if (!goog.isNull(value)) {
       if (!obj) {
@@ -240,11 +240,11 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.collectData = function() {
  * Return data from UI values for only fields of user changed.
  * @return {?SugarCrm.Record} null if data is not valid or not changed.
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.getPatch = function() {
+ydn.crm.su.ui.record.Body.prototype.getPatch = function() {
   var obj = null;
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.AbstractGroup} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.AbstractGroup} */ (child);
     var value = g.getPatch();
     if (!goog.isNull(value)) {
       if (!obj) {
@@ -263,27 +263,27 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.getPatch = function() {
  * Refresh content due to model changes. By default this will refresh all
  * children group panel.
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.refresh = function() {
+ydn.crm.su.ui.record.Body.prototype.refresh = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.Group} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.Group} */ (child);
     g.refresh();
   }
 };
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.events.SettingChangeEvent} ev
+ * @param {ydn.crm.su.ui.events.SettingChangeEvent} ev
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.handleSettingChange = function(ev) {
+ydn.crm.su.ui.record.Body.prototype.handleSettingChange = function(ev) {
   if (ev.key == ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE) {
     var value = /** @type {boolean} */ (ev.value);
-    if (ev.setting instanceof ydn.crm.sugarcrm.ui.setting.Field) {
+    if (ev.setting instanceof ydn.crm.su.ui.setting.Field) {
       var field = this.getFieldByName(ev.setting.getName());
       if (field) {
         field.setNormallyHide(value);
       }
-    } else if (ev.setting instanceof ydn.crm.sugarcrm.ui.setting.Group) {
+    } else if (ev.setting instanceof ydn.crm.su.ui.setting.Group) {
       var group = this.getChildByGroup(ev.setting.getName());
       if (group) {
         group.setNormallyHide(value);
@@ -298,12 +298,12 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.handleSettingChange = function(ev) {
  * This will simulate input change event.
  * @param {Object} user_patch patch object of field name and its value, of user edited.
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.simulateEdit = function(user_patch) {
+ydn.crm.su.ui.record.Body.prototype.simulateEdit = function(user_patch) {
   for (var name in user_patch) {
     var group = this.getGroupByFieldName(name);
     if (group) {
       group.simulateEditByField(name, user_patch[name]);
-    } else if (ydn.crm.sugarcrm.ui.record.Body.DEBUG) {
+    } else if (ydn.crm.su.ui.record.Body.DEBUG) {
       window.console.warn('Field ' + name + ' not found');
     }
   }
@@ -315,11 +315,11 @@ ydn.crm.sugarcrm.ui.record.Body.prototype.simulateEdit = function(user_patch) {
  * @param {ydn.social.MetaContact} meta
  * @return {boolean} true if updated.
  */
-ydn.crm.sugarcrm.ui.record.Body.prototype.fillByMetaContact = function(meta) {
+ydn.crm.su.ui.record.Body.prototype.fillByMetaContact = function(meta) {
   var out = false;
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
-    var g = /** @type {ydn.crm.sugarcrm.ui.group.AbstractGroup} */ (child);
+    var g = /** @type {ydn.crm.su.ui.group.AbstractGroup} */ (child);
     out |= !!g.fillByMetaContact(meta);
   }
   return out;

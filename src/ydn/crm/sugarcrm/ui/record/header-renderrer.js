@@ -23,7 +23,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.record.HeaderRenderer');
+goog.provide('ydn.crm.su.ui.record.HeaderRenderer');
 goog.require('goog.ui.CheckBoxMenuItem');
 goog.require('goog.ui.ColorMenuButton');
 goog.require('goog.ui.Css3ButtonRenderer');
@@ -31,8 +31,8 @@ goog.require('goog.ui.CustomButton');
 goog.require('goog.ui.ToggleButton');
 goog.require('goog.ui.Toolbar');
 goog.require('goog.ui.decorate');
-goog.require('ydn.crm.sugarcrm.ui.events');
-goog.require('ydn.crm.sugarcrm.ui.setting.Field');
+goog.require('ydn.crm.su.ui.events');
+goog.require('ydn.crm.su.ui.setting.Field');
 
 
 
@@ -41,50 +41,50 @@ goog.require('ydn.crm.sugarcrm.ui.setting.Field');
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer = function() {
+ydn.crm.su.ui.record.HeaderRenderer = function() {
 };
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.record.HeaderRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.record.HeaderRenderer);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.DEBUG = false;
+ydn.crm.su.ui.record.HeaderRenderer.DEBUG = false;
 
 
 /**
  * @protected
  * @type {goog.debug.Logger}
  */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.prototype.logger =
-    goog.log.getLogger('ydn.crm.sugarcrm.ui.record.HeaderRenderer');
+ydn.crm.su.ui.record.HeaderRenderer.prototype.logger =
+    goog.log.getLogger('ydn.crm.su.ui.record.HeaderRenderer');
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.record.Record} ctrl
+ * @param {ydn.crm.su.ui.record.Record} ctrl
  */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.prototype.reset = function(ctrl) {
+ydn.crm.su.ui.record.HeaderRenderer.prototype.reset = function(ctrl) {
   var ele_header = ctrl.getHeaderElement();
   var record = ctrl.getModel();
   var dom = ctrl.getDomHelper();
   var m_name = record.getModuleName();
-  if (ydn.crm.sugarcrm.ui.record.HeaderRenderer.DEBUG) {
+  if (ydn.crm.su.ui.record.HeaderRenderer.DEBUG) {
     window.console.log('HeadRenderer:reset:' + m_name + ':' + record);
   }
   ele_header.innerHTML = '';
-  ele_header.classList.add(ydn.crm.sugarcrm.ui.record.CSS_HEADER);
+  ele_header.classList.add(ydn.crm.su.ui.record.CSS_HEADER);
   ele_header.classList.add(ydn.crm.ui.CSS_CLASS_FLEX_BAR);
 
   var title = dom.createDom('a', {
-    'class': ydn.crm.sugarcrm.ui.record.CSS_HEADER_TITLE + ' center',
+    'class': ydn.crm.su.ui.record.CSS_HEADER_TITLE + ' center',
     'title': 'Open in SugarCRM'
   });
 
-  var icon = dom.createDom('span', ydn.crm.sugarcrm.ui.record.CSS_HEADER_ICON,
-      ydn.crm.sugarcrm.toModuleSymbol(m_name));
+  var icon = dom.createDom('span', ydn.crm.su.ui.record.CSS_HEADER_ICON,
+      ydn.crm.su.toModuleSymbol(m_name));
 
   var option_svg = ydn.crm.ui.createSvgIcon('menu');
-  var option = dom.createDom('div', ydn.crm.sugarcrm.ui.record.CSS_HEADER_EDIT,
+  var option = dom.createDom('div', ydn.crm.su.ui.record.CSS_HEADER_EDIT,
       option_svg);
   option.classList.add('svg-button');
 
@@ -96,17 +96,17 @@ ydn.crm.sugarcrm.ui.record.HeaderRenderer.prototype.reset = function(ctrl) {
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.record.Record} ctrl
+ * @param {ydn.crm.su.ui.record.Record} ctrl
  */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.prototype.refresh = function(ctrl) {
+ydn.crm.su.ui.record.HeaderRenderer.prototype.refresh = function(ctrl) {
 
   var ele_header = ctrl.getHeaderElement();
   var record = ctrl.getModel();
   var m_name = record.getModuleName();
-  if (ydn.crm.sugarcrm.ui.record.HeaderRenderer.DEBUG) {
+  if (ydn.crm.su.ui.record.HeaderRenderer.DEBUG) {
     window.console.log('HeadRenderer:refresh:' + m_name + ':' + record);
   }
-  var ele_title = ele_header.querySelector('a.' + ydn.crm.sugarcrm.ui.record.CSS_HEADER_TITLE);
+  var ele_title = ele_header.querySelector('a.' + ydn.crm.su.ui.record.CSS_HEADER_TITLE);
   if (record.hasRecord()) {
     ele_title.textContent = record.getLabel();
     ele_title.href = record.getViewLink();
@@ -120,9 +120,9 @@ ydn.crm.sugarcrm.ui.record.HeaderRenderer.prototype.refresh = function(ctrl) {
 
 /**
  * Set record content dirty so that save button is enable.
- * @param {ydn.crm.sugarcrm.ui.record.Record} ctrl
+ * @param {ydn.crm.su.ui.record.Record} ctrl
  * @param {boolean} val
  */
-ydn.crm.sugarcrm.ui.record.HeaderRenderer.prototype.setDirty = function(ctrl, val) {
+ydn.crm.su.ui.record.HeaderRenderer.prototype.setDirty = function(ctrl, val) {
 
 };

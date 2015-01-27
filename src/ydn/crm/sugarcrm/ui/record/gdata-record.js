@@ -22,70 +22,70 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.GDataRecord');
-goog.require('ydn.crm.sugarcrm.ui.record.Record');
+goog.provide('ydn.crm.su.ui.GDataRecord');
+goog.require('ydn.crm.su.ui.record.Record');
 
 
 
 /**
  * New record create panel.
- * @param {ydn.crm.sugarcrm.model.Record} model
+ * @param {ydn.crm.su.model.Record} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.record.Record}
+ * @extends {ydn.crm.su.ui.record.Record}
  */
-ydn.crm.sugarcrm.ui.GDataRecord = function(model, opt_dom) {
+ydn.crm.su.ui.GDataRecord = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.GDataRecord, ydn.crm.sugarcrm.ui.record.Record);
+goog.inherits(ydn.crm.su.ui.GDataRecord, ydn.crm.su.ui.record.Record);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.GDataRecord.DEBUG = false;
+ydn.crm.su.ui.GDataRecord.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.GDataRecord.CSS_CLASS = 'new-record';
+ydn.crm.su.ui.GDataRecord.CSS_CLASS = 'new-record';
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.GDataRecord.prototype.getCssClass = function() {
-  return goog.base(this, 'getCssClass') + ' ' + ydn.crm.sugarcrm.ui.GDataRecord.CSS_CLASS;
+ydn.crm.su.ui.GDataRecord.prototype.getCssClass = function() {
+  return goog.base(this, 'getCssClass') + ' ' + ydn.crm.su.ui.GDataRecord.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.GDataRecord.prototype.enterDocument = function() {
+ydn.crm.su.ui.GDataRecord.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var model = this.getModel();
-  this.getHandler().listen(model.parent, ydn.crm.sugarcrm.model.events.Type.CONTEXT_CHANGE,
+  this.getHandler().listen(model.parent, ydn.crm.su.model.events.Type.CONTEXT_CHANGE,
       this.onContextChange_);
 };
 
 
 /**
  * @private
- * @param {ydn.crm.sugarcrm.model.events.ContextChangeEvent} e
+ * @param {ydn.crm.su.model.events.ContextChangeEvent} e
  */
-ydn.crm.sugarcrm.ui.GDataRecord.prototype.onContextChange_ = function(e) {
+ydn.crm.su.ui.GDataRecord.prototype.onContextChange_ = function(e) {
   var model = this.getModel();
-  if (ydn.crm.sugarcrm.ui.record.Record.DEBUG) {
+  if (ydn.crm.su.ui.record.Record.DEBUG) {
     window.console.log('onContextChange: ' + e.record);
   }
   if (e.record) {
     model.setRecord(e.record);
   } else if (!e.record) {
-    var record = new ydn.crm.sugarcrm.Record(model.getDomain(), model.getModuleName());
+    var record = new ydn.crm.su.Record(model.getDomain(), model.getModuleName());
     model.setRecord(record);
   }
 };
@@ -94,7 +94,7 @@ ydn.crm.sugarcrm.ui.GDataRecord.prototype.onContextChange_ = function(e) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.GDataRecord.prototype.getNewModuleList = function() {
+ydn.crm.su.ui.GDataRecord.prototype.getNewModuleList = function() {
   return [];
 };
 
@@ -102,6 +102,6 @@ ydn.crm.sugarcrm.ui.GDataRecord.prototype.getNewModuleList = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.GDataRecord.prototype.getDuplicateModuleList = function() {
-  return ydn.crm.sugarcrm.PEOPLE_MODULES;
+ydn.crm.su.ui.GDataRecord.prototype.getDuplicateModuleList = function() {
+  return ydn.crm.su.PEOPLE_MODULES;
 };

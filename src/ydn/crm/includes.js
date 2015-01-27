@@ -5,5 +5,5 @@
 goog.require('ydn.crm.msg.ConsoleStatusBar');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
-goog.require('ydn.crm.sugarcrm.model.GDataSugar');
-goog.require('ydn.crm.sugarcrm.ui.NewRecord');
+goog.require('ydn.crm.su.model.GDataSugar');
+goog.require('ydn.crm.su.ui.NewRecord');

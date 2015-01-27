@@ -6,28 +6,28 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.ContactRelateGroup');
-goog.require('ydn.crm.sugarcrm.model.RelateGroup');
+goog.provide('ydn.crm.su.model.ContactRelateGroup');
+goog.require('ydn.crm.su.model.RelateGroup');
 
 
 
 /**
  * Relate group model for Account record type.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.RelateGroup}
+ * @extends {ydn.crm.su.model.RelateGroup}
  * @struct
  */
-ydn.crm.sugarcrm.model.ContactRelateGroup = function(parent) {
+ydn.crm.su.model.ContactRelateGroup = function(parent) {
   goog.base(this, parent, 'contact');
 };
-goog.inherits(ydn.crm.sugarcrm.model.ContactRelateGroup, ydn.crm.sugarcrm.model.RelateGroup);
+goog.inherits(ydn.crm.su.model.ContactRelateGroup, ydn.crm.su.model.RelateGroup);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getGroupLabel = function() {
+ydn.crm.su.model.ContactRelateGroup.prototype.getGroupLabel = function() {
   return 'Contact';
 };
 
@@ -35,7 +35,7 @@ ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getGroupLabel = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getRelateFieldId = function() {
+ydn.crm.su.model.ContactRelateGroup.prototype.getRelateFieldId = function() {
   return 'contact_id';
 };
 
@@ -43,7 +43,7 @@ ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getRelateFieldId = function(
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getRelateFieldName = function() {
+ydn.crm.su.model.ContactRelateGroup.prototype.getRelateFieldName = function() {
   return 'contact_name';
 };
 
@@ -51,7 +51,7 @@ ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getRelateFieldName = functio
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.ContactRelateGroup.prototype.getRelateModuleName = function() {
-  return ydn.crm.sugarcrm.ModuleName.CONTACTS;
+ydn.crm.su.model.ContactRelateGroup.prototype.getRelateModuleName = function() {
+  return ydn.crm.su.ModuleName.CONTACTS;
 };
 

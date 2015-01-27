@@ -22,37 +22,37 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.field.Email');
-goog.require('ydn.crm.sugarcrm.ui.field.Field');
+goog.provide('ydn.crm.su.ui.field.Email');
+goog.require('ydn.crm.su.ui.field.Field');
 
 
 
 /**
  * Panel for listed items.
- * @param {ydn.crm.sugarcrm.model.EmailField} model
+ * @param {ydn.crm.su.model.EmailField} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.field.Field}
+ * @extends {ydn.crm.su.ui.field.Field}
  */
-ydn.crm.sugarcrm.ui.field.Email = function(model, opt_dom) {
-  var renderer = ydn.crm.sugarcrm.ui.field.InputFieldRenderer.getInstance();
+ydn.crm.su.ui.field.Email = function(model, opt_dom) {
+  var renderer = ydn.crm.su.ui.field.InputFieldRenderer.getInstance();
   goog.base(this, model, renderer, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.field.Email, ydn.crm.sugarcrm.ui.field.Field);
+goog.inherits(ydn.crm.su.ui.field.Email, ydn.crm.su.ui.field.Field);
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.EmailField}
+ * @return {ydn.crm.su.model.EmailField}
  * @override
  */
-ydn.crm.sugarcrm.ui.field.Email.prototype.getModel;
+ydn.crm.su.ui.field.Email.prototype.getModel;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.field.Email.prototype.createClearPatch = function() {
+ydn.crm.su.ui.field.Email.prototype.createClearPatch = function() {
   return this.getModel().removeEmail();
 };
 
@@ -60,9 +60,9 @@ ydn.crm.sugarcrm.ui.field.Email.prototype.createClearPatch = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.field.Email.prototype.createDom = function() {
-  ydn.crm.sugarcrm.ui.field.Email.base(this, 'createDom');
-  var m = /** @type {ydn.crm.sugarcrm.model.EmailField} */ (this.getModel());
+ydn.crm.su.ui.field.Email.prototype.createDom = function() {
+  ydn.crm.su.ui.field.Email.base(this, 'createDom');
+  var m = /** @type {ydn.crm.su.model.EmailField} */ (this.getModel());
   if (!m.getMeta().isVersion7() && this.getFieldName() == 'email') {
     // in SugarCRM v6, the field 'email' is not used
     this.setNormallyHide(true);

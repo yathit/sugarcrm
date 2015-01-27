@@ -1,10 +1,10 @@
-goog.provide('ydn.crm.sugarcrm.model.SugarTest');
-goog.setTestOnly('ydn.crm.sugarcrm.model.SugarTest');
+goog.provide('ydn.crm.su.model.SugarTest');
+goog.setTestOnly('ydn.crm.su.model.SugarTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.model.GDataSugar');
-goog.require('ydn.crm.sugarcrm.model.Record');
+goog.require('ydn.crm.su.model.GDataSugar');
+goog.require('ydn.crm.su.model.Record');
 goog.require('ydn.crm.test');
 
 
@@ -32,8 +32,8 @@ function test_bean_email() {
     'ydn$emails': ['kyaw@game.com', 'kyaw@game.com'], 'ydn$phones': [], '_module': 'Leads'
   };
   var sugar = ydn.crm.test.createGDataSugar();
-  var record = new ydn.crm.sugarcrm.Record(sugar.getDomain(), data._module, data);
-  var model = new ydn.crm.sugarcrm.model.Record(sugar, record);
+  var record = new ydn.crm.su.Record(sugar.getDomain(), data._module, data);
+  var model = new ydn.crm.su.model.Record(sugar, record);
   var email_group = model.getGroupModel('email');
   assertTrue('has email group', !!email_group);
   var fields = email_group.listFields();

@@ -3,8 +3,8 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.field.LabelRenderer');
-goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
+goog.provide('ydn.crm.su.ui.field.LabelRenderer');
+goog.require('ydn.crm.su.ui.field.FieldRenderer');
 
 
 
@@ -12,23 +12,23 @@ goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
  * Field renderer with more options menu.
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.field.FieldRenderer}
+ * @extends {ydn.crm.su.ui.field.FieldRenderer}
  */
-ydn.crm.sugarcrm.ui.field.LabelRenderer = function() {
+ydn.crm.su.ui.field.LabelRenderer = function() {
   goog.base(this);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.field.LabelRenderer, ydn.crm.sugarcrm.ui.field.FieldRenderer);
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.field.LabelRenderer);
+goog.inherits(ydn.crm.su.ui.field.LabelRenderer, ydn.crm.su.ui.field.FieldRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.field.LabelRenderer);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.field.LabelRenderer.prototype.createDom = function(field) {
+ydn.crm.su.ui.field.LabelRenderer.prototype.createDom = function(field) {
   var el = goog.base(this, 'createDom', field);
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Field}
+   * @type {ydn.crm.su.model.Field}
    */
   var model = field.getModel();
   var dom = field.getDomHelper();
@@ -37,7 +37,7 @@ ydn.crm.sugarcrm.ui.field.LabelRenderer.prototype.createDom = function(field) {
   // console.log(label, type, calculated);
 
   var ele_value = dom.createDom('label', {
-    'class': ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE,
+    'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE,
     'title': label
   });
   el.appendChild(ele_value);
@@ -58,7 +58,7 @@ ydn.crm.sugarcrm.ui.field.LabelRenderer.prototype.createDom = function(field) {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.field.LabelRenderer.prototype.refresh = function(ctrl) {
+ydn.crm.su.ui.field.LabelRenderer.prototype.refresh = function(ctrl) {
   var ele_field = ctrl.getElement();
   var model = ctrl.getModel();
   goog.style.setElementShown(ele_field, !!model);
@@ -69,7 +69,7 @@ ydn.crm.sugarcrm.ui.field.LabelRenderer.prototype.refresh = function(ctrl) {
   var is_def = goog.isString(value) ? !goog.string.isEmpty(value) :
       goog.isDefAndNotNull(value);
   // console.log(model.getFieldName() + ' ' + value);
-  var ele_value = ele_field.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  var ele_value = ele_field.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   ele_value.textContent = is_def ? value : '';
 
   var more_el = ele_field.querySelector('.' + ydn.crm.ui.CSS_CLASS_MORE_MENU);
@@ -80,9 +80,9 @@ ydn.crm.sugarcrm.ui.field.LabelRenderer.prototype.refresh = function(ctrl) {
   }
 
   if (is_def) {
-    ele_field.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    ele_field.classList.remove(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   } else {
-    ele_field.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    ele_field.classList.add(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   }
 
   if (!model.getGroupName() && ctrl.getSetting().getNormallyHide()) {

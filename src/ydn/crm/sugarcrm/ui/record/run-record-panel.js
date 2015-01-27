@@ -16,15 +16,15 @@ inj.style.maxWidth = '20em';
 var div = document.getElementById('activity-root');
 ydn.crm.shared.logger.info('record panel test');
 var results;
-// ydn.crm.sugarcrm.ui.field.Field.DEBUG =  true;
-// ydn.crm.sugarcrm.model.Record.DEBUG =  true;
-ydn.crm.sugarcrm.ui.record.Record.DEBUG =  true;
-// ydn.crm.sugarcrm.ui.widget.RecordMatcher.DEBUG =  true;
+// ydn.crm.su.ui.field.Field.DEBUG =  true;
+// ydn.crm.su.model.Record.DEBUG =  true;
+ydn.crm.su.ui.record.Record.DEBUG =  true;
+// ydn.crm.su.ui.widget.RecordMatcher.DEBUG =  true;
 
 var types = document.getElementById('record-type');
-for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
+for (var i = 0; i < ydn.crm.su.CacheModules.length; i++) {
   var option = document.createElement('option');
-  option.value =  ydn.crm.sugarcrm.CacheModules[i];
+  option.value =  ydn.crm.su.CacheModules[i];
   option.textContent =  option.value;
   types.appendChild(option);
 
@@ -50,14 +50,14 @@ types.onchange = function(e) {
   });
 };
 
-ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
+ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
   for (var i = 0; i < models.length; i++) {
-    sugar = /** @type {ydn.crm.sugarcrm.model.GDataSugar} */ (models[i]);
+    sugar = /** @type {ydn.crm.su.model.GDataSugar} */ (models[i]);
     document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
 
-    var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), types.value);
-    model = new ydn.crm.sugarcrm.model.Record(sugar, r);
-    panel = new ydn.crm.sugarcrm.ui.record.Record(model);
+    var r = new ydn.crm.su.Record(sugar.getDomain(), types.value);
+    model = new ydn.crm.su.model.Record(sugar, r);
+    panel = new ydn.crm.su.ui.record.Record(model);
     panel.render(document.getElementById('record-root'));
     break;
   }
@@ -72,14 +72,14 @@ btn_set.onclick = function(e) {
   for (var i = 0; i < n; i++) {
     if (results[i].id == email) {
       console.log(results[i]);
-      var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), types.value, results[i]);
+      var r = new ydn.crm.su.Record(sugar.getDomain(), types.value, results[i]);
       model.setRecord(r);
       return;
     }
   }
   sugar.send(ydn.crm.Ch.SReq.VALUES, {'store': types.value, 'index': 'id', 'key': email}).addCallbacks(function(arr) {
     if (arr[0]) {
-      var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), types.value, arr[0]);
+      var r = new ydn.crm.su.Record(sugar.getDomain(), types.value, arr[0]);
       model.setRecord(r);
     }
   }, function(e) {

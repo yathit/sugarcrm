@@ -21,29 +21,29 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.activity.IRenderer');
+goog.provide('ydn.crm.su.ui.activity.IRenderer');
 
 
 
 /**
  * HUD for Activity panel.
- * @param {Object.<ydn.crm.sugarcrm.ui.activity.Config>} panels
+ * @param {Object.<ydn.crm.su.ui.activity.Config>} panels
  * @interface
  */
-ydn.crm.sugarcrm.ui.activity.IRenderer = function(panels) {};
+ydn.crm.su.ui.activity.IRenderer = function(panels) {};
 
 
 /**
- * @param {ydn.crm.sugarcrm.ui.activity.Panel} ctrl
+ * @param {ydn.crm.su.ui.activity.Panel} ctrl
  */
-ydn.crm.sugarcrm.ui.activity.IRenderer.prototype.createDom = function(ctrl) {};
+ydn.crm.su.ui.activity.IRenderer.prototype.createDom = function(ctrl) {};
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.activity.IRenderer.CSS_CLASS_FEED = 'activity-feed';
+ydn.crm.su.ui.activity.IRenderer.CSS_CLASS_FEED = 'activity-feed';
 
 
 /**
@@ -51,14 +51,14 @@ ydn.crm.sugarcrm.ui.activity.IRenderer.CSS_CLASS_FEED = 'activity-feed';
  *   color: string
  * }}
  */
-ydn.crm.sugarcrm.ui.activity.Config;
+ydn.crm.su.ui.activity.Config;
 
 
 /**
  * @param {string} name
  * @param {number} count
  */
-ydn.crm.sugarcrm.ui.activity.IRenderer.prototype.setCount = function(name, count) {
+ydn.crm.su.ui.activity.IRenderer.prototype.setCount = function(name, count) {
 
 };
 
@@ -67,6 +67,6 @@ ydn.crm.sugarcrm.ui.activity.IRenderer.prototype.setCount = function(name, count
  * @param {number} count
  * @param {Date} since
  */
-ydn.crm.sugarcrm.ui.activity.IRenderer.prototype.setActivityCount = function(count, since) {
+ydn.crm.su.ui.activity.IRenderer.prototype.setActivityCount = function(count, since) {
 
 };

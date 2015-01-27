@@ -5,8 +5,8 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.field.SelectInputFieldRenderer');
-goog.require('ydn.crm.sugarcrm.ui.field.InputFieldRenderer');
+goog.provide('ydn.crm.su.ui.field.SelectInputFieldRenderer');
+goog.require('ydn.crm.su.ui.field.InputFieldRenderer');
 
 
 
@@ -14,11 +14,11 @@ goog.require('ydn.crm.sugarcrm.ui.field.InputFieldRenderer');
  * Create a new module record field.
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.field.InputFieldRenderer}
+ * @extends {ydn.crm.su.ui.field.InputFieldRenderer}
  */
-ydn.crm.sugarcrm.ui.field.SelectInputFieldRenderer = function() {
+ydn.crm.su.ui.field.SelectInputFieldRenderer = function() {
   goog.base(this);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.field.SelectInputFieldRenderer, ydn.crm.sugarcrm.ui.field.InputFieldRenderer);
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.field.SelectInputFieldRenderer);
+goog.inherits(ydn.crm.su.ui.field.SelectInputFieldRenderer, ydn.crm.su.ui.field.InputFieldRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.field.SelectInputFieldRenderer);
 

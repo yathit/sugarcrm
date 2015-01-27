@@ -5,8 +5,8 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.field.InputFieldRenderer');
-goog.require('ydn.crm.sugarcrm.ui.field.FieldRenderer');
+goog.provide('ydn.crm.su.ui.field.InputFieldRenderer');
+goog.require('ydn.crm.su.ui.field.FieldRenderer');
 goog.require('ydn.crm.ui');
 goog.require('ydn.ui.FlyoutMenu');
 
@@ -16,23 +16,23 @@ goog.require('ydn.ui.FlyoutMenu');
  * Create a new module record field.
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.field.FieldRenderer}
+ * @extends {ydn.crm.su.ui.field.FieldRenderer}
  */
-ydn.crm.sugarcrm.ui.field.InputFieldRenderer = function() {
+ydn.crm.su.ui.field.InputFieldRenderer = function() {
   goog.base(this);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.field.InputFieldRenderer, ydn.crm.sugarcrm.ui.field.FieldRenderer);
-goog.addSingletonGetter(ydn.crm.sugarcrm.ui.field.InputFieldRenderer);
+goog.inherits(ydn.crm.su.ui.field.InputFieldRenderer, ydn.crm.su.ui.field.FieldRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.field.InputFieldRenderer);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(field) {
+ydn.crm.su.ui.field.InputFieldRenderer.prototype.createDom = function(field) {
   var el = goog.base(this, 'createDom', field);
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Field}
+   * @type {ydn.crm.su.model.Field}
    */
   var model = field.getModel();
   var dom = field.getDomHelper();
@@ -54,7 +54,7 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(fiel
 
   var ele_value = dom.createDom('input', {
     'type': input_type,
-    'class': ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE,
+    'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE,
     'title': label,
     'placeholder': label
   });
@@ -70,7 +70,7 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(fiel
   var options = model.getMoreOptions();
   if (options.length > 0) {
     var more_el = dom.createDom('div', {
-      'class': ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON + ' ' +
+      'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON + ' ' +
           ydn.crm.ui.CSS_CLASS_MORE_MENU
     });
     el.appendChild(more_el);
@@ -84,10 +84,10 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.createDom = function(fiel
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) {
+ydn.crm.su.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) {
   var ele_field = ctrl.getElement();
   /**
-   * @type {ydn.crm.sugarcrm.model.Field}
+   * @type {ydn.crm.su.model.Field}
    */
   var model = ctrl.getModel();
   goog.style.setElementShown(ele_field, !!model);
@@ -96,7 +96,7 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
   }
 
   // console.log(model.getFieldName() + ' ' + value);
-  var ele_value = ele_field.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  var ele_value = ele_field.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
 
   var value = model.getStringValue();
   if (!value) {
@@ -108,17 +108,17 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
 
   if (value) {
     if (ele_value.type == 'datetime-local') {
-      var lv = ydn.crm.sugarcrm.utils.toDateTimeLocalString(
+      var lv = ydn.crm.su.utils.toDateTimeLocalString(
           /** @type {string} */ (value));
       // console.log(value, lv);
       ele_value.value = lv;
     } else {
       ele_value.value = value;
     }
-    ele_field.classList.remove(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    ele_field.classList.remove(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   } else {
     ele_value.value = '';
-    ele_field.classList.add(ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
+    ele_field.classList.add(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY);
   }
 
   var more_el = ele_field.querySelector('.' + ydn.crm.ui.CSS_CLASS_MORE_MENU);
@@ -136,14 +136,14 @@ ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.refresh = function(ctrl) 
 
 /**
  * Collect data.
- * @param {ydn.crm.sugarcrm.ui.field.Field} ctrl
+ * @param {ydn.crm.su.ui.field.Field} ctrl
  * @return {*} return value of the element.
  */
-ydn.crm.sugarcrm.ui.field.InputFieldRenderer.prototype.collectValue = function(ctrl) {
+ydn.crm.su.ui.field.InputFieldRenderer.prototype.collectValue = function(ctrl) {
   var ele = ctrl.getContentElement();
-  var ele_value = ele.querySelector('.' + ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  var ele_value = ele.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
   if (ele_value.type == 'datetime-local') {
-    return ydn.crm.sugarcrm.utils.fromDateTimeLocalString(ele_value.valueAsNumber);
+    return ydn.crm.su.utils.fromDateTimeLocalString(ele_value.valueAsNumber);
   } else {
     return ele_value.value;
   }

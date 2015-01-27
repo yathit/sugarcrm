@@ -22,24 +22,24 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.Phone');
-goog.require('ydn.crm.sugarcrm');
-goog.require('ydn.crm.sugarcrm.ui.group.List');
+goog.provide('ydn.crm.su.ui.group.Phone');
+goog.require('ydn.crm.su');
+goog.require('ydn.crm.su.ui.group.List');
 
 
 
 /**
  * Panel for listed items.
- * @param {ydn.crm.sugarcrm.model.PhoneGroup} model
+ * @param {ydn.crm.su.model.PhoneGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.List}
+ * @extends {ydn.crm.su.ui.group.List}
  */
-ydn.crm.sugarcrm.ui.group.Phone = function(model, opt_dom) {
+ydn.crm.su.ui.group.Phone = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Phone, ydn.crm.sugarcrm.ui.group.List);
+goog.inherits(ydn.crm.su.ui.group.Phone, ydn.crm.su.ui.group.List);
 
 
 

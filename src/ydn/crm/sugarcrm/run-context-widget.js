@@ -11,11 +11,11 @@ var div = document.getElementById('activity-root');
 ydn.crm.shared.logger.info('record panel test');
 var results;
 
-ydn.crm.sugarcrm.model.GDataSugar.DEBUG =  true;
+ydn.crm.su.model.GDataSugar.DEBUG =  true;
 
 var gmail_obs = new ydn.crm.gmail.GmailObserver();
 var comp_obs = new ydn.crm.gmail.ComposeObserver(gmail_obs);
-panel = new ydn.crm.sugarcrm.ContextWidget(gmail_obs, comp_obs);
+panel = new ydn.crm.su.ContextWidget(gmail_obs, comp_obs);
 ydn.crm.msg.Manager.addStatus('Starting...');
 
 user.onReady().addCallbacks(function() {
@@ -23,7 +23,7 @@ user.onReady().addCallbacks(function() {
 
   ydn.crm.msg.Manager.addStatus('Panel header updated.');
 
-  ydn.crm.sugarcrm.model.GDataSugar.list().addCallback(
+  ydn.crm.su.model.GDataSugar.list().addCallback(
       function(sugars) {
         panel.setSugarCrm(sugars[0]);
         ydn.crm.msg.Manager.addStatus('Sugar panel ' + sugars.join(', ') + ' added.');

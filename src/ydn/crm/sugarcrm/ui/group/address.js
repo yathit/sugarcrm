@@ -5,21 +5,21 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.Address');
-goog.require('ydn.crm.sugarcrm.model.AddressGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroup');
+goog.provide('ydn.crm.su.ui.group.Address');
+goog.require('ydn.crm.su.model.AddressGroup');
+goog.require('ydn.crm.su.ui.group.SimpleGroup');
 
 
 
 /**
  * Contact sidebar panel.
- * @param {ydn.crm.sugarcrm.model.AddressGroup} model
+ * @param {ydn.crm.su.model.AddressGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.SimpleGroup}
+ * @extends {ydn.crm.su.ui.group.SimpleGroup}
  */
-ydn.crm.sugarcrm.ui.group.Address = function(model, opt_dom) {
+ydn.crm.su.ui.group.Address = function(model, opt_dom) {
   goog.base(this, model, null, opt_dom);
   /**
    * User edited value.
@@ -28,20 +28,20 @@ ydn.crm.sugarcrm.ui.group.Address = function(model, opt_dom) {
    */
   this.patches_ = null;
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Address, ydn.crm.sugarcrm.ui.group.SimpleGroup);
+goog.inherits(ydn.crm.su.ui.group.Address, ydn.crm.su.ui.group.SimpleGroup);
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.AddressGroup}
+ * @return {ydn.crm.su.model.AddressGroup}
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.getModel;
+ydn.crm.su.ui.group.Address.prototype.getModel;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.enterDocument = function() {
+ydn.crm.su.ui.group.Address.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   var input = this.getElement().querySelector('input');
@@ -56,7 +56,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.enterDocument = function() {
  * @return {?string}
  * @private
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.getActiveFieldValue_ = function(name) {
+ydn.crm.su.ui.group.Address.prototype.getActiveFieldValue_ = function(name) {
   if (this.patches_ && this.patches_[name]) {
     return this.patches_[name];
   } else {
@@ -72,7 +72,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.getActiveFieldValue_ = function(name
  * @param {string} value
  * @private
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.setPatchFieldValue_ = function(name, value) {
+ydn.crm.su.ui.group.Address.prototype.setPatchFieldValue_ = function(name, value) {
   if (!this.patches_) {
     this.patches_ = {};
   }
@@ -83,7 +83,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.setPatchFieldValue_ = function(name,
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.getEditorTemplateData = function() {
+ydn.crm.su.ui.group.Address.prototype.getEditorTemplateData = function() {
 
   var model = this.getModel();
   var data = [];
@@ -113,7 +113,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.getEditorTemplateData = function() {
         label: label,
         type: type,
         value: value,
-        listId: ydn.crm.sugarcrm.ui.field.FieldRenderer.getDataList(model.getModuleName(),
+        listId: ydn.crm.su.ui.field.FieldRenderer.getDataList(model.getModuleName(),
             field)
       });
     }
@@ -129,7 +129,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.getEditorTemplateData = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.fillByMetaContact = function(meta) {
+ydn.crm.su.ui.group.Address.prototype.fillByMetaContact = function(meta) {
   if (!meta) {
     return false;
   }
@@ -170,7 +170,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.fillByMetaContact = function(meta) {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.patchOptionField = function(el, patches) {
+ydn.crm.su.ui.group.Address.prototype.patchOptionField = function(el, patches) {
   var field_name = el.getAttribute('name');
   var input = el.querySelector('.value').firstElementChild;
 
@@ -188,7 +188,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.patchOptionField = function(el, patc
  * Return group value from user patch and model value.
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.getGroupValue = function() {
+ydn.crm.su.ui.group.Address.prototype.getGroupValue = function() {
   var model = this.getModel();
   if (this.patches_) {
     var prefix = this.getGroupName() + '_';
@@ -198,7 +198,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.getGroupValue = function() {
     var postalcode = this.getActiveFieldValue_(prefix + 'postalcode');
     var street = this.getActiveFieldValue_(prefix + 'street');
     var street_2 = this.getActiveFieldValue_(prefix + 'street_2');
-    var label = ydn.crm.sugarcrm.model.AddressGroup.makeGroupValue(country, city, state,
+    var label = ydn.crm.su.model.AddressGroup.makeGroupValue(country, city, state,
         postalcode, street, street_2);
     return label;
   } else {
@@ -210,7 +210,7 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.getGroupValue = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.applyEditorChanges = function(ev) {
+ydn.crm.su.ui.group.Address.prototype.applyEditorChanges = function(ev) {
   this.patches_ = ydn.object.clone(ev.patches);
   var label = this.getGroupValue();
   this.setInputValue(label);
@@ -220,6 +220,6 @@ ydn.crm.sugarcrm.ui.group.Address.prototype.applyEditorChanges = function(ev) {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Address.prototype.collectData = function() {
+ydn.crm.su.ui.group.Address.prototype.collectData = function() {
   return this.patches_ || null;
 };

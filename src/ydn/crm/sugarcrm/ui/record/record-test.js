@@ -1,10 +1,10 @@
-goog.provide('ydn.crm.sugarcrm.ui.record.RecordTest');
-goog.setTestOnly('ydn.crm.sugarcrm.ui.record.RecordTest');
+goog.provide('ydn.crm.su.ui.record.RecordTest');
+goog.setTestOnly('ydn.crm.su.ui.record.RecordTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
-goog.require('ydn.crm.sugarcrm.ui.record.Record');
+goog.require('ydn.crm.su.model.Sugar');
+goog.require('ydn.crm.su.ui.record.Record');
 goog.require('ydn.crm.test');
 
 var mock_el = document.createElement('div');
@@ -35,7 +35,7 @@ function test_rendering() {
   var exp_email1 = obj['email'][0]['email_address'];
   var exp_email2 = obj['email'][1]['email_address'];
 
-  var panel = new ydn.crm.sugarcrm.ui.record.Record(record);
+  var panel = new ydn.crm.su.ui.record.Record(record);
   panel.render(mock_el);
 
   var name_group = document.querySelector('div.record-group[name="name"]');
@@ -60,10 +60,10 @@ function test_rendering_account_name() {
     'name': 'Chaw Su'
   };
   var sugar = ydn.crm.test.createSugar();
-  var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), ydn.crm.sugarcrm.ModuleName.ACCOUNTS, obj);
-  var record = new ydn.crm.sugarcrm.model.Record(sugar, r);
+  var r = new ydn.crm.su.Record(sugar.getDomain(), ydn.crm.su.ModuleName.ACCOUNTS, obj);
+  var record = new ydn.crm.su.model.Record(sugar, r);
 
-  var panel = new ydn.crm.sugarcrm.ui.record.Record(record);
+  var panel = new ydn.crm.su.ui.record.Record(record);
   panel.render(mock_el);
 
   var name_el = document.querySelector('.field[name="name"] input.value');
@@ -73,7 +73,7 @@ function test_rendering_account_name() {
 
 function test_normally_hide_setting() {
   var record = ydn.crm.test.createContactRecord();
-  var panel = new ydn.crm.sugarcrm.ui.record.Record(record);
+  var panel = new ydn.crm.su.ui.record.Record(record);
   panel.render(mock_el);
   var name_group = panel.body_panel.getChildByGroup('name');
   assertFalse('normally hide value of name group', name_group.isNormallyHide());
@@ -88,7 +88,7 @@ function test_edit_name() {
 
   var record = ydn.crm.test.createContactRecord(null);
 
-  var record_panel = new ydn.crm.sugarcrm.ui.record.Record(record);
+  var record_panel = new ydn.crm.su.ui.record.Record(record);
   record_panel.render(mock_el);
 
   var called = false;
@@ -106,7 +106,7 @@ function test_edit_name() {
 function test_edit_email() {
 
   var record = ydn.crm.test.createContactRecord(null, {});
-  var record_panel = new ydn.crm.sugarcrm.ui.record.Record(record);
+  var record_panel = new ydn.crm.su.ui.record.Record(record);
 
   record_panel.patch = function(patch) {
     assertEquals('email', 'foo@example.com', patch['email']);
@@ -118,8 +118,8 @@ function test_edit_email() {
 
 
 function test_create_contacts() {
-  var record = ydn.crm.test.createRecord(null, ydn.crm.sugarcrm.ModuleName.CONTACTS, {});
-  var record_panel = new ydn.crm.sugarcrm.ui.record.Record(record);
+  var record = ydn.crm.test.createRecord(null, ydn.crm.su.ModuleName.CONTACTS, {});
+  var record_panel = new ydn.crm.su.ui.record.Record(record);
   record_panel.render(mock_el);
   record_panel.simulateEdit({'name': 'Test 1'}, true);
 }

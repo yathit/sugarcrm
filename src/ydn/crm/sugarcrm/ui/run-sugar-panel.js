@@ -14,11 +14,11 @@ inj.style.maxWidth = '20em';
 var div = document.getElementById('sync-panel-root');
 ydn.crm.shared.logger.info('starting sugar panel test')
 
-ydn.crm.sugarcrm.model.GDataSugar.list().addCallbacks(function(models) {
+ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
   for (var i = 0; i < models.length; i++) {
-    sugar = /** @type {ydn.crm.sugarcrm.model.GDataSugar} */ (models[i]);
+    sugar = /** @type {ydn.crm.su.model.GDataSugar} */ (models[i]);
     document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
-    panel = new ydn.crm.sugarcrm.ui.SugarPanel(sugar);
+    panel = new ydn.crm.su.ui.SugarPanel(sugar);
     panel.render(div);
     break;
   }

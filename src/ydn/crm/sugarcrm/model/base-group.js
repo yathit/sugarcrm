@@ -20,22 +20,22 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.BaseGroup');
+goog.provide('ydn.crm.su.model.BaseGroup');
 goog.require('ydn.ui.FlyoutMenu');
 
 
 
 /**
  * SugarCRM module group model.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @param {string} group_name Group name.
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.model.BaseGroup = function(parent, group_name) {
+ydn.crm.su.model.BaseGroup = function(parent, group_name) {
   /**
    * @final
-   * @type {ydn.crm.sugarcrm.model.Record}
+   * @type {ydn.crm.su.model.Record}
    */
   this.module = parent;
   /**
@@ -50,13 +50,13 @@ ydn.crm.sugarcrm.model.BaseGroup = function(parent, group_name) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.BaseGroup.DEBUG = false;
+ydn.crm.su.model.BaseGroup.DEBUG = false;
 
 
 /**
  * @return {SugarCrm.ModuleInfo}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getModuleInfo = function() {
+ydn.crm.su.model.BaseGroup.prototype.getModuleInfo = function() {
   return this.module.getModuleInfo();
 };
 
@@ -65,15 +65,15 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getModuleInfo = function() {
  * @param {string} name field name.
  * @return {SugarCrm.ModuleField}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldInfo = function(name) {
+ydn.crm.su.model.BaseGroup.prototype.getFieldInfo = function(name) {
   return this.module.getFieldInfo(name);
 };
 
 
 /**
- * @return {ydn.crm.sugarcrm.Meta} SugarCRM metadata.
+ * @return {ydn.crm.su.Meta} SugarCRM metadata.
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getMeta = function() {
+ydn.crm.su.model.BaseGroup.prototype.getMeta = function() {
   return this.module.getMeta();
 };
 
@@ -83,7 +83,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getMeta = function() {
  * @param {string} name group name.
  * @return {boolean}
  */
-ydn.crm.sugarcrm.model.BaseGroup.getNormallyHideDefaultSetting = function(name) {
+ydn.crm.su.model.BaseGroup.getNormallyHideDefaultSetting = function(name) {
   if (/address/i.test(name)) {
     return false;
   } else if (['email', 'name', 'phone', ''].indexOf(name) >= 0) {
@@ -100,7 +100,7 @@ ydn.crm.sugarcrm.model.BaseGroup.getNormallyHideDefaultSetting = function(name) 
  * @return {boolean} `true` if field name is in the group.
  * @see #hasFieldValue
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.hasField = function(name) {
+ydn.crm.su.model.BaseGroup.prototype.hasField = function(name) {
   var module_info = this.module.getModuleInfo();
   var info = module_info.module_fields[name];
   if (!info) {
@@ -114,7 +114,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.hasField = function(name) {
  * Get list of field name in this group.
  * @return {!Array.<string>}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.listFields = function() {
+ydn.crm.su.model.BaseGroup.prototype.listFields = function() {
   var module_info = this.module.getModuleInfo();
   var fields = [];
   for (var name in module_info.module_fields) {
@@ -132,9 +132,9 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.listFields = function() {
 /**
  * Get record field value.
  * @param {string} name
- * @return {ydn.crm.sugarcrm.RecordValue}
+ * @return {ydn.crm.su.RecordValue}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
+ydn.crm.su.model.BaseGroup.prototype.getFieldValue = function(name) {
   return this.module.value(name);
 };
 
@@ -142,9 +142,9 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getFieldValue = function(name) {
 /**
  * Get default field value.
  * @param {string} name
- * @return {?ydn.crm.sugarcrm.RecordValue} `null` if no default value set.
+ * @return {?ydn.crm.su.RecordValue} `null` if no default value set.
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getDefaultFieldValue = function(name) {
+ydn.crm.su.model.BaseGroup.prototype.getDefaultFieldValue = function(name) {
   // default field values
   if (!this.group_name) {
     if (name == 'status') {
@@ -164,7 +164,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getDefaultFieldValue = function(name)
  * @param {string} name
  * @return {string}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.valueAsString = function(name) {
+ydn.crm.su.model.BaseGroup.prototype.valueAsString = function(name) {
   return this.module.valueAsString(name);
 };
 
@@ -174,7 +174,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.valueAsString = function(name) {
  * @return {boolean} return `true` if field has value set.
  * @see #hasField
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.hasFieldValue = function(name) {
+ydn.crm.su.model.BaseGroup.prototype.hasFieldValue = function(name) {
   return this.module.hasValue(name);
 };
 
@@ -184,15 +184,15 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.hasFieldValue = function(name) {
  * @param {string} name
  * @return {?string}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getStringValue = function(name) {
+ydn.crm.su.model.BaseGroup.prototype.getStringValue = function(name) {
   return this.module.getStringValue(name);
 };
 
 
 /**
- * @return {ydn.crm.sugarcrm.ModuleName}
+ * @return {ydn.crm.su.ModuleName}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getModuleName = function() {
+ydn.crm.su.model.BaseGroup.prototype.getModuleName = function() {
   return this.module.getModuleName();
 };
 
@@ -200,7 +200,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getModuleName = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupName = function() {
+ydn.crm.su.model.BaseGroup.prototype.getGroupName = function() {
   return this.group_name;
 };
 
@@ -209,7 +209,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupName = function() {
  * Generally used by controller as group title tooltip.
  * @return {string}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupLabel = function() {
+ydn.crm.su.model.BaseGroup.prototype.getGroupLabel = function() {
   var label = this.group_name.replace('_', ' ');
   label = label.charAt(0).toUpperCase() + label.substr(1);
   return label;
@@ -220,7 +220,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupLabel = function() {
  * If return `true` {@link getGroupValue} must return a string.
  * @return {boolean} true if field has value set.
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.hasGroupValue = function() {
+ydn.crm.su.model.BaseGroup.prototype.hasGroupValue = function() {
   return false;
 };
 
@@ -230,7 +230,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.hasGroupValue = function() {
  * Generally used by controller as group title string.
  * @return {?string}
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupValue = function() {
+ydn.crm.su.model.BaseGroup.prototype.getGroupValue = function() {
   return null;
 };
 
@@ -241,7 +241,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getGroupValue = function() {
  * title string.
  * @return {boolean} `true` is group value can be set.
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.isGroupValueEditable = function() {
+ydn.crm.su.model.BaseGroup.prototype.isGroupValueEditable = function() {
   return false;
 };
 
@@ -252,7 +252,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.isGroupValueEditable = function() {
  * @return {Object} return a patch object as result of setting group value.
  * return `null` if no change required.
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.setGroupValue = function(label) {
+ydn.crm.su.model.BaseGroup.prototype.setGroupValue = function(label) {
   return null;
 };
 
@@ -263,7 +263,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.setGroupValue = function(label) {
  * show and action is immediately invoked, if Array is return, a vertical dot
  * will show and a menu will show.
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.getAdditionalOptions = function() {
+ydn.crm.su.model.BaseGroup.prototype.getAdditionalOptions = function() {
   return null;
 };
 
@@ -273,7 +273,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.getAdditionalOptions = function() {
  * @param {*} value input value.
  * @return {?Object} patch object. `null` if patch is not necessary.
  */
-ydn.crm.sugarcrm.model.BaseGroup.prototype.pluck = function(value) {
+ydn.crm.su.model.BaseGroup.prototype.pluck = function(value) {
   if (!goog.isObject(value)) {
     return null;
   }
@@ -289,7 +289,7 @@ ydn.crm.sugarcrm.model.BaseGroup.prototype.pluck = function(value) {
     } /* else {
       has_changed = true;
       obj[name] = value[name];
-      if (ydn.crm.sugarcrm.model.BaseGroup.DEBUG) {
+      if (ydn.crm.su.model.BaseGroup.DEBUG) {
         window.console.warn('New field: ' + name + ' was introduced to ' + this);
       }
     } */

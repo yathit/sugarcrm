@@ -21,7 +21,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.Archiver');
+goog.provide('ydn.crm.su.model.Archiver');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.ui.IMenuItemProvider');
 goog.require('ydn.ui.MessageBox');
@@ -30,19 +30,19 @@ goog.require('ydn.ui.MessageBox');
 
 /**
  * Archive email message to SugarCRM.
- * @param {ydn.crm.sugarcrm.model.Sugar} sugar
+ * @param {ydn.crm.su.model.Sugar} sugar
  * @constructor
  * @struct
  * @implements {ydn.crm.ui.IMenuItemProvider}
  */
-ydn.crm.sugarcrm.model.Archiver = function(sugar) {
+ydn.crm.su.model.Archiver = function(sugar) {
   /**
    * @final
-   * @type {ydn.crm.sugarcrm.model.Sugar}
+   * @type {ydn.crm.su.model.Sugar}
    * @private
    */
   this.sugar_ = sugar;
-  if (ydn.crm.sugarcrm.model.Archiver.DEBUG && !sugar) {
+  if (ydn.crm.su.model.Archiver.DEBUG && !sugar) {
     window.console.warn('No sugarcrm instance to archive');
   }
 };
@@ -51,28 +51,28 @@ ydn.crm.sugarcrm.model.Archiver = function(sugar) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.model.Archiver.DEBUG = false;
+ydn.crm.su.model.Archiver.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.model.Archiver.MENU_NAME = 'archiver';
+ydn.crm.su.model.Archiver.MENU_NAME = 'archiver';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME = 'cloud-done';
+ydn.crm.su.model.Archiver.SVG_ICON_NAME = 'cloud-done';
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.model.Archiver.prototype.getName = function() {
-  return ydn.crm.sugarcrm.model.Archiver.MENU_NAME;
+ydn.crm.su.model.Archiver.prototype.getName = function() {
+  return ydn.crm.su.model.Archiver.MENU_NAME;
 };
 
 
@@ -81,9 +81,9 @@ ydn.crm.sugarcrm.model.Archiver.prototype.getName = function() {
  * @param {ydn.crm.gmail.MessageHeaderWidget} widget
  * @override
  */
-ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
-  widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, false,
-      ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME);
+ydn.crm.su.model.Archiver.prototype.configureMenuItem = function(widget) {
+  widget.setButtonMessageDetail(ydn.crm.su.model.Archiver.MENU_NAME, false,
+      ydn.crm.su.model.Archiver.SVG_ICON_NAME);
   if (!this.sugar_) {
     widget.setMenuItemDetail(this.getName(), false, 'Archive', null);
   }
@@ -91,27 +91,27 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
     return;
   }
   var info = widget.gatherEmailInfo();
-  if (ydn.crm.sugarcrm.model.Archiver.DEBUG) {
+  if (ydn.crm.su.model.Archiver.DEBUG) {
     window.console.log(info);
   }
   if (info && !!info.message_id) {
     var q = {
-      'store': ydn.crm.sugarcrm.ModuleName.EMAILS,
+      'store': ydn.crm.su.ModuleName.EMAILS,
       'index': 'message_id',
       'key': info.message_id
     };
     this.sugar_.send(ydn.crm.Ch.SReq.QUERY, [q]).addCallbacks(function(arr) {
-      if (ydn.crm.sugarcrm.model.Archiver.DEBUG) {
+      if (ydn.crm.su.model.Archiver.DEBUG) {
         window.console.log(arr);
       }
       var record = arr[0] && arr[0]['result'] ? arr[0]['result'][0] : null;
       if (record) {
         var link = this.sugar_.getRecordViewLink(
-            ydn.crm.sugarcrm.ModuleName.EMAILS, record['id']);
+            ydn.crm.su.ModuleName.EMAILS, record['id']);
         widget.setMenuItemDetail(this.getName(), true, 'View Archive',
             link);
-        widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, true,
-            ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
+        widget.setButtonMessageDetail(ydn.crm.su.model.Archiver.MENU_NAME, true,
+            ydn.crm.su.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
       } else {
         widget.setMenuItemDetail(this.getName(), true, 'Archive', null);
       }
@@ -126,7 +126,7 @@ ydn.crm.sugarcrm.model.Archiver.prototype.configureMenuItem = function(widget) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.model.Archiver.prototype.onIMenuItem = function(widget, e) {
+ydn.crm.su.model.Archiver.prototype.onIMenuItem = function(widget, e) {
   var item = /** @type {goog.ui.MenuItem} */ (e.target);
 
   var record = item.getModel();
@@ -143,12 +143,12 @@ ydn.crm.sugarcrm.model.Archiver.prototype.onIMenuItem = function(widget, e) {
       this.sugar_.archiveEmail(info, module_name, record_id).addCallbacks(function(record) {
         ydn.crm.msg.Manager.setStatus(mid, 'Archived:');
         var link = this.sugar_.getRecordViewLink(
-            ydn.crm.sugarcrm.ModuleName.EMAILS, record['id']);
+            ydn.crm.su.ModuleName.EMAILS, record['id']);
         ydn.crm.msg.Manager.setLink(mid, link, 'view');
         widget.setMenuItemDetail(this.getName(), true, 'View Archive',
             link);
-        widget.setButtonMessageDetail(ydn.crm.sugarcrm.model.Archiver.MENU_NAME, true,
-            ydn.crm.sugarcrm.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
+        widget.setButtonMessageDetail(ydn.crm.su.model.Archiver.MENU_NAME, true,
+            ydn.crm.su.model.Archiver.SVG_ICON_NAME, 'This message is archived.');
       }, function(e) {
         ydn.crm.msg.Manager.setStatus(mid, 'Error archiving: ' + (e.message || e));
       }, this);

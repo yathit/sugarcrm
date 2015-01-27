@@ -6,42 +6,42 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.SimpleGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.AbstractGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer');
+goog.provide('ydn.crm.su.ui.group.SimpleGroup');
+goog.require('ydn.crm.su.ui.group.AbstractGroup');
+goog.require('ydn.crm.su.ui.group.SimpleGroupRenderer');
 
 
 
 /**
  * Simple group component.
- * @param {ydn.crm.sugarcrm.model.BaseGroup} model
- * @param {ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer=} opt_renderer
+ * @param {ydn.crm.su.model.BaseGroup} model
+ * @param {ydn.crm.su.ui.group.SimpleGroupRenderer=} opt_renderer
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.AbstractGroup}
+ * @extends {ydn.crm.su.ui.group.AbstractGroup}
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup = function(model, opt_renderer, opt_dom) {
+ydn.crm.su.ui.group.SimpleGroup = function(model, opt_renderer, opt_dom) {
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer}
+   * @type {ydn.crm.su.ui.group.SimpleGroupRenderer}
    */
-  this.renderer = opt_renderer || ydn.crm.sugarcrm.ui.group.SimpleGroupRenderer.getInstance();
+  this.renderer = opt_renderer || ydn.crm.su.ui.group.SimpleGroupRenderer.getInstance();
   goog.base(this, model, opt_dom);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.SimpleGroup, ydn.crm.sugarcrm.ui.group.AbstractGroup);
+goog.inherits(ydn.crm.su.ui.group.SimpleGroup, ydn.crm.su.ui.group.AbstractGroup);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.DEBUG = false;
+ydn.crm.su.ui.group.SimpleGroup.DEBUG = false;
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.createDom = function() {
+ydn.crm.su.ui.group.SimpleGroup.prototype.createDom = function() {
   goog.base(this, 'createDom');
   this.renderer.decorate(this);
 };
@@ -50,7 +50,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.enterDocument = function() {
+ydn.crm.su.ui.group.SimpleGroup.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   var input = this.getElement().querySelector('input');
@@ -60,7 +60,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.enterDocument = function() {
   }
 
   var el_more = this.getElement().getElementsByClassName(
-      ydn.crm.sugarcrm.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON)[0];
+      ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON)[0];
   if (el_more) {
     this.getHandler().listen(el_more, 'click', this.onHoverButtonClick);
   }
@@ -71,7 +71,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.enterDocument = function() {
 /**
  * @return {string}
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getInputValue = function() {
+ydn.crm.su.ui.group.SimpleGroup.prototype.getInputValue = function() {
   return this.renderer.getInputValue(this);
 };
 
@@ -79,7 +79,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getInputValue = function() {
 /**
  * @param {string} val
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.setInputValue = function(val) {
+ydn.crm.su.ui.group.SimpleGroup.prototype.setInputValue = function(val) {
   this.renderer.setInputValue(this, val);
 };
 
@@ -88,12 +88,12 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.setInputValue = function(val) {
  * @param {Event} e
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleInputBlur = function(e) {
+ydn.crm.su.ui.group.SimpleGroup.prototype.handleInputBlur = function(e) {
   var new_val = this.collectData();
   var model = this.getModel();
   var patch = model.pluck(new_val);
   if (patch) {
-    var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patch, this);
+    var ev = new ydn.crm.su.ui.events.ChangedEvent(patch, this);
     this.dispatchEvent(ev);
   }
 };
@@ -103,15 +103,15 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleInputBlur = function(e) {
  * @param {goog.events.Event} e
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.onHoverButtonClick = function(e) {
+ydn.crm.su.ui.group.SimpleGroup.prototype.onHoverButtonClick = function(e) {
   var el = /** @type {Element} */ (e.currentTarget);
-  var cmd = /** @type {ydn.crm.sugarcrm.model.Field.Command} */ (el.getAttribute('name'));
-  if (ydn.crm.sugarcrm.ui.group.SimpleGroup.DEBUG) {
+  var cmd = /** @type {ydn.crm.su.model.Field.Command} */ (el.getAttribute('name'));
+  if (ydn.crm.su.ui.group.SimpleGroup.DEBUG) {
     window.console.log(cmd);
   }
   if (cmd) {
     // menu action are handle in group level.
-    var ev = new ydn.crm.sugarcrm.ui.events.FieldMenuActionEvent(cmd, this);
+    var ev = new ydn.crm.su.ui.events.FieldMenuActionEvent(cmd, this);
     this.dispatchEvent(ev);
     if (!ev.defaultPrevented) {
       this.doMenuActionDefault(ev);
@@ -123,13 +123,13 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.onHoverButtonClick = function(e)
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.collectData = function() {
+ydn.crm.su.ui.group.SimpleGroup.prototype.collectData = function() {
   var obj = null;
   for (var j = 0; j < this.getChildCount(); j++) {
-    if (!(this.getChildAt(j) instanceof ydn.crm.sugarcrm.ui.field.Field)) {
+    if (!(this.getChildAt(j) instanceof ydn.crm.su.ui.field.Field)) {
       continue;
     }
-    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    var f = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(j));
     var value = f.collectData();
     if (!goog.isNull(value)) {
       if (!obj) {
@@ -145,13 +145,13 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.collectData = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getPatch = function() {
+ydn.crm.su.ui.group.SimpleGroup.prototype.getPatch = function() {
   var obj = null;
   for (var j = 0; j < this.getChildCount(); j++) {
-    if (!(this.getChildAt(j) instanceof ydn.crm.sugarcrm.ui.field.Field)) {
+    if (!(this.getChildAt(j) instanceof ydn.crm.su.ui.field.Field)) {
       continue;
     }
-    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    var f = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(j));
     if (!f.hasChanged()) {
       continue;
     }
@@ -170,12 +170,12 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getPatch = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.hasChanged = function() {
+ydn.crm.su.ui.group.SimpleGroup.prototype.hasChanged = function() {
   for (var j = 0; j < this.getChildCount(); j++) {
-    if (!(this.getChildAt(j) instanceof ydn.crm.sugarcrm.ui.field.Field)) {
+    if (!(this.getChildAt(j) instanceof ydn.crm.su.ui.field.Field)) {
       continue;
     }
-    var f = /** @type {ydn.crm.sugarcrm.ui.field.Field} */ (this.getChildAt(j));
+    var f = /** @type {ydn.crm.su.ui.field.Field} */ (this.getChildAt(j));
     if (f.hasChanged()) {
       return true;
     }
@@ -186,12 +186,12 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.hasChanged = function() {
 
 /**
  * Default operation for action.
- * @param {ydn.crm.sugarcrm.ui.events.FieldMenuActionEvent} mae
+ * @param {ydn.crm.su.ui.events.FieldMenuActionEvent} mae
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.doMenuActionDefault = function(mae) {
-  if (mae.command == ydn.crm.sugarcrm.model.Field.Command.EDIT) {
-    var dialog = ydn.crm.sugarcrm.ui.field.Field.createEditor(this.getEditorTemplateData());
+ydn.crm.su.ui.group.SimpleGroup.prototype.doMenuActionDefault = function(mae) {
+  if (mae.command == ydn.crm.su.model.Field.Command.EDIT) {
+    var dialog = ydn.crm.su.ui.field.Field.createEditor(this.getEditorTemplateData());
 
     this.getHandler().listen(dialog, goog.ui.Dialog.EventType.SELECT,
         this.handleEditorSelect_, false);
@@ -213,7 +213,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.doMenuActionDefault = function(m
  * @return {boolean} true if patch has been applied.
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.patchOptionField = function(el, patches) {
+ydn.crm.su.ui.group.SimpleGroup.prototype.patchOptionField = function(el, patches) {
   var field_name = el.getAttribute('name');
   var input = el.querySelector('.value').firstElementChild;
   var field_value;
@@ -231,13 +231,13 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.patchOptionField = function(el, 
 /**
  * Handle when dialog is closed with 'OK' button.
  * The default handler will collect field values and dispatch
- * @see {ydn.crm.sugarcrm.ui.events.Type.CHANGE} event.
+ * @see {ydn.crm.su.ui.events.Type.CHANGE} event.
  * If the event is handled
  * @see {#applyEditorChanges} default handler will be invoke.
  * @param {goog.ui.Dialog} dialog
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleDialogOk = function(dialog) {
+ydn.crm.su.ui.group.SimpleGroup.prototype.handleDialogOk = function(dialog) {
   var el = dialog.getContentElement();
   var fields_el = el.querySelectorAll('.field');
   var patches = {};
@@ -246,7 +246,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleDialogOk = function(dialog
     has_patch |= this.patchOptionField(fields_el[i], patches);
   }
   if (has_patch) {
-    var ev = new ydn.crm.sugarcrm.ui.events.ChangedEvent(patches, this);
+    var ev = new ydn.crm.su.ui.events.ChangedEvent(patches, this);
     this.dispatchEvent(ev);
     if (!ev.defaultPrevented) {
       this.applyEditorChanges(ev);
@@ -259,7 +259,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleDialogOk = function(dialog
  * @param {goog.ui.Dialog.Event} e
  * @private
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleEditorSelect_ = function(e) {
+ydn.crm.su.ui.group.SimpleGroup.prototype.handleEditorSelect_ = function(e) {
 
   if (e.key == goog.ui.Dialog.DefaultButtonKeys.OK) {
     var dialog = /** @type {goog.ui.Dialog} */ (e.target);
@@ -270,10 +270,10 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.handleEditorSelect_ = function(e
 
 /**
  * Performed default operation if event is handled.
- * @param {ydn.crm.sugarcrm.ui.events.ChangedEvent} ev
+ * @param {ydn.crm.su.ui.events.ChangedEvent} ev
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.applyEditorChanges = function(ev) {
+ydn.crm.su.ui.group.SimpleGroup.prototype.applyEditorChanges = function(ev) {
   // sub-class may override
 };
 
@@ -281,7 +281,7 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.applyEditorChanges = function(ev
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.refresh = function() {
+ydn.crm.su.ui.group.SimpleGroup.prototype.refresh = function() {
   this.renderer.refresh(this);
 };
 
@@ -291,10 +291,10 @@ ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.refresh = function() {
  * Subclass  with default renderer should override for rendering standard edit
  * dialog and override
  * @see #applyEditorChanges handler.
- * @return {ydn.crm.sugarcrm.ui.field.Field.EditorTemplateData}
+ * @return {ydn.crm.su.ui.field.Field.EditorTemplateData}
  * @protected
  */
-ydn.crm.sugarcrm.ui.group.SimpleGroup.prototype.getEditorTemplateData = function() {
+ydn.crm.su.ui.group.SimpleGroup.prototype.getEditorTemplateData = function() {
   return {
     fields: []
   };

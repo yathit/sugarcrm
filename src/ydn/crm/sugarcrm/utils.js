@@ -4,7 +4,7 @@
 
 
 
-goog.provide('ydn.crm.sugarcrm.utils');
+goog.provide('ydn.crm.su.utils');
 goog.require('goog.string');
 
 
@@ -13,10 +13,10 @@ goog.require('goog.string');
  * @param {!Array.<!SugarCrm.NameValueEntry>|!SugarCrm.NameValueEntry} name_value_entries
  * @return {!Array.<!SugarCrm.Record>|!SugarCrm.Record}
  */
-ydn.crm.sugarcrm.utils.toRecordEntry = function(name_value_entries) {
+ydn.crm.su.utils.toRecordEntry = function(name_value_entries) {
   if (goog.isArray(name_value_entries)) {
     return name_value_entries.map(function(e) {
-      return ydn.crm.sugarcrm.utils.toRecordEntry(e);
+      return ydn.crm.su.utils.toRecordEntry(e);
     });
   } else if (goog.isObject(name_value_entries)) {
     var entry = /** @type {SugarCrm.NameValueEntry} */ (name_value_entries);
@@ -36,7 +36,7 @@ ydn.crm.sugarcrm.utils.toRecordEntry = function(name_value_entries) {
  * @param {string} date_str "2013-09-20 22:10:00"
  * @return {Date}
  */
-ydn.crm.sugarcrm.utils.parseDate = function(date_str) {
+ydn.crm.su.utils.parseDate = function(date_str) {
   // SugarCRM use UCT (GMT) date format, but not standard. By appending
   // GMT, it parse correctly in chrome, but not in Firefox. Since we are only
   // using in Chrome, this is OK. FIXME
@@ -49,7 +49,7 @@ ydn.crm.sugarcrm.utils.parseDate = function(date_str) {
  * @param {Date|*} date
  * @return {boolean} true if a valid date.
  */
-ydn.crm.sugarcrm.utils.isValidDate = function(date) {
+ydn.crm.su.utils.isValidDate = function(date) {
   return !!date && date instanceof Date && !isNaN(date.getTime());
 };
 
@@ -60,7 +60,7 @@ ydn.crm.sugarcrm.utils.isValidDate = function(date) {
  * @return {string}
  * @see #isValidDate
  */
-ydn.crm.sugarcrm.utils.toDateString = function(date) {
+ydn.crm.su.utils.toDateString = function(date) {
   // ISO: "2014-04-02T03:32:20.522Z"
   // SugarCRM: "2013-09-20 22:10:00"
   if (!date || !date.getTime()) {
@@ -75,8 +75,8 @@ ydn.crm.sugarcrm.utils.toDateString = function(date) {
  * @param {string} date_str SugarCRM date string "2013-09-20 22:10:00"
  * @return {string} eg: "2013-09-21T06:10"
  */
-ydn.crm.sugarcrm.utils.toDateTimeLocalString = function(date_str) {
-  var date = ydn.crm.sugarcrm.utils.parseDate(date_str);
+ydn.crm.su.utils.toDateTimeLocalString = function(date_str) {
+  var date = ydn.crm.su.utils.parseDate(date_str);
   if (!date || !date.getTime()) {
     return '';
   }
@@ -96,11 +96,11 @@ ydn.crm.sugarcrm.utils.toDateTimeLocalString = function(date_str) {
  * @param {number} date_value input.valueAsNumber
  * @return {string}
  */
-ydn.crm.sugarcrm.utils.fromDateTimeLocalString = function(date_value) {
+ydn.crm.su.utils.fromDateTimeLocalString = function(date_value) {
   if (!date_value) {
     return '';
   }
   var offset = new Date().getTimezoneOffset();
   var d = new Date(date_value + offset * 60000);
-  return ydn.crm.sugarcrm.utils.toDateString(d);
+  return ydn.crm.su.utils.toDateString(d);
 };

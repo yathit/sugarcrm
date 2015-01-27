@@ -24,41 +24,41 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.group.Parent');
-goog.require('ydn.crm.sugarcrm.model.ParentRelateGroup');
-goog.require('ydn.crm.sugarcrm.ui.group.SuggestedRecord');
-goog.require('ydn.crm.sugarcrm.ui.widget.SelectRecord');
+goog.provide('ydn.crm.su.ui.group.Parent');
+goog.require('ydn.crm.su.model.ParentRelateGroup');
+goog.require('ydn.crm.su.ui.group.SuggestedRecord');
+goog.require('ydn.crm.su.ui.widget.SelectRecord');
 goog.require('ydn.ui');
 
 
 
 /**
  * Suggested record component.
- * @param {ydn.crm.sugarcrm.model.ParentRelateGroup} model
+ * @param {ydn.crm.su.model.ParentRelateGroup} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.ui.group.SuggestedRecord}
+ * @extends {ydn.crm.su.ui.group.SuggestedRecord}
  */
-ydn.crm.sugarcrm.ui.group.Parent = function(model, opt_dom) {
-  ydn.crm.sugarcrm.ui.group.Parent.base(this, 'constructor', model, opt_dom);
+ydn.crm.su.ui.group.Parent = function(model, opt_dom) {
+  ydn.crm.su.ui.group.Parent.base(this, 'constructor', model, opt_dom);
 
 };
-goog.inherits(ydn.crm.sugarcrm.ui.group.Parent, ydn.crm.sugarcrm.ui.group.SuggestedRecord);
+goog.inherits(ydn.crm.su.ui.group.Parent, ydn.crm.su.ui.group.SuggestedRecord);
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.ParentRelateGroup}
+ * @return {ydn.crm.su.model.ParentRelateGroup}
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.getModel;
+ydn.crm.su.ui.group.Parent.prototype.getModel;
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.createDom = function() {
-  ydn.crm.sugarcrm.ui.group.Parent.base(this, 'createDom');
+ydn.crm.su.ui.group.Parent.prototype.createDom = function() {
+  ydn.crm.su.ui.group.Parent.base(this, 'createDom');
   var sel = this.getTypeSelElement();
   goog.style.setElementShown(sel, true);
 };
@@ -67,8 +67,8 @@ ydn.crm.sugarcrm.ui.group.Parent.prototype.createDom = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.enterDocument = function() {
-  ydn.crm.sugarcrm.ui.group.Parent.base(this, 'enterDocument');
+ydn.crm.su.ui.group.Parent.prototype.enterDocument = function() {
+  ydn.crm.su.ui.group.Parent.base(this, 'enterDocument');
 
 };
 
@@ -76,8 +76,8 @@ ydn.crm.sugarcrm.ui.group.Parent.prototype.enterDocument = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.reset = function() {
-  ydn.crm.sugarcrm.ui.group.Parent.base(this, 'reset');
+ydn.crm.su.ui.group.Parent.prototype.reset = function() {
+  ydn.crm.su.ui.group.Parent.base(this, 'reset');
   var sel_type = this.getTypeSelElement();
   sel_type.setAttribute('list', this.getDataListId());
   sel_type.value = this.getModel().getDefaultParentType();
@@ -87,7 +87,7 @@ ydn.crm.sugarcrm.ui.group.Parent.prototype.reset = function() {
 /**
  * @return {string} data list id for parent type input.
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.getDataListId = function() {
+ydn.crm.su.ui.group.Parent.prototype.getDataListId = function() {
   var id = 'list-' + this.getModel().getModuleName() + '-parent-type';
   if (!document.getElementById('id')) {
     var list = document.createElement('datalist');
@@ -107,17 +107,17 @@ ydn.crm.sugarcrm.ui.group.Parent.prototype.getDataListId = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.getRelateModuleName = function() {
+ydn.crm.su.ui.group.Parent.prototype.getRelateModuleName = function() {
   var val = this.getTypeSelElement().value;
   var mn = this.getModel().optionValue2ModuleName(val);
-  return mn || ydn.crm.sugarcrm.ui.group.Parent.base(this, 'getRelateModuleName');
+  return mn || ydn.crm.su.ui.group.Parent.base(this, 'getRelateModuleName');
 };
 
 
 /**
  * @return {Element}
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.getTypeSelElement = function() {
+ydn.crm.su.ui.group.Parent.prototype.getTypeSelElement = function() {
   var el = this.getContentElement();
   return el.querySelector('.parent-type');
 };
@@ -126,10 +126,10 @@ ydn.crm.sugarcrm.ui.group.Parent.prototype.getTypeSelElement = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.refresh = function() {
-  ydn.crm.sugarcrm.ui.group.Parent.base(this, 'refresh');
+ydn.crm.su.ui.group.Parent.prototype.refresh = function() {
+  ydn.crm.su.ui.group.Parent.base(this, 'refresh');
   /**
-   * @type {ydn.crm.sugarcrm.model.ParentRelateGroup}
+   * @type {ydn.crm.su.model.ParentRelateGroup}
    */
   var model = this.getModel();
   var sel_type = this.getTypeSelElement();
@@ -141,10 +141,10 @@ ydn.crm.sugarcrm.ui.group.Parent.prototype.refresh = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.group.Parent.prototype.collectData = function() {
-  var data = ydn.crm.sugarcrm.ui.group.Parent.base(this, 'collectData');
+ydn.crm.su.ui.group.Parent.prototype.collectData = function() {
+  var data = ydn.crm.su.ui.group.Parent.base(this, 'collectData');
   /**
-   * @type {ydn.crm.sugarcrm.model.ParentRelateGroup}
+   * @type {ydn.crm.su.model.ParentRelateGroup}
    */
   var model = this.getModel();
   if (data) {

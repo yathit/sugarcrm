@@ -21,7 +21,7 @@ goog.require('ydn.crm.inj.Context');
 goog.require('ydn.crm.inj.Task');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
-goog.require('ydn.crm.sugarcrm.ui.SimpleSugarPanel');
+goog.require('ydn.crm.su.ui.SimpleSugarPanel');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.msg.Message');
@@ -189,12 +189,12 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.validateSugarPanels_ = function(nam
       us.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
     var ac = us.getLoginEmail();
-    var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,
+    var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     if (!this.hasSugarPanel(name)) {
       // remove other sugars panel
       for (var j = this.getChildCount() - 1; j >= 0; j--) {
-        var panel = /** @type {ydn.crm.sugarcrm.ui.SimpleSugarPanel} */ (
+        var panel = /** @type {ydn.crm.su.ui.SimpleSugarPanel} */ (
             this.removeChildAt(j, true));
         panel.dispose();
         var model = panel.getModel();
@@ -211,11 +211,11 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.validateSugarPanels_ = function(nam
 
 /**
  * Add sugarcrm panel as child component.
- * @param {ydn.crm.sugarcrm.model.GDataSugar} sugar
+ * @param {ydn.crm.su.model.GDataSugar} sugar
  * @protected
  */
 ydn.crm.ui.SimpleSugarWrapperPanel.prototype.addSugarPanel = function(sugar) {
-  var panel = new ydn.crm.sugarcrm.ui.SimpleSugarPanel(sugar, this.dom_);
+  var panel = new ydn.crm.su.ui.SimpleSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
   if (ydn.crm.ui.SimpleSugarWrapperPanel.DEBUG) {
     window.console.info('simple sugar panel ' + sugar.getDomain() + ' created, now ' +
@@ -226,14 +226,14 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.addSugarPanel = function(sugar) {
 
 /**
  * Get active sugarcrm model.
- * @return {ydn.crm.sugarcrm.model.Sugar}
+ * @return {ydn.crm.su.model.Sugar}
  */
 ydn.crm.ui.SimpleSugarWrapperPanel.prototype.getSugarModelClone = function() {
   var model = null;
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
-      var ssp = /** @type {ydn.crm.sugarcrm.ui.SimpleSugarPanel} */ (ch);
+    if (ch instanceof ydn.crm.su.ui.SimpleSugarPanel) {
+      var ssp = /** @type {ydn.crm.su.ui.SimpleSugarPanel} */ (ch);
       model = ssp.getModel();
       if (model.isLogin()) {
         return model.clone();
@@ -252,7 +252,7 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.getSugarModelClone = function() {
 ydn.crm.ui.SimpleSugarWrapperPanel.prototype.hasSugarPanel = function(name) {
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
+    if (ch instanceof ydn.crm.su.ui.SimpleSugarPanel) {
       if (ch.getDomainName() == name) {
         return true;
       }

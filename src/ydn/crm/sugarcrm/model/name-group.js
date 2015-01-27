@@ -6,23 +6,23 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.model.NameGroup');
-goog.require('ydn.crm.sugarcrm.model.Group');
+goog.provide('ydn.crm.su.model.NameGroup');
+goog.require('ydn.crm.su.model.Group');
 
 
 
 /**
  * Group model for 'name' group fields. 'name' group exists if there exists one of
  * 'full_name', 'first_name', 'last_name' or 'name'.
- * @param {ydn.crm.sugarcrm.model.Record} parent
+ * @param {ydn.crm.su.model.Record} parent
  * @constructor
- * @extends {ydn.crm.sugarcrm.model.Group}
+ * @extends {ydn.crm.su.model.Group}
  * @struct
  */
-ydn.crm.sugarcrm.model.NameGroup = function(parent) {
+ydn.crm.su.model.NameGroup = function(parent) {
   goog.base(this, parent, 'name');
 };
-goog.inherits(ydn.crm.sugarcrm.model.NameGroup, ydn.crm.sugarcrm.model.Group);
+goog.inherits(ydn.crm.su.model.NameGroup, ydn.crm.su.model.Group);
 
 
 /**
@@ -32,7 +32,7 @@ goog.inherits(ydn.crm.sugarcrm.model.NameGroup, ydn.crm.sugarcrm.model.Group);
  * @param {string} last_name
  * @return {string}
  */
-ydn.crm.sugarcrm.model.NameGroup.makeFullName = function(full_name, first_name,
+ydn.crm.su.model.NameGroup.makeFullName = function(full_name, first_name,
                                                          last_name) {
   var fn = '';
   if (!full_name) {
@@ -50,8 +50,8 @@ ydn.crm.sugarcrm.model.NameGroup.makeFullName = function(full_name, first_name,
 /**
  * @return {string} full name with salutation.
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.getFullNameLabel = function() {
-  return ydn.crm.sugarcrm.model.NameGroup.makeFullName(
+ydn.crm.su.model.NameGroup.prototype.getFullNameLabel = function() {
+  return ydn.crm.su.model.NameGroup.makeFullName(
       this.module.valueAsString('full_name'),
       this.module.valueAsString('first_name'),
       this.module.valueAsString('last_name'));
@@ -63,7 +63,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getFullNameLabel = function() {
  * @param {string} word
  * @return {boolean}
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.isSalutation = function(word) {
+ydn.crm.su.model.NameGroup.prototype.isSalutation = function(word) {
   if (!word) {
     return false;
   }
@@ -81,7 +81,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.isSalutation = function(word) {
  * @param {string} full_name
  * @return {Object}
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.parseFullNameLabel = function(full_name) {
+ydn.crm.su.model.NameGroup.prototype.parseFullNameLabel = function(full_name) {
   full_name = full_name.trim();
   if (!this.hasField('last_name')) {
     return {
@@ -151,7 +151,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.parseFullNameLabel = function(full_na
  * Get full name.
  * @return {*}
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.getFullName = function() {
+ydn.crm.su.model.NameGroup.prototype.getFullName = function() {
   var full_name = this.module.value('full_name');
   if (!full_name) {
     var first_name = this.module.value('first_name');
@@ -169,7 +169,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getFullName = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupLabel = function() {
+ydn.crm.su.model.NameGroup.prototype.getGroupLabel = function() {
   return 'Name';
 };
 
@@ -177,7 +177,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupLabel = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.hasGroupValue = function() {
+ydn.crm.su.model.NameGroup.prototype.hasGroupValue = function() {
   return this.hasField('name') || this.hasField('full_name');
 };
 
@@ -185,7 +185,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.hasGroupValue = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupValue = function() {
+ydn.crm.su.model.NameGroup.prototype.getGroupValue = function() {
   return this.module.valueAsString('full_name');
 };
 
@@ -193,10 +193,10 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getGroupValue = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.getAdditionalOptions = function() {
+ydn.crm.su.model.NameGroup.prototype.getAdditionalOptions = function() {
   return {
     label: 'Edit',
-    name: ydn.crm.sugarcrm.model.Field.Command.EDIT,
+    name: ydn.crm.su.model.Field.Command.EDIT,
     type: 'text'
   };
 };
@@ -205,7 +205,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.getAdditionalOptions = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.isGroupValueEditable = function() {
+ydn.crm.su.model.NameGroup.prototype.isGroupValueEditable = function() {
   return true;
 };
 
@@ -213,7 +213,7 @@ ydn.crm.sugarcrm.model.NameGroup.prototype.isGroupValueEditable = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.model.NameGroup.prototype.setGroupValue = function(label) {
+ydn.crm.su.model.NameGroup.prototype.setGroupValue = function(label) {
   var org = this.getGroupValue();
   if (org == label) {
     return null;

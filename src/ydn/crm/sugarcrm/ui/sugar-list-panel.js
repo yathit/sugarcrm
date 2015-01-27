@@ -18,7 +18,7 @@ goog.require('ydn.crm.inj.Context');
 goog.require('ydn.crm.inj.Task');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
-goog.require('ydn.crm.sugarcrm.ui.SimpleSugarPanel');
+goog.require('ydn.crm.su.ui.SimpleSugarPanel');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.msg.Message');
@@ -178,10 +178,10 @@ ydn.crm.ui.SugarListPanel.prototype.initSugar_ = function(name) {
   return df.addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
-      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
     var ac = us.getLoginEmail();
-    var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,
+    var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     if (!this.hasSugarPanel(name)) {
       this.addSugarPanel(sugar);
@@ -194,11 +194,11 @@ ydn.crm.ui.SugarListPanel.prototype.initSugar_ = function(name) {
 
 /**
  * Add sugarcrm panel as child component.
- * @param {ydn.crm.sugarcrm.model.GDataSugar} sugar
+ * @param {ydn.crm.su.model.GDataSugar} sugar
  * @protected
  */
 ydn.crm.ui.SugarListPanel.prototype.addSugarPanel = function(sugar) {
-  var panel = new ydn.crm.sugarcrm.ui.SimpleSugarPanel(sugar, this.dom_);
+  var panel = new ydn.crm.su.ui.SimpleSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
   if (ydn.crm.ui.SugarListPanel.DEBUG) {
     window.console.info('simple sugar panel ' + sugar.getDomain() + ' created, now ' +
@@ -215,7 +215,7 @@ ydn.crm.ui.SugarListPanel.prototype.addSugarPanel = function(sugar) {
 ydn.crm.ui.SugarListPanel.prototype.hasSugarPanel = function(name) {
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
+    if (ch instanceof ydn.crm.su.ui.SimpleSugarPanel) {
       if (ch.getDomainName() == name) {
         return true;
       }
@@ -246,7 +246,7 @@ ydn.crm.ui.SugarListPanel.prototype.updateSugarPanels = function(sugars) {
   var dfs = [];
   for (var i = this.getChildCount() - 1; i > 0; i--) {
     var ch = this.getChildAt(i);
-    if (ch instanceof ydn.crm.sugarcrm.ui.SimpleSugarPanel) {
+    if (ch instanceof ydn.crm.su.ui.SimpleSugarPanel) {
       var domain = ch.getModel().getDomain();
       var has_it = sugars.indexOf(domain) >= 0;
       if (!has_it) {

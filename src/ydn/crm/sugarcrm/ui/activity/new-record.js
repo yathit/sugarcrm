@@ -22,67 +22,67 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.ui.activity.NewRecord');
+goog.provide('ydn.crm.su.ui.activity.NewRecord');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.Option');
 goog.require('goog.ui.Select');
-goog.require('ydn.crm.sugarcrm.ui.record.Record');
+goog.require('ydn.crm.su.ui.record.Record');
 
 
 
 /**
  * New record create panel.
- * @param {ydn.crm.sugarcrm.model.Sugar} model
+ * @param {ydn.crm.su.model.Sugar} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord = function(model, opt_dom) {
+ydn.crm.su.ui.activity.NewRecord = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
 };
-goog.inherits(ydn.crm.sugarcrm.ui.activity.NewRecord, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.activity.NewRecord, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.DEBUG = false;
+ydn.crm.su.ui.activity.NewRecord.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Sugar}
+ * @return {ydn.crm.su.model.Sugar}
  * @override
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.getModel;
+ydn.crm.su.ui.activity.NewRecord.prototype.getModel;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.CSS_CLASS = 'new-record';
+ydn.crm.su.ui.activity.NewRecord.CSS_CLASS = 'new-record';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.CSS_CLASS_DETAIL = 'record-detail';
+ydn.crm.su.ui.activity.NewRecord.CSS_CLASS_DETAIL = 'record-detail';
 
 
 /** @return {string} */
-ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.getCssClass = function() {
-  return ydn.crm.sugarcrm.ui.activity.NewRecord.CSS_CLASS;
+ydn.crm.su.ui.activity.NewRecord.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.activity.NewRecord.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.createDom = function() {
+ydn.crm.su.ui.activity.NewRecord.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var dom = this.dom_;
   var root = this.getElement();
@@ -92,12 +92,12 @@ ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.createDom = function() {
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(content);
 
-  var type = ydn.crm.sugarcrm.DEFAULT_MODULE;
+  var type = ydn.crm.su.DEFAULT_MODULE;
 
   var sugar = this.getModel();
-  var r = new ydn.crm.sugarcrm.model.Record(sugar,
-      new ydn.crm.sugarcrm.Record(sugar.getDomain(), type));
-  var record = new ydn.crm.sugarcrm.ui.record.Record(r, dom);
+  var r = new ydn.crm.su.model.Record(sugar,
+      new ydn.crm.su.Record(sugar.getDomain(), type));
+  var record = new ydn.crm.su.ui.record.Record(r, dom);
 
   this.addChild(record, true);
 };
@@ -106,19 +106,19 @@ ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.createDom = function() {
 /**
  * @return {Element}
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.getHeadElement = function() {
+ydn.crm.su.ui.activity.NewRecord.prototype.getHeadElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD);
 };
 
 
 /**
  * NOTE: use only in testing.
- * @return {ydn.crm.sugarcrm.ui.record.Record}
+ * @return {ydn.crm.su.ui.record.Record}
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.getRecordPanel = function() {
+ydn.crm.su.ui.activity.NewRecord.prototype.getRecordPanel = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var c = this.getChildAt(i);
-    if (c instanceof ydn.crm.sugarcrm.ui.record.Record) {
+    if (c instanceof ydn.crm.su.ui.record.Record) {
       return c;
     }
   }
@@ -129,7 +129,7 @@ ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.getRecordPanel = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.getContentElement = function() {
+ydn.crm.su.ui.activity.NewRecord.prototype.getContentElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
 };
 
@@ -137,7 +137,7 @@ ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.getContentElement = function() 
 /**
  * @inheritDoc
  */
-ydn.crm.sugarcrm.ui.activity.NewRecord.prototype.enterDocument = function() {
+ydn.crm.su.ui.activity.NewRecord.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
   var record = this.getRecordPanel();
