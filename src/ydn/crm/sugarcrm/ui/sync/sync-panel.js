@@ -49,7 +49,7 @@ ydn.crm.su.ui.SyncPanel = function(dom, model) {
    */
   this.content_gdata = new goog.ui.Component(dom);
   /**
-   * @type {string?}
+   * @type {?string}
    * @private
    */
   this.record_type_ = null;
@@ -92,7 +92,7 @@ ydn.crm.su.ui.SyncPanel.prototype.createDom = function() {
 
 
 /**
- * @return {string?}
+ * @return {?string}
  * @protected
  */
 ydn.crm.su.ui.SyncPanel.prototype.getBaseRecordType = function() {
