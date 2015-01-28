@@ -15,7 +15,7 @@ ydn.crm.su.model.GDataSugar.DEBUG =  true;
 
 var gmail_obs = new ydn.crm.gmail.GmailObserver();
 var comp_obs = new ydn.crm.gmail.ComposeObserver(gmail_obs);
-panel = new ydn.crm.su.ContextWidget(gmail_obs, comp_obs);
+panel = new ydn.crm.su.ContextWidget(user, gmail_obs, comp_obs);
 ydn.crm.msg.Manager.addStatus('Starting...');
 
 user.onReady().addCallbacks(function() {

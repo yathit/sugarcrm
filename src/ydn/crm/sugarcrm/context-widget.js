@@ -21,6 +21,8 @@
  * information regarding context including, Google gmail contact, SugarCRM
  * contact, lead and social information.
  *
+ * This widget also responsible for rendering email template.
+ *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
@@ -40,9 +42,11 @@ goog.require('ydn.gmail.Utils');
 /**
  * Context sidebar widget rendered inside context container.
  * <pre>
- *   var widget = new ydn.crm.su.ContextWidget(gob, cob);
+ *   var us = ydn.crm.ui.UserSetting.getInstance();
+ *   var widget = new ydn.crm.su.ContextWidget(us, gob, cob);
  *   widget.render(el);
  * </pre>
+ * @param {ydn.crm.ui.UserSetting} us
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {ydn.crm.gmail.ComposeObserver} observer
  * @param {goog.dom.DomHelper=} opt_dom
@@ -51,9 +55,14 @@ goog.require('ydn.gmail.Utils');
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.ContextWidget = function(gmail_observer, observer, opt_dom) {
+ydn.crm.su.ContextWidget = function(us, gmail_observer, observer, opt_dom) {
   goog.base(this, opt_dom);
 
+  /**
+   * @private
+   * @type {ydn.crm.ui.UserSetting}
+   */
+  this.us_ = us;
   /**
    * @type {ydn.crm.gmail.Template}
    * @private
@@ -289,16 +298,20 @@ ydn.crm.su.ContextWidget.prototype.setSugarCrm = function(sugar) {
     if (ydn.crm.su.ContextWidget.DEBUG) {
       window.console.info('Existing sugar panel disposed.');
     }
-    this.gmail_template_.dispose();
-    this.gmail_template_ = null;
+    if (this.gmail_template_) {
+      this.gmail_template_.dispose();
+      this.gmail_template_ = null;
+    }
   }
 
   if (!sugar) {
     return;
   }
 
-  this.gmail_template_ = new ydn.crm.gmail.Template(sugar);
-  this.gmail_template_.setObserver(this.compose_observer_);
+  if (this.us_.hasFeature(ydn.crm.base.Feature.TEMPLATE)) {
+    this.gmail_template_ = new ydn.crm.gmail.Template(sugar);
+    this.gmail_template_.setObserver(this.compose_observer_);
+  }
 
   var panel = new ydn.crm.su.ui.ContextSugarPanel(sugar, this.dom_);
   this.addChild(panel, true);
