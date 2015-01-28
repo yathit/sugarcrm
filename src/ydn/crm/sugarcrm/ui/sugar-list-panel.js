@@ -19,6 +19,7 @@ goog.require('ydn.crm.inj.Task');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
 goog.require('ydn.crm.su.ui.SimpleSugarPanel');
+goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.msg.Message');
