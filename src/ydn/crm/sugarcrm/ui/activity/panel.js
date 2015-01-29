@@ -203,7 +203,7 @@ ydn.crm.su.ui.activity.Panel.prototype.enterDocument = function() {
   var sugar = this.getModel();
   // Listen events
   var hd = this.getHandler();
-  hd.listen(sugar, ydn.crm.su.model.Sugar.Event.LOGIN, this.updaterLater_);
+  hd.listen(sugar, ydn.crm.su.SugarEvent.LOGIN, this.updaterLater_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.SELECT, this.handleTabSelect_);
   hd.listen(this.tabbar, goog.ui.Component.EventType.UNSELECT, this.handleTabUnSelect_);
   hd.listen(this.detail_panel, ydn.crm.su.events.EventType.VIEW_RECORD, this.onViewRecord_);

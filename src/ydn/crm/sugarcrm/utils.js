@@ -6,6 +6,7 @@
 
 goog.provide('ydn.crm.su.utils');
 goog.require('goog.string');
+goog.require('ydn.crm.su');
 
 
 /**

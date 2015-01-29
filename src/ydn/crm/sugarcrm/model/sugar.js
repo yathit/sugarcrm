@@ -139,17 +139,6 @@ ydn.crm.su.model.Sugar.DEBUG = false;
 
 
 /**
- * Events
- * @enum {string}
- */
-ydn.crm.su.model.Sugar.Event = {
-  LOGIN: 'login',
-  LOGOUT: 'logout',
-  HOST_ACCESS_GRANT: 'hag'
-};
-
-
-/**
  * Handle message from channel.
  * @param {ydn.msg.Event} e
  */
@@ -166,7 +155,7 @@ ydn.crm.su.model.Sugar.prototype.handleMessage = function(e) {
     var msg = e.getData();
     if (msg['grant'] && msg['grant'] == this.getDomain()) {
       this.about.hostPermission = true;
-      this.dispatchEvent(new goog.events.Event(ydn.crm.su.model.Sugar.Event.HOST_ACCESS_GRANT));
+      this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT));
     }
   }
 };
@@ -221,9 +210,9 @@ ydn.crm.su.model.Sugar.prototype.setAbout = function(about) {
   var is_login = !!about && about.isLogin;
   this.about = about;
   if (!was_login && is_login) {
-    this.dispatchEvent(new goog.events.Event(ydn.crm.su.model.Sugar.Event.LOGIN, this));
+    this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.LOGIN, this));
   } else if (was_login && !is_login) {
-    this.dispatchEvent(new goog.events.Event(ydn.crm.su.model.Sugar.Event.LOGOUT, this));
+    this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.LOGOUT, this));
   }
 };
 

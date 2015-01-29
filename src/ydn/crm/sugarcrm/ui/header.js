@@ -191,9 +191,9 @@ ydn.crm.su.ui.Header.prototype.enterDocument = function() {
     handler.listen(a_grant, 'click', this.onGrantHostPermission);
   }
 
-  handler.listen(this.getModel(), ydn.crm.su.model.Sugar.Event.HOST_ACCESS_GRANT,
+  handler.listen(this.getModel(), ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT,
       this.handleHostGrant);
-  handler.listen(this.getModel(), ydn.crm.su.model.Sugar.Event.LOGIN,
+  handler.listen(this.getModel(), ydn.crm.su.SugarEvent.LOGIN,
       this.handleModelLogin);
 
   if (ydn.crm.su.ui.Header.USE_IFRAME) {
