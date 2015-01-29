@@ -1,0 +1,23 @@
+{namespace templ.ydn.crm.admin}
+
+
+
+/**
+ * Edit name dialog box content.
+ * @param title
+ * @param logs
+ */
+{template .logItem}
+<li>
+  <details class="left-ex">
+    <summary>{$title}</summary>
+    <ol>
+      {foreach $log in $logs}
+        <li>
+          {$log.category} - {$log.action} : {$log.label} {$log.detail}
+        </li>
+      {/foreach}
+    </ol>
+  </details>
+</li>
+{/template}
