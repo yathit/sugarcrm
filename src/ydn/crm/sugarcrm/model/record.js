@@ -392,40 +392,42 @@ ydn.crm.su.model.Record.prototype.setRecord = function(record) {
     window.console.log('setRecord ' + this.record + ' to ' + record);
   }
   if (record == this.record) {
-    // what if underlying data are different.
-    return;
+    // OK.
   } else if (!record) {
     if (!this.record.isNew()) {
       this.record.setData(null);
+      this.groups_ = {};
       this.dispatchEvent(new ydn.crm.su.model.events.RecordChangeEvent(null, this));
     }
-  }
-
-  this.groups_ = {};
-  if (record.getModule() != this.record.getModule()) {
-    var old_module = this.record.getModule();
-    this.record = record;
-    this.dispatchEvent(new ydn.crm.su.model.events.ModuleChangeEvent(old_module,
-        this));
-  } else if (record.isNew()) {
-    if (!this.record.isNew()) {
+  } else {
+    this.groups_ = {};
+    if (record.getModule() != this.record.getModule()) {
+      var old_module = this.record.getModule();
+      this.record = record;
+      this.dispatchEvent(new ydn.crm.su.model.events.ModuleChangeEvent(old_module,
+          this));
+    } else if (record.isNew()) {
+      if (!this.record.isNew()) {
+        var old_id = this.record.getId();
+        this.record = record;
+        this.dispatchEvent(new ydn.crm.su.model.events.RecordChangeEvent(old_id, this));
+      }
+    } else if (this.record.isNew()) {
+      if (!record.isNew()) {
+        this.record = record;
+        this.dispatchEvent(new ydn.crm.su.model.events.RecordChangeEvent(null, this));
+      }
+    } else if (record.getId() != this.record.getId()) {
       var old_id = this.record.getId();
       this.record = record;
       this.dispatchEvent(new ydn.crm.su.model.events.RecordChangeEvent(old_id, this));
-    }
-  } else if (this.record.isNew()) {
-    if (!record.isNew()) {
+    } else {
       this.record = record;
-      this.dispatchEvent(new ydn.crm.su.model.events.RecordChangeEvent(null, this));
+      this.dispatchEvent(new ydn.crm.su.model.events.RecordUpdatedEvent(this));
     }
-  } else if (record.getId() != this.record.getId()) {
-    var old_id = this.record.getId();
-    this.record = record;
-    this.dispatchEvent(new ydn.crm.su.model.events.RecordChangeEvent(old_id, this));
-  } else {
-    this.record = record;
-    this.dispatchEvent(new ydn.crm.su.model.events.RecordUpdatedEvent(this));
   }
+
+
 };
 
 

@@ -207,13 +207,7 @@ ydn.crm.su.ui.setting.Field.prototype.getNormallyHide = function() {
         }
       }
 
-      if (this.field.group == 'account') {
-        if (['account_id'].indexOf(this.name) >= 0) {
-          return true;
-        }
-      }
-
-      if (['amount_usdollar'].indexOf(this.name) >= 0) {
+      if (['amount_usdollar', 'team_id', 'account_id'].indexOf(this.name) >= 0) {
         return true;
       }
 
