@@ -38,6 +38,7 @@ goog.require('ydn.crm.su.ui.record.Secondary');
 goog.require('ydn.crm.su.ui.widget.SelectRecord');
 goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.StatusBar');
+goog.require('ydn.debug.ILogger');
 goog.require('ydn.ui');
 goog.require('ydn.ui.FlyoutMenu');
 goog.require('ydn.ui.MessageDialog');
@@ -444,6 +445,8 @@ ydn.crm.su.ui.record.Record.prototype.onSaveClick = function(e) {
   var patches = is_new_record ?
       this.body_panel.collectData() : this.body_panel.getPatch();
   if (patches) {
+    var id = is_new_record ? '' : this.getModel().getId();
+    ydn.crm.shared.logAnalytic('ui.record', 'save', id);
     this.patch(patches);
   }
 };
