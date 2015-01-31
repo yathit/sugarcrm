@@ -601,7 +601,7 @@ CrmApp.FullContact2.prototype.demographics;
 
 
 /**
- * @type {Array<CrmApp.FullContact2SocialProfile>}
+ * @type {Array<!CrmApp.FullContact2SocialProfile>}
  */
 CrmApp.FullContact2.prototype.socialProfiles;
 
