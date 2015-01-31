@@ -277,7 +277,7 @@ CrmApp.FullContact2SocialProfile.prototype.typeId;
 
 
 /**
- * @type {string}
+ * @type {string} e.g: Twitter
  */
 CrmApp.FullContact2SocialProfile.prototype.typeName;
 
