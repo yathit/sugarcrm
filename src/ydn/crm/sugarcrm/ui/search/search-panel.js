@@ -131,7 +131,8 @@ ydn.crm.su.ui.SearchPanel.prototype.setToolbarOptions = function(options) {
 ydn.crm.su.ui.SearchPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var search_input = /** @type {wgui.TextInput} */ (this.toolbar.getChildAt(1));
-  this.getHandler().listen(search_input, goog.ui.Component.EventType.ACTION, this.handleAction, true);
+  this.getHandler().listen(search_input, goog.ui.Component.EventType.ACTION,
+      this.handleAction, true);
 };
 
 
@@ -407,6 +408,7 @@ ydn.crm.su.ui.SearchPanel.prototype.handleAction = function(e) {
       }
       this.updateSearch_(); // if update search is already running this will
       // cause double run, but OK.
+      ydn.crm.shared.logAnalyticValue('ui.search', 'click', query);
     }
   }
 };

@@ -247,27 +247,33 @@ ydn.crm.su.ui.activity.Panel.TabIndex = {
  */
 ydn.crm.su.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
   var idx = this.tabbar.getSelectedTabIndex();
+  var tab_name = '';
   if (idx == ydn.crm.su.ui.activity.Panel.TabIndex.SEARCH) {
     goog.style.setElementShown(this.search.getElement(), true);
     goog.style.setElementShown(this.new_record.getElement(), false);
     goog.style.setElementShown(this.detail_panel.getElement(), false);
+    tab_name = 'search';
   } else if (idx == ydn.crm.su.ui.activity.Panel.TabIndex.NEW) {
     goog.style.setElementShown(this.search.getElement(), false);
     goog.style.setElementShown(this.new_record.getElement(), true);
     goog.style.setElementShown(this.detail_panel.getElement(), false);
+    tab_name = 'new';
   } else {
     goog.style.setElementShown(this.search.getElement(), false);
     goog.style.setElementShown(this.new_record.getElement(), false);
     goog.style.setElementShown(this.detail_panel.getElement(), true);
     if (idx == ydn.crm.su.ui.activity.Panel.TabIndex.FEED) {
       this.detail_panel.renderActivity();
+      tab_name = 'feed';
     } else {
       var m_name = ydn.crm.su.ACTIVITY_MODULES[idx - 3];
+      tab_name = m_name;
       this.detail_panel.renderUpcoming(m_name).addCallback(function(cnt) {
         this.setCount(m_name, cnt);
       }, this);
     }
   }
+  ydn.crm.shared.logAnalyticValue('ui.activity', 'tab.click', tab_name);
 };
 
 

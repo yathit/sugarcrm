@@ -427,6 +427,7 @@ ydn.crm.su.ui.record.Record.prototype.handleHeaderMenuClick = function(e) {
     var m_name = /** @type {ydn.crm.su.ModuleName} */ (cmd.substr(dp_.length));
     this.newRecord(m_name, true);
   }
+  ydn.crm.shared.logAnalyticValue('ui.record', 'menu.click', cmd);
 };
 
 
@@ -446,8 +447,12 @@ ydn.crm.su.ui.record.Record.prototype.onSaveClick = function(e) {
       this.body_panel.collectData() : this.body_panel.getPatch();
   if (patches) {
     var id = is_new_record ? '' : this.getModel().getId();
-    ydn.crm.shared.logAnalytic('ui.record', 'save', id);
-    this.patch(patches);
+    var lid = ydn.crm.shared.logAnalyticBegin('ui.record', 'save', id);
+    this.patch(patches).addCallbacks(function(r) {
+      ydn.crm.shared.logAnalyticEnd(lid, r.id, 1);
+    }, function(e) {
+      ydn.crm.shared.logAnalyticEnd(lid, null, {'message': String(e)});
+    });
   }
 };
 
