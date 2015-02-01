@@ -631,3 +631,20 @@ CrmApp.MetaContact.prototype.cb;
  */
 CrmApp.MetaContact.prototype.pp;
 
+
+
+/**
+ * All available social data.
+ * @interface
+ * @extends {CrmApp.FullContact2SocialProfile}
+ */
+CrmApp.ProfileDetail = function() {};
+
+
+/**
+ * @type {?Object} raw data from the server.
+ */
+CrmApp.ProfileDetail.prototype.raw;
+
+
+
