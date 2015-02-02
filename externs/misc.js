@@ -627,7 +627,7 @@ CrmApp.MetaContact.prototype.cb;
 
 
 /**
- * @type {?CrmApp.FullContact2} Pipl data, formatted to FullContact.
+ * @type {?CrmApp.PiplRespond} Pipl data, formatted to FullContact.
  */
 CrmApp.MetaContact.prototype.pp;
 
@@ -646,5 +646,179 @@ CrmApp.ProfileDetail = function() {};
  */
 CrmApp.ProfileDetail.prototype.raw;
 
+
+
+/**
+ * Pipl respond data.
+ * @link http://dev.pipl.com/docs/read/search_api/response
+ * @interface
+ */
+CrmApp.PiplRespond = function() {};
+
+
+
+/**
+ * Pipl respond data.
+ * @link http://dev.pipl.com/docs/read/search_api/data#source
+ * @interface
+ */
+CrmApp.PiplSource = function() {};
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplSource.prototype.domain;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplSource.prototype.url;
+
+
+
+/**
+ * Pipl respond data.
+ * @link http://dev.pipl.com/docs/read/search_api/data#address
+ * @interface
+ */
+CrmApp.PiplAddress = function() {};
+
+
+/**
+ * @type {string} two latter code, eg: US
+ */
+CrmApp.PiplAddress.prototype.country;
+
+
+/**
+ * @type {string} two latter code
+ */
+CrmApp.PiplAddress.prototype.state;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplAddress.prototype.city;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplAddress.prototype.po_box;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplAddress.prototype.street;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplAddress.prototype.apartment;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplAddress.prototype.display;
+
+
+
+/**
+ * Pipl respond data.
+ * @link http://dev.pipl.com/docs/read/search_api/data#phone
+ * @interface
+ */
+CrmApp.PiplPhone = function() {};
+
+
+
+/**
+ * Pipl text content data.
+ * @interface
+ */
+CrmApp.PiplContent = function() {};
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplContent.prototype.content;
+
+
+
+/**
+ * Pipl text content data.
+ * @interface
+ */
+CrmApp.PiplUrl = function() {};
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplUrl.prototype.url;
+
+
+
+/**
+ * Pipl respond data.
+ * @link http://dev.pipl.com/docs/read/search_api/data#record
+ * @interface
+ */
+CrmApp.PiplRecord = function() {};
+
+
+/**
+ * @type {Array<CrmApp.PiplContent>}
+ */
+CrmApp.PiplRecord.prototype.usernames;
+
+
+/**
+ * @type {Array<CrmApp.PiplContent>}
+ */
+CrmApp.PiplRecord.prototype.user_ids;
+
+
+/**
+ * @type {Array<CrmApp.PiplUrl>}
+ */
+CrmApp.PiplRecord.prototype.images;
+
+
+/**
+ * @type {Array<string>}
+ */
+CrmApp.PiplRecord.prototype.names;
+
+
+/**
+ * @type {CrmApp.PiplSource}
+ */
+CrmApp.PiplRecord.prototype.source;
+
+
+/**
+ * @type {Array<CrmApp.PiplAddress>}
+ */
+CrmApp.PiplRecord.prototype.addresses;
+
+
+/**
+ * @type {Array<CrmApp.PiplPhone>}
+ */
+CrmApp.PiplRecord.prototype.phones;
+
+
+/**
+ * @type {Array<CrmApp.PiplRecord>}
+ */
+CrmApp.PiplRespond.prototype.records;
 
 
