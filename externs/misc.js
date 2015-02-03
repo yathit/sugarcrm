@@ -595,7 +595,7 @@ CrmApp.FullContact2.prototype.organizations;
 
 
 /**
- * @type {Array.<CrmApp.FullContact2Demographic>}
+ * @type {CrmApp.FullContact2Demographic}
  */
 CrmApp.FullContact2.prototype.demographics;
 
