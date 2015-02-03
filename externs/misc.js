@@ -620,8 +620,72 @@ CrmApp.MetaContact = function() {};
 CrmApp.MetaContact.prototype.fc;
 
 
+
 /**
- * @type {?Object} ClearBit data.
+ * ClearBit data.
+ * @interface
+ * @link https://clearbit.com/docs#person-api
+ */
+CrmApp.ClearBit = function() {};
+
+
+
+/**
+ * @interface
+ */
+CrmApp.ClearBitName = function() {};
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitName.prototype.givenName;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitName.prototype.familyName;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitName.prototype.fullName;
+
+
+/**
+ * @type {CrmApp.ClearBitName}
+ */
+CrmApp.ClearBit.prototype.name;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBit.prototype.gender;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBit.prototype.location;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBit.prototype.bio;
+
+
+/**
+ * @type {string} The best avatar url we have
+ */
+CrmApp.ClearBit.prototype.avatar;
+
+
+/**
+ * @type {?CrmApp.ClearBit} ClearBit data.
  */
 CrmApp.MetaContact.prototype.cb;
 
@@ -675,6 +739,38 @@ CrmApp.PiplSource.prototype.domain;
  * @type {string}
  */
 CrmApp.PiplSource.prototype.url;
+
+
+
+/**
+ * Pipl name data.
+ * @interface
+ */
+CrmApp.PiplName = function() {};
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplName.prototype.first;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplName.prototype.middle;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplName.prototype.last;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.PiplName.prototype.display;
 
 
 
@@ -767,6 +863,33 @@ CrmApp.PiplUrl.prototype.url;
 
 
 /**
+ * Pipl people data.
+ * @link http://dev.pipl.com/docs/read/search_api/data#person
+ * @interface
+ */
+CrmApp.PiplPerson = function() {};
+
+
+/**
+ * @type {Array<CrmApp.PiplName>}
+ */
+CrmApp.PiplPerson.prototype.names;
+
+
+/**
+ * @type {Array<CrmApp.PiplAddress>}
+ */
+CrmApp.PiplPerson.prototype.address;
+
+
+/**
+ * @type {Array<CrmApp.PiplUrl>}
+ */
+CrmApp.PiplPerson.prototype.images;
+
+
+
+/**
  * Pipl respond data.
  * @link http://dev.pipl.com/docs/read/search_api/data#record
  * @interface
@@ -820,5 +943,11 @@ CrmApp.PiplRecord.prototype.phones;
  * @type {Array<CrmApp.PiplRecord>}
  */
 CrmApp.PiplRespond.prototype.records;
+
+
+/**
+ * @type {CrmApp.PiplPerson}
+ */
+CrmApp.PiplRespond.prototype.person;
 
 
