@@ -258,4 +258,8 @@ $tooltip-col-witth: 24px;
   .sources a {
     padding: 4px;
   }
+
+  > .content {
+    max-height: 6em;
+  }
 }

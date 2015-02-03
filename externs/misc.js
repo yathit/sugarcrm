@@ -690,6 +690,62 @@ CrmApp.ClearBit = function() {};
 /**
  * @interface
  */
+CrmApp.ClearBitEmployment = function() {};
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitEmployment.prototype.domain;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitEmployment.prototype.name;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitEmployment.prototype.title;
+
+
+
+/**
+ * @interface
+ */
+CrmApp.ClearBitCompany = function() {};
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitCompany.prototype.name;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitCompany.prototype.description;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitCompany.prototype.legal_name;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitCompany.prototype.url;
+
+
+
+/**
+ * @interface
+ */
 CrmApp.ClearBitName = function() {};
 
 
@@ -709,6 +765,18 @@ CrmApp.ClearBitName.prototype.familyName;
  * @type {string}
  */
 CrmApp.ClearBitName.prototype.fullName;
+
+
+/**
+ * @type {CrmApp.ClearBitCompany}
+ */
+CrmApp.ClearBit.prototype.company;
+
+
+/**
+ * @type {CrmApp.ClearBitEmployment}
+ */
+CrmApp.ClearBit.prototype.employment;
 
 
 /**
