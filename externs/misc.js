@@ -622,6 +622,63 @@ CrmApp.MetaContact.prototype.fc;
 
 
 /**
+ * ClearBit profile data.
+ * @interface
+ * @link https://clearbit.com/docs#attributes
+ */
+CrmApp.ClearBitProfile = function() {};
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitProfile.prototype.bio;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitProfile.prototype.handle;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitProfile.prototype.id;
+
+
+/**
+ * @type {number|undefined}
+ */
+CrmApp.ClearBitProfile.prototype.followers;
+
+
+/**
+ * @type {number|undefined}
+ */
+CrmApp.ClearBitProfile.prototype.following;
+
+
+/**
+ * @type {string|undefined}
+ */
+CrmApp.ClearBitProfile.prototype.location;
+
+
+/**
+ * @type {string|undefined}
+ */
+CrmApp.ClearBitProfile.prototype.site;
+
+
+/**
+ * @type {string}
+ */
+CrmApp.ClearBitProfile.prototype.avatar;
+
+
+
+/**
  * ClearBit data.
  * @interface
  * @link https://clearbit.com/docs#person-api
@@ -682,6 +739,54 @@ CrmApp.ClearBit.prototype.bio;
  * @type {string} The best avatar url we have
  */
 CrmApp.ClearBit.prototype.avatar;
+
+
+/**
+ * @type {CrmApp.ClearBitProfile}
+ */
+CrmApp.ClearBit.prototype.facebook;
+
+
+/**
+ * @type {CrmApp.ClearBitProfile}
+ */
+CrmApp.ClearBit.prototype.github;
+
+
+/**
+ * @type {CrmApp.ClearBitProfile}
+ */
+CrmApp.ClearBit.prototype.twitter;
+
+
+/**
+ * @type {CrmApp.ClearBitProfile}
+ */
+CrmApp.ClearBit.prototype.linkedin;
+
+
+/**
+ * @type {CrmApp.ClearBitProfile}
+ */
+CrmApp.ClearBit.prototype.googleplus;
+
+
+/**
+ * @type {CrmApp.ClearBitProfile}
+ */
+CrmApp.ClearBit.prototype.angellist;
+
+
+/**
+ * @type {CrmApp.ClearBitProfile}
+ */
+CrmApp.ClearBit.prototype.aboutme;
+
+
+/**
+ * @type {CrmApp.ClearBitProfile}
+ */
+CrmApp.ClearBit.prototype.gravatar;
 
 
 /**
