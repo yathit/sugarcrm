@@ -2,108 +2,111 @@
 
 @import "module-color";
 
-.Accounts > * > .icon {
+.Accounts > * > .icon, .Accounts > .icon {
     background-color: $color-accounts;
 }
 
-.Bugs > * > .icon {
+.Bugs > * > .icon, .Bugs > .icon {
     background-color: $color-bugs;
 }
 
-.Calls > * > .icon {
+.Calls > * > .icon, .Calls > .icon {
     background-color: $color-calls;
 }
 
-.Calendar > * > .icon {
+.Calendar > * > .icon, .Calendar > .icon {
     background-color: $color-calendar;
 }
 
-.Campaigns > * > .icon {
+.Campaigns > * > .icon, .Campaigns > .icon {
     background-color: $color-campaigns;
 }
 
-.CampaignLog > * > .icon {
+.CampaignLog > * > .icon, .CampaignLog > .icon {
     background-color: $color-campaign-log;
 }
 
-.Cases > * > .icon {
+.Cases > * > .icon, .Cases > .icon {
     background-color: $color-cases;
 }
 
-.Contacts > * > .icon {
+.Contacts > * > .icon, .Contacts > .icon {
     background-color: $color-contacts;
 }
 
-.Documents > * > .icon {
+.Documents > * > .icon, .Documents > .icon {
     background-color: #81380f;
 }
 
 
-.Emails > * > .icon, .EmailText > * > .icon, .EmailTemplates > * > .icon {
+.Emails > * > .icon, .Emails > .icon,
+.EmailText > * > .icon, .EmailText > .icon,
+.EmailTemplates > * > .icon, .EmailTemplates > .icon {
     background-color: $color-emails;
 }
 
-.Employees > * > .icon {
+.Employees > * > .icon, .Employees > .icon {
     background-color: $color-employees;
 }
 
-.Files > * > .icon {
+.Files > * > .icon, .Files > .icon {
     background-color: $color-files;
 }
 
-.Forecasts > * > .icon {
+.Forecasts > * > .icon, .Forecasts > .icon {
     background-color: $color-forecasts;
 }
 
-.KBDocuments > * > .icon {
+.KBDocuments > * > .icon, .KBDocuments > .icon {
     background-color: $color-kb-documents;
 }
 
-.Leads > * > .icon {
+.Leads > * > .icon, .Leads > .icon {
     background-color: $color-leads;
 }
 
-.Meetings > * > .icon {
+.Meetings > * > .icon, .Meetings > .icon {
     background-color: $color-meetings;
 }
 
-.Notes > * > .icon {
+.Notes > * > .icon, .Notes > .icon {
     background-color: $color-notes;
 }
 
-.Opportunities > * > .icon {
+.Opportunities > * > .icon, .Opportunities > .icon {
     background-color: $color-opportunities;
 }
 
-.ProspectLists > * > .icon, .Prospects > * > .icon {
+.ProspectLists > * > .icon, .ProspectLists > .icon,
+.Prospects > * > .icon, .Prospects > .icon {
     background-color: $color-prospects;
 }
 
-.Reports > * > .icon {
+.Reports > * > .icon, .Reports > .icon {
     background-color: $color-reports
 }
 
-.RevenueLineItems > * > .icon {
+.RevenueLineItems > * > .icon, .RevenueLineItems > .icon {
     background-color: $color-revenue-line-items;
 }
 
-.Quotes > * > .icon {
+.Quotes > * > .icon, .Quotes > .icon {
     background-color: $color-quotes;
 }
 
-.Targets > * > .icon {
+.Targets > * > .icon, .Targets > .icon {
     background-color: $color-targets;
 }
 
-.Tasks > * > .icon {
+.Tasks > * > .icon, .Tasks > .icon {
     background-color: $color-tasks;
 }
 
-.Users > * > .icon {
+.Users > * > .icon, .Users > .icon {
     background-color: $color-users;
 }
 
-.Workflow > * > .icon {
+.Workflow > * > .icon, .Workflow > .icon {
     background-color: $color-workflow;
 }
 
