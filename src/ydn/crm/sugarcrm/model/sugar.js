@@ -116,7 +116,7 @@ ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_user, opt_login_info
   }
 
   var pipe = ydn.msg.getMain();
-  this.handler.listen(pipe, [ydn.crm.Ch.BReq.SUGARCRM, ydn.crm.Ch.BReq.HOST_PERMISSION],
+  this.handler.listen(pipe, [ydn.crm.ch.BReq.SUGARCRM, ydn.crm.ch.BReq.HOST_PERMISSION],
       this.handleMessage);
 
   if (ydn.crm.su.model.Sugar.DEBUG) {
@@ -146,12 +146,12 @@ ydn.crm.su.model.Sugar.prototype.handleMessage = function(e) {
   if (ydn.crm.su.model.Sugar.DEBUG) {
     window.console.log('handling message: ' + e.type, e.mesage);
   }
-  if (e.type == ydn.crm.Ch.BReq.SUGARCRM) {
+  if (e.type == ydn.crm.ch.BReq.SUGARCRM) {
     var about = /** @type {SugarCrm.About} */ (e.getData());
     if (!!about && about.domain == this.getDomain()) {
       this.setAbout(about);
     }
-  } else if (e.type == ydn.crm.Ch.BReq.HOST_PERMISSION && this.about) {
+  } else if (e.type == ydn.crm.ch.BReq.HOST_PERMISSION && this.about) {
     var msg = e.getData();
     if (msg['grant'] && msg['grant'] == this.getDomain()) {
       this.about.hostPermission = true;
@@ -232,7 +232,7 @@ ydn.crm.su.model.Sugar.prototype.isLogin = function() {
 ydn.crm.su.model.Sugar.prototype.initUser_ = function() {
   if (this.about) {
     if (this.about.userName) {
-      this.send(ydn.crm.Ch.SReq.LOGIN_USER).addCallback(function(obj) {
+      this.send(ydn.crm.ch.SReq.LOGIN_USER).addCallback(function(obj) {
         if (obj && obj['id']) {
           this.user_.setData(/** @type {SugarCrm.Record} */ (obj));
         }
@@ -250,7 +250,7 @@ ydn.crm.su.model.Sugar.prototype.initUser_ = function() {
 ydn.crm.su.model.Sugar.prototype.initUserInfo_ = function() {
   if (this.about) {
     if (this.about.userName) {
-      this.send(ydn.crm.Ch.SReq.LOGIN_INFO).addCallback(function(obj) {
+      this.send(ydn.crm.ch.SReq.LOGIN_INFO).addCallback(function(obj) {
         if (obj && obj['id']) {
           this.login_info_ = /** @type {SugarCrm.LoginRecord} */ (obj);
         }
@@ -266,7 +266,7 @@ ydn.crm.su.model.Sugar.prototype.initUserInfo_ = function() {
  * @return {!goog.async.Deferred}
  */
 ydn.crm.su.model.Sugar.prototype.updateStatus = function() {
-  return this.send(ydn.crm.Ch.SReq.ABOUT).addCallback(function(about) {
+  return this.send(ydn.crm.ch.SReq.ABOUT).addCallback(function(about) {
     this.setAbout(about);
   }, this);
 };
@@ -421,7 +421,7 @@ ydn.crm.su.model.Sugar.prototype.doLogin = function(username, password) {
   info.baseUrl = this.getBaseUrl();
   info.username = username;
   info.password = password;
-  return this.send(ydn.crm.Ch.SReq.LOGIN, info)
+  return this.send(ydn.crm.ch.SReq.LOGIN, info)
       .addCallback(function(data) {
         this.setAbout(data);
       }, this);
@@ -449,7 +449,7 @@ ydn.crm.su.model.Sugar.prototype.createNew = function(url, username, password) {
   info.baseUrl = url;
   info.username = username;
   info.password = password;
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.NEW_SUGAR, info)
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.NEW_SUGAR, info)
       .addCallback(function(data) {
         this.setAbout(data);
       }, this);
@@ -463,12 +463,12 @@ ydn.crm.su.model.Sugar.prototype.createNew = function(url, username, password) {
  */
 ydn.crm.su.model.Sugar.load = function(about) {
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
-  return ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
+  return ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
       ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
-    return ch.send(ydn.crm.Ch.SReq.SERVER_INFO).addCallback(function(info) {
+    return ch.send(ydn.crm.ch.SReq.SERVER_INFO).addCallback(function(info) {
       return new ydn.crm.su.model.Sugar(about, details, info);
     });
   });
@@ -518,7 +518,7 @@ ydn.crm.su.model.Sugar.prototype.listRecords = function(m_name, opt_order,
   if (opt_offset) {
     query['offset'] = opt_offset;
   }
-  return this.getChannel().send(ydn.crm.Ch.SReq.QUERY, [query]);
+  return this.getChannel().send(ydn.crm.ch.SReq.QUERY, [query]);
 };
 
 
@@ -539,7 +539,7 @@ ydn.crm.su.model.Sugar.prototype.searchRecords = function(module_name, q, opt_fe
   if (module_name == ydn.crm.su.ModuleName.NOTES) {
     query['index'] = 'content';
   }
-  return this.getChannel().send(ydn.crm.Ch.SReq.SEARCH, [query]);
+  return this.getChannel().send(ydn.crm.ch.SReq.SEARCH, [query]);
 };
 
 
@@ -575,7 +575,7 @@ ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
     'message_id': info.message_id || '',
     'status': 'read'
   };
-  return this.send(ydn.crm.Ch.SReq.NEW_RECORD, {
+  return this.send(ydn.crm.ch.SReq.NEW_RECORD, {
     'module': ydn.crm.su.ModuleName.EMAILS,
     'record': obj
   });
@@ -620,7 +620,7 @@ ydn.crm.su.model.Sugar.prototype.saveRecord = function(record) {
     'module': record.getModule(),
     'record': record.getData()
   };
-  return this.send(ydn.crm.Ch.SReq.PUT_RECORD, data);
+  return this.send(ydn.crm.ch.SReq.PUT_RECORD, data);
 };
 
 
@@ -630,7 +630,7 @@ ydn.crm.su.model.Sugar.prototype.saveRecord = function(record) {
  */
 ydn.crm.su.model.Sugar.list = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(function(abouts) {
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(function(abouts) {
     var models = [];
     var dfs = [];
     for (var i = 0; i < abouts.length; i++) {
@@ -690,7 +690,7 @@ if (goog.DEBUG) {
  * newly created contact entry.
  */
 ydn.crm.su.model.Sugar.prototype.export2GData = function(record) {
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.EXPORT_RECORD, record.toJSON())
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.EXPORT_RECORD, record.toJSON())
       .addCallback(function(entry) {
         return new ydn.gdata.m8.ContactEntry(entry);
       }, this);

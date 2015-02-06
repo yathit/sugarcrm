@@ -180,7 +180,7 @@ ydn.crm.ui.SimpleSugarWrapperPanel.prototype.logger =
 ydn.crm.ui.SimpleSugarWrapperPanel.prototype.validateSugarPanels_ = function(name) {
 
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, name);
-  var df = ch.send(ydn.crm.Ch.SReq.DETAILS);
+  var df = ch.send(ydn.crm.ch.SReq.DETAILS);
   var us = ydn.crm.ui.UserSetting.getInstance();
 
   return df.addCallback(function(x) {

@@ -61,7 +61,7 @@ ydn.crm.su.model.ResultRecord.prototype.queryRecord_ = function() {
   if (ydn.crm.su.model.ResultRecord.DEBUG) {
     goog.global.console.log(query);
   }
-  this.parent.send(ydn.crm.Ch.SReq.QUERY, [query])
+  this.parent.send(ydn.crm.ch.SReq.QUERY, [query])
       .addCallback(function(arr) {
         var result = arr[0].result;
         if (ydn.crm.su.model.ResultRecord.DEBUG) {

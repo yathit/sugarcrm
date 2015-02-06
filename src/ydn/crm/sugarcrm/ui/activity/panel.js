@@ -322,7 +322,7 @@ ydn.crm.su.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
     'module': m_name,
     'id': id
   };
-  ch.send(ydn.crm.Ch.SReq.GET, query).addCallbacks(function(obj) {
+  ch.send(ydn.crm.ch.SReq.GET, query).addCallbacks(function(obj) {
     if (obj) {
       this.showRecord_(m_name, obj);
     }
@@ -369,7 +369,7 @@ ydn.crm.su.ui.activity.Panel.prototype.updaterLater_ = function() {
  */
 ydn.crm.su.ui.activity.Panel.prototype.updateActivity_ = function() {
 
-  this.getModel().send(ydn.crm.Ch.SReq.ACTIVITY_STREAM).addCallbacks(function(ans) {
+  this.getModel().send(ydn.crm.ch.SReq.ACTIVITY_STREAM).addCallbacks(function(ans) {
     if (ans.length > 0) {
       // Note: result are sorted by date_modified in descending ordering.
       var since = ydn.crm.su.utils.parseDate(ans[ans.length - 1]['date_modified']);
@@ -401,7 +401,7 @@ ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
     until = ydn.time.getWeekend();
   }
   var query = this.detail_panel.genUpcomingQuery(m_name, until);
-  this.getModel().send(ydn.crm.Ch.SReq.KEYS, query).addCallbacks(function(ans) {
+  this.getModel().send(ydn.crm.ch.SReq.KEYS, query).addCallbacks(function(ans) {
     var query_result = /** @type {Array.<string>} */ (ans);
     var next = index + 1;
     if (opt_continue) {

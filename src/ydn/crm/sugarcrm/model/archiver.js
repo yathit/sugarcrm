@@ -100,7 +100,7 @@ ydn.crm.su.model.Archiver.prototype.configureMenuItem = function(widget) {
       'index': 'message_id',
       'key': info.message_id
     };
-    this.sugar_.send(ydn.crm.Ch.SReq.QUERY, [q]).addCallbacks(function(arr) {
+    this.sugar_.send(ydn.crm.ch.SReq.QUERY, [q]).addCallbacks(function(arr) {
       if (ydn.crm.su.model.Archiver.DEBUG) {
         window.console.log(arr);
       }

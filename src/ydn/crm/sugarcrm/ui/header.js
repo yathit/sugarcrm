@@ -218,7 +218,7 @@ ydn.crm.su.ui.Header.prototype.onGrantHostPermission = function(e) {
     chrome.permissions.request(permissions);
   } else {
     // content script does not have permissions api.
-    ydn.msg.getChannel().send(ydn.crm.Ch.Req.REQUEST_HOST_PERMISSION, permissions).addBoth(function(x) {
+    ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION, permissions).addBoth(function(x) {
       var grant = this.getElement().querySelector('.host-permission');
       if (x === true) {
         goog.style.setElementShown(grant, false);
@@ -344,7 +344,7 @@ ydn.crm.su.ui.Header.prototype.handleSugarChanged = function() {
   goog.style.setElementShown(root, true);
   goog.style.setElementShown(content_ele, true);
   if (!model.isLogin()) {
-    var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, domain).send(ydn.crm.Ch.SReq.ABOUT);
+    var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, domain).send(ydn.crm.ch.SReq.ABOUT);
     ch.addCallback(function(x) {
       // window.console.log('about ', x);
       var about = /** @type {SugarCrm.About} */ (x);

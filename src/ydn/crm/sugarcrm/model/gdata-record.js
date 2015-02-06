@@ -120,7 +120,7 @@ ydn.crm.su.model.GDataRecord.prototype.relayGDataEvent = function(e) {
           'key': gmail
         }];
 
-        this.getChannel().send(ydn.crm.Ch.SReq.QUERY, query).addCallback(function(x) {
+        this.getChannel().send(ydn.crm.ch.SReq.QUERY, query).addCallback(function(x) {
           var result = /** @type {SugarCrm.Query} */ (x[0]);
           if (ydn.crm.su.model.GDataRecord.DEBUG) {
             var n = result.result ? result.result.length : 0;
@@ -219,7 +219,7 @@ ydn.crm.su.model.GDataRecord.prototype.updateRecord_ = function(id) {
       'key': id
     }];
 
-    this.getChannel().send(ydn.crm.Ch.SReq.QUERY, id_query).addCallbacks(function(x) {
+    this.getChannel().send(ydn.crm.ch.SReq.QUERY, id_query).addCallbacks(function(x) {
       var result = /** @type {SugarCrm.Query} */ (x[0]);
       if (ydn.crm.su.model.GDataRecord.DEBUG) {
         window.console.log(result);
@@ -311,7 +311,7 @@ ydn.crm.su.model.GDataRecord.prototype.importToSugar = function() {
   goog.asserts.assert(!this.hasRecord(), 'already imported?');
   var contact = this.getGData();
   goog.asserts.assertObject(contact, 'no contact gdata to import?');
-  var req = ydn.crm.Ch.SReq.IMPORT_GDATA;
+  var req = ydn.crm.ch.SReq.IMPORT_GDATA;
   var data = {
     'module': this.getModuleName(),
     'kind': contact.getKind(),
@@ -341,7 +341,7 @@ ydn.crm.su.model.GDataRecord.prototype.addToSugar = function() {
   goog.asserts.assert(!this.hasRecord(), 'already imported as ' + this.record);
   var df = new ydn.async.Deferred();
 
-  var req = ydn.crm.Ch.SReq.PUT_RECORD;
+  var req = ydn.crm.ch.SReq.PUT_RECORD;
   var fn = contact.getFullName();
   var new_record = {
     'email1': contact.getEmails()[0],
@@ -398,7 +398,7 @@ ydn.crm.su.model.GDataRecord.prototype.save = function() {
   if (!this.hasRecord()) {
     return goog.async.Deferred.fail('no Record to save.');
   }
-  var df = this.getChannel().send(ydn.crm.Ch.SReq.PUT_RECORD, this.record);
+  var df = this.getChannel().send(ydn.crm.ch.SReq.PUT_RECORD, this.record);
   df.addCallback(function(data) {
     goog.asserts.assert(data, this + ' receiving unexpected put record result ' + data);
     goog.asserts.assertString(data['id'], this + ' record id missing in ' + data);

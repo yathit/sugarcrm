@@ -36,7 +36,7 @@ types.onchange = function(e) {
   data_list.innerHTML = '';
   var offset = 0;
   var type = types.value || 'Contacts';
-  sugar.send(ydn.crm.Ch.SReq.VALUES, {'store': type, 'offset': offset}).addCallbacks(function(arr) {
+  sugar.send(ydn.crm.ch.SReq.VALUES, {'store': type, 'offset': offset}).addCallbacks(function(arr) {
     window.arr_ = arr;
     console.log(arr);
     results = arr;
@@ -77,7 +77,7 @@ btn_set.onclick = function(e) {
       return;
     }
   }
-  sugar.send(ydn.crm.Ch.SReq.VALUES, {'store': types.value, 'index': 'id', 'key': email}).addCallbacks(function(arr) {
+  sugar.send(ydn.crm.ch.SReq.VALUES, {'store': types.value, 'index': 'id', 'key': email}).addCallbacks(function(arr) {
     if (arr[0]) {
       var r = new ydn.crm.su.Record(sugar.getDomain(), types.value, arr[0]);
       model.setRecord(r);

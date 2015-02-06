@@ -81,7 +81,7 @@ ydn.crm.ui.SugarLogin.prototype.doLogin_ = function(e) {
         'username': username,
         'password': password
       };
-      ch.send(ydn.crm.Ch.SReq.ABOUT, data).addCallbacks(function(info) {
+      ch.send(ydn.crm.ch.SReq.ABOUT, data).addCallbacks(function(info) {
         me.refresh(/** @type {Object} */ (info));
 
       }, function(e) {
@@ -130,7 +130,7 @@ ydn.crm.ui.SugarLogin.prototype.detach = function() {
 ydn.crm.ui.SugarLogin.prototype.update = function(domain) {
   var channel = domain instanceof ydn.msg.Pipe ? domain : ydn.crm.Ch.createSugarChannel(domain);
   if (channel) {
-    channel.send(ydn.crm.Ch.SReq.ABOUT).addCallback(function(info) {
+    channel.send(ydn.crm.ch.SReq.ABOUT).addCallback(function(info) {
       this.refresh(info);
     }, this);
   } else {

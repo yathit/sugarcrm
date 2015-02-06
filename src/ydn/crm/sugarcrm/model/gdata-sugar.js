@@ -155,7 +155,7 @@ ydn.crm.su.model.GDataSugar.prototype.linkGDataToRecord = function() {
     'recordId': this.record_.getId(),
     'entryId': gdata.getEntryId()
   };
-  var df1 = this.getChannel().send(ydn.crm.Ch.SReq.LINK, data);
+  var df1 = this.getChannel().send(ydn.crm.ch.SReq.LINK, data);
   return df1.addCallback(function(x) {
     var sync = /** @type {YdnCrm.SyncRecord} */(x);
     if (ydn.crm.su.model.GDataSugar.DEBUG) {
@@ -187,7 +187,7 @@ ydn.crm.su.model.GDataSugar.prototype.unlinkGDataToRecord = function() {
     throw new Error('No link record.');
   }
 
-  var df1 = this.getChannel().send(ydn.crm.Ch.SReq.UNLINK, this.sync_);
+  var df1 = this.getChannel().send(ydn.crm.ch.SReq.UNLINK, this.sync_);
   return df1.addCallback(function(ok) {
     if (ydn.crm.su.model.GDataSugar.DEBUG) {
       window.console.log('unlink', ok);
@@ -229,7 +229,7 @@ ydn.crm.su.model.GDataSugar.prototype.unlinkGData_old = function() {
     'gdataId': gdata.getId(),
     'externalId': xp.getValue()
   };
-  var df1 = this.getChannel().send(ydn.crm.Ch.SReq.UNLINK, data);
+  var df1 = this.getChannel().send(ydn.crm.ch.SReq.UNLINK, data);
   return df1.addCallback(function(entry) {
     if (ydn.crm.su.model.GDataSugar.DEBUG) {
       window.console.log('unlink', entry);
@@ -260,7 +260,7 @@ ydn.crm.su.model.GDataSugar.prototype.importToSugar = function(m_name) {
   if (ydn.crm.su.PEOPLE_MODULES.indexOf(m_name) == -1) {
     throw new Error('invalid module name: ' + m_name);
   }
-  var req = ydn.crm.Ch.SReq.IMPORT_GDATA;
+  var req = ydn.crm.ch.SReq.IMPORT_GDATA;
   var data = {
     'module': m_name,
     'kind': contact.getKind(),
@@ -336,7 +336,7 @@ ydn.crm.su.model.GDataSugar.prototype.processRecord_ = function(cm, opt_contact)
     };
   }
 
-  return this.getChannel().send(ydn.crm.Ch.SReq.QUERY, query).addCallback(function(x) {
+  return this.getChannel().send(ydn.crm.ch.SReq.QUERY, query).addCallback(function(x) {
     var query_results = /** @type {Array.<SugarCrm.Query>} */ (x);
     for (var j = 0; j < query_results.length; j++) {
       var query_result = query_results[j];
@@ -387,7 +387,7 @@ ydn.crm.su.model.GDataSugar.prototype.processSync_ = function(cm, contact) {
       'index': 'id',
       'key': xp.record_id
     }];
-    return this.getChannel().send(ydn.crm.Ch.SReq.QUERY, id_query).addCallback(function(x) {
+    return this.getChannel().send(ydn.crm.ch.SReq.QUERY, id_query).addCallback(function(x) {
       var result = /** @type {SugarCrm.Query} */ (x[0]);
       if (ydn.crm.su.model.GDataSugar.DEBUG) {
         window.console.log(result);
@@ -423,7 +423,7 @@ ydn.crm.su.model.GDataSugar.prototype.processContact_ = function(cm) {
     var email = cm.getEmail();
 
     // query to gdata.
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, {'email': email}).addCallback(function(x) {
+    return ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, {'email': email}).addCallback(function(x) {
       var results = /** @type {Array.<!ContactEntry>} */ (x);
       var contacts = results.map(function(x) {
         return new ydn.gdata.m8.ContactEntry(x);
@@ -485,7 +485,7 @@ ydn.crm.su.model.GDataSugar.prototype.update_ = function(cm) {
 
     var context_gdata = this.context_.toContactEntry();
     // query to gdata.
-    ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, {'email': email}).addCallbacks(function(x) {
+    ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, {'email': email}).addCallbacks(function(x) {
       var results = /** @type {Array.<!ContactEntry>} */ (x);
       var contacts = results.map(function(x) {
         return new ydn.gdata.m8.ContactEntry(x);
@@ -522,13 +522,13 @@ ydn.crm.su.model.GDataSugar.list = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
   return user.onReady().branch().addCallback(function() {
 
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(
+    return ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR_DOMAIN).addCallback(
         function(sugars) {
           var dfs = [];
           for (var i = 0; i < sugars.length; i++) {
             var domain = /** @type {string} */ (sugars[i]);
             var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, domain);
-            var df = ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
+            var df = ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
               var details = /** @type {SugarCrm.Details} */ (x);
               for (var i = 0; i < details.modulesInfo.length; i++) {
                 ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
@@ -564,7 +564,7 @@ ydn.crm.su.model.GDataSugar.prototype.addToSugar = function(m_name) {
 
   var df = new ydn.async.Deferred();
 
-  var req = ydn.crm.Ch.SReq.PUT_RECORD;
+  var req = ydn.crm.ch.SReq.PUT_RECORD;
   var fn = this.context_.getFullName();
   var new_record = {
     'email1': email,

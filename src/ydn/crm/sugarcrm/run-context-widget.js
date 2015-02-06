@@ -54,7 +54,7 @@ var addMoreItem = function() {
     'limit': 5
   };
   var ch = ydn.msg.getChannel();
-  ch.send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, q).addCallback(function(arr) {
+  ch.send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, q).addCallback(function(arr) {
     // console.log(arr);
     var sel = document.getElementById('target-context');
     for (var i = 0; i < arr.length; i++) {

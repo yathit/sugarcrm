@@ -21,7 +21,7 @@ panel.render(document.querySelector('.inj'));
 var activity_panel, new_record_panel;
 
 user.onReady().addCallbacks(function() {
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(
       function(sugars) {
         console.log(sugars);
         panel.setSugarCrm(sugars[0]).addBoth(function(x) {

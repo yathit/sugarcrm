@@ -86,8 +86,8 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     'q': token
   }];
   var dfs = new goog.async.DeferredList([
-    this.meta.getChannel().send(ydn.crm.Ch.SReq.QUERY, q),
-    this.meta.getChannel().send(ydn.crm.Ch.SReq.SEARCH, fq)
+    this.meta.getChannel().send(ydn.crm.ch.SReq.QUERY, q),
+    this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH, fq)
   ]);
   dfs.addCallbacks(function(x) {
     if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {

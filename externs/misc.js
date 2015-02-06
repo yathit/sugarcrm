@@ -114,7 +114,7 @@ CrmApp.TextQueryResult.prototype.fullTextResult;
 
 
 /**
- * Query for request. Use in ydn.crm.Ch.SReq.LIST and ydn.crm.Ch.SReq.SEARCH
+ * Query for request. Use in ydn.crm.ch.SReq.LIST and ydn.crm.ch.SReq.SEARCH
  * @constructor
  */
 CrmApp.ReqQuery = function() {};

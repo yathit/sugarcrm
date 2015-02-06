@@ -173,7 +173,7 @@ ydn.crm.ui.SugarListPanel.prototype.logger =
 ydn.crm.ui.SugarListPanel.prototype.initSugar_ = function(name) {
 
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, name);
-  var df = ch.send(ydn.crm.Ch.SReq.DETAILS);
+  var df = ch.send(ydn.crm.ch.SReq.DETAILS);
   var us = ydn.crm.ui.UserSetting.getInstance();
 
   return df.addCallback(function(x) {

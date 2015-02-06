@@ -154,7 +154,7 @@ ydn.crm.ui.Debug.prototype.init = function(ele) {
     }
     params['module_name'] = goog.dom.getElementByClass('sugar-rest-module', this.root).value;
 
-    var df = this.sugar.send(ydn.crm.Ch.SReq.REST, {
+    var df = this.sugar.send(ydn.crm.ch.SReq.REST, {
       'method': goog.dom.getElementByClass('sugar-rest-method', this.root).value,
       'params': params
     });
@@ -170,15 +170,15 @@ ydn.crm.ui.Debug.prototype.init = function(ele) {
   var select = ele_channel.querySelector('select');
   var input = ele_channel.querySelector('textarea');
   goog.events.listen(select, goog.events.EventType.CHANGE, function(e) {
-    if (select.value == ydn.crm.Ch.Req.GDATA_FETCH) {
+    if (select.value == ydn.crm.ch.Req.GDATA_FETCH) {
       input.value = ydn.gdata.Kind.M8_CONTACT;
-    } else if (select.value == ydn.crm.Ch.Req.GDATA_LIST_CONTACT_BY_EMAIL) {
+    } else if (select.value == ydn.crm.ch.Req.GDATA_LIST_CONTACT_BY_EMAIL) {
       input.value = 'kyawtuns@gmail.com';
-    } else if (select.value == ydn.crm.Ch.SReq.LIST_MODULE) {
+    } else if (select.value == ydn.crm.ch.SReq.LIST_MODULE) {
       input.value = '';
-    } else if (select.value == ydn.crm.Ch.SReq.INFO_MODULE) {
+    } else if (select.value == ydn.crm.ch.SReq.INFO_MODULE) {
       input.value = 'Contacts';
-    } else if (select.value == ydn.crm.Ch.SReq.QUERY) {
+    } else if (select.value == ydn.crm.ch.SReq.QUERY) {
       input.value = 'kyawtuns@gmail.com';
     }
   }, false, this);
@@ -203,7 +203,7 @@ ydn.crm.ui.Debug.prototype.testService = function() {
   this.logger.finest('testing service');
   var value = 'ok' + goog.now();
 
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.ECHO, value).addCallbacks(function(result) {
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.ECHO, value).addCallbacks(function(result) {
     if (result == value) {
       var msg = 'inj.Main ' + ydn.crm.version + ' ready.';
       this.logger.info(msg);

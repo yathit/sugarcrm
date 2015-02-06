@@ -274,7 +274,7 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderActivity = function() {
   if (ydn.crm.su.ui.activity.DetailPanel.DEBUG) {
     window.console.info('renderActivity');
   }
-  this.getModel().send(ydn.crm.Ch.SReq.ACTIVITY_STREAM).addCallbacks(function(ans) {
+  this.getModel().send(ydn.crm.ch.SReq.ACTIVITY_STREAM).addCallbacks(function(ans) {
     // window.console.log(ans);
     var dom = this.getDomHelper();
     var title = dom.createDom('span');
@@ -355,7 +355,7 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name) {
   if (ydn.crm.su.ui.activity.DetailPanel.DEBUG) {
     window.console.log('renderUpcoming for ' + m_name, q);
   }
-  return this.getModel().send(ydn.crm.Ch.SReq.VALUES, q).addCallbacks(function(arr) {
+  return this.getModel().send(ydn.crm.ch.SReq.VALUES, q).addCallbacks(function(arr) {
     var results = /** @type {Array.<SugarCrm.Record>} */ (arr);
     if (ydn.crm.su.ui.activity.DetailPanel.DEBUG) {
       window.console.log('receiving renderUpcoming ' + results.length + ' items',

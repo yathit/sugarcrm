@@ -167,7 +167,7 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
   var us = ydn.crm.ui.UserSetting.getInstance();
 
-  return ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
+  return ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
     panel = this.getSugarCrmPanel();
     if (panel) {
       goog.log.fine(this.logger, 'existing sugar panel detect');

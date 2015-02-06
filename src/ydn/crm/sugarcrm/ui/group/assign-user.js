@@ -104,7 +104,7 @@ ydn.crm.su.ui.group.AssignUser.prototype.getDataListId = function() {
     var q = {
       'module': ydn.crm.su.ModuleName.USERS
     };
-    ch.send(ydn.crm.Ch.SReq.LIST_NAME, q).addCallbacks(function(arr) {
+    ch.send(ydn.crm.ch.SReq.LIST_NAME, q).addCallbacks(function(arr) {
       if (ydn.crm.su.ui.group.AssignUser.DEBUG) {
         window.console.log(arr);
       }

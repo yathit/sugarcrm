@@ -14,7 +14,7 @@ panel.render(inj);
 
 user.onReady().addCallbacks(function() {
   panel.updateHeader();
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR_DOMAIN).addCallback(
       function(sugars) {
         panel.updateSugarPanels(sugars);
       }, this);

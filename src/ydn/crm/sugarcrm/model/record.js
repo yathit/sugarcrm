@@ -272,7 +272,7 @@ ydn.crm.su.model.Record.prototype.findPairedGData = function() {
       'module': this.getModuleName(),
       'id': this.getId()
     };
-    return ydn.msg.getMain().getChannel().send(ydn.crm.Ch.Req.SYNC_QUERY,
+    return ydn.msg.getMain().getChannel().send(ydn.crm.ch.Req.SYNC_QUERY,
         q).addCallback(function(arr) {
       // NOTE: to change the result `null` must be return instead of `undefined`.
       var val = arr[0] || null;
@@ -345,7 +345,7 @@ ydn.crm.su.model.Record.prototype.deleteRecord = function() {
     'id': this.getId()
   };
   var ch = this.getChannel();
-  return ch.send(ydn.crm.Ch.SReq.DELETE_RECORD, data);
+  return ch.send(ydn.crm.ch.SReq.DELETE_RECORD, data);
 };
 
 
@@ -567,7 +567,7 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top, opt_limit) {
     'top': opt_top || 3,
     'limit': opt_limit || 5
   };
-  return this.getChannel().send(ydn.crm.Ch.SReq.QUERY_RELATED, data);
+  return this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, data);
 };
 
 
@@ -580,6 +580,6 @@ ydn.crm.su.model.Record.prototype.listEmbedded = function() {
   if (this.isNew()) {
     return goog.async.Deferred.succeed([]);
   }
-  return this.getChannel().send(ydn.crm.Ch.SReq.QUERY_EMBEDDED, this.record.getData());
+  return this.getChannel().send(ydn.crm.ch.SReq.QUERY_EMBEDDED, this.record.getData());
 };
 
