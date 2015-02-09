@@ -100,7 +100,7 @@ ydn.crm.su.ui.NewRecord.prototype.onContextChange_ = function(e) {
     var record = new ydn.crm.su.Record(model.getDomain(), model.getModuleName());
     model.setRecord(record);
     this.setEditMode(true);
-    if (e.context && e.context.kind == ydn.crm.inj.Context.Kind.SEARCH) {
+    if (e.context && e.context.kind != ydn.crm.inj.Context.Kind.DEFAULT) {
       var email = e.context.getEmail() || '';
       var full_name = e.context.getFullName() || '';
       var patch = {

@@ -48,7 +48,7 @@ goog.require('ydn.crm.su.model.Sugar');
  * @struct
  */
 ydn.crm.su.model.GDataSugar = function(about, modules_info, gdata_account,
-                                             opt_info, opt_user, opt_login_info) {
+                                       opt_info, opt_user, opt_login_info) {
   goog.base(this, about, modules_info, opt_info, opt_user, opt_login_info);
   /**
    * Gmail context contact data.

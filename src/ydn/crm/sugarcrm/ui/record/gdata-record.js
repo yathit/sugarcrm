@@ -84,7 +84,7 @@ ydn.crm.su.ui.GDataRecord.prototype.onContextChange_ = function(e) {
   }
   if (e.record) {
     model.setRecord(e.record);
-  } else if (!e.record) {
+  } else {
     var record = new ydn.crm.su.Record(model.getDomain(), model.getModuleName());
     model.setRecord(record);
   }
