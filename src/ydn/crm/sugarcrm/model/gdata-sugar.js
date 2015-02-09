@@ -301,7 +301,7 @@ ydn.crm.su.model.GDataSugar.prototype.export2GData = function(record) {
 /**
  * Update gmail context.
  * @param {?ydn.crm.inj.Context} cm found in sniffing gmail thread.
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<ydn.crm.su.model.events.ContextChangeEvent>}
  */
 ydn.crm.su.model.GDataSugar.prototype.update = function(cm) {
   if (this.isLogin()) {
@@ -321,7 +321,7 @@ ydn.crm.su.model.GDataSugar.prototype.update = function(cm) {
  * Update gmail context.
  * @param {ydn.crm.inj.Context} cm contact email found in sniffing gmail thread.
  * @param {ydn.gdata.m8.ContactEntry=} opt_contact
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<ydn.crm.su.model.events.ContextChangeEvent>}
  * @private
  */
 ydn.crm.su.model.GDataSugar.prototype.processRecord_ = function(cm, opt_contact) {
@@ -375,7 +375,7 @@ ydn.crm.su.model.GDataSugar.prototype.isInSynced = function() {
  * Process given gdata contact if it has linked external id to SugarCRM record.
  * @param {ydn.crm.inj.Context} cm contact email found in sniffing gmail thread.
  * @param {!ydn.gdata.m8.ContactEntry} contact
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<ydn.crm.su.model.events.ContextChangeEvent>}
  * @private
  */
 ydn.crm.su.model.GDataSugar.prototype.processSync_ = function(cm, contact) {
@@ -448,7 +448,7 @@ ydn.crm.su.model.GDataSugar.prototype.processContact_ = function(cm) {
 /**
  * Update gmail context.
  * @param {ydn.crm.inj.Context} cm contact email found in sniffing gmail thread.
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<ydn.crm.su.model.events.ContextChangeEvent>}
  * @private
  */
 ydn.crm.su.model.GDataSugar.prototype.updateContext_ = function(cm) {

@@ -2,6 +2,7 @@
  * Created by kyawtun on 1/9/14.
  */
 
+$flyout-menu-width: 128px;
 
 .more-menu {
   position:relative;
@@ -9,7 +10,7 @@
 
 .flyout-menu {
   position:absolute ;
-  width: 120px;
+  width: $flyout-menu-width;
   top: 18px;
 
   .goog-menuitem:hover {
@@ -29,8 +30,8 @@
   }
 
   > .goog-menuitem > .goog-menu {
-    width: 120px;
-    left: -121px;
+    width: $flyout-menu-width;
+    left: - ($flyout-menu-width + 1);
     margin-top: -20px;
   }
 
