@@ -38,7 +38,7 @@ goog.require('ydn.crm.su.model.Sugar');
 /**
  * SugarCRM model with gmail context.
  * @param {SugarCrm.About} about setup for particular domain.
- * @param {Array.<SugarCrm.ModuleInfo>} modules_info
+ * @param {Array.<SugarCrm.ModuleInfo>|Object.<SugarCrm.ModuleInfo>} modules_info
  * @param {string} gdata_account Google account id, i.e., email address
  * @param {SugarCrm.ServerInfo=} opt_info
  * @param {SugarCrm.Record=} opt_user login user info.
@@ -89,6 +89,16 @@ goog.inherits(ydn.crm.su.model.GDataSugar, ydn.crm.su.model.Sugar);
  * @define {boolean} debug flag.
  */
 ydn.crm.su.model.GDataSugar.DEBUG = false;
+
+
+/**
+ * @return {ydn.crm.su.model.GDataSugar}
+ */
+ydn.crm.su.model.GDataSugar.prototype.cloneGData = function() {
+  var clone = new ydn.crm.su.model.GDataSugar(this.about, this.module_info,
+      this.gdata_account, this.info);
+  return clone;
+};
 
 
 /**

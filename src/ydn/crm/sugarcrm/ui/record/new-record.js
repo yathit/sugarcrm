@@ -68,62 +68,16 @@ ydn.crm.su.ui.NewRecord.prototype.getCssClass = function() {
 
 
 /**
- * @inheritDoc
+ * @param {ydn.crm.su.Record} record
  */
-ydn.crm.su.ui.NewRecord.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
-  var model = this.getModel();
-  this.getHandler().listen(model.parent, ydn.crm.su.model.events.Type.CONTEXT_CHANGE,
-      this.onContextChange_);
-  this.setEditMode(true);
-};
+ydn.crm.su.ui.NewRecord.prototype.createRecord = function(record) {
 
-
-/**
- * @private
- * @param {ydn.crm.su.model.events.ContextChangeEvent} e
- */
-ydn.crm.su.ui.NewRecord.prototype.onContextChange_ = function(e) {
   var model = this.getModel();
-  if (e.record || e.gdata) {
-    // hide this new record creation panel.
-    goog.style.setElementShown(this.getElement(), false);
-    if (ydn.crm.su.ui.NewRecord.DEBUG) {
-      var ms = e.record ? ' record' : ' ';
-      if (e.gdata) {
-        ms += ' gdata';
-      }
-      window.console.info(this + ' hiding on context change since ' + ms + ' exists');
-    }
+  model.setRecord(record);
+  if (record) {
+    goog.style.setElementShown(this.getElement(), true);
   } else {
-
-    var record = new ydn.crm.su.Record(model.getDomain(), model.getModuleName());
-    model.setRecord(record);
-    this.setEditMode(true);
-    if (e.context && e.context.kind != ydn.crm.inj.Context.Kind.DEFAULT) {
-      var email = e.context.getEmail() || '';
-      var full_name = e.context.getFullName() || '';
-      var patch = {
-        'email1': email,
-        'full_name': full_name
-      };
-      this.simulateEdit(patch);
-      this.socialFill(e.context);
-      goog.style.setElementShown(this.getElement(), true);
-      if (ydn.crm.su.ui.NewRecord.DEBUG) {
-        window.console.info(this + ' show on context change for ' +
-            (email || full_name));
-      }
-    } else {
-      goog.style.setElementShown(this.getElement(), false);
-      if (ydn.crm.su.ui.NewRecord.DEBUG) {
-        if (!e.context) {
-          window.console.info(this + ' hiding on context change for null context');
-        } else {
-          window.console.info(this + ' hiding on context change on none-search');
-        }
-      }
-    }
+    goog.style.setElementShown(this.getElement(), false);
   }
 };
 
