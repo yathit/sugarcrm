@@ -432,6 +432,28 @@ ydn.crm.su.ui.record.Record.prototype.handleHeaderMenuClick = function(e) {
 
 
 /**
+ * Save current data.
+ * @return {!goog.async.Deferred}
+ */
+ydn.crm.su.ui.record.Record.prototype.doSave = function() {
+  var is_new_record = this.getModel().isNew();
+  var patches = is_new_record ?
+      this.body_panel.collectData() : this.body_panel.getPatch();
+  if (patches) {
+    var id = is_new_record ? '' : this.getModel().getId();
+    var lid = ydn.crm.shared.logAnalyticBegin('ui.record', 'save', id);
+    return this.patch(patches).addCallbacks(function(r) {
+      ydn.crm.shared.logAnalyticEnd(lid, r.id, 1);
+    }, function(e) {
+      ydn.crm.shared.logAnalyticEnd(lid, null, {'message': String(e)});
+    });
+  } else {
+    return goog.async.Deferred.fail(new Error('Nothing to save.'));
+  }
+};
+
+
+/**
  * @protected
  * @param {goog.events.BrowserEvent} e
  */
@@ -442,18 +464,7 @@ ydn.crm.su.ui.record.Record.prototype.onSaveClick = function(e) {
     }
     return;
   }
-  var is_new_record = this.getModel().isNew();
-  var patches = is_new_record ?
-      this.body_panel.collectData() : this.body_panel.getPatch();
-  if (patches) {
-    var id = is_new_record ? '' : this.getModel().getId();
-    var lid = ydn.crm.shared.logAnalyticBegin('ui.record', 'save', id);
-    this.patch(patches).addCallbacks(function(r) {
-      ydn.crm.shared.logAnalyticEnd(lid, r.id, 1);
-    }, function(e) {
-      ydn.crm.shared.logAnalyticEnd(lid, null, {'message': String(e)});
-    });
-  }
+  this.doSave();
 };
 
 

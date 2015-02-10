@@ -12,13 +12,16 @@ goog.provide('ydn.crm.su.ui.events.NewRecordEvent');
  * @enum {string}
  */
 ydn.crm.su.ui.events.Type = {
-  NEW_RECORD: 'nr',
   CHANGE: 'field-change',
   ACTION: 'action',
   SETTING_CHANGE: 'setting-change',
   EDIT: 'edit',
   SAVE: 'save',
-  NEW: 'new'
+  NEW: 'new',
+  /**
+   * @desc a new record created event.
+   */
+  CREATED: 'created'
 };
 
 
@@ -66,7 +69,7 @@ goog.inherits(ydn.crm.su.ui.events.FieldMenuActionEvent, goog.events.Event);
 
 
 /**
- * Event for sugar models.
+ * Event from UI to create a new record.
  * @param {ydn.crm.su.ModuleName} name
  * @param {Object=} opt_event_target target.
  * @extends {goog.events.Event}
@@ -85,5 +88,24 @@ ydn.crm.su.ui.events.NewRecord = function(name, opt_event_target) {
 goog.inherits(ydn.crm.su.ui.events.NewRecord, goog.events.Event);
 
 
+
+/**
+ * A new record created event.
+ * @param {SugarCrm.Record} record the newly created record.
+ * @param {Object=} opt_event_target target.
+ * @extends {goog.events.Event}
+ * @constructor
+ * @struct
+ * @suppress {checkStructDictInheritance} suppress closure-library code.
+ */
+ydn.crm.su.ui.events.Created = function(record, opt_event_target) {
+  goog.base(this, ydn.crm.su.ui.events.Type.CREATED, opt_event_target);
+  /**
+   * @final
+   * @type {SugarCrm.Record}
+   */
+  this.record = record;
+};
+goog.inherits(ydn.crm.su.ui.events.Created, goog.events.Event);
 
 

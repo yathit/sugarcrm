@@ -248,7 +248,7 @@ ydn.crm.su.model.EmailGroup.prototype.pluck = function(value) {
       return null;
     }
   } else {
-    return goog.base(this, 'plunk', value);
+    return goog.base(this, 'pluck', value);
   }
 
 };

@@ -92,3 +92,4 @@ ydn.crm.su.ui.group.Name.prototype.getEditorTemplateData = function() {
 ydn.crm.su.ui.group.Name.prototype.fillByMetaContact = function(meta) {
   throw new Error('Not impl');
 };
+
