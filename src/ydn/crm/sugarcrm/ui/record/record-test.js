@@ -105,31 +105,31 @@ function test_edit_name() {
 
 function test_edit_email() {
 
-  var record = ydn.crm.test.createContactRecord(null, {});
+  var record = ydn.crm.test.createContactRecord(null);
   var record_panel = new ydn.crm.su.ui.record.Record(record);
 
+  var called = false;
   record_panel.patch = function(patch) {
-    assertEquals('email', 'foo@example.com', patch['email']);
+    assertEquals('email1', 'foo@example.com', patch['email1']);
+    called = true;
   };
 
   record_panel.render(mock_el);
-  record_panel.simulateEdit({'email': 'foo@example.com'}, true);
+  record_panel.simulateEdit({'email1': 'foo@example.com'}, true);
+  assertTrue(called);
 }
 
 
-function test_create_contacts() {
-  var record = ydn.crm.test.createRecord(null, ydn.crm.su.ModuleName.CONTACTS, {});
+function test_edit_full_name() {
+  var record = ydn.crm.test.createRecord(null, ydn.crm.su.ModuleName.CONTACTS);
   var record_panel = new ydn.crm.su.ui.record.Record(record);
+  var called = false;
+  record_panel.patch = function(patch) {
+    assertEquals('full_name', 'Test User', patch['full_name']);
+    called = true;
+  };
   record_panel.render(mock_el);
-  record_panel.simulateEdit({'name': 'Test 1'}, true);
+  record_panel.simulateEdit({'full_name': 'Test User'}, true);
+  assertTrue(called);
 }
-
-
-
-
-
-
-
-
-
 

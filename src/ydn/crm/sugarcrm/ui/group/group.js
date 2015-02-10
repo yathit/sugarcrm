@@ -210,3 +210,20 @@ ydn.crm.su.ui.group.Group.prototype.reset = function() {
     child.reset();
   }
 };
+
+
+/**
+ * Simulate user edit.
+ * If input field is not found, edit is ignored.
+ * @param {string} name
+ * @param {string} value
+ */
+ydn.crm.su.ui.group.Group.prototype.simulateEditByField = function(name, value) {
+
+  var field = this.getFieldByName(name);
+  if (field) {
+    field.simulateEdit(value);
+  } else {
+    window.console.error('field ' + name + ' not found in ' + this.getGroupName());
+  }
+};

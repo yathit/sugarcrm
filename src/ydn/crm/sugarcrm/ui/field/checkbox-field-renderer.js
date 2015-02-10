@@ -83,7 +83,7 @@ ydn.crm.su.ui.field.CheckboxFieldRenderer.prototype.refresh = function(ctrl) {
       value = false;
     }
   }
-  ele_value.value = value;
+  ele_value.checked = value;
 
   if (ydn.crm.su.ui.field.CheckboxFieldRenderer.DEBUG) {
     window.console.log(model.getFieldName(), model.getType(), value);
@@ -109,14 +109,26 @@ ydn.crm.su.ui.field.CheckboxFieldRenderer.prototype.refresh = function(ctrl) {
 ydn.crm.su.ui.field.CheckboxFieldRenderer.prototype.collectValue = function(ctrl) {
   var ele = ctrl.getContentElement();
   var ele_value = ele.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
-  if (ele_value.tagName == goog.dom.TagName.LABEL ||
-      ele_value.tagName == goog.dom.TagName.SPAN || ele_value.tagName == goog.dom.TagName.DIV) {
-    return ele_value.textContent;
-  } else if (ele_value.type == 'checkbox') {
-    return ele_value.checked; // goog.dom.forms get value incorrect.
-  } else {
-    return ele_value.value; // goog.dom.forms.getValue(ele_value);
-  }
+  return ele_value.checked; // goog.dom.forms get value incorrect.
 };
 
+
+/**
+ * Simulate user edit.
+ * @param {ydn.crm.su.ui.field.Field} ctrl
+ * @param {ydn.crm.su.RecordValue} value value to set.
+ */
+ydn.crm.su.ui.field.CheckboxFieldRenderer.prototype.simulateEdit = function(ctrl, value) {
+  var ele = ctrl.getContentElement();
+  var ele_value = ele.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  var model = ctrl.getModel();
+  if (model.getType() == 'bool' && !goog.isBoolean(value)) {
+    if (value == '1' || value == 'on' || value == 'true') {
+      value = true;
+    } else {
+      value = false;
+    }
+  }
+  ele_value.checked = value;
+};
 

@@ -163,7 +163,7 @@ ydn.crm.su.ui.group.AbstractGroup.prototype.reset = function() {
 /**
  * Simulate user edit.
  * If input field is not found, edit is ignored.
- * @param {?string} name
+ * @param {string} name
  * @param {string} value
  */
 ydn.crm.su.ui.group.AbstractGroup.prototype.simulateEditByField = function(name, value) {

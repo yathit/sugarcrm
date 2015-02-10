@@ -454,3 +454,12 @@ ydn.crm.su.ui.field.Field.prototype.setNormallyHide = function(val) {
     ele.classList.remove(ydn.crm.ui.CSS_CLASS_NORMALLY_HIDE);
   }
 };
+
+
+/**
+ * Simulate user edit.
+ * @param {ydn.crm.su.RecordValue} val
+ */
+ydn.crm.su.ui.field.Field.prototype.simulateEdit = function(val) {
+  this.getRenderer().simulateEdit(this, val);
+};

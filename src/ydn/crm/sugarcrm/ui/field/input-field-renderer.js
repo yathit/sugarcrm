@@ -150,3 +150,25 @@ ydn.crm.su.ui.field.InputFieldRenderer.prototype.collectValue = function(ctrl) {
 };
 
 
+/**
+ * Simulate user edit.
+ * @param {ydn.crm.su.ui.field.Field} ctrl
+ * @param {ydn.crm.su.RecordValue} value value to set.
+ */
+ydn.crm.su.ui.field.InputFieldRenderer.prototype.simulateEdit = function(ctrl, value) {
+  var ele = ctrl.getContentElement();
+  var ele_value = ele.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
+  if (value) {
+    if (ele_value.type == 'datetime-local') {
+      var lv = ydn.crm.su.utils.toDateTimeLocalString(
+          /** @type {string} */ (value));
+      // console.log(value, lv);
+      ele_value.value = lv;
+    } else {
+      ele_value.value = value;
+    }
+  } else {
+    ele_value.value = '';
+  }
+};
+

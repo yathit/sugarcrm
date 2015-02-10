@@ -190,6 +190,16 @@ ydn.crm.su.ui.field.FieldRenderer.prototype.collectValue = function(ctrl) {
 };
 
 
+/**
+ * Simulate user edit.
+ * @param {ydn.crm.su.ui.field.Field} ctrl
+ * @param {ydn.crm.su.RecordValue} val value to set.
+ */
+ydn.crm.su.ui.field.FieldRenderer.prototype.simulateEdit = function(ctrl, val) {
+  var ele = ctrl.getContentElement();
+  ele.textContent = goog.isDefAndNotNull(val) ? val : '';
+};
+
 
 
 

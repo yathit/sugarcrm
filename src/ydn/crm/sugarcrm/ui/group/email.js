@@ -67,3 +67,15 @@ ydn.crm.su.ui.group.Email.prototype.collectData = function() {
   var patch = ydn.crm.su.ui.group.Email.base(this, 'collectData');
   return patch;
 };
+
+
+/**
+ * Simulate user edit.
+ * If input field is not found, edit is ignored.
+ * @param {string} name
+ * @param {string} value
+ */
+ydn.crm.su.ui.group.Email.prototype.simulateEditByField = function(name, value) {
+  window.console.log(name, value);
+  goog.base(this, 'simulateEditByField', name, value);
+};
