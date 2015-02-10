@@ -70,12 +70,26 @@ ydn.crm.su.ui.group.Email.prototype.collectData = function() {
 
 
 /**
- * Simulate user edit.
- * If input field is not found, edit is ignored.
- * @param {string} name
- * @param {string} value
+ * @inheritDoc
  */
-ydn.crm.su.ui.group.Email.prototype.simulateEditByField = function(name, value) {
-  window.console.log(name, value);
-  goog.base(this, 'simulateEditByField', name, value);
+ydn.crm.su.ui.group.Email.prototype.getPatch = function() {
+  var patch = ydn.crm.su.ui.group.Email.base(this, 'getPatch');
+  console.log(patch);
+  patch = this.getModel().pluck(patch);
+  return patch;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.su.ui.group.Email.prototype.getFieldByName = function(name) {
+  var v7 = this.getModel().getMeta().isVersion7();
+  if (v7 && name == 'email1') {
+    return /** @type {ydn.crm.su.ui.field.Field} */(this.getChildAt(0));
+  } else if (v7 && name == 'email2') {
+    return /** @type {ydn.crm.su.ui.field.Field} */(this.getChildAt(1));
+  } else {
+    return goog.base(this, 'getFieldByName', 'name');
+  }
 };

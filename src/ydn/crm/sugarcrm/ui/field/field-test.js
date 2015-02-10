@@ -5,8 +5,8 @@ goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui.field.Field');
-goog.require('ydn.crm.su.ui.group.Email');
 goog.require('ydn.crm.su.ui.group.Appointment');
+goog.require('ydn.crm.su.ui.group.Email');
 goog.require('ydn.crm.test');
 
 var mock_el = document.createElement('div');

@@ -24,17 +24,31 @@ function tearDown() {
 }
 
 function test_new_email() {
-
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('email');
   var panel = new ydn.crm.su.ui.group.Email(group);
   panel.render(attach_el);
-  panel.simulateEditByField('email', 'abc@example.com');
+  panel.simulateEditByField('email1', 'abc@example.com');
 
   var data = panel.collectData();
   assertTrue('edited', !!data);
-  assertEquals('edited value', 'abc@example.com', data['email']);
+  assertEquals('edited value', 'abc@example.com', data['email1']);
+}
 
+function test_edit_email() {
+  var record = ydn.crm.test.createContactRecord();
+  var group = record.getGroupModel('email');
+  var panel = new ydn.crm.su.ui.group.Email(group);
+  panel.render(attach_el);
+  panel.simulateEditByField('email1', 'abc@example.com');
+
+  var email = record.value('email');
+  var patch = panel.getPatch();
+  assertTrue('edited', !!patch);
+  assertEquals('edited value', 'abc@example.com', patch['email1']);
+  assertUndefined('email2', patch['email2']);
+  assertNotNullNorUndefined(patch['email']);
+  assertEquals(email.length, patch['email'].length);
 }
 
 function test_new_phone() {

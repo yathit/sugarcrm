@@ -80,8 +80,9 @@ ydn.crm.su.ui.group.AbstractGroup.prototype.hasChanged = function() {
 
 
 /**
- * Collect data form UI.
+ * Collect data for sending to server.
  * @return {Object}
+ * @see getPatch
  */
 ydn.crm.su.ui.group.AbstractGroup.prototype.collectData = goog.abstractMethod;
 
@@ -89,6 +90,7 @@ ydn.crm.su.ui.group.AbstractGroup.prototype.collectData = goog.abstractMethod;
 /**
  * Collect data that user has changed.
  * @return {?Object} `null` if user does not change the data.
+ * @see collectData
  */
 ydn.crm.su.ui.group.AbstractGroup.prototype.getPatch = goog.abstractMethod;
 

@@ -108,9 +108,11 @@ function test_edit_email() {
   var record = ydn.crm.test.createContactRecord(null);
   var record_panel = new ydn.crm.su.ui.record.Record(record);
 
+
   var called = false;
   record_panel.patch = function(patch) {
     assertEquals('email1', 'foo@example.com', patch['email1']);
+
     called = true;
   };
 

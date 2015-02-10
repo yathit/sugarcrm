@@ -39,14 +39,13 @@ ydn.crm.su.model.EmailGroup.prototype.listFields = function() {
       return x.email_address_id;
     });
   } else {
-    var is_bean = this.isBean();
     var module_info = this.module.getModuleInfo();
     var emails = [];
     for (var name in module_info.module_fields) {
       var field = module_info.module_fields[name];
       if (field.group == 'email') {
-        if (is_bean && name == 'email') {
-          // In V7, 'email' field cannot be used to set or update
+        if (name == 'email') {
+          // 'email' field cannot be used to set or update
           continue;
         }
         emails.push(name);
@@ -196,5 +195,61 @@ ydn.crm.su.model.EmailGroup.prototype.getEmails = function() {
     }
     return emails;
   }
+};
+
+
+/**
+ *
+ * @param {Array.<SugarCrm.EmailField>} beans
+ * @param {string} id
+ * @param value
+ * @return {number}
+ * @private
+ */
+ydn.crm.su.model.EmailGroup.updateEmail_ = function(beans, id, value) {
+  for (var i = 0; i < beans.length; i++) {
+    var bean = beans[i];
+    if (bean.email_address_id == id) {
+      bean.email_address = value;
+      return i;
+    }
+  }
+  window.console.warn('email bean_id: ' + id + ' not found');
+  return -1;
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.su.model.EmailGroup.prototype.pluck = function(value) {
+  if (!goog.isObject(value)) {
+    return null;
+  }
+  var email = this.module.value('email');
+  if (goog.isObject(value) && goog.isArray(email)) {
+    var has_changed = false;
+    var patch = {};
+    var beans = /** @type {Array.<SugarCrm.EmailField>} */ (ydn.object.clone(email));
+    for (var name in value) {
+      var idx = ydn.crm.su.model.EmailGroup.updateEmail_(beans, name, value[name]);
+      if (idx >= 0) {
+        has_changed = true;
+      }
+      if (idx >= 0 && idx <= 1) {
+        var field_name = 'email' + (idx + 1);
+        patch[field_name] = value[name];
+      }
+    }
+    if (has_changed) {
+      patch['email'] = beans;
+      return patch;
+    } else {
+      return null;
+    }
+  } else {
+    return goog.base(this, 'plunk', value);
+  }
+
 };
 
