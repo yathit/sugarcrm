@@ -49,6 +49,10 @@
     float: left;
     margin-right: 4px;
   }
+
+  SUMMARY:focus {
+    outline: 0;
+  }
 }
 
 
