@@ -37,7 +37,7 @@
 
   }
 
-  .header.expander:not(:hover) {
+  .header.expander:not(:hover):not(.open) {
     .svg-button {
       display: none;
     }

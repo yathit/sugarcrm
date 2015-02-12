@@ -66,7 +66,7 @@ ydn.crm.su.ui.group.Expander.prototype.createDom = function() {
   }
   header.appendChild(label);
   header.appendChild(dom.createDom('span', 'center'));
-  var svg = ydn.crm.ui.createSvgIcon('create');
+  var svg = ydn.crm.ui.createSvgIcon('unfold-more');
   var btn = dom.createDom('span', ydn.crm.ui.CSS_CLASS_SVG_BUTTON, svg);
   btn.setAttribute('title', 'Edit');
   header.appendChild(btn);
@@ -100,6 +100,11 @@ ydn.crm.su.ui.group.Expander.prototype.expand = function(val) {
   goog.style.setElementShown(content, val);
   var root = this.getElement();
   var label = this.getHeaderLabel();
+  var header = root.querySelector('.' +
+      ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER);
+  var btn = header.querySelector(' .' +
+      ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
+  var svg;
   if (val) {
     root.classList.add('edit');
     if (label.tagName == 'INPUT') {
@@ -107,6 +112,8 @@ ydn.crm.su.ui.group.Expander.prototype.expand = function(val) {
     } else {
       label.textContent = 'Edit ' + this.getModel().getGroupName();
     }
+    svg = ydn.crm.ui.createSvgIcon('unfold-less');
+    header.classList.add('open');
   } else {
     root.classList.remove('edit');
     if (label.tagName == 'INPUT') {
@@ -114,7 +121,10 @@ ydn.crm.su.ui.group.Expander.prototype.expand = function(val) {
     } else {
       label.textContent = this.getModel().getGroupValue();
     }
+    svg = ydn.crm.ui.createSvgIcon('unfold-more');
+    header.classList.remove('open');
   }
+  btn.replaceChild(svg, btn.firstElementChild);
 };
 
 
