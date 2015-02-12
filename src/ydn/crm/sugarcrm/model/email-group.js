@@ -220,6 +220,37 @@ ydn.crm.su.model.EmailGroup.updateEmail_ = function(beans, id, value) {
 
 
 /**
+ * Convert from *UI patch* to *model patch*.
+ * Example UI patch:
+ * <pre>
+ *   {
+ *     'email1': 'foo@bar.com'
+ *   }
+ * </pre>
+ * Example original model
+ * <pre>
+ *   {
+ *     'email': [{
+ *        "email_address": "the.phone.kid@example.biz",
+ *        "id": "7045830f-3cd4-24b5-15ae-523cc7f78af7",
+ *        "email_address_id": "705868fa-03f7-358b-8193-523cc70d8ce1",
+ *        "primary_address": "1"
+ *       }],
+ *      'email1': "the.phone.kid@example.biz"
+ *    }
+ * </pre>
+ * Example resulting model patch:
+ * <pre>
+ *   {
+ *     'email': [{
+ *     "email_address": "foo@bar.com",
+ *          "id": "7045830f-3cd4-24b5-15ae-523cc7f78af7",
+ *          "email_address_id": "705868fa-03f7-358b-8193-523cc70d8ce1",
+ *          "primary_address": "1"
+ *        }],
+ *     'email1': "foo@bar.com"
+ *    }
+ * </pre>
  * @override
  */
 ydn.crm.su.model.EmailGroup.prototype.pluck = function(value) {
@@ -228,6 +259,7 @@ ydn.crm.su.model.EmailGroup.prototype.pluck = function(value) {
   }
   var email = this.module.value('email');
   if (goog.isObject(value) && goog.isArray(email)) {
+    // conversion from UI patch to model patch is necessary for bean email format.
     var has_changed = false;
     var patch = {};
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (ydn.object.clone(email));

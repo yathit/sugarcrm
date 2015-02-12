@@ -50,7 +50,7 @@ ydn.crm.su.Meta.prototype.getDomain = function() {};
 
 
 /**
- * @return {!ydn.crm.su.Record} login user record.
+ * @return {ydn.crm.su.Record} login user record.
  */
 ydn.crm.su.Meta.prototype.getUser = function() {};
 

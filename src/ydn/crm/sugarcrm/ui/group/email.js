@@ -65,6 +65,7 @@ ydn.crm.su.ui.group.Email.prototype.reset = function() {
  */
 ydn.crm.su.ui.group.Email.prototype.collectData = function() {
   var patch = ydn.crm.su.ui.group.Email.base(this, 'collectData');
+  patch = this.getModel().pluck(patch);
   return patch;
 };
 
@@ -74,7 +75,7 @@ ydn.crm.su.ui.group.Email.prototype.collectData = function() {
  */
 ydn.crm.su.ui.group.Email.prototype.getPatch = function() {
   var patch = ydn.crm.su.ui.group.Email.base(this, 'getPatch');
-  console.log(patch);
+
   patch = this.getModel().pluck(patch);
   return patch;
 };

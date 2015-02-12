@@ -269,8 +269,9 @@ ydn.crm.su.model.BaseGroup.prototype.getAdditionalOptions = function() {
 
 
 /**
- * Get the patch object for given user input field value.
- * @param {*} value input value.
+ * Convert from *UI patch* to *model patch*. Fields that is not changed
+ * from the original are pruned from the UI patch.
+ * @param {?Object} value input patch.
  * @return {?Object} patch object. `null` if patch is not necessary.
  */
 ydn.crm.su.model.BaseGroup.prototype.pluck = function(value) {

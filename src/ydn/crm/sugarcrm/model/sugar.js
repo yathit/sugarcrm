@@ -97,12 +97,13 @@ ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_user, opt_login_info
    * @type {goog.events.EventHandler}
    */
   this.handler = new goog.events.EventHandler(this);
+  var domain = this.about ? this.about.domain : '';
   /**
    * User record.
-   * @type {!ydn.crm.su.Record}
+   * @type {ydn.crm.su.Record}
    * @private
    */
-  this.user_ = new ydn.crm.su.Record(this.getDomain(), ydn.crm.su.ModuleName.USERS, opt_user);
+  this.user_ = new ydn.crm.su.Record(domain, ydn.crm.su.ModuleName.USERS, opt_user);
   if (!opt_user) {
     this.initUser_();
   }
@@ -234,7 +235,9 @@ ydn.crm.su.model.Sugar.prototype.initUser_ = function() {
     if (this.about.userName) {
       this.send(ydn.crm.ch.SReq.LOGIN_USER).addCallback(function(obj) {
         if (obj && obj['id']) {
-          this.user_.setData(/** @type {SugarCrm.Record} */ (obj));
+          var user = /** @type {SugarCrm.Record} */ (obj);
+          this.user_ = new ydn.crm.su.Record(this.getDomain(),
+              ydn.crm.su.ModuleName.USERS, user);
         }
       }, this);
     }
@@ -284,7 +287,7 @@ ydn.crm.su.model.Sugar.prototype.getUserName = function() {
 
 /**
  * Get SugarCRM entry of login user record.
- * @return {!ydn.crm.su.Record} SugarCRM User record.
+ * @return {ydn.crm.su.Record} SugarCRM User record.
  */
 ydn.crm.su.model.Sugar.prototype.getUser = function() {
   return this.user_;

@@ -25,6 +25,7 @@ ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
         new ydn.crm.su.Record(sugar.getDomain(), ydn.crm.su.DEFAULT_MODULE));
     panel = new ydn.crm.su.ui.NewRecord(new_record);
     panel.render(div);
+    panel.setEditMode(true);
     break;
   }
 }, function(e) {

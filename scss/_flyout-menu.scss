@@ -42,7 +42,7 @@ $flyout-menu-width: 128px;
 }
 
 .flyout-menu.left-menu {
-  left: -98px;
+  left: 22px - $flyout-menu-width;
 }
 
 .more-menu:not(:hover) .flyout-menu {
