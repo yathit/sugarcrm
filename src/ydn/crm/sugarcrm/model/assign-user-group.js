@@ -43,6 +43,24 @@ ydn.crm.su.model.AssignUserGroup.prototype.hasGroupValue = function() {
 /**
  * @inheritDoc
  */
+ydn.crm.su.model.AssignUserGroup.prototype.pluck = function(value) {
+  if (!goog.isObject(value)) {
+    return null;
+  }
+  if (!value['assigned_user_id']) {
+    // not possible unassign.
+    return null;
+  }
+  if (value['assigned_user_id'] == this.getFieldValue('assigned_user_id')) {
+    return null;
+  }
+  return value; // OK
+};
+
+
+/**
+ * @inheritDoc
+ */
 ydn.crm.su.model.AssignUserGroup.prototype.getGroupValue = function() {
   var name = this.getStringValue('assigned_user_name');
   if (name) {

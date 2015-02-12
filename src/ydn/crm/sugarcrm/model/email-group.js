@@ -31,28 +31,28 @@ goog.inherits(ydn.crm.su.model.EmailGroup, ydn.crm.su.model.Group);
  * @inheritDoc
  */
 ydn.crm.su.model.EmailGroup.prototype.listFields = function() {
+  var module_info = this.module.getModuleInfo();
+  var emails = [];
+  for (var name in module_info.module_fields) {
+    var field = module_info.module_fields[name];
+    if (field.group == 'email') {
+      if (name == 'email') {
+        // 'email' field cannot be used to set or update
+        continue;
+      }
+      emails.push(name);
+    }
+  }
+
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     // Bean format
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
-    return beans.map(function(x) {
-      return x.email_address_id;
-    });
-  } else {
-    var module_info = this.module.getModuleInfo();
-    var emails = [];
-    for (var name in module_info.module_fields) {
-      var field = module_info.module_fields[name];
-      if (field.group == 'email') {
-        if (name == 'email') {
-          // 'email' field cannot be used to set or update
-          continue;
-        }
-        emails.push(name);
-      }
+    for (var i = 0; i < beans.length; i++) {
+      emails[i] = beans[i].email_address_id;
     }
-    return emails;
   }
+  return emails;
 };
 
 
@@ -267,18 +267,18 @@ ydn.crm.su.model.EmailGroup.prototype.pluck = function(value) {
       var idx = ydn.crm.su.model.EmailGroup.updateEmail_(beans, name, value[name]);
       if (idx >= 0) {
         has_changed = true;
-      }
-      if (idx >= 0 && idx <= 1) {
-        var field_name = 'email' + (idx + 1);
-        patch[field_name] = value[name];
+        if (idx >= 0 && idx <= 1) {
+          var field_name = 'email' + (idx + 1);
+          patch[field_name] = value[name];
+        }
+      } else {
+        patch[name] = value[name];
       }
     }
     if (has_changed) {
       patch['email'] = beans;
-      return patch;
-    } else {
-      return null;
     }
+    return goog.object.isEmpty(patch) ? null : patch;
   } else {
     return goog.base(this, 'pluck', value);
   }

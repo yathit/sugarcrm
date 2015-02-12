@@ -47,6 +47,9 @@ ydn.crm.su.ui.group.AssignUser.prototype.getModel;
 ydn.crm.su.ui.group.AssignUser.prototype.hasChanged = function() {
   var val = this.renderer.getInputValue(this);
   var org = this.getModel().getGroupValue();
+  if (ydn.crm.su.ui.group.AssignUser.DEBUG) {
+    window.console.log('AssignUserGroup', val, org);
+  }
   return val != org;
 };
 
