@@ -16,14 +16,14 @@
   .field, .field-like {
     INPUT[type=text], INPUT[type=email], INPUT[type=tel], INPUT[type=number], INPUT[type=datetime-local], INPUT[type=date], TEXTAREA {
       padding: 1px 0px 1px 1px;
-      margin: 2px 0 2px 0px;
+      margin: 2px;
       border: 1px transparent;
     }
   }
 
   .field-label {
     padding: 1px 0px 1px 1px;
-    margin: 2px 0 2px 0px;
+    margin: 2px;
     border: 1px transparent;
     display: inline-block;
     vertical-align: middle;
