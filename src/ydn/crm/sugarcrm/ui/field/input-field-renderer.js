@@ -67,14 +67,14 @@ ydn.crm.su.ui.field.InputFieldRenderer.prototype.createDom = function(field) {
     ele_value.setAttribute('disabled', '1');
   }
 
-  var options = model.getMoreOptions();
-  if (options.length > 0) {
+  var items = model.getMoreOptions();
+  if (items.length > 0) {
     var more_el = dom.createDom('div', {
       'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON + ' ' +
           ydn.crm.ui.CSS_CLASS_MORE_MENU
     });
     el.appendChild(more_el);
-    ydn.ui.FlyoutMenu.decoratePopupMenu(more_el, options);
+    ydn.ui.FlyoutMenu.decoratePopupMenu(more_el, items);
   }
 
   return el;

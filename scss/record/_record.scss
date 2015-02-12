@@ -18,8 +18,6 @@
   }
 
   > .content {
-    overflow-y: auto;
-    overflow-x: hidden;
 
     > .secondary:not(:hover) .record-panel:not(.active) .content {
       display: none;
