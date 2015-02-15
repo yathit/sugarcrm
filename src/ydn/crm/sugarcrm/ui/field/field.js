@@ -110,13 +110,12 @@ ydn.crm.su.ui.field.Field.prototype.createDom = function() {
  * @inheritDoc
  */
 ydn.crm.su.ui.field.Field.prototype.enterDocument = function() {
-  var input = this.getElement().querySelector('input');
+  var input = this.getRenderer().getInputElement(this);
   if (input) {
     this.getHandler().listen(input,
         goog.events.EventType.BLUR, this.handleInputBlur);
   }
-  var el_more = this.getElement().getElementsByClassName(
-      ydn.crm.ui.CSS_CLASS_MORE_MENU)[0];
+  var el_more = this.getRenderer().getMoreMenuElement(this);
   if (el_more) {
     this.getHandler().listen(el_more, 'click', this.onMoreMenuClick);
   }

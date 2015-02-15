@@ -201,5 +201,26 @@ ydn.crm.su.ui.field.FieldRenderer.prototype.simulateEdit = function(ctrl, val) {
 };
 
 
+/**
+ * Get field input element.
+ * @param {ydn.crm.su.ui.field.Field} ctrl
+ * @return {?Element} `null` if not applicable.
+ */
+ydn.crm.su.ui.field.FieldRenderer.prototype.getInputElement = function(ctrl) {
+  return ctrl.getElement().querySelector('input');
+};
+
+
+/**
+ * Get more menu element.
+ * @param {ydn.crm.su.ui.field.Field} ctrl
+ * @return {?Element} `null` if not applicable.
+ */
+ydn.crm.su.ui.field.FieldRenderer.prototype.getMoreMenuElement = function(ctrl) {
+  return ctrl.getElement().getElementsByClassName(
+      ydn.crm.ui.CSS_CLASS_MORE_MENU)[0] || null;
+};
+
+
 
 

@@ -552,22 +552,59 @@ ydn.crm.su.model.Record.prototype.export2GData = function() {
 /**
  * List related records.
  * @param {number=} opt_top number of record to take from each module.
- * default to 3.
- * @param {number=} opt_limit limit total number of result. default to 5.
- * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ * default to 5.
+ * @return {!ydn.async.Deferred<!Array<!SugarCrm.Record>>}
  * @see #listEmbedded
  */
-ydn.crm.su.model.Record.prototype.listRelated = function(opt_top, opt_limit) {
+ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
+  var df = new ydn.async.Deferred();
   if (this.isNew()) {
-    return goog.async.Deferred.succeed([]);
+    df.callback([]);
+    return df;
   }
-  var data = {
-    'record': this.record.getData(),
-    'module': ydn.crm.su.ModuleName.ACCOUNTS,
-    'top': opt_top || 3,
-    'limit': opt_limit || 5
+
+  var top = opt_top || 5;
+
+  var idx = 0;
+  /**
+   * @this {ydn.crm.su.model.Record}
+   */
+  var fetch = function() {
+    var to = ydn.crm.su.relatedModules[idx++];
+    if (!to) {
+      df.callback();
+      return;
+    }
+    var data = {
+      'from': this.getModuleName(),
+      'id': this.getId(),
+      'to': to,
+      'limit': top
+    };
+    var req = this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, data);
+    req.addProgback(function(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        arr[i]['_module'] = to;
+      }
+      df.notify(arr);
+    }, this);
+    req.addCallbacks(function(arr) {
+      if (arr) {
+        for (var i = 0; i < arr.length; i++) {
+          arr[i]['_module'] = to;
+        }
+      }
+      df.notify(arr);
+      fetch.call(this);
+    }, function(e) {
+      window.console.error(e);
+      fetch.call(this);
+    }, this);
   };
-  return this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, data);
+
+  fetch.call(this);
+
+  return df;
 };
 
 

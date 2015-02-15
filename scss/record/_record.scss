@@ -11,17 +11,24 @@
 }
 
 .record-panel {
-  > .secondary {
-    margin-left: 4px;
-    padding-left: 2px;
-    border-left: thin solid lightblue;
-  }
 
   > .content {
+
+    > .secondary {
+      margin-left: 4px;
+      padding-left: 2px;
+      border-left: thin solid lightblue;
+    }
 
     > .secondary:not(:hover) .record-panel:not(.active) .content {
       display: none;
     }
+  }
+}
+
+.record-panel.new-record {
+  > .content {
+    overflow-y: auto; // prevent overflowing
   }
 }
 

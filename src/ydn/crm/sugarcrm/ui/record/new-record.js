@@ -68,6 +68,15 @@ ydn.crm.su.ui.NewRecord.prototype.getCssClass = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ydn.crm.su.ui.NewRecord.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  this.setEditMode(true);
+};
+
+
+/**
  * @param {ydn.crm.su.Record} record
  */
 ydn.crm.su.ui.NewRecord.prototype.createRecord = function(record) {

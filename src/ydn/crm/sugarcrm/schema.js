@@ -348,6 +348,13 @@ ydn.crm.su.Schema.makeFullTextStoreName = function(module_name, ft_name) {
 
 
 /**
+ * @const
+ * @type {string} relationships store name.
+ */
+ydn.crm.su.Schema.STORE_REL = 'relationships';
+
+
+/**
  * Get YDN-DB database schema.
  * @return {DatabaseSchema}
  */
@@ -360,6 +367,9 @@ ydn.crm.su.Schema.prototype.getSchema = function() {
     fullTextCatalogs: [],
     stores: [ydn.crm.su.History.getSchema(), {
       name: 'Meta'
+    }, {
+      name: ydn.crm.su.Schema.STORE_REL,
+      keyPath: ['from.module_name', 'from.id', 'to.module_name', 'to.id']
     }]
   };
   var stores = ydn.crm.su.CacheModules;
@@ -390,7 +400,7 @@ ydn.crm.su.Schema.prototype.getSchema = function() {
     }
   }
   this.schema = /** @type {DatabaseSchema} */ (/** @type {Object} */ (schema));
-  Object.freeze(this.schema);
+
   return this.schema;
 };
 

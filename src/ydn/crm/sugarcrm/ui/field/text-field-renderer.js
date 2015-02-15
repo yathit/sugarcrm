@@ -23,6 +23,7 @@ goog.addSingletonGetter(ydn.crm.su.ui.field.TextFieldRenderer);
 
 /**
  * @param {ydn.crm.su.ui.field.Field} field
+ * @return {Element}
  */
 ydn.crm.su.ui.field.TextFieldRenderer.prototype.createDom = function(field) {
 
@@ -101,3 +102,9 @@ ydn.crm.su.ui.field.TextFieldRenderer.prototype.collectValue = function(ctrl) {
 };
 
 
+/**
+ * @override
+ */
+ydn.crm.su.ui.field.TextFieldRenderer.prototype.getInputElement = function(ctrl) {
+  return ctrl.getElement().querySelector(goog.dom.TagName.TEXTAREA);
+};

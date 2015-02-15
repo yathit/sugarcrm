@@ -320,7 +320,8 @@ ydn.crm.su.ui.record.Record.prototype.enterDocument = function() {
   hd.listen(model, ydn.crm.su.model.events.Type.RECORD_UPDATE, this.handleRecordUpdated);
   // Note: we do not listen events on element of children of these component.
   hd.listen(this.getContentElement(), goog.events.EventType.CLICK, this.handleContentClick, false);
-  hd.listen(this, [ydn.crm.su.ui.events.Type.CHANGE], this.handleInputChanged);
+  // Note: listening `this` object will contains secondary panel events.
+  hd.listen(this, ydn.crm.su.ui.events.Type.CHANGE, this.handleInputChanged);
   hd.listen(menu_ele, 'click', this.handleHeaderMenuClick);
 
   var ok_btn = this.getHeaderElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
@@ -427,6 +428,7 @@ ydn.crm.su.ui.record.Record.prototype.handleHeaderMenuClick = function(e) {
     var m_name = /** @type {ydn.crm.su.ModuleName} */ (cmd.substr(dp_.length));
     this.newRecord(m_name, true);
   }
+  e.stopPropagation();
   ydn.crm.shared.logAnalyticValue('ui.record', 'menu.click', cmd);
 };
 
@@ -458,6 +460,7 @@ ydn.crm.su.ui.record.Record.prototype.doSave = function() {
  * @param {goog.events.BrowserEvent} e
  */
 ydn.crm.su.ui.record.Record.prototype.onSaveClick = function(e) {
+  e.stopPropagation();
   if (!this.body_panel.hasChanged()) {
     if (ydn.crm.su.ui.record.Record.DEBUG) {
       window.console.info('No change');
@@ -641,10 +644,19 @@ ydn.crm.su.ui.record.Record.prototype.showDetailDialog = function() {
 
 
 /**
+ * Whether to apply the patch immediately when an input has changed.
+ * @type {boolean}
+ * @private
+ */
+ydn.crm.su.ui.record.Record.prototype.applyPatchImmediately_ = false;
+
+
+/**
  * @protected
  * @param {ydn.crm.su.ui.events.ChangedEvent} e
  */
 ydn.crm.su.ui.record.Record.prototype.handleInputChanged = function(e) {
+  e.stopPropagation();
   if (this.getEditMode()) {
     // patch is not applied, but marked as modal data is dirty.
     // event dispatcher may need to store the patches.
@@ -654,9 +666,13 @@ ydn.crm.su.ui.record.Record.prototype.handleInputChanged = function(e) {
     // for new record creation, should be in input mode.
     this.setDirty(true);
   } else {
-    // patch is applied, so default is prevented.
-    e.preventDefault();
-    this.patch(e.patches);
+    if (this.applyPatchImmediately_) {
+      // patch is applied, so default is prevented.
+      e.preventDefault();
+      this.patch(e.patches);
+    } else {
+      this.setDirty(true);
+    }
   }
 };
 
@@ -682,6 +698,12 @@ ydn.crm.su.ui.record.Record.prototype.getDirty = function() {
 
 
 /**
+ * @type {boolean} debug flag.
+ */
+ydn.crm.su.ui.record.Record.DUMP_UPDATE = ydn.crm.su.ui.record.Record.DEBUG;
+
+
+/**
  * Patch record and update to server.
  * @param {Object} patches Field name-value pairs to patch the record data.
  * @return {!goog.async.Deferred.<SugarCrm.Record>} Resolved with record object
@@ -695,7 +717,7 @@ ydn.crm.su.ui.record.Record.prototype.patch = function(patches) {
   var is_new = model.isNew();
   var status = is_new ? 'Creating ...' : 'Updating...';
   var mid = ydn.crm.msg.Manager.addStatus(status);
-  if (ydn.crm.su.ui.record.Record.DEBUG) {
+  if (ydn.crm.su.ui.record.Record.DUMP_UPDATE) {
     window.console.log(patches);
   }
   return model.patch(patches).addCallbacks(function(x) {
@@ -1222,11 +1244,12 @@ ydn.crm.su.ui.record.Record.prototype.refreshHeader = function() {
   if (record.isNew()) {
     ele_title.innerHTML = '';
     ele_title.href = '';
+    ele_title.target = '';
     this.head_menu.setEnableMenuItem(ydn.crm.su.ui.record.Record.MenuName.DUPLICATE, false);
   } else {
     ele_title.textContent = record.getLabel();
     ele_title.href = record.getViewLink();
-    ele_title.target = record.getDomain();
+    ele_title.target = '_blank';
     this.head_menu.setEnableMenuItem(ydn.crm.su.ui.record.Record.MenuName.DUPLICATE, true);
   }
 };

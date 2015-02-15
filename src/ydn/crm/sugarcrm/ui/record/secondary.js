@@ -85,10 +85,16 @@ ydn.crm.su.ui.record.Secondary.prototype.createDom = function() {
  */
 ydn.crm.su.ui.record.Secondary.prototype.attachChild = function(r) {
   var sugar = this.getModel().getSugar();
-  var record_model = new ydn.crm.su.model.Record(sugar, r);
-  var child_panel = new ydn.crm.su.ui.record.Record(record_model, this.getDomHelper());
-  child_panel.setEnableSecondary(ydn.crm.su.ui.record.Record.EnableSecondary.DISABLED);
-  this.addChild(child_panel, true);
+  var child_panel = this.getChildByRecordId(r.getId());
+  if (child_panel) {
+    var model = child_panel.getModel();
+    model.setRecord(r);
+  } else {
+    var record_model = new ydn.crm.su.model.Record(sugar, r);
+    child_panel = new ydn.crm.su.ui.record.Record(record_model, this.getDomHelper());
+    child_panel.setEnableSecondary(ydn.crm.su.ui.record.Record.EnableSecondary.DISABLED);
+    this.addChild(child_panel, true);
+  }
 };
 
 
@@ -97,6 +103,8 @@ ydn.crm.su.ui.record.Secondary.prototype.attachChild = function(r) {
  */
 ydn.crm.su.ui.record.Secondary.prototype.reset = function() {
   this.disposeChildren();
+  var root = this.getElement();
+  var data_id = root.removeAttribute('data-id');
 };
 
 
@@ -110,6 +118,76 @@ ydn.crm.su.ui.record.Secondary.prototype.disposeChildren = function() {
     this.removeChild(child, true);
     child.dispose();
   }
+};
+
+
+/**
+ * @const
+ * @type {boolean}
+ */
+ydn.crm.su.ui.record.Secondary.SHOW_EMBEDDED = false;
+
+
+/**
+ * Get child component by record id.
+ * @param {string} id
+ * @return {ydn.crm.su.ui.record.Record}
+ */
+ydn.crm.su.ui.record.Secondary.prototype.getChildByRecordId = function(id) {
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var child = /** @type {ydn.crm.su.ui.record.Record} */(this.getChildAt(i));
+    var model = /** @type {ydn.crm.su.model.Record} */(child.getModel());
+    if (model && !model.isNew() && model.getId() == id) {
+      return child;
+    }
+  }
+  return null;
+};
+
+
+/**
+ * Add embedded children components.
+ * @private
+ */
+ydn.crm.su.ui.record.Secondary.prototype.addEmbeddedChildren_ = function() {
+  /**
+   * @type {ydn.crm.su.model.Record}
+   */
+  var model = this.getModel();
+  model.listEmbedded().addCallbacks(function(arr) {
+    for (var i = 0; i < arr.length; i++) {
+      var r = /** @type {!SugarCrm.Record} */(arr[i]);
+      var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
+      this.attachChild(new ydn.crm.su.Record(model.getDomain(), mn, r));
+    }
+  }, function(e) {
+    window.console.error(e);
+  }, this);
+};
+
+
+/**
+ * Add children components from relationships.
+ * @private
+ */
+ydn.crm.su.ui.record.Secondary.prototype.addRelationChildren_ = function() {
+  /**
+   * @type {ydn.crm.su.model.Record}
+   */
+  var model = this.getModel();
+  model.listRelated().addProgback(function(arr) {
+    if (ydn.crm.su.ui.record.Secondary.DEBUG) {
+      window.console.log(arr);
+    }
+    if (!arr) {
+      return;
+    }
+    for (var i = 0; i < arr.length; i++) {
+      var r = /** @type {!SugarCrm.Record} */(arr[i]);
+      var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
+      this.attachChild(new ydn.crm.su.Record(model.getDomain(), mn, r));
+    }
+  }, this);
 };
 
 
@@ -131,19 +209,10 @@ ydn.crm.su.ui.record.Secondary.prototype.refresh = function() {
     }
     root.setAttribute('data-id', model.getId());
     this.disposeChildren();
-    model.listEmbedded().addCallbacks(function(arr) {
-      /**
-       * @type {ydn.crm.su.model.Record}
-       */
-      var model = this.getModel();
-      for (var i = 0; i < arr.length; i++) {
-        var r = /** @type {!SugarCrm.Record} */(arr[i]);
-        var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
-        this.attachChild(new ydn.crm.su.Record(model.getDomain(), mn, r));
-      }
-    }, function(e) {
-      window.console.error(e);
-    }, this);
+    if (ydn.crm.su.ui.record.Secondary.SHOW_EMBEDDED) {
+      this.addEmbeddedChildren_();
+    }
+    this.addRelationChildren_();
   }
 };
 

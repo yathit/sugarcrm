@@ -317,10 +317,15 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcomingItem_ = function(obj,
   var verb = ydn.crm.su.Record.moduleAsVerb(m_name);
   verb = verb.charAt(0).toUpperCase() + verb.substr(1) + ' ';
   msg.appendChild(dom.createTextNode(verb));
+
   var link = dom.createDom('a', {
     'href': sugar.getRecordViewLink(r.getModule(), r.getId()),
-    'target': domain
+    'data-view': 'record',
+    'data-module': r.getModule(),
+    'data-id': r.getId(),
+    'target': '_blank'
   }, r.getLabel());
+
   msg.appendChild(link);
   var deadline = r.getDeadline();
   var time_msg = goog.date.relative.format(deadline.getTime()) || 'on ' + deadline.toLocaleDateString();
