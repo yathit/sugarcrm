@@ -294,3 +294,101 @@ ydn.crm.su.model.events.GDataUpdatedEvent = function(old_record, new_record, opt
 goog.inherits(ydn.crm.su.model.events.GDataUpdatedEvent, ydn.crm.su.model.events.GDataEvent);
 
 
+
+/**
+ * Event for search event.
+ * @param {ydn.crm.su.model.events.Type} event_type event type.
+ * @param {Object=} opt_event_target target.
+ * @extends {goog.events.Event}
+ * @constructor
+ * @struct
+ * @suppress {checkStructDictInheritance} suppress closure-library code.
+ */
+ydn.crm.su.model.events.SearchEvent = function(event_type, opt_event_target) {
+  goog.base(this, event_type, opt_event_target);
+};
+goog.inherits(ydn.crm.su.model.events.SearchEvent, goog.events.Event);
+
+
+/**
+ * @enum {string} event type for search events.
+ */
+ydn.crm.su.model.events.SearchEvent.Type = {
+  UPDATED: 'up',
+  ADD: 'ad',
+  RESET: 'rs'
+};
+
+
+
+/**
+ * Event search result is reset.
+ * @param {string} q query term.
+ * @param {Object=} opt_event_target target.
+ * @extends {ydn.crm.su.model.events.SearchEvent}
+ * @constructor
+ * @struct
+ */
+ydn.crm.su.model.events.SearchResetEvent = function(q, opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.UPDATED, opt_event_target);
+  /**
+   * @final
+   * @type {number}
+   */
+  this.q = q;
+};
+goog.inherits(ydn.crm.su.model.events.SearchResetEvent, ydn.crm.su.model.events.SearchEvent);
+
+
+
+/**
+ * Event search result is updated.
+ * @param {Object=} opt_event_target target.
+ * @extends {ydn.crm.su.model.events.SearchEvent}
+ * @constructor
+ * @struct
+ */
+ydn.crm.su.model.events.SearchUpdatedEvent = function(opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.UPDATED, opt_event_target);
+};
+goog.inherits(ydn.crm.su.model.events.SearchUpdatedEvent, ydn.crm.su.model.events.SearchEvent);
+
+
+
+/**
+ * Event search result is updated.
+ * @param {number} level progress level between 0 and 1 for start and finished.
+ * @param {Object=} opt_event_target target.
+ * @extends {ydn.crm.su.model.events.SearchEvent}
+ * @constructor
+ * @struct
+ */
+ydn.crm.su.model.events.SearchProgressEvent = function(level, opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.UPDATED, opt_event_target);
+  /**
+   * @final
+   * @type {number}
+   */
+  this.level = level;
+};
+goog.inherits(ydn.crm.su.model.events.SearchProgressEvent, ydn.crm.su.model.events.SearchEvent);
+
+
+
+/**
+ * Event search result that a new record is added to the result.
+ * @param {number} index progress level between 0 and 1 for start and finished.
+ * @param {Object=} opt_event_target target.
+ * @extends {ydn.crm.su.model.events.SearchEvent}
+ * @constructor
+ * @struct
+ */
+ydn.crm.su.model.events.SearchResultAddEvent = function(index, opt_event_target) {
+  goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.ADD, opt_event_target);
+  /**
+   * @final
+   * @type {number}
+   */
+  this.index = index;
+};
+goog.inherits(ydn.crm.su.model.events.SearchResultAddEvent, ydn.crm.su.model.events.SearchEvent);

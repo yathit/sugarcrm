@@ -526,6 +526,48 @@ ydn.crm.su.model.Sugar.prototype.listRecords = function(m_name, opt_order,
 
 
 /**
+ * Query list of records.
+ * @param {string} m_name
+ * @param {string=} opt_order Module field name to order by.
+ * @param {(ydn.db.KeyRange|string)=} opt_range key or key range.
+ * @param {boolean=} opt_prefix do prefix search.
+ * @param {number=} opt_limit limit
+ * @param {number=} opt_offset offset
+ * @return {!goog.async.Deferred<!Array.<SugarCrm.Record>>}
+ */
+ydn.crm.su.model.Sugar.prototype.listRecord = function(m_name, opt_order,
+                                                       opt_range, opt_prefix, opt_limit, opt_offset) {
+  goog.asserts.assert(ydn.crm.su.Modules.indexOf(m_name) >= 0, m_name);
+  var query = {
+    'store': m_name
+  };
+  if (opt_order) {
+    query['index'] = opt_order;
+  }
+  if (opt_range) {
+    if (opt_range instanceof ydn.db.KeyRange) {
+      query['range'] = opt_range.toJSON();
+    } else {
+      query['key'] = opt_range;
+    }
+  }
+  query['prefix'] = !!opt_prefix;
+  if (opt_limit) {
+    query['limit'] = opt_offset;
+  }
+  if (opt_offset) {
+    query['offset'] = opt_offset;
+  }
+  return this.getChannel().send(ydn.crm.ch.SReq.QUERY, [query])
+      .addCallback(function(res) {
+        var arr = /** @type {Array<CrmApp.QueryResult>} */(res);
+        var result = arr[0];
+        return result.result || [];
+      }, this);
+};
+
+
+/**
  * Full text search query.
  * @param {string} module_name filter by module
  * @param {string} q query term.
@@ -543,6 +585,38 @@ ydn.crm.su.model.Sugar.prototype.searchRecords = function(module_name, q, opt_fe
     query['index'] = 'content';
   }
   return this.getChannel().send(ydn.crm.ch.SReq.SEARCH, [query]);
+};
+
+
+/**
+ * Full text search query.
+ * @param {string} module_name filter by module
+ * @param {string} q query term.
+ * @param {boolean=} opt_fetch_full fetch full record
+ * @return {!goog.async.Deferred<!Array.<SugarCrm.ScoredRecord>>}
+ */
+ydn.crm.su.model.Sugar.prototype.searchRecord = function(module_name, q, opt_fetch_full) {
+  var query = {
+    'store': module_name,
+    'index': 'name',
+    'q': q,
+    'fetchFull': !!opt_fetch_full
+  };
+  if (module_name == ydn.crm.su.ModuleName.NOTES) {
+    query['index'] = 'content';
+  }
+  return this.getChannel().send(ydn.crm.ch.SReq.SEARCH, [query])
+      .addCallback(function(arr) {
+        var res = /** @type {CrmApp.TextQueryResult} */(arr[0]);
+        var out = [];
+        for (var i = 0; i < res.fullTextResult.length; i++) {
+          var r = /** @type {SugarCrm.ScoredRecord} */(res.fullTextResult[i].record);
+          if (r) {
+            r._score = res.fullTextResult[i].score;
+          }
+        }
+        return out;
+      });
 };
 
 
