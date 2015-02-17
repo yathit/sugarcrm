@@ -213,6 +213,24 @@ ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
 };
 
 
+/**
+ * @param {number} idx
+ * @return {SugarCrm.ScoredRecord}
+ */
+ydn.crm.su.model.Search.prototype.getResultAt = function(idx) {
+  return this.results_[idx];
+};
+
+
+
+/**
+ * @return {number} number of results.
+ */
+ydn.crm.su.model.Search.prototype.getResultCount = function() {
+  return this.results_.length;
+};
+
+
 
 /**
  * Query execution stack.
@@ -320,5 +338,4 @@ ydn.crm.su.model.Search.Stack.prototype.getProgress = function() {
       this.mn_idx_ * ydn.crm.su.model.Search.tasks.length.length;
   return goog.math.clamp(current / total, 0, 1);
 };
-
 

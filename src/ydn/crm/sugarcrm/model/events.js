@@ -342,14 +342,21 @@ goog.inherits(ydn.crm.su.model.events.SearchResetEvent, ydn.crm.su.model.events.
 
 
 /**
- * Event search result is updated.
+ * Event search result is updated. Event though only one record is update,
+ * the order of records has been changed.
+ * @param {number} idx the update record index.
  * @param {Object=} opt_event_target target.
  * @extends {ydn.crm.su.model.events.SearchEvent}
  * @constructor
  * @struct
  */
-ydn.crm.su.model.events.SearchUpdatedEvent = function(opt_event_target) {
+ydn.crm.su.model.events.SearchUpdatedEvent = function(idx, opt_event_target) {
   goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.UPDATED, opt_event_target);
+  /**
+   * @final
+   * @type {number} The index of record updated. The index the the one after changes.
+   */
+  this.index = idx;
 };
 goog.inherits(ydn.crm.su.model.events.SearchUpdatedEvent, ydn.crm.su.model.events.SearchEvent);
 

@@ -93,7 +93,8 @@ ydn.crm.su.ui.SearchResultList.prototype.createDom = function() {
   var root = this.getElement();
   var dom = this.getDomHelper();
   var header = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
-  var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
+  var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT,
+      dom.createDom('ul'));
   root.appendChild(header);
   root.appendChild(content);
 };
@@ -118,6 +119,17 @@ ydn.crm.su.ui.SearchResultList.prototype.enterDocument = function() {
    */
   var model = this.getModel();
   hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.RESET, this.onReset_);
+  hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.ADD, this.onAddResult_);
+  hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.UPDATED, this.onAddResult_);
+};
+
+
+/**
+ * @return {HTMLElement}
+ * @protected
+ */
+ydn.crm.su.ui.SearchResultList.prototype.getUlElement = function() {
+  return this.getContentElement().querySelector('ul');
 };
 
 
@@ -126,6 +138,81 @@ ydn.crm.su.ui.SearchResultList.prototype.enterDocument = function() {
  * @private
  */
 ydn.crm.su.ui.SearchResultList.prototype.onReset_ = function(e) {
-  this.getContentElement().innerHTML = '';
+  this.getUlElement().innerHTML = '';
 };
+
+
+/**
+ * @param {ydn.crm.su.model.events.SearchResultAddEvent} e
+ * @private
+ */
+ydn.crm.su.ui.SearchResultList.prototype.onAddResult_ = function(e) {
+  /**
+   * @type {ydn.crm.su.model.Search}
+   */
+  var model = this.getModel();
+  var r = model.getResultAt(e.index);
+  this.addResult(r, e.index);
+};
+
+
+/**
+ * @param {ydn.crm.su.model.events.SearchUpdatedEvent} e
+ * @private
+ */
+ydn.crm.su.ui.SearchResultList.prototype.onUpdateResult_ = function(e) {
+  this.updateResult(e.index);
+};
+
+
+/**
+ * Add a result.
+ * @param {SugarCrm.ScoredRecord} r
+ * @param {number} idx
+ */
+ydn.crm.su.ui.SearchResultList.prototype.addResult = function(r, idx) {
+  var ul = this.getUlElement();
+  var node = ul.children[idx];
+  var li = this.getDomHelper().createDom('li');
+  if (node) {
+    ul.insertBefore(li, node);
+  } else {
+    if (goog.DEBUG) {
+      window.console.warn('Node ' + idx + ' not exists.');
+    }
+    ul.appendChild(li);
+  }
+  this.renderItem_(li, r);
+};
+
+
+/**
+ * Update result.
+ * @param {number} idx the index the record has been changes.
+ */
+ydn.crm.su.ui.SearchResultList.prototype.updateResult = function(idx) {
+  /**
+   * @type {ydn.crm.su.model.Search}
+   */
+  var model = this.getModel();
+  var ul = this.getUlElement();
+  this.renderItem_(ul.children[idx], model.getResultAt(idx));
+  for (var i = idx + 1; i < model.getResultCount(); i++) {
+    var li = ul.children[i];
+    var id = li.getAttribute('data-id');
+    var r
+  }
+};
+
+
+/**
+ * Render a record.
+ * @param {Element} li
+ * @param {SugarCrm.Record} r
+ * @private
+ */
+ydn.crm.su.ui.SearchResultList.prototype.renderItem_ = function(li, r) {
+
+};
+
 
