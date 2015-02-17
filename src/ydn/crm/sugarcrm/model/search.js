@@ -27,7 +27,7 @@ goog.provide('ydn.crm.su.model.Search');
 
 /**
  * Search model for search display UI and search control.
- * @param {ydn.crm.su.model.Meta} sugar
+ * @param {ydn.crm.su.model.Sugar} sugar
  * @constructor
  * @extends {goog.events.EventTarget}
  * @struct
@@ -37,7 +37,7 @@ ydn.crm.su.model.Search = function(sugar) {
   goog.base(this);
   /**
    * @final
-   * @type {ydn.crm.su.model.Meta}
+   * @type {ydn.crm.su.model.Sugar}
    * @private
    */
   this.sugar_ = sugar;

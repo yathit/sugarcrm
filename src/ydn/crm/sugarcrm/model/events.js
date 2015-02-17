@@ -297,7 +297,7 @@ goog.inherits(ydn.crm.su.model.events.GDataUpdatedEvent, ydn.crm.su.model.events
 
 /**
  * Event for search event.
- * @param {ydn.crm.su.model.events.Type} event_type event type.
+ * @param {ydn.crm.su.model.events.SearchEvent.Type} event_type event type.
  * @param {Object=} opt_event_target target.
  * @extends {goog.events.Event}
  * @constructor
@@ -330,10 +330,10 @@ ydn.crm.su.model.events.SearchEvent.Type = {
  * @struct
  */
 ydn.crm.su.model.events.SearchResetEvent = function(q, opt_event_target) {
-  goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.UPDATED, opt_event_target);
+  goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.RESET, opt_event_target);
   /**
    * @final
-   * @type {number}
+   * @type {string}
    */
   this.q = q;
 };
