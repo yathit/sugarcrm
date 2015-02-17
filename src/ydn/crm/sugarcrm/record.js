@@ -15,7 +15,7 @@
 
 
 /**
- * @fileoverview SugarCRM Record wrapper object.
+ * @fileoverview SugarCRM Record wrapper object, providing utility functions.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -28,10 +28,10 @@ goog.require('ydn.crm.su');
 
 
 /**
- * SugarCRM Record wrapper object.
+ * SugarCRM Record wrapper object, providing utility functions.
  * @param {string} domain SugarCRM instance identifier as domain name,
  * eg: "fjochv4737.trial.sugarcrm.eu".
- * @param {ydn.crm.su.ModuleName} module
+ * @param {ydn.crm.su.ModuleName} module module name, eg: 'Contacts'.
  * @param {SugarCrm.Record=} opt_obj name SugarCRM record entry.
  * @constructor
  * @struct

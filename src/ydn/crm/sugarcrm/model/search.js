@@ -49,7 +49,7 @@ ydn.crm.su.model.Search = function(sugar) {
   this.q_ = '';
   /**
    *
-   * @type {ydn.crm.su.ModuleName}
+   * @type {?ydn.crm.su.ModuleName}
    * @private
    */
   this.record_type_ = null;
@@ -72,6 +72,14 @@ goog.inherits(ydn.crm.su.model.Search, goog.events.EventTarget);
  * @define {boolean} debug flag.
  */
 ydn.crm.su.model.Search.DEBUG = false;
+
+
+/**
+ * @return {ydn.crm.su.model.Sugar}
+ */
+ydn.crm.su.model.Search.prototype.getSugar = function() {
+  return this.sugar_;
+};
 
 
 /**
@@ -134,22 +142,22 @@ ydn.crm.su.model.Search.prototype.addResult_ = function(r, index, q) {
  * @private
  */
 ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) {
-  if (ydn.crm.su.ui.Search.DEBUG) {
+  if (ydn.crm.su.model.Search.DEBUG) {
     window.console.log(m_name, index, q);
   }
 
   this.sugar_.listRecord(m_name, index, q, true).addCallbacks(function(arr) {
-    if (ydn.crm.su.ui.SearchDisplay.DEBUG) {
+    if (ydn.crm.su.model.Search.DEBUG) {
       window.console.log(m_name, index, q, arr);
     }
     for (var i = 0; i < arr.length; i++) {
-      var r = /** @type {SugarCrm.Record} */(arr[i]);
+      var r = /** @type {SugarCrm.ScoredRecord} */(arr[i]);
       r._module = m_name;
       this.addResult_(r, index, q);
     }
     this.updateSearch_();
   }, function(e) {
-    if (ydn.crm.su.ui.Search.DEBUG) {
+    if (ydn.crm.su.model.Search.DEBUG) {
       window.console.log(m_name, index, q, e);
     }
     this.updateSearch_();
@@ -182,12 +190,12 @@ ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
   if (task == ydn.crm.su.model.Search.Task.ID) {
     // Task 0. query email
     this.updateSearchFor_(this.stack_.getModule(), 'id', this.q_);
-  } else if (task.taskNo == 1) {
+  } else if (task == ydn.crm.su.model.Search.Task.EMAIL) {
     // Task 0. query email
     this.updateSearchFor_(this.stack_.getModule(), 'ydn$emails', this.q_);
-  } else if (task.taskNo == 2) {
+  } else if (task == ydn.crm.su.model.Search.Task.PHONE) {
     // Task 1. query phone
-    var m = task.q.match(/\d/g);
+    var m = q.match(/\d/g);
     var number_of_digits = m ? m.length : 0;
     if (number_of_digits < 3) {
       // skip phone no search.
@@ -195,7 +203,7 @@ ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
       return;
     }
     this.updateSearchFor_(this.stack_.getModule(), 'ydn$phones', this.q_);
-  } else if (task.taskNo == 3) {
+  } else if (task == ydn.crm.su.model.Search.Task.FULL_TEXT) {
     // Task 2. full text search on name
     this.sugar_.searchRecord(this.stack_.getModule(), q).addCallbacks(function(x) {
       var arr = /** @type {!Array<!SugarCrm.ScoredRecord>} */ (x);
@@ -335,7 +343,7 @@ ydn.crm.su.model.Search.Stack.prototype.getProgress = function() {
     total = ydn.crm.su.model.Search.tasks.length * ydn.crm.su.CacheModules.length;
   }
   var current = this.task_idx_ +
-      this.mn_idx_ * ydn.crm.su.model.Search.tasks.length.length;
+      this.mn_idx_ * ydn.crm.su.model.Search.tasks.length;
   return goog.math.clamp(current / total, 0, 1);
 };
 

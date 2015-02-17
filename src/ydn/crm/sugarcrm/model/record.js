@@ -15,7 +15,8 @@
 
 
 /**
- * @fileoverview SugarCRM module model.
+ * @fileoverview SugarCRM module model providing reading and writing to
+ * SugarCRM instance and event dispatching.
  *
  * Encapsulate module info (or meta data) and its transient record entry data.
  * Record entry data can change during life time of the model dispatching
