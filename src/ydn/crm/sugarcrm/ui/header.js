@@ -168,6 +168,7 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
   goog.style.setElementShown(div_login, !model.isLogin());
   goog.style.setElementShown(content_ele, this.getModel().hasHostPermission());
 
+  // todo: move to content section.
   var activity_panel = new ydn.crm.su.ui.activity.Panel(model, dom);
   this.addChild(activity_panel, true);
 };

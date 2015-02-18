@@ -44,7 +44,7 @@ goog.require('ydn.crm.su.ui.events');
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.HomeBar = function(model, opt_dom) {
-  goog.base(this, opt_dom);
+  ydn.crm.su.ui.HomeBar.base(this, 'constructor', opt_dom);
   this.setModel(model);
 };
 goog.inherits(ydn.crm.su.ui.HomeBar, goog.ui.Component);
@@ -76,7 +76,7 @@ ydn.crm.su.ui.HomeBar.prototype.getModel;
  * @inheritDoc
  */
 ydn.crm.su.ui.HomeBar.prototype.createDom = function() {
-  goog.base(this, 'createDom');
+  ydn.crm.su.ui.HomeBar.base(this, 'createDom');
   var root = this.getElement();
   var dom = this.getDomHelper();
 
@@ -85,13 +85,44 @@ ydn.crm.su.ui.HomeBar.prototype.createDom = function() {
     var mn = ydn.crm.su.EDITABLE_MODULES[i];
     add_menu.addChild(new goog.ui.MenuItem('New ' + mn, mn), true);
   }
-  var svg = ydn.crm.ui.createSvgIcon('add-box');
+  var svg = ydn.crm.ui.createSvgIcon('add');
   var add_btn = new goog.ui.MenuButton(svg, add_menu,
-      new goog.ui.Css3MenuButtonRenderer(), dom);
+      null, dom);
 
   var search_input = new wgui.TextInput('');
 
   this.addChild(add_btn, true);
   this.addChild(search_input, true);
+};
+
+
+/**
+ * @protected
+ * @return {wgui.TextInput}
+ */
+ydn.crm.su.ui.HomeBar.prototype.getSearchInput = function() {
+  return /** @type {wgui.TextInput} */ (this.getChildAt(1));
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.su.ui.HomeBar.prototype.enterDocument = function() {
+  ydn.crm.su.ui.HomeBar.base(this, 'enterDocument');
+  var search_input = this.getSearchInput();
+  this.getHandler().listen(search_input, goog.ui.Component.EventType.ACTION,
+      this.onSearch_, true);
+};
+
+
+/**
+ * @param {goog.events.Event} e
+ * @private
+ */
+ydn.crm.su.ui.HomeBar.prototype.onSearch_ = function(e) {
+  var search_input = this.getSearchInput();
+  var q = search_input.getContent() || '';
+  this.getModel().search(q);
 };
 

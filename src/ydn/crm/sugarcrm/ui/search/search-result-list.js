@@ -28,9 +28,10 @@ goog.provide('ydn.crm.su.ui.SearchResultList');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su');
-goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.model.Search');
+goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui.events');
+goog.require('ydn.ui');
 
 
 

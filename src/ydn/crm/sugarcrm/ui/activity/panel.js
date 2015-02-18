@@ -30,6 +30,7 @@ goog.require('goog.date.relative');
 goog.require('goog.ui.Tab');
 goog.require('goog.ui.TabBar');
 goog.require('ydn.crm.msg.Manager');
+goog.require('ydn.crm.su.ui.HomePanel');
 goog.require('ydn.crm.su.ui.NewRecord');
 goog.require('ydn.crm.su.ui.SearchPanel');
 goog.require('ydn.crm.su.ui.activity.DetailPanel');
@@ -75,6 +76,13 @@ ydn.crm.su.ui.activity.Panel = function(model, dom) {
    * @type {ydn.crm.su.ui.NewRecord}
    */
   this.new_record = new ydn.crm.su.ui.NewRecord(new_record, dom);
+
+  /**
+   * Home panel.
+   * @type {ydn.crm.su.ui.HomePanel}
+   * @private
+   */
+  this.home_ = new ydn.crm.su.ui.HomePanel(model, dom);
 };
 goog.inherits(ydn.crm.su.ui.activity.Panel, goog.ui.Component);
 

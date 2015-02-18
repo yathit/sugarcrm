@@ -31,14 +31,14 @@ goog.require('ydn.crm.su.ui.SearchResultList');
 /**
  * Home panel for searching and add new records.
  * @param {ydn.crm.su.model.Sugar} model
- * @param {goog.dom.DomHelper} dom
+ * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.ui.HomePanel = function(model, dom) {
-  goog.base(this, dom);
+ydn.crm.su.ui.HomePanel = function(model, opt_dom) {
+  goog.base(this, opt_dom);
   this.setModel(model);
   /**
    * Search model.
@@ -47,7 +47,7 @@ ydn.crm.su.ui.HomePanel = function(model, dom) {
    */
   this.search_ = new ydn.crm.su.model.Search(model);
 };
-goog.inherits(ydn.crm.su.ui.HomeBar, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.HomePanel, goog.ui.Component);
 
 
 /**

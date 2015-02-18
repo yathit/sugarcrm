@@ -167,7 +167,7 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
   var us = ydn.crm.ui.UserSetting.getInstance();
 
-  return ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
+  return ch.send(ydn.crm.ch.SReq.DETAILS).addCallbacks(function(x) {
     panel = this.getSugarCrmPanel();
     if (panel) {
       goog.log.fine(this.logger, 'existing sugar panel detect');
@@ -185,6 +185,8 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
     this.addChild(panel, true);
     goog.style.setElementShown(link_panel, false);
     return sugar;
+  }, function(e) {
+    window.console.error(e);
   }, this);
 
 };
