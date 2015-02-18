@@ -8,7 +8,6 @@
 goog.provide('ydn.crm.ui.SidebarPanel');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.su.ui.SugarPanel');
-goog.require('ydn.crm.su.ui.HomePanel');
 
 
 

@@ -19,6 +19,8 @@ function setUp() {
   ydn.crm.test.getMain().addMockSugarRespond('list-name', []);
   ydn.crm.test.getMain().addMockRespond('sync-q', []);
 
+  ydn.crm.su.ui.record.Record.prototype.applyPatchImmediately_ = true;
+
 }
 
 function tearDown() {
@@ -118,6 +120,7 @@ function test_edit_email() {
 
   record_panel.render(mock_el);
   record_panel.simulateEdit({'email1': 'foo@example.com'}, true);
+
   assertTrue(called);
 }
 

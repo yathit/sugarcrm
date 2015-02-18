@@ -37,7 +37,7 @@ function test_bean_email() {
   var email_group = model.getGroupModel('email');
   assertTrue('has email group', !!email_group);
   var fields = email_group.listFields();
-  assertEquals('field count', 1, fields.length);
+  assertEquals('field count', 2, fields.length);
   var email_field = email_group.createOrGetFieldModel(fields[0]);
   assertEquals('field 0 value', data.email[0].email_address, email_field.getStringValue());
 }
