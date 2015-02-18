@@ -186,52 +186,60 @@ ydn.crm.su.ui.setting.Field.prototype.createUserSetting = function() {
 /**
  * @inheritDoc
  */
+ydn.crm.su.ui.setting.Field.prototype.getNormallyHideDefault = function() {
+  if (this.field.group) {
+    // name group
+    if (['name'].indexOf(this.field.group) >= 0) {
+      if (['name', 'full_name'].indexOf(this.name) >= 0) {
+        return true;
+      }
+    }
+
+    if (this.module == ydn.crm.su.ModuleName.TASKS) {
+      if (['date_due', 'date_start'].indexOf(this.field.group) >= 0) {
+        if (['date_due_flag', 'date_start_flag'].indexOf(this.name) >= 0) {
+          return true;
+        }
+      }
+    }
+
+    if (['amount_usdollar', 'team_id', 'account_id'].indexOf(this.name) >= 0) {
+      return true;
+    }
+
+    return false;
+  } else {
+    if (this.module == ydn.crm.su.ModuleName.ACCOUNTS) {
+      return ['name', 'website'].indexOf(this.name) == -1;
+    } else if (this.module == ydn.crm.su.ModuleName.CALLS) {
+      return ['name', 'date_start', 'date_end', 'status', 'description'].indexOf(this.name) == -1;
+    } else if (this.module == ydn.crm.su.ModuleName.CASES) {
+      return ['name', 'description', 'priority', 'status', 'type'].indexOf(this.name) == -1;
+    } else if (this.module == ydn.crm.su.ModuleName.DOCUMENTS) {
+      return ['document_name', 'description'].indexOf(this.name) == -1;
+    } else if (this.module == ydn.crm.su.ModuleName.MEETINGS) {
+      return ['name', 'date_start', 'date_end', 'status', 'priority', 'description'].indexOf(this.name) == -1;
+    } else if (this.module == ydn.crm.su.ModuleName.OPPORTUNITIES) {
+      return ['name', 'amount', 'date_closed', 'sales_stage', 'account_name',
+        'description', 'lead_source'].indexOf(this.name) == -1;
+    } else if (this.module == ydn.crm.su.ModuleName.TASKS) {
+      return ['name', 'status', 'priority', 'description'].indexOf(this.name) == -1;
+    } else {
+      return ['name', 'description'].indexOf(this.name) == -1;
+    }
+  }
+};
+
+
+/**
+ * @inheritDoc
+ */
 ydn.crm.su.ui.setting.Field.prototype.getNormallyHide = function() {
   var setting = this.getUserSetting();
   if (setting && goog.isDef(setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE])) {
     return !!setting[ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey.NORMALLY_HIDE];
   } else {
-    if (this.field.group) {
-      // name group
-      if (['name'].indexOf(this.field.group) >= 0) {
-        if (['name', 'full_name'].indexOf(this.name) >= 0) {
-          return true;
-        }
-      }
-
-      if (this.module == ydn.crm.su.ModuleName.TASKS) {
-        if (['date_due', 'date_start'].indexOf(this.field.group) >= 0) {
-          if (['date_due_flag', 'date_start_flag'].indexOf(this.name) >= 0) {
-            return true;
-          }
-        }
-      }
-
-      if (['amount_usdollar', 'team_id', 'account_id'].indexOf(this.name) >= 0) {
-        return true;
-      }
-
-      return false;
-    } else {
-      if (this.module == ydn.crm.su.ModuleName.ACCOUNTS) {
-        return ['name', 'website'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.su.ModuleName.CALLS) {
-        return ['name', 'date_start', 'date_end', 'status', 'description'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.su.ModuleName.CASES) {
-        return ['name', 'description', 'priority', 'status', 'type'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.su.ModuleName.NOTES) {
-        return ['name', 'description'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.su.ModuleName.MEETINGS) {
-        return ['name', 'date_start', 'date_end', 'status', 'priority', 'description'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.su.ModuleName.OPPORTUNITIES) {
-        return ['name', 'amount', 'date_closed', 'sales_stage', 'account_name',
-          'description', 'lead_source'].indexOf(this.name) == -1;
-      } else if (this.module == ydn.crm.su.ModuleName.TASKS) {
-        return ['name', 'status', 'priority', 'description'].indexOf(this.name) == -1;
-      } else {
-        return true;
-      }
-    }
+    return this.getNormallyHideDefault();
   }
 };
 

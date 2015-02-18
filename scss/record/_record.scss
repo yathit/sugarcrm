@@ -24,6 +24,12 @@
       display: none;
     }
   }
+
+  > .record-header {
+    > .title {
+      overflow-x: hidden;
+    }
+  }
 }
 
 .record-panel.new-record {
@@ -45,5 +51,13 @@
 
 .select-record {
 
+}
 
+
+#field-display-dialog {
+  > .content {
+    overflow: auto;
+    max-width: 400px;
+    max-height: 400px;
+  }
 }

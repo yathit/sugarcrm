@@ -276,6 +276,7 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
     'class': ydn.crm.su.ui.record.CSS_HEADER_TITLE + ' center',
     'title': 'Open in SugarCRM'
   });
+  var center = dom.createDom('span', 'center');
 
   var record_type_badge = dom.createDom('span',
       ydn.crm.su.ui.record.CSS_HEADER_ICON);
@@ -290,6 +291,7 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
   ele_header.appendChild(record_type_badge);
   ele_header.appendChild(gmail_icon);
   ele_header.appendChild(title);
+  ele_header.appendChild(center);
   ele_header.appendChild(save_btn);
   this.head_menu.render(ele_header);
 
@@ -604,6 +606,9 @@ ydn.crm.su.ui.record.Record.prototype.setFieldDisplaySetting = function(is_group
 
   for (var name in settings) {
     var field = module_info.module_fields[name];
+    if (!field) {
+      return;
+    }
     var setting;
     if (is_group) {
       setting = new ydn.crm.su.ui.setting.Group(record.getModuleName(), name);
