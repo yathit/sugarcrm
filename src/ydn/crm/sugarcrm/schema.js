@@ -118,6 +118,8 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
       {
         'name': 'parent',
         'keyPath': ['doc_type', 'doc_id']
+      }, {
+        'name': 'filename'
       }]
   },
   'Emails': {

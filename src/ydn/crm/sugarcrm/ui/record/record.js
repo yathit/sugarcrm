@@ -628,7 +628,7 @@ ydn.crm.su.ui.record.Record.prototype.showDetailDialog = function() {
   var record = this.getModel();
   var data = record.cloneData();
   var dialog = /** @type {HTMLDialogElement} */ (ydn.ui.getTemplateById('record-detail-dialog'));
-  var cancel_btn = dialog.querySelector('button.ok');
+  var cancel_btn = dialog.querySelector('button[value=ok]');
   cancel_btn.onclick = function() {
     dialog.close('close');
   };
