@@ -110,6 +110,14 @@ $hud-button-height: 38px;
   }
   .right-item {
     align-self: flex-end;
+
+    > *:not(:last-child) {
+      padding-right: 4px;
+      border-right: solid gray thin;
+    }
+    > *:last-child {
+      padding-left: 4px;
+    }
   }
 }
 
@@ -123,5 +131,19 @@ $hud-button-height: 38px;
   border-radius: 4px;
   background-color: rgb(241, 241, 241);
 
+}
+
+.feedback-panel {
+  margin-top: 8px;
+  border: thin solid lightblue;
+  padding: 2px;
+  > div {
+    margin: 4px 0;
+  }
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    height: 5em;
+  }
 }
 
