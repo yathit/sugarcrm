@@ -122,6 +122,10 @@ dialog.ydn-crm, .ydn-crm dialog {
 
   .button-bar {
     padding: 8px;
+
+    > button {
+      margin: 0 4px;
+    }
   }
 }
 

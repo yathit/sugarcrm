@@ -21,7 +21,6 @@
 
 
 goog.provide('ydn.crm.su.ui.widget.SelectRecord');
-goog.require('goog.ui.Component');
 goog.require('goog.ui.ac.ArrayMatcher');
 goog.require('goog.ui.ac.AutoComplete');
 goog.require('goog.ui.ac.Renderer');
@@ -34,16 +33,31 @@ goog.require('ydn.crm.ui');
 
 /**
  * Record selector.
+ * <pre>
+ *   var sr = ydn.crm.su.ui.widget.SelectRecord.getInstanceFor(sugar, 'Leads');
+ *   var span = document.createElement('span');
+ *   span.className = 'select-record';
+ *   var input = document.createElement('input');
+ *   input.className = 'value';
+ *   span.appendChild(input);
+ *   input.onfocus = function() {
+ *     sr.attach(span);
+ *   };
+ * </pre>
  * @param {ydn.crm.su.Meta} meta
  * @param {ydn.crm.su.ModuleName=} opt_m_name default to Accounts module.
+ * @param {Element=} opt_node optional reference to the parent element
+ *     that will hold the autocomplete elements. goog.dom.getDocument().body
+ *     will be used if this is null.
  * @param {boolean=} opt_multi multiple field selector.
  * @constructor
  * @struct
+ * @extends {goog.Disposable}
+ * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi) {
-
+ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_node, opt_multi) {
+  goog.base(this);
   /**
-   * @final
    * @type {ydn.crm.su.Meta}
    * @protected
    */
@@ -56,7 +70,8 @@ ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi) {
    */
   this.matcher = new ydn.crm.su.ui.widget.RecordMatcher(meta, m_name);
   var r = ydn.crm.su.ui.widget.RowRenderer.getInstance();
-  var renderer = new goog.ui.ac.Renderer(undefined, r);
+  this.renderer = new goog.ui.ac.Renderer(opt_node, r);
+  this.renderer.setAutoPosition(true);
   /**
    * @protected
    * @type {ydn.crm.su.ui.widget.RichInputHandler}
@@ -67,7 +82,7 @@ ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi) {
    * @type {goog.ui.ac.AutoComplete}
    * @protected
    */
-  this.ac = new goog.ui.ac.AutoComplete(this.matcher, renderer, this.input_handler);
+  this.ac = new goog.ui.ac.AutoComplete(this.matcher, this.renderer, this.input_handler);
   this.input_handler.attachAutoComplete(this.ac);
 
   /**
@@ -77,6 +92,7 @@ ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_multi) {
   this.input_ = null;
 
 };
+goog.inherits(ydn.crm.su.ui.widget.SelectRecord, goog.Disposable);
 
 
 /**
@@ -107,7 +123,8 @@ ydn.crm.su.ui.widget.SelectRecord.prototype.getModule = function() {
 /**
  * Attach input.
  * Current attach input element will be detach.
- * @param {Element} el select record Element build by `select-record-template`
+ * @param {Element} el select record Element build by
+ * {@link templ.ydn.crm.inj.selectRecord}
  * template.
  */
 ydn.crm.su.ui.widget.SelectRecord.prototype.attach = function(el) {
@@ -153,4 +170,20 @@ ydn.crm.su.ui.widget.SelectRecord.getInstanceFor = function(meta, mn) {
   sr.detach();
   sr.setModule(mn);
   return sr;
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.su.ui.widget.SelectRecord.prototype.disposeInternal = function() {
+  this.renderer.dispose();
+  this.input_handler.dispose();
+  this.ac.dispose();
+  this.renderer = null;
+  this.matcher = null;
+  this.input_handler = null;
+  this.ac = null;
+  this.sugar = null;
+  ydn.crm.su.ui.widget.SelectRecord.base(this, 'disposeInternal');
 };

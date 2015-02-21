@@ -61,3 +61,21 @@
     max-height: 400px;
   }
 }
+
+.upload-dialog {
+  > div {
+    display: flex;
+
+    > :first-child {
+      padding: 3px 0px 3px 3px;
+      margin: 5px 1px 3px 0px;
+      width: 10em;
+    }
+    > * {
+      align-self: flex-start;
+    }
+    .value {
+      flex-grow: 1;
+    }
+  }
+}
