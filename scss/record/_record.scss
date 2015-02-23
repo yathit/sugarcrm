@@ -67,8 +67,8 @@
     display: flex;
 
     > :first-child {
-      padding: 3px 0px 3px 3px;
-      margin: 5px 1px 3px 0px;
+      padding: 3px 0 3px 3px;
+      margin: 5px 1px 3px 0;
       width: 10em;
     }
     > * {
@@ -76,6 +76,11 @@
     }
     .value {
       flex-grow: 1;
+    }
+    .spacer {
+      padding: 3px 0 3px 0;
+      margin: 5px 0 3px 0;
+      outline: 0;
     }
   }
 }

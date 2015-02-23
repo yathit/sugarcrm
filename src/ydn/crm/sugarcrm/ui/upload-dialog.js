@@ -86,7 +86,8 @@ goog.inherits(ydn.crm.su.ui.UploadDialog, ydn.ui.MessageDialog);
 /**
  * @typedef {{
  *   document_name: string,
- *   description: string
+ *   description: string,
+ *   relationships: Array<SugarCrm.ModuleNameIdPair>
  * }}
  */
 ydn.crm.su.ui.UploadDialog.ReturnValue;
@@ -99,9 +100,24 @@ ydn.crm.su.ui.UploadDialog.prototype.getReturnValue = function() {
   var content = this.getContentElement();
   var doc_el = content.querySelector('input[name=document_name]');
   var description_el = content.querySelector('textarea[name=description]');
+  var relationships = [];
+  var rows = content.querySelectorAll('.select-record');
+  for (var i = 0; i < rows.length; i++) {
+    var input = rows[i].querySelector('input');
+    var select = rows[i].querySelector('select');
+    var id = input.getAttribute('data-id');
+    if (!id || !input.value) {
+      continue;
+    }
+    relationships.push({
+      'module_name': ydn.crm.su.toModuleName(select.value),
+      'id': id
+    });
+  }
   return {
     document_name: doc_el.value,
-    description: description_el.value
+    description: description_el.value,
+    relationships: relationships
   };
 };
 
@@ -111,7 +127,7 @@ ydn.crm.su.ui.UploadDialog.prototype.getReturnValue = function() {
  * @param {ydn.crm.su.Meta} meta
  * @param {string} mid message id.
  * @param {string} file_name file name without message id prefix.
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<ydn.crm.su.ui.UploadDialog.ReturnValue>}
  */
 ydn.crm.su.ui.UploadDialog.showModel = function(meta, mid, file_name) {
   var dialog = new ydn.crm.su.ui.UploadDialog(meta, mid, file_name);
@@ -176,6 +192,9 @@ ydn.crm.su.ui.UploadDialog.prototype.addRelationshipRow_ = function() {
   var row = goog.soy.renderAsElement(templ.ydn.crm.inj.selectRecord, {
     use_sel: true
   });
+
+  var a = row.querySelector('a');
+  a.classList.add('spacer');
 
   // todo: use link meta data.
   var types = [ydn.crm.su.ModuleName.ACCOUNTS,

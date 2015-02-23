@@ -14,6 +14,10 @@ var btn = document.getElementById('upload');
 btn.onclick = function(e) {
   ydn.crm.su.ui.UploadDialog.showModel(sugar, 'm123', 'name.png').addCallbacks(function(obj) {
     console.log(obj);
+    var upload = document.getElementById('do-upload').checked;
+    if (upload) {
+      var url = '';
+    }
   }, function(val) {
     console.log('do not upload');
   });
