@@ -18,6 +18,15 @@
       margin-left: 4px;
       padding-left: 2px;
       border-left: thin solid lightblue;
+
+      > ul {
+        list-style: none;
+        padding-left: 0;
+
+        > li {
+          margin: 2px 0;
+        }
+      }
     }
 
     > .secondary:not(:hover) .record-panel:not(.active) .content {

@@ -31,6 +31,7 @@ goog.require('ydn.crm.su');
 goog.require('ydn.crm.su.model.Search');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui.events');
+goog.require('ydn.crm.su.ui.record.RecordItemRenderer');
 goog.require('ydn.ui');
 
 
@@ -47,6 +48,8 @@ goog.require('ydn.ui');
 ydn.crm.su.ui.SearchResultList = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
+  this.item_renderer_ = new ydn.crm.su.ui.record.RecordItemRenderer(
+      model.getSugar());
 };
 goog.inherits(ydn.crm.su.ui.SearchResultList, goog.ui.Component);
 
@@ -184,7 +187,7 @@ ydn.crm.su.ui.SearchResultList.prototype.addResult = function(r, idx) {
     }
     ul.appendChild(li);
   }
-  this.renderItem(li, r);
+  this.item_renderer_.render(li, r);
 };
 
 
@@ -198,13 +201,13 @@ ydn.crm.su.ui.SearchResultList.prototype.updateResult = function(idx) {
    */
   var model = this.getModel();
   var ul = this.getUlElement();
-  this.renderItem(ul.children[idx], model.getResultAt(idx));
+  this.item_renderer_.render(ul.children[idx], model.getResultAt(idx));
   for (var i = idx + 1; i < model.getResultCount(); i++) {
     var li = ul.children[i];
     var id = li.getAttribute('data-id');
     var r = model.getResultAt(i);
     if (r.id != id) {
-      this.renderItem(li, r);
+      this.item_renderer_.render(li, r);
     } else {
       // all remaining records are not changed.
       break;
@@ -219,34 +222,6 @@ ydn.crm.su.ui.SearchResultList.prototype.updateResult = function(idx) {
  */
 ydn.crm.su.ui.SearchResultList.prototype.getSugar_ = function() {
   return this.getModel().getSugar();
-};
-
-
-/**
- * Render a record.
- * @param {Element} li
- * @param {SugarCrm.Record} r
- */
-ydn.crm.su.ui.SearchResultList.prototype.renderItem = function(li, r) {
-  li.innerHTML = '';
-  var t = ydn.ui.getTemplateById('search-result-list-template').content;
-  li.appendChild(t.cloneNode(true));
-  li.setAttribute('data-id', r.id);
-  var sugar = this.getSugar_();
-  var mn = ydn.crm.su.toModuleName(r._module);
-  var record = new ydn.crm.su.model.Record(sugar,
-      new ydn.crm.su.Record(sugar.getDomain(), mn, r));
-
-  var badge = li.querySelector('.icon');
-  badge.textContent = ydn.crm.su.toModuleSymbol(mn);
-
-  var ele_title = li.querySelector('.title');
-  ele_title.textContent = record.getLabel();
-  ele_title.href = record.getViewLink();
-  ele_title.target = '_blank';
-
-  var ele_desc = li.querySelector('.description');
-  ele_desc.textContent = record.valueAsString('description');
 };
 
 

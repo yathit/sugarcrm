@@ -18,7 +18,8 @@ ydn.crm.shared.logger.info('record panel test');
 var results;
 // ydn.crm.su.ui.field.Field.DEBUG =  true;
 // ydn.crm.su.model.Record.DEBUG =  true;
-ydn.crm.su.ui.record.Record.DEBUG =  true;
+// ydn.crm.su.ui.record.Record.DEBUG =  true;
+ydn.crm.su.ui.record.Secondary.DEBUG =  true;
 // ydn.crm.su.ui.widget.RecordMatcher.DEBUG =  true;
 
 var types = document.getElementById('record-type');
