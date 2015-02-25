@@ -48,6 +48,31 @@ ydn.crm.su.ui.record.RecordItemRenderer = function(sugar) {
 
 
 /**
+ * Render content for people module.
+ * @param {Element} el content element.
+ * @param {ydn.crm.su.model.Record} record record.
+ * @private
+ */
+ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentForPeople_ = function(el, record) {
+  var ele_desc = el.querySelector('.description');
+  var email_group = /** @type {ydn.crm.su.model.EmailGroup} */(record.getGroupModel('email'));
+  ele_desc.textContent = email_group.getPrimaryEmailAddress();
+};
+
+
+/**
+ * Render content for default module.
+ * @param {Element} el content element.
+ * @param {ydn.crm.su.model.Record} record record.
+ * @private
+ */
+ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentDefault_ = function(el, record) {
+  var ele_desc = el.querySelector('.description');
+  ele_desc.textContent = record.valueAsString('description');
+};
+
+
+/**
  * Render record item.
  * @param {Element} el element to render on.
  * @param {SugarCrm.Record} r record.
@@ -72,7 +97,11 @@ ydn.crm.su.ui.record.RecordItemRenderer.prototype.render = function(el, r) {
   ele_title.href = record.getViewLink();
   ele_title.target = '_blank';
 
-  var ele_desc = el.querySelector('.description');
-  ele_desc.textContent = record.valueAsString('description');
+  var ele_content = el.querySelector('.content');
+  if (ydn.crm.su.ModuleName.CONTACTS == mn) {
+    this.contentForPeople_(ele_content, record);
+  } else {
+    this.contentDefault_(ele_content, record);
+  }
 };
 

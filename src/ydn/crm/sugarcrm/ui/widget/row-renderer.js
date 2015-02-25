@@ -28,10 +28,19 @@ ydn.crm.su.ui.widget.RowRenderer.prototype.renderRow = function(row, token, elem
     return;
   }
   var record = /** @type {SugarCrm.Record} */(row['data']);
-  var email = ydn.crm.su.Record.getEmail(record);
   var label = record.name;
+  // label as name itself is not distinguishable, so append by email,
+  // account_name, id, etc.
+  var email = ydn.crm.su.Record.getEmail(record);
   if (email) {
     label += ' <' + email + '>';
+  } else {
+    var account_name = record['account_name'];
+    if (account_name) {
+      label += ' [' + account_name + ']';
+    } else {
+      label += ' (' + record.id + ')';
+    }
   }
   elem.textContent = label;
 };

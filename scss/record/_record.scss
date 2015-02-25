@@ -41,6 +41,12 @@
   }
 }
 
+.record-item {
+  > .content {
+    padding-left: 30px;
+  }
+}
+
 .record-panel.new-record {
   > .content {
     overflow-y: auto; // prevent overflowing

@@ -199,6 +199,32 @@ ydn.crm.su.model.EmailGroup.prototype.getEmails = function() {
 
 
 /**
+ * Get primary email.
+ * @return {string}
+ */
+ydn.crm.su.model.EmailGroup.prototype.getPrimaryEmailAddress = function() {
+  var email = this.module.value('email');
+  if (goog.isArray(email)) {
+    var beams = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
+    for (var i = 0; i < beams.length; i++) {
+      if (beams[i].primary_address == '1') {
+        return beams[i].email_address;
+      }
+    }
+    return beams[0] ? beams[0].email_address : '';
+  } else {
+    var module_info = this.module.getModuleInfo();
+    var email1 = this.module.getStringValue('email1');
+    if (email1) {
+      return email1;
+    }
+    var email2 = this.module.getStringValue('email2');
+    return email2 || '';
+  }
+};
+
+
+/**
  *
  * @param {Array.<SugarCrm.EmailField>} beans
  * @param {string} id

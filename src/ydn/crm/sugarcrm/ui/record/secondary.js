@@ -54,7 +54,7 @@ ydn.crm.su.ui.record.Secondary.DEBUG = false;
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.su.ui.record.Secondary.USE_RECORD = false;
+ydn.crm.su.ui.record.Secondary.USE_RECORD = true;
 
 
 /**
