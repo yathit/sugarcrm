@@ -45,6 +45,7 @@ goog.require('ydn.ui.MessageDialog');
  * @constructor
  * @const
  * @extends {ydn.ui.MessageDialog}
+ * @see ydn.crm.su.ui.ArchiveDialog
  */
 ydn.crm.su.ui.UploadDialog = function(meta, mid, file_name) {
   var title = 'Upload document';
@@ -73,6 +74,17 @@ ydn.crm.su.ui.UploadDialog = function(meta, mid, file_name) {
    * @private
    */
   this.meta_ = meta;
+
+  var module_info = meta.getModuleInfo(ydn.crm.su.ModuleName.DOCUMENTS);
+  /**
+   * @type {Array<ydn.crm.su.ModuleName>}
+   */
+  this.relationship_modules = ydn.crm.su.getRelationshipCacheModule(module_info,
+      [ydn.crm.su.ModuleName.ACCOUNTS,
+        ydn.crm.su.ModuleName.CONTACTS,
+        ydn.crm.su.ModuleName.OPPORTUNITIES,
+        ydn.crm.su.ModuleName.CASES]);
+
   /**
    * @type {ydn.crm.su.ui.widget.SelectRecord}
    * @private
@@ -150,7 +162,13 @@ ydn.crm.su.ui.UploadDialog.showModel = function(meta, mid, file_name) {
  * @private
  */
 ydn.crm.su.ui.UploadDialog.prototype.onSelectChange_ = function(e) {
-
+  var div = goog.dom.getAncestorByClass(e.target, 'select-record');
+  var input = div.querySelector('input');
+  input.value = '';
+  input.removeAttribute('data-id');
+  var a = div.querySelector('a');
+  a.href = '';
+  goog.style.setElementShown(a, false);
 };
 
 
@@ -196,22 +214,18 @@ ydn.crm.su.ui.UploadDialog.prototype.addRelationshipRow_ = function() {
   var a = row.querySelector('a');
   a.classList.add('spacer');
 
-  // todo: use link meta data.
-  var types = [ydn.crm.su.ModuleName.ACCOUNTS,
-    ydn.crm.su.ModuleName.CONTACTS,
-    ydn.crm.su.ModuleName.OPPORTUNITIES,
-    ydn.crm.su.ModuleName.CASES];
   var select = row.querySelector('select');
-  for (var i = 0; i < types.length; i++) {
+  for (var i = 0; i < this.relationship_modules.length; i++) {
     var option = document.createElement('option');
-    option.value = types[i];
-    option.textContent = types[i];
+    option.value = this.relationship_modules[i];
+    option.textContent = this.relationship_modules[i];
     select.appendChild(option);
   }
   var input = row.querySelector('input');
 
   this.handler.listen(input, goog.events.EventType.FOCUS, this.onInputFocus_);
   this.handler.listen(input, goog.events.EventType.BLUR, this.onRelBlur_);
+  this.handler.listen(select, goog.events.EventType.CHANGE, this.onSelectChange_);
 
   div.appendChild(row);
 };

@@ -621,11 +621,53 @@ ydn.crm.su.model.Sugar.prototype.searchRecord = function(module_name, q, opt_fet
 
 
 /**
+ * Query people module records by email.
+ * @param {string} email email address to query.
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>} list of record. the record value
+ * has `_module` for respective module name.
+ */
+ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
+  if (!goog.isString(email) || email.indexOf('@') == -1) {
+    return goog.async.Deferred.succeed([]);
+  }
+  var query = [{
+    'store': ydn.crm.su.ModuleName.ACCOUNTS,
+    'index': 'ydn$email',
+    'key': email
+  }, {
+    'store': ydn.crm.su.ModuleName.CONTACTS,
+    'index': 'ydn$email',
+    'key': email
+  }, {
+    'store': ydn.crm.su.ModuleName.LEADS,
+    'index': 'ydn$email',
+    'key': email
+  }];
+  return this.getChannel().send(ydn.crm.ch.SReq.QUERY,
+      query).addCallback(function(x) {
+    var out = [];
+    var arr = /** @type {Array<CrmApp.QueryResult>} */(x);
+    for (var i = 0; i < arr.length; i++) {
+      var result = arr[i];
+      if (result.result && result.result[0]) {
+        // email is unique and should not have more than one record.
+        var r = /** @type {!SugarCrm.Record} */(result.result[0]);
+        r._module = query[i]['store'];
+        out.push(r);
+      }
+    }
+    return out;
+  }, this);
+};
+
+
+/**
  * Archive an email to sugarcrm.
- * @param {ydn.gmail.Utils.EmailInfo} info
+ * Attachments are ignored.
+ * @param {ydn.gmail.Utils.EmailInfo} info email details.
  * @param {ydn.crm.su.ModuleName=} opt_parent_module
  * @param {string=} opt_parent_id
- * @return {!ydn.async.Deferred}
+ * @return {!ydn.async.Deferred<SugarCrm.Record>}
  */
 ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
     opt_parent_module, opt_parent_id) {
@@ -639,18 +681,18 @@ ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
   var obj = {
     'assigned_user_id': this.user_.getStringValue('id'),
     'assigned_user_name': this.user_.getStringValue('name'),
-    'type': 'archived',
     'date_sent': date_str,
     'description': div.textContent,
     'description_html': info.html,
-    'name': info.subject,
     'from_addr': info.from_addr,
-    'to_addrs': info.to_addrs,
-    'parent_id': opt_parent_id || '',
-    'parent_type': opt_parent_module || '',
     'mailbox_id': info.mailbox_id || '',
     'message_id': info.message_id || '',
-    'status': 'read'
+    'name': info.subject,
+    'parent_id': opt_parent_id || '',
+    'parent_type': opt_parent_module || '',
+    'status': 'read',
+    'to_addrs': info.to_addrs,
+    'type': 'archived'
   };
   return this.send(ydn.crm.ch.SReq.NEW_RECORD, {
     'module': ydn.crm.su.ModuleName.EMAILS,
@@ -771,5 +813,45 @@ ydn.crm.su.model.Sugar.prototype.export2GData = function(record) {
       .addCallback(function(entry) {
         return new ydn.gdata.m8.ContactEntry(entry);
       }, this);
+};
+
+
+/**
+ * Set relationship.
+ * @param {ydn.crm.su.ModuleName} mn module name of relationship from.
+ * @param {string} id record id of relationship from.
+ * @param {Array<SugarCrm.ModuleNameIdPair>} rel list of relationships to.
+ * @return {!goog.async.Deferred<!Array<SugarCrm.CrudResult>>}
+ */
+ydn.crm.su.model.Sugar.prototype.setRelationships = function(mn, id, rel) {
+  if (rel.length == 0) {
+    var df = new ydn.async.Deferred();
+    df.callback({});
+    return df;
+  }
+  var data = {
+    'module_name': mn,
+    'id': id,
+    'related_ids': rel
+  };
+  return this.getChannel().send(ydn.crm.ch.SReq.SET_REL, data);
+};
+
+
+/**
+ * Set relationship from one record to another.
+ * @param {ydn.crm.su.ModuleName} from_mn
+ * @param {string} from_id
+ * @param {ydn.crm.su.ModuleName} to_mn
+ * @param {string} to_id
+ * @return {!goog.async.Deferred<SugarCrm.CrudResult>}
+ */
+ydn.crm.su.model.Sugar.prototype.setRelationship = function(from_mn, from_id, to_mn, to_id) {
+  return this.setRelationships(from_mn, from_id, [{
+    'module_name': to_mn,
+    'id': to_id
+  }]).addCallback(function(arr) {
+    return arr[0] || {};
+  });
 };
 
