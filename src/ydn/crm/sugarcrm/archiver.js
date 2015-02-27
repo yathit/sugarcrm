@@ -207,9 +207,15 @@ ydn.crm.su.Archiver.prototype.archive_ = function(widget, info, opt_record) {
           link);
       widget.setButtonMessageDetail(ydn.crm.su.Archiver.MENU_NAME, true,
           ydn.crm.su.Archiver.SVG_ICON_NAME, 'This message is archived.');
-      for (var i = 0; i < result.relationships.length; i++) {
+
+      // relationships
+      this.sugar_.setRelationships(ydn.crm.su.ModuleName.EMAILS, record.id,
+          result.relationships);
+
+      // attachments
+      for (var i = 0; i < result.document_names.length; i++) {
         if (result.relationships[i]) {
-          info.attachments[i].documentName = result.relationships[i];
+          info.attachments[i].documentName = result.document_names[i];
         }
       }
       this.doNextAttachment_(record.id, info.message_id, info.attachments, 0);
@@ -217,7 +223,7 @@ ydn.crm.su.Archiver.prototype.archive_ = function(widget, info, opt_record) {
       ydn.crm.msg.Manager.setStatus(mid, 'Error archiving: ' + (e.message || e));
     }, this);
   }, function(e) {
-    // cancel
+    window.console.error(e);
   }, this);
 
 };
