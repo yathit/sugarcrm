@@ -143,7 +143,7 @@ ydn.crm.su.Archiver.prototype.addAttachment_ = function(email_id, att, msg_id) {
   };
   var mid = ydn.crm.msg.Manager.addStatus('Uploading attachment: ' +
       att.document_name);
-  return this.sugar_.getChannel().send(ydn.crm.ch.SReq.UPLOAD_DOC,
+  return this.sugar_.getChannel().send(ydn.crm.ch.SReq.NEW_RECORD,
       opt).addCallbacks(function(r) {
     var record = /** @type {SugarCrm.Record} */(r);
     ydn.crm.msg.Manager.setStatus(mid, 'Uploaded');
