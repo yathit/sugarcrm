@@ -153,6 +153,17 @@ ydn.crm.su.Archiver.prototype.addAttachment_ = function(email_id, att, msg_id) {
     return this.sugar_.setRelationship(ydn.crm.su.ModuleName.EMAILS, email_id,
         ydn.crm.su.ModuleName.DOCUMENTS, record.id).addCallback(function() {
       ydn.crm.msg.Manager.updateStatus(mid, 'OK.');
+      // update attachment button
+      var btn = document.querySelector('[data-filename="' + att.fn + '"]');
+      if (btn) {
+        btn.setAttribute(ydn.gmail.Utils.ATTR_DOCUMENT_ID, record.id);
+        btn.setAttribute(ydn.gmail.Utils.ATTR_DOCUMENT_NAME, '' + att.document_name);
+        btn.innerHTML = '';
+        var svg = ydn.crm.ui.createSvgIcon('sugarcrm-bw', 'att-icon');
+        btn.appendChild(svg);
+      } else {
+        window.console.warn('Button for ' + att.fn + ' not found.');
+      }
     });
   }, function(e) {
     ydn.crm.msg.Manager.updateStatus(mid, 'failed: ' + String(e),
@@ -162,7 +173,7 @@ ydn.crm.su.Archiver.prototype.addAttachment_ = function(email_id, att, msg_id) {
 
 
 /**
- * Do attachment recursively.
+ * Do attachment recursively if attachment has `document_name` set.
  * @param {string} email_id
  * @param {string} message_id
  * @param {Array<ydn.gmail.Utils.AttachmentParts>} attachments
@@ -173,12 +184,51 @@ ydn.crm.su.Archiver.prototype.doNextAttachment_ = function(email_id,
     message_id, attachments, idx) {
   // we should not send attachment in parallel because some attachment file
   // are several MB in size, which must be stored in memory during upload.
-  if (attachments[idx]) {
+  if (attachments[idx] && attachments[idx].document_name) {
     this.addAttachment_(email_id, attachments[idx], message_id).addBoth(function() {
       idx++;
       this.doNextAttachment_(email_id, message_id, attachments, idx);
     }, this);
   }
+};
+
+
+/**
+ * Bring up archive email dialog and process archive.
+ * @param {ydn.crm.gmail.MessageHeaderWidget} widget
+ * @param {ydn.gmail.Utils.EmailInfo} info
+ * @param {ydn.crm.su.ui.ArchiveDialog.ReturnValue} result
+ * @param {SugarCrm.Record=} opt_record parent record.
+ * @return {!goog.async.Deferred}
+ * @private
+ */
+ydn.crm.su.Archiver.prototype.processArchive_ = function(widget, info, result, opt_record) {
+  var mid = ydn.crm.msg.Manager.addStatus('Archiving message');
+  return this.sugar_.archiveEmail(info).addCallbacks(function(y) {
+    var record = /** @type {SugarCrm.Record} */(y);
+    ydn.crm.msg.Manager.setStatus(mid, 'Archived:');
+    var link = this.sugar_.getRecordViewLink(
+        ydn.crm.su.ModuleName.EMAILS, record['id']);
+    ydn.crm.msg.Manager.setLink(mid, link, 'view email');
+    widget.setMenuItemDetail(this.getName(), true, 'View Archive',
+        link);
+    widget.setButtonMessageDetail(ydn.crm.su.Archiver.MENU_NAME, true,
+        ydn.crm.su.Archiver.SVG_ICON_NAME, 'This message is archived.');
+
+    // relationships
+    this.sugar_.setRelationships(ydn.crm.su.ModuleName.EMAILS, record.id,
+        result.relationships);
+
+    // attachments
+    for (var i = 0; i < result.document_names.length; i++) {
+      if (result.document_names[i]) {
+        info.attachments[i].document_name = result.document_names[i];
+      }
+    }
+    this.doNextAttachment_(record.id, info.message_id, info.attachments, 0);
+  }, function(e) {
+    ydn.crm.msg.Manager.setStatus(mid, 'Error archiving: ' + (e.message || e));
+  }, this);
 };
 
 
@@ -195,33 +245,31 @@ ydn.crm.su.Archiver.prototype.archive_ = function(widget, info, opt_record) {
   return ydn.crm.su.ui.ArchiveDialog.showModel(this.sugar_, info,
       opt_record).addCallbacks(function(x) {
     var result = /** @type {ydn.crm.su.ui.ArchiveDialog.ReturnValue}*/(x);
-
-    var mid = ydn.crm.msg.Manager.addStatus('Archiving message');
-    return this.sugar_.archiveEmail(info).addCallbacks(function(y) {
-      var record = /** @type {SugarCrm.Record} */(y);
-      ydn.crm.msg.Manager.setStatus(mid, 'Archived:');
-      var link = this.sugar_.getRecordViewLink(
-          ydn.crm.su.ModuleName.EMAILS, record['id']);
-      ydn.crm.msg.Manager.setLink(mid, link, 'view');
-      widget.setMenuItemDetail(this.getName(), true, 'View Archive',
-          link);
-      widget.setButtonMessageDetail(ydn.crm.su.Archiver.MENU_NAME, true,
-          ydn.crm.su.Archiver.SVG_ICON_NAME, 'This message is archived.');
-
-      // relationships
-      this.sugar_.setRelationships(ydn.crm.su.ModuleName.EMAILS, record.id,
-          result.relationships);
-
-      // attachments
-      for (var i = 0; i < result.document_names.length; i++) {
-        if (result.relationships[i]) {
-          info.attachments[i].documentName = result.document_names[i];
-        }
+    var has_attachment = false;
+    var origins = ['https://mail-attachment.googleusercontent.com/*'];
+    for (var i = 0; i < result.document_names.length; i++) {
+      if (result.document_names[i]) {
+        has_attachment = true;
+        origins.push(info.attachments[i].url);
       }
-      this.doNextAttachment_(record.id, info.message_id, info.attachments, 0);
-    }, function(e) {
-      ydn.crm.msg.Manager.setStatus(mid, 'Error archiving: ' + (e.message || e));
-    }, this);
+    }
+    if (has_attachment) {
+      var perms = {
+        'origins': origins
+      };
+      return ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION,
+          perms).addCallbacks(function(grant) {
+        if (grant) {
+          return this.processArchive_(widget, info, result, opt_record);
+        } else {
+          return false;
+        }
+      }, function(e) {
+        window.console.error(e);
+      }, this);
+    } else {
+      return this.processArchive_(widget, info, result, opt_record);
+    }
   }, function(e) {
     window.console.error(e);
   }, this);
