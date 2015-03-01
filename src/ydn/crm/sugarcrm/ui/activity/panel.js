@@ -326,8 +326,10 @@ ydn.crm.su.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
     'id': id
   };
   ch.send(ydn.crm.ch.SReq.GET, query).addCallbacks(function(obj) {
-    if (obj) {
+    if (obj && obj['id']) {
       this.showRecord_(m_name, obj);
+    } else {
+      ydn.crm.msg.Manager.addStatus(m_name + ' record: ' + id + ' not found.');
     }
   }, function(e) {
     var msg = '' + e;

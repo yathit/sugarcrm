@@ -40,7 +40,7 @@ var getMockSugar = function(opt_with_result) {
   sugar.getChannel = function() {
     return {
       send: function(req) {
-        if (req == ydn.crm.ch.SReq.UPLOAD_DOC) {
+        if (req == ydn.crm.ch.SReq.UPLOAD) {
           return goog.async.Deferred.succeed({
             id: 'xyz',
             document_name: 'ABC'

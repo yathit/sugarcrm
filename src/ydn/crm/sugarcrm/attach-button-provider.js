@@ -95,6 +95,37 @@ ydn.crm.su.AttachButtonProvider.prototype.onAttachment_ = function(ev) {
 
 
 /**
+ * @param {string} mid email message id.
+ * @return {Array<ydn.crm.su.AttachButton>} list of attach buttons in the email.
+ */
+ydn.crm.su.AttachButtonProvider.prototype.getButtonsByMessageId = function(mid) {
+  return this.buttons_.filter(function(btn) {
+    return btn.getMessageId() == mid;
+  });
+};
+
+
+/**
+ * Get attach button.
+ * @param {string} mid email message id.
+ * @param {string} fn file name.
+ * @return {ydn.crm.su.AttachButton}
+ */
+ydn.crm.su.AttachButtonProvider.prototype.getButton = function(mid, fn) {
+  for (var i = 0; i < this.buttons_.length; i++) {
+    var btn = this.buttons_[i];
+    if (btn.getMessageId() == mid) {
+      var parts = btn.getDownloadInfo();
+      if (parts.fn == fn) {
+        return btn;
+      }
+    }
+  }
+  return null;
+};
+
+
+/**
  * Render attach button on the download preview panel.
  * @param {Element} anchor attachment anchor element which has download_url
  * attribute.
@@ -275,7 +306,7 @@ ydn.crm.su.AttachButton.prototype.upload_ = function(mid, parts, obj) {
   if (ydn.crm.su.AttachButtonProvider.DEBUG) {
     window.console.log(obj);
   }
-  return this.provider_.sugar.getChannel().send(ydn.crm.ch.SReq.UPLOAD_DOC,
+  return this.provider_.sugar.getChannel().send(ydn.crm.ch.SReq.UPLOAD,
       opt).addCallback(function(r) {
     var record = /** @type {SugarCrm.Record} */(r);
     record._module = ydn.crm.su.ModuleName.DOCUMENTS;
@@ -415,7 +446,9 @@ ydn.crm.su.AttachButton.prototype.renderAttachment_ = function(anchor, opt_doc) 
   this.module_ = null;
   if (opt_doc) {
     this.id_ = opt_doc.id;
-    if (opt_doc['document_name']) {
+    if (opt_doc['_module']) {
+      this.module_ = opt_doc['_module'];
+    } else if (goog.isDef(opt_doc['document_name'])) {
       this.module_ = ydn.crm.su.ModuleName.DOCUMENTS;
     } else {
       this.module_ = ydn.crm.su.ModuleName.NOTES;
@@ -435,3 +468,47 @@ ydn.crm.su.AttachButton.prototype.renderAttachment_ = function(anchor, opt_doc) 
 
 };
 
+
+/**
+ * Upload as attachment to email record.
+ * Attachment are uploaded as NOTES module record, with parent to given email
+ * record.
+ * @param {string} email_id email record id, as `parent_id`.
+ * @param {string} name attachment name. Note: this may be different from `filename`,
+ * which is original file name.
+ * @return {!goog.async.Deferred<SugarCrm.Record>} newly created attachment
+ * record.
+ */
+ydn.crm.su.AttachButton.prototype.uploadAttachment = function(email_id, name) {
+  var msg_id = this.getMessageId();
+  var info = this.getDownloadInfo();
+  var record = {
+    'description': '',
+    'file_mime_type': info.mime,
+    'filename': msg_id + '/' + info.fn,
+    'name': name,
+    'parent_id': email_id,
+    'parent_name': 'attach from email',
+    'parent_type': ydn.crm.su.ModuleName.EMAILS
+  };
+  var data = {
+    'module': ydn.crm.su.ModuleName.NOTES,
+    'record': record
+  };
+  return this.getChannel().send(ydn.crm.ch.SReq.NEW_RECORD,
+      data).addCallback(function(x) {
+    var note = /** @type {SugarCrm.Record} */(x);
+    var upload = {
+      'module': ydn.crm.su.ModuleName.NOTES,
+      'url': info.url,
+      'fileName': info.fn,
+      'name': name,
+      'mime': info.mime,
+      'messageId': msg_id,
+      'emailId': email_id
+    };
+    return this.getChannel().send(ydn.crm.ch.SReq.UPLOAD, upload).addCallback(function() {
+      return note;
+    });
+  }, this);
+};

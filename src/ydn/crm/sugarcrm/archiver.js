@@ -32,20 +32,26 @@ goog.require('ydn.ui.MessageBox');
 /**
  * Archive email message to SugarCRM.
  * @param {ydn.crm.su.model.Sugar} sugar
+ * @param {ydn.crm.su.AttachButtonProvider} attacher
  * @constructor
  * @struct
  * @implements {ydn.crm.ui.IMenuItemProvider}
  */
-ydn.crm.su.Archiver = function(sugar) {
+ydn.crm.su.Archiver = function(sugar, attacher) {
   /**
    * @final
    * @type {ydn.crm.su.model.Sugar}
    * @private
    */
   this.sugar_ = sugar;
-  if (ydn.crm.su.Archiver.DEBUG && !sugar) {
-    window.console.warn('No sugarcrm instance to archive');
-  }
+
+  /**
+   * @final
+   * @type {ydn.crm.su.AttachButtonProvider}
+   * @private
+   */
+  this.attacher_ = attacher;
+
 };
 
 
@@ -133,6 +139,27 @@ ydn.crm.su.Archiver.prototype.configureMenuItem = function(widget) {
  * @private
  */
 ydn.crm.su.Archiver.prototype.addAttachment_ = function(email_id, att, msg_id) {
+  var attach = this.attacher_.getButton(msg_id, att.fn);
+  if (!attach) {
+    window.console.error('Attach button for ' + msg_id + '/' +
+        att.fn, ' not found.');
+    return goog.async.Deferred.fail(att.fn);
+  }
+  goog.asserts.assertString(att.document_name);
+  return attach.uploadAttachment(email_id, att.document_name);
+};
+
+
+/**
+ * Add attachment to an email record.
+ * @param {string} email_id email record id.
+ * @param {ydn.gmail.Utils.AttachmentParts} att
+ * @param {string} msg_id message id.
+ * @return {!goog.async.Deferred}
+ * @private
+ */
+ydn.crm.su.Archiver.prototype.addAttachmentOld_ = function(email_id, att, msg_id) {
+
   var opt = {
     'fileName': att.fn,
     'documentName': att.document_name,
@@ -184,11 +211,16 @@ ydn.crm.su.Archiver.prototype.doNextAttachment_ = function(email_id,
     message_id, attachments, idx) {
   // we should not send attachment in parallel because some attachment file
   // are several MB in size, which must be stored in memory during upload.
-  if (attachments[idx] && attachments[idx].document_name) {
-    this.addAttachment_(email_id, attachments[idx], message_id).addBoth(function() {
-      idx++;
+  if (attachments[idx]) {
+    var att = attachments[idx];
+    idx++;
+    if (att.document_name) {
+      this.addAttachment_(email_id, att, message_id).addBoth(function() {
+        this.doNextAttachment_(email_id, message_id, attachments, idx);
+      }, this);
+    } else {
       this.doNextAttachment_(email_id, message_id, attachments, idx);
-    }, this);
+    }
   }
 };
 
