@@ -34,19 +34,24 @@ goog.require('ydn.gmail.Utils');
 /**
  * Upload attachment to email or document.
  * @param {ydn.crm.su.model.Sugar} sugar
+ * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @constructor
  * @extends {goog.events.EventTarget}
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @implements {ydn.crm.su.IAttachButtonProvider}
  */
-ydn.crm.su.AttachButtonProvider = function(sugar) {
+ydn.crm.su.AttachButtonProvider = function(sugar, gmail_observer) {
   goog.base(this);
   /**
    * @type {ydn.crm.su.model.Sugar}
    * @protected
    */
   this.sugar = sugar;
+
+  goog.events.listen(gmail_observer,
+      ydn.crm.gmail.GmailObserver.EventType.ATTACHMENT, this.onAttachment_,
+      false, this);
 
   /**
    * Since owner of these buttons are not able to dispose properly, we recycle
@@ -81,6 +86,15 @@ ydn.crm.su.AttachButtonProvider.prototype.disposeInternal = function() {
 
 
 /**
+ * @param {ydn.crm.gmail.GmailObserver.AttachmentEvent} ev
+ * @private
+ */
+ydn.crm.su.AttachButtonProvider.prototype.onAttachment_ = function(ev) {
+  this.renderButton(ev.anchor);
+};
+
+
+/**
  * Render attach button on the download preview panel.
  * @param {Element} anchor attachment anchor element which has download_url
  * attribute.
@@ -110,6 +124,7 @@ ydn.crm.su.AttachButtonProvider.prototype.renderButton = function(anchor) {
  * @param {ydn.crm.su.AttachButtonProvider} provider
  * @constructor
  * @struct
+ * @implements {ydn.crm.su.IAttachButton}
  */
 ydn.crm.su.AttachButton = function(provider) {
   /**
@@ -134,7 +149,7 @@ ydn.crm.su.AttachButton = function(provider) {
    * @private
    */
   this.button_ = document.createElement('span');
-  this.button_.className = 'ydn-crm ' +
+  this.button_.className = 'ydn-crm ' + ydn.crm.su.AttachButton.CSS_CLASS +
       ' ' + ydn.crm.su.AttachButton.CSS_CLASS_BTN;
   this.button_.onclick = this.onBtnClick_.bind(this);
 };
@@ -153,6 +168,13 @@ ydn.crm.su.AttachButton.prototype.dispose = function() {
     this.button_ = null;
   }
 };
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.su.AttachButton.CSS_CLASS = 'ydn-att';
 
 
 /**
@@ -189,6 +211,7 @@ ydn.crm.su.AttachButton.prototype.beginUpload_ = function() {
   ydn.crm.su.ui.UploadDialog.showModel(
       this.provider_.sugar, mid, parts.fn).addCallback(function(x) {
     el.classList.add('working');
+    var msg_id = ydn.crm.msg.Manager.addStatus('Uploading', '...');
     this.upload_(mid, parts, x).addCallbacks(function(data) {
       var record = /** @type {SugarCrm.Record} */ (data);
       if (ydn.crm.su.AttachButtonProvider.DEBUG) {
@@ -199,10 +222,11 @@ ydn.crm.su.AttachButton.prototype.beginUpload_ = function() {
       el.classList.remove('error');
       this.module_ = ydn.crm.su.toModuleName(record._module);
       this.id_ = record.id;
-      var mid = ydn.crm.msg.Manager.addStatus('Uploaded ');
+      ydn.crm.msg.Manager.setStatus(msg_id, 'Upload');
+      ydn.crm.msg.Manager.updateStatus(msg_id, 'Done.');
       var href = this.provider_.sugar.getRecordViewLink(
           ydn.crm.su.ModuleName.DOCUMENTS, record.id);
-      ydn.crm.msg.Manager.setLink(mid, href, record['document_name'],
+      ydn.crm.msg.Manager.setLink(msg_id, href, record['document_name'],
           'View record in SugarCRM');
       el.innerHTML = '';
       var svg = ydn.crm.ui.createSvgIcon('sugarcrm-bw', 'att-icon');
@@ -222,7 +246,7 @@ ydn.crm.su.AttachButton.prototype.beginUpload_ = function() {
       }
       var msg = String(e.message || e);
       el.setAttribute('title', msg);
-      ydn.crm.msg.Manager.addStatus('fail to upload ' + parts.fn + ' ' + msg);
+      ydn.crm.msg.Manager.updateStatus(msg_id, 'fail to upload ' + parts.fn + ' ' + msg);
     }, this);
   }, this);
 };
@@ -248,7 +272,7 @@ ydn.crm.su.AttachButton.prototype.upload_ = function(mid, parts, obj) {
     'messageId': mid,
     'isUserRequest': true
   };
-  if (ydn.crm.gmail.AttachmentInjector.DEBUG) {
+  if (ydn.crm.su.AttachButtonProvider.DEBUG) {
     window.console.log(obj);
   }
   return this.provider_.sugar.getChannel().send(ydn.crm.ch.SReq.UPLOAD_DOC,
@@ -256,17 +280,17 @@ ydn.crm.su.AttachButton.prototype.upload_ = function(mid, parts, obj) {
     var record = /** @type {SugarCrm.Record} */(r);
     record._module = ydn.crm.su.ModuleName.DOCUMENTS;
     if (obj.relationships.length > 0) {
-      var data = {
-        'module_name': ydn.crm.su.ModuleName.DOCUMENTS,
-        'id': record.id,
-        'related_ids': obj.relationships
-      };
-      this.provider_.sugar.getChannel().send(ydn.crm.ch.SReq.SET_REL,
-          data).addCallbacks(function(result) {
-        if (ydn.crm.gmail.AttachmentInjector.DEBUG) {
+      this.provider_.sugar.setRelationships(ydn.crm.su.ModuleName.DOCUMENTS,
+          record.id, obj.relationships).addCallbacks(function(result) {
+        if (ydn.crm.su.AttachButtonProvider.DEBUG) {
           window.console.log(result);
         }
-        var n = result ? result['created'] : 0;
+        var n = 0;
+        if (result && goog.isArray(result)) {
+          n = result.reduce(function(p, x) {
+            return p + x.created;
+          }, 0);
+        }
         var mi = ydn.crm.msg.Manager.addStatus(n + ' links created for ');
         var href = this.provider_.sugar.getRecordViewLink(
             ydn.crm.su.ModuleName.DOCUMENTS, record.id);
@@ -315,7 +339,8 @@ ydn.crm.su.AttachButton.prototype.decorate = function(anchor) {
   if (this.button_.parentNode) {
     this.button_.parentNode.removeChild(this.button_);
   }
-  anchor.appendChild(this.button_);
+  var btn = anchor.querySelector('div[role=button]');
+  btn.parentElement.appendChild(this.button_);
 
   var parts = ydn.gmail.Utils.parseDownloadUrl(d_url);
   var query = [{
@@ -323,7 +348,7 @@ ydn.crm.su.AttachButton.prototype.decorate = function(anchor) {
     'index': 'filename',
     'key': mid + '/' + parts.fn
   }, {
-    'module': ydn.crm.su.ModuleName.NOTES,
+    'store': ydn.crm.su.ModuleName.NOTES,
     'index': 'filename',
     'key': mid + '/' + parts.fn
   }];
@@ -344,7 +369,14 @@ ydn.crm.su.AttachButton.prototype.decorate = function(anchor) {
  * @private
  */
 ydn.crm.su.AttachButton.prototype.getAnchor_ = function() {
-  return this.button_.parentElement;
+  var anchor = this.button_.parentElement;
+  for (var i = 0; i < 5; i++) {
+    if (anchor.hasAttribute('download_url')) {
+      return anchor;
+    }
+    anchor = anchor.parentElement;
+  }
+  return anchor.parentElement.parentElement;
 };
 
 
@@ -363,7 +395,9 @@ ydn.crm.su.AttachButton.prototype.getMessageId = function() {
  */
 ydn.crm.su.AttachButton.prototype.getDownloadInfo = function() {
   var d_url = this.getAnchor_().getAttribute('download_url');
-  return ydn.gmail.Utils.parseDownloadUrl(d_url);
+  var info = ydn.gmail.Utils.parseDownloadUrl(d_url);
+  info.document_id = this.id_;
+  return info;
 };
 
 
