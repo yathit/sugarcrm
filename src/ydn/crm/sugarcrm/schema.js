@@ -169,6 +169,8 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
       {
         'name': 'parent',
         'keyPath': ['parent_type', 'parent_id', 'date_modified']
+      }, {
+        'name': 'filename'
       }]
   },
   'Opportunities': {
