@@ -151,55 +151,6 @@ ydn.crm.su.Archiver.prototype.addAttachment_ = function(email_id, att, msg_id) {
 
 
 /**
- * Add attachment to an email record.
- * @param {string} email_id email record id.
- * @param {ydn.gmail.Utils.AttachmentParts} att
- * @param {string} msg_id message id.
- * @return {!goog.async.Deferred}
- * @private
- */
-ydn.crm.su.Archiver.prototype.addAttachmentOld_ = function(email_id, att, msg_id) {
-
-  var opt = {
-    'fileName': att.fn,
-    'documentName': att.document_name,
-    'description': '',
-    'mime': att.mime,
-    'url': att.url,
-    'messageId': msg_id
-  };
-  var mid = ydn.crm.msg.Manager.addStatus('Uploading attachment: ' +
-      att.document_name);
-  return this.sugar_.getChannel().send(ydn.crm.ch.SReq.NEW_RECORD,
-      opt).addCallbacks(function(r) {
-    var record = /** @type {SugarCrm.Record} */(r);
-    ydn.crm.msg.Manager.setStatus(mid, 'Uploaded');
-    var href = this.sugar_.getRecordViewLink(ydn.crm.su.ModuleName.DOCUMENTS, record.id);
-    ydn.crm.msg.Manager.setLink(mid, href, att.document_name);
-    ydn.crm.msg.Manager.updateStatus(mid, 'setting relationship...');
-    return this.sugar_.setRelationship(ydn.crm.su.ModuleName.EMAILS, email_id,
-        ydn.crm.su.ModuleName.DOCUMENTS, record.id).addCallback(function() {
-      ydn.crm.msg.Manager.updateStatus(mid, 'OK.');
-      // update attachment button
-      var btn = document.querySelector('[data-filename="' + att.fn + '"]');
-      if (btn) {
-        btn.setAttribute(ydn.gmail.Utils.ATTR_DOCUMENT_ID, record.id);
-        btn.setAttribute(ydn.gmail.Utils.ATTR_DOCUMENT_NAME, '' + att.document_name);
-        btn.innerHTML = '';
-        var svg = ydn.crm.ui.createSvgIcon('sugarcrm-bw', 'att-icon');
-        btn.appendChild(svg);
-      } else {
-        window.console.warn('Button for ' + att.fn + ' not found.');
-      }
-    });
-  }, function(e) {
-    ydn.crm.msg.Manager.updateStatus(mid, 'failed: ' + String(e),
-        ydn.crm.msg.MessageType.ERROR);
-  }, this);
-};
-
-
-/**
  * Do attachment recursively if attachment has `document_name` set.
  * @param {string} email_id
  * @param {string} message_id
@@ -258,8 +209,10 @@ ydn.crm.su.Archiver.prototype.processArchive_ = function(widget, info, result, o
       }
     }
     this.doNextAttachment_(record.id, info.message_id, info.attachments, 0);
+    ydn.crm.shared.logAnalyticValue('ui.archive', 'email', 'OK');
   }, function(e) {
     ydn.crm.msg.Manager.setStatus(mid, 'Error archiving: ' + (e.message || e));
+    ydn.crm.shared.logAnalyticValue('ui.archive', 'email', 'fail');
   }, this);
 };
 

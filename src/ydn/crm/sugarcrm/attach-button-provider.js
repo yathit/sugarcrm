@@ -480,6 +480,7 @@ ydn.crm.su.AttachButton.prototype.renderAttachment_ = function(anchor, opt_doc) 
  * record.
  */
 ydn.crm.su.AttachButton.prototype.uploadAttachment = function(email_id, name) {
+
   var msg_id = this.getMessageId();
   var info = this.getDownloadInfo();
   var record = {
@@ -495,20 +496,28 @@ ydn.crm.su.AttachButton.prototype.uploadAttachment = function(email_id, name) {
     'module': ydn.crm.su.ModuleName.NOTES,
     'record': record
   };
-  return this.getChannel().send(ydn.crm.ch.SReq.NEW_RECORD,
-      data).addCallback(function(x) {
+  var mid = ydn.crm.msg.Manager.addStatus('Uploading attachment', '...');
+
+  var upload = {
+    'module': ydn.crm.su.ModuleName.NOTES,
+    'url': info.url,
+    'fileName': info.fn,
+    'name': name,
+    'mime': info.mime,
+    'messageId': msg_id,
+    'emailId': email_id
+  };
+
+  return this.getChannel().send(ydn.crm.ch.SReq.UPLOAD, upload).addCallbacks(function(x) {
     var note = /** @type {SugarCrm.Record} */(x);
-    var upload = {
-      'module': ydn.crm.su.ModuleName.NOTES,
-      'url': info.url,
-      'fileName': info.fn,
-      'name': name,
-      'mime': info.mime,
-      'messageId': msg_id,
-      'emailId': email_id
-    };
-    return this.getChannel().send(ydn.crm.ch.SReq.UPLOAD, upload).addCallback(function() {
-      return note;
-    });
+    var href = this.provider_.sugar.getRecordViewLink(ydn.crm.su.ModuleName.NOTES, note.id);
+    ydn.crm.msg.Manager.setLink(mid, href, name);
+    ydn.crm.msg.Manager.setStatus(mid, 'Uploaded attachment: ');
+    ydn.crm.msg.Manager.updateStatus(mid, 'Done.');
+    ydn.crm.shared.logAnalyticValue('ui.upload', 'attachment', 'OK');
+    return note;
+  }, function(e) {
+    ydn.crm.shared.logAnalyticValue('ui.upload', 'attachment', 'fail');
   }, this);
+
 };
