@@ -23,8 +23,7 @@
 
 
 goog.provide('ydn.crm.su.ui.record.Secondary');
-goog.require('goog.ui.HoverCard');
-goog.require('templ.ydn.crm.su');
+goog.require('ydn.crm.su.ui.record.HoverCard');
 goog.require('ydn.crm.su.ui.record.RecordItemRenderer');
 
 
@@ -44,12 +43,16 @@ ydn.crm.su.ui.record.Secondary = function(model, opt_dom) {
   this.item_renderer_ = new ydn.crm.su.ui.record.RecordItemRenderer(
       model.getSugar());
   /**
-   * @type {goog.ui.HoverCard}
+   * @type {ydn.crm.su.ui.record.HoverCard}
    * @private
    */
   this.hover_ = null;
 
-  this.activity_menu_ = new ydn.ui.FlyoutMenu(null,
+  /**
+   * @type {ydn.ui.FlyoutMenu}
+   * @private
+   */
+  this.activity_menu_ = new ydn.ui.FlyoutMenu(undefined,
       ydn.crm.su.ui.record.Secondary.ACTIVITY_MENUS);
 
 };
@@ -114,14 +117,9 @@ ydn.crm.su.ui.record.Secondary.prototype.createDom = function() {
 
   var ul = root.querySelector('.activity > ul');
 
-  var trigger = /** @type {Document} */(/** @type {*} */(ul));
-  this.hover_ = new goog.ui.HoverCard({'LI': 'data-id'}, true, dom, trigger);
-  var el = goog.soy.renderAsElement(templ.ydn.crm.su.hoverCard);
+  var trigger = /** @type {HTMLUListElement} */(ul);
+  this.hover_ = new ydn.crm.su.ui.record.HoverCard(trigger, dom);
 
-  this.hover_.setElement(el);
-  var margin = new goog.math.Box(0, 8, 0, 2);
-  // this.hover_.setMargin(margin);
-  this.hover_.setPinnedCorner(goog.positioning.Corner.TOP_RIGHT);
 };
 
 
@@ -152,7 +150,7 @@ ydn.crm.su.ui.record.Secondary.prototype.enterDocument = function() {
 ydn.crm.su.ui.record.Secondary.prototype.onActivityUlClick_ = function(ev) {
   var cmds = this.activity_menu_.handleClick(ev);
   if (cmds) {
-
+    console.log(cmds);
   }
 };
 
@@ -179,18 +177,8 @@ ydn.crm.su.ui.record.Secondary.prototype.onBeforeShow_ = function(ev) {
 
   var trigger = this.hover_.getAnchorElement();
   var id = trigger.getAttribute('data-id');
-  this.renderHoverContent_(id);
-};
-
-
-/**
- * @param {string} id record id.
- * @private
- */
-ydn.crm.su.ui.record.Secondary.prototype.renderHoverContent_ = function(id) {
-  var el = this.hover_.getElement();
-  var content = el.querySelector('.secondary-hovercard-content');
-  content.textContent = id;
+  var mn = trigger.getAttribute('data-module');
+  this.hover_.refreshRecord(/** @type {ydn.crm.su.ModuleName} */(mn), id);
 };
 
 
@@ -225,6 +213,7 @@ ydn.crm.su.ui.record.Secondary.prototype.attachItem_ = function(r) {
   if (!item) {
     item = document.createElement('li');
     item.setAttribute('data-id', r.id);
+    item.setAttribute('data-module', r._module);
     ul.appendChild(item);
   }
   this.item_renderer_.render(item, r);
