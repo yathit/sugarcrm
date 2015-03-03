@@ -43,6 +43,12 @@ ydn.crm.su.ui.record.HoverCard = function(ul, opt_dom) {
 
   var el = goog.soy.renderAsElement(templ.ydn.crm.su.hoverCard);
 
+  /**
+   * @type {?SugarCrm.Record}
+   * @private
+   */
+  this.record_ = null;
+
   this.setElement(el);
   this.setPinnedCorner(goog.positioning.Corner.TOP_RIGHT);
 };
@@ -54,6 +60,9 @@ goog.inherits(ydn.crm.su.ui.record.HoverCard, goog.ui.HoverCard);
  * @param {string} id record id.
  */
 ydn.crm.su.ui.record.HoverCard.prototype.refreshRecord = function(mn, id) {
+  if (this.record_ && this.record_.id == id) {
+    return;
+  }
   var el = this.getElement();
   var content = el.querySelector('.secondary-hovercard-content');
   content.textContent = id;
