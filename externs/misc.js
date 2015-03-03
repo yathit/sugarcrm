@@ -127,7 +127,8 @@ CrmApp.ReqQuery.prototype.store;
 
 
 /**
- * @type {string} See `ydn.crm.su.Schema` for available indexes.
+ * Index name. Default to 'id'.
+ * @type {string|undefined} See `ydn.crm.su.Schema` for available indexes.
  */
 CrmApp.ReqQuery.prototype.index;
 

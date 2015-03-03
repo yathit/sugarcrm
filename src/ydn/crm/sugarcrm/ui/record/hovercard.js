@@ -30,6 +30,7 @@ goog.require('templ.ydn.crm.su');
 
 /**
  * Hovercard showing record detail.
+ * @param {ydn.crm.su.model.Sugar} sugar
  * @param {HTMLUListElement} ul
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
@@ -37,17 +38,22 @@ goog.require('templ.ydn.crm.su');
  * @extends {goog.ui.HoverCard}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.ui.record.HoverCard = function(ul, opt_dom) {
+ydn.crm.su.ui.record.HoverCard = function(sugar, ul, opt_dom) {
   var trigger = /** @type {Document} */(/** @type {*} */(ul));
   goog.base(this, {'LI': 'data-id'}, true, opt_dom, trigger);
 
   var el = goog.soy.renderAsElement(templ.ydn.crm.su.hoverCard);
 
+  var r = new ydn.crm.su.Record(sugar.getDomain(), ydn.crm.su.DEFAULT_MODULE);
+  var record = new ydn.crm.su.model.Record(sugar, r);
   /**
-   * @type {?SugarCrm.Record}
+   * @type {ydn.crm.su.ui.record.Record}
    * @private
    */
-  this.record_ = null;
+  this.record_ = new ydn.crm.su.ui.record.Record(record, opt_dom);
+
+  var content = el.querySelector('.secondary-hovercard-content');
+  this.record_.render(content);
 
   this.setElement(el);
   this.setPinnedCorner(goog.positioning.Corner.TOP_RIGHT);
@@ -56,15 +62,56 @@ goog.inherits(ydn.crm.su.ui.record.HoverCard, goog.ui.HoverCard);
 
 
 /**
+ * @return {ydn.crm.su.model.Record}
+ * @protected
+ */
+ydn.crm.su.ui.record.HoverCard.prototype.getRecord = function() {
+  return this.record_.getModel();
+};
+
+
+/**
+ * @return {ydn.msg.Channel} sugar channel.
+ * @protected
+ */
+ydn.crm.su.ui.record.HoverCard.prototype.getChannel = function() {
+  return this.record_.getModel().getChannel();
+};
+
+
+/**
+ * @return {string} domain.
+ * @protected
+ */
+ydn.crm.su.ui.record.HoverCard.prototype.getDomain = function() {
+  return this.record_.getModel().getDomain();
+};
+
+
+/**
  * @param {ydn.crm.su.ModuleName} mn module name.
  * @param {string} id record id.
  */
 ydn.crm.su.ui.record.HoverCard.prototype.refreshRecord = function(mn, id) {
-  if (this.record_ && this.record_.id == id) {
+  var model = this.getRecord();
+  if (!model.isNew() && model.getId() == id) {
     return;
   }
-  var el = this.getElement();
-  var content = el.querySelector('.secondary-hovercard-content');
-  content.textContent = id;
+  if (!mn || !id) {
+    throw new Error('Invalid id');
+  }
+  var q = {
+    'store': mn,
+    'key': id
+  };
+  this.getChannel().send(ydn.crm.ch.SReq.QUERY, [q]).addCallbacks(function(x) {
+    var res = /** @type {CrmApp.QueryResult} */(x[0]);
+    if (res.result[0]) {
+      var record = new ydn.crm.su.Record(this.getDomain(), mn, res.result[0]);
+      model.setRecord(record);
+    }
+  }, function(e) {
+    window.console.error(e);
+  }, this);
 };
 

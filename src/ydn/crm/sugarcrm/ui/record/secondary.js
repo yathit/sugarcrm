@@ -114,11 +114,12 @@ ydn.crm.su.ui.record.Secondary.prototype.createDom = function() {
 
   var activity_menu = root.querySelector('.activity [name=menu]');
   this.activity_menu_.render(activity_menu);
+  goog.style.setElementShown(activity_menu, false);
 
+  var sugar = this.getModel().getSugar();
   var ul = root.querySelector('.activity > ul');
-
   var trigger = /** @type {HTMLUListElement} */(ul);
-  this.hover_ = new ydn.crm.su.ui.record.HoverCard(trigger, dom);
+  this.hover_ = new ydn.crm.su.ui.record.HoverCard(sugar, trigger, dom);
 
 };
 
@@ -320,23 +321,33 @@ ydn.crm.su.ui.record.Secondary.prototype.addRelationChildren_ = function() {
    * @type {ydn.crm.su.model.Record}
    */
   var model = this.getModel();
-  model.listRelated().addProgback(function(arr) {
-    if (ydn.crm.su.ui.record.Secondary.DEBUG) {
-      window.console.log(arr);
-    }
-    if (!arr) {
-      return;
-    }
-    for (var i = 0; i < arr.length; i++) {
-      var r = /** @type {!SugarCrm.Record} */(arr[i]);
-      var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
-      if (ydn.crm.su.ui.record.Secondary.USE_RECORD) {
-        this.attachChild_(new ydn.crm.su.Record(model.getDomain(), mn, r));
-      } else {
-        this.attachItem_(r);
+  var root = this.getElement();
+  var act_el = root.querySelector('.activity');
+  if (ydn.crm.su.PEOPLE_MODULES.indexOf(model.getModuleName()) >= 0) {
+    goog.style.setElementShown(act_el, true);
+    var ul = act_el.querySelector('ul');
+    ul.innerHTML = '';
+    model.listRelatedActivities().addProgback(function(arr) {
+      if (ydn.crm.su.ui.record.Secondary.DEBUG) {
+        window.console.log(arr);
       }
-    }
-  }, this);
+      if (!arr) {
+        return;
+      }
+      for (var i = 0; i < arr.length; i++) {
+        var r = /** @type {!SugarCrm.Record} */(arr[i]);
+        var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
+        if (ydn.crm.su.ui.record.Secondary.USE_RECORD) {
+          this.attachChild_(new ydn.crm.su.Record(model.getDomain(), mn, r));
+        } else {
+          this.attachItem_(r);
+        }
+      }
+    }, this);
+  } else {
+    goog.style.setElementShown(act_el, false);
+  }
+
 };
 
 

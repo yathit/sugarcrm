@@ -622,6 +622,77 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
 
 
 /**
+ * List related records.
+ * Result are collected in progress callback as array list.
+ * @param {number=} opt_top number of record to take from each module.
+ * default to 5.
+ * @return {!ydn.async.Deferred<!Array<!SugarCrm.Record>>}
+ * @see #listEmbedded
+ */
+ydn.crm.su.model.Record.prototype.listRelatedActivities = function(opt_top) {
+  var df = new ydn.async.Deferred();
+  if (this.isNew()) {
+    df.callback([]);
+    return df;
+  }
+
+  var top = opt_top || 5;
+
+  var total = 0;
+
+  var checkDone = function() {
+    total++;
+    if (total >= ydn.crm.su.ACTIVITY_MODULES.length) {
+      df.callback();
+    }
+  };
+
+  /**
+   * @param {number} idx
+   * @this {ydn.crm.su.model.Record}
+   */
+  var fetch = function(idx) {
+    var to = ydn.crm.su.ACTIVITY_MODULES[idx];
+    if (!to) {
+      df.callback();
+      return;
+    }
+    var data = {
+      'from': this.getModuleName(),
+      'id': this.getId(),
+      'to': to,
+      'limit': top
+    };
+    var req = this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, data);
+    req.addProgback(function(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        arr[i]['_module'] = to;
+      }
+      df.notify(arr);
+    }, this);
+    req.addCallbacks(function(arr) {
+      if (arr) {
+        for (var i = 0; i < arr.length; i++) {
+          arr[i]['_module'] = to;
+        }
+      }
+      df.notify(arr);
+      checkDone();
+    }, function(e) {
+      window.console.error(e);
+      checkDone();
+    }, this);
+  };
+
+  for (var i = 0; i < ydn.crm.su.ACTIVITY_MODULES.length; i++) {
+    fetch.call(this, i);
+  }
+
+  return df;
+};
+
+
+/**
  * List embeded records.
  * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
  * @see #listRelated
