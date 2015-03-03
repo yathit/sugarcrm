@@ -31,7 +31,7 @@ goog.require('templ.ydn.crm.su');
 /**
  * Hovercard showing record detail.
  * @param {ydn.crm.su.model.Sugar} sugar
- * @param {HTMLUListElement} ul
+ * @param {Element} ul
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
