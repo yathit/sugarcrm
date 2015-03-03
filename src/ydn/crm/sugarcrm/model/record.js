@@ -552,6 +552,7 @@ ydn.crm.su.model.Record.prototype.export2GData = function() {
 
 /**
  * List related records.
+ * Result are collected in progress callback as array list.
  * @param {number=} opt_top number of record to take from each module.
  * default to 5.
  * @return {!ydn.async.Deferred<!Array<!SugarCrm.Record>>}
@@ -566,12 +567,21 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
 
   var top = opt_top || 5;
 
-  var idx = 0;
+  var total = 0;
+
+  var checkDone = function() {
+    total++;
+    if (total >= ydn.crm.su.relatedModules.length) {
+      df.callback();
+    }
+  };
+
   /**
+   * @param {number} idx
    * @this {ydn.crm.su.model.Record}
    */
-  var fetch = function() {
-    var to = ydn.crm.su.relatedModules[idx++];
+  var fetch = function(idx) {
+    var to = ydn.crm.su.relatedModules[idx];
     if (!to) {
       df.callback();
       return;
@@ -596,14 +606,16 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
         }
       }
       df.notify(arr);
-      fetch.call(this);
+      checkDone();
     }, function(e) {
       window.console.error(e);
-      fetch.call(this);
+      checkDone();
     }, this);
   };
 
-  fetch.call(this);
+  for (var i = 0; i < ydn.crm.su.relatedModules.length; i++) {
+    fetch.call(this, i);
+  }
 
   return df;
 };

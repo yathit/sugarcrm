@@ -2,23 +2,46 @@
  * @fileoverview About this file
  */
 
-ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
-ydn.msg.initPipe('popup');
+var status_bar = new ydn.crm.msg.StatusBar();
+status_bar.render(document.getElementById('message'));
+ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
+ydn.crm.msg.Manager.addConsumer(status_bar);
+ydn.msg.initPipe('dev');
 ydn.debug.log('ydn.crm', 'finer');
 var panel, sugar, record;
 var user = ydn.crm.ui.UserSetting.getInstance();
 
 ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
-  var sugar = models[0];
+  sugar = models[0];
 
   var r = new ydn.crm.su.Record(sugar.getDomain(), 'Contacts', data1);
-  var record = new ydn.crm.su.model.Record(sugar, r);
-  var panel = new ydn.crm.su.ui.record.Record(record);
+  record = new ydn.crm.su.model.Record(sugar, r);
+  panel = new ydn.crm.su.ui.record.Record(record);
   panel.render(document.getElementById('new-record'));
   // panel.setEditMode(true);
 }, function(e) {
   window.console.log(e);
 });
+
+var btn = document.getElementById('chr');
+btn.onclick = function(e) {
+  var req = {
+    'module': 'Contacts',
+    'index': 'ydn$emails',
+    'id': 'kyawtun@yathit.com'
+  };
+  sugar.getChannel().send(ydn.crm.ch.SReq.GET, req).addCallbacks(function(data) {
+    if (data) {
+      var r = new ydn.crm.su.Record(sugar.getDomain(), req.module, data);
+      record.setRecord(r);
+    } else {
+      window.console.error(req.id + ' not found.');
+    }
+  }, function(e) {
+    console.error(e);
+  });
+};
+
 
 var data1 = {
   "assigned_user_name": "Chad Hutchins",

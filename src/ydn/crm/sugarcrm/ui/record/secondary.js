@@ -23,6 +23,8 @@
 
 
 goog.provide('ydn.crm.su.ui.record.Secondary');
+goog.require('goog.ui.HoverCard');
+goog.require('templ.ydn.crm.su');
 goog.require('ydn.crm.su.ui.record.RecordItemRenderer');
 
 
@@ -41,6 +43,15 @@ ydn.crm.su.ui.record.Secondary = function(model, opt_dom) {
   this.setModel(model);
   this.item_renderer_ = new ydn.crm.su.ui.record.RecordItemRenderer(
       model.getSugar());
+  /**
+   * @type {goog.ui.HoverCard}
+   * @private
+   */
+  this.hover_ = null;
+
+  this.activity_menu_ = new ydn.ui.FlyoutMenu(null,
+      ydn.crm.su.ui.record.Secondary.ACTIVITY_MENUS);
+
 };
 goog.inherits(ydn.crm.su.ui.record.Secondary, goog.ui.Component);
 
@@ -54,7 +65,14 @@ ydn.crm.su.ui.record.Secondary.DEBUG = false;
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.su.ui.record.Secondary.USE_RECORD = true;
+ydn.crm.su.ui.record.Secondary.USE_RECORD = false;
+
+
+ydn.crm.su.ui.record.Secondary.ACTIVITY_MENUS =
+    /** @type {Array.<?ydn.ui.FlyoutMenu.ItemOption>} */([{
+      label: 'New Tasks',
+      name: 'Tasks'
+    }]);
 
 
 /**
@@ -82,12 +100,97 @@ ydn.crm.su.ui.record.Secondary.prototype.getCssClass = function() {
  */
 ydn.crm.su.ui.record.Secondary.prototype.createDom = function() {
   goog.base(this, 'createDom');
+  var dom = this.getDomHelper();
   var root = this.getElement();
   root.classList.add(this.getCssClass());
-  if (!ydn.crm.su.ui.record.Secondary.USE_RECORD) {
-    var ul = document.createElement('ul');
-    root.appendChild(ul);
+  if (ydn.crm.su.ui.record.Secondary.USE_RECORD) {
+    return;
   }
+
+  goog.soy.renderElement(root, templ.ydn.crm.su.secondaryPanel);
+
+  var activity_menu = root.querySelector('.activity [name=menu]');
+  this.activity_menu_.render(activity_menu);
+
+  var ul = root.querySelector('.activity > ul');
+
+  var trigger = /** @type {Document} */(/** @type {*} */(ul));
+  this.hover_ = new goog.ui.HoverCard({'LI': 'data-id'}, true, dom, trigger);
+  var el = goog.soy.renderAsElement(templ.ydn.crm.su.hoverCard);
+
+  this.hover_.setElement(el);
+  var margin = new goog.math.Box(0, 8, 0, 2);
+  // this.hover_.setMargin(margin);
+  this.hover_.setPinnedCorner(goog.positioning.Corner.TOP_RIGHT);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.su.ui.record.Secondary.prototype.enterDocument = function() {
+  ydn.crm.su.ui.record.Secondary.base(this, 'enterDocument');
+  if (ydn.crm.su.ui.record.Secondary.USE_RECORD) {
+    return;
+  }
+  var hd = this.getHandler();
+  var root = this.getElement();
+  hd.listen(this.hover_, goog.ui.HoverCard.EventType.TRIGGER,
+      this.onTrigger_);
+  hd.listen(this.hover_, goog.ui.HoverCard.EventType.BEFORE_SHOW,
+      this.onBeforeShow_);
+
+  var ul = root.querySelector('.activity > ul');
+  hd.listen(ul, 'click', this.onActivityUlClick_);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ * @private
+ */
+ydn.crm.su.ui.record.Secondary.prototype.onActivityUlClick_ = function(ev) {
+  var cmds = this.activity_menu_.handleClick(ev);
+  if (cmds) {
+
+  }
+};
+
+
+/**
+ * @param {goog.ui.HoverCard.TriggerEvent} ev
+ * @return {boolean}
+ * @private
+ */
+ydn.crm.su.ui.record.Secondary.prototype.onTrigger_ = function(ev) {
+  var trigger = ev.anchor;
+  var pos = new goog.positioning.AnchoredPosition(trigger,
+      goog.positioning.Corner.TOP_LEFT);
+  this.hover_.setPosition(pos);
+  return true;
+};
+
+
+/**
+ * @param {goog.events.Event} ev
+ * @private
+ */
+ydn.crm.su.ui.record.Secondary.prototype.onBeforeShow_ = function(ev) {
+
+  var trigger = this.hover_.getAnchorElement();
+  var id = trigger.getAttribute('data-id');
+  this.renderHoverContent_(id);
+};
+
+
+/**
+ * @param {string} id record id.
+ * @private
+ */
+ydn.crm.su.ui.record.Secondary.prototype.renderHoverContent_ = function(id) {
+  var el = this.hover_.getElement();
+  var content = el.querySelector('.secondary-hovercard-content');
+  content.textContent = id;
 };
 
 

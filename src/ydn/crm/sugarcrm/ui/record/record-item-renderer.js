@@ -54,9 +54,29 @@ ydn.crm.su.ui.record.RecordItemRenderer = function(sugar) {
  * @private
  */
 ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentForPeople_ = function(el, record) {
-  var ele_desc = el.querySelector('.description');
-  var email_group = /** @type {ydn.crm.su.model.EmailGroup} */(record.getGroupModel('email'));
+  var ele_desc = el.querySelector('.summary');
+  var email_group = /** @type {ydn.crm.su.model.EmailGroup} */(
+      record.getGroupModel('email'));
   ele_desc.textContent = email_group.getPrimaryEmailAddress();
+};
+
+
+/**
+ * Render content for activity modules, Calls, Meetings and Tasks.
+ * @param {Element} el content element.
+ * @param {ydn.crm.su.model.Record} record record.
+ * @private
+ */
+ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentForActivity_ = function(el, record) {
+  var ele_desc = el.querySelector('.summary');
+  var app = /** @type {ydn.crm.su.model.AppointmentGroup} */(
+      record.getGroupModel('appointment'));
+  var due = app.getDueDate();
+  if (due) {
+    ele_desc.textContent = due.toLocaleString();
+  } else {
+    ele_desc.textContent = '';
+  }
 };
 
 
@@ -67,7 +87,7 @@ ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentForPeople_ = function(e
  * @private
  */
 ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentDefault_ = function(el, record) {
-  var ele_desc = el.querySelector('.description');
+  var ele_desc = el.querySelector('.summary');
   ele_desc.textContent = record.valueAsString('description');
 };
 
@@ -98,8 +118,10 @@ ydn.crm.su.ui.record.RecordItemRenderer.prototype.render = function(el, r) {
   ele_title.target = '_blank';
 
   var ele_content = el.querySelector('.content');
-  if (ydn.crm.su.ModuleName.CONTACTS == mn) {
+  if (ydn.crm.su.PEOPLE_MODULES.indexOf(mn) >= 0) {
     this.contentForPeople_(ele_content, record);
+  } else if (ydn.crm.su.ACTIVITY_MODULES.indexOf(mn) >= 0) {
+    this.contentForActivity_(ele_content, record);
   } else {
     this.contentDefault_(ele_content, record);
   }

@@ -15,11 +15,12 @@
   > .content {
 
     > .secondary {
+      /*
       margin-left: 4px;
       padding-left: 2px;
       border-left: thin solid lightblue;
-
-      > ul {
+      */
+      > * > ul {
         list-style: none;
         padding-left: 0;
 
@@ -41,10 +42,30 @@
   }
 }
 
+.secondary {
+  > .activity {
+    > .header {
+      font-style: italic;
+      border-bottom: darkgreen solid thin;
+    }
+  }
+}
+
 .record-item {
   > .content {
-    padding-left: 30px;
+    padding-left: 27px;
+    font-size: 90%;
+    color: gray;
+    margin: 4px 0;
   }
+}
+
+.secondary-hovercard {
+  border: solid 4px #69748C;
+  width: 300px;
+  min-height: 115px;
+  background-color: white;
+  padding: 4px;
 }
 
 .record-panel.new-record {
