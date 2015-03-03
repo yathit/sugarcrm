@@ -65,12 +65,6 @@ goog.inherits(ydn.crm.su.ui.record.Secondary, goog.ui.Component);
 ydn.crm.su.ui.record.Secondary.DEBUG = false;
 
 
-/**
- * @define {boolean} debug flag.
- */
-ydn.crm.su.ui.record.Secondary.USE_RECORD = false;
-
-
 ydn.crm.su.ui.record.Secondary.ACTIVITY_MENUS =
     /** @type {Array.<?ydn.ui.FlyoutMenu.ItemOption>} */([{
       label: 'New Tasks',
@@ -106,9 +100,6 @@ ydn.crm.su.ui.record.Secondary.prototype.createDom = function() {
   var dom = this.getDomHelper();
   var root = this.getElement();
   root.classList.add(this.getCssClass());
-  if (ydn.crm.su.ui.record.Secondary.USE_RECORD) {
-    return;
-  }
 
   goog.soy.renderElement(root, templ.ydn.crm.su.secondaryPanel);
 
@@ -129,9 +120,7 @@ ydn.crm.su.ui.record.Secondary.prototype.createDom = function() {
  */
 ydn.crm.su.ui.record.Secondary.prototype.enterDocument = function() {
   ydn.crm.su.ui.record.Secondary.base(this, 'enterDocument');
-  if (ydn.crm.su.ui.record.Secondary.USE_RECORD) {
-    return;
-  }
+
   var hd = this.getHandler();
   var root = this.getElement();
   hd.listen(this.hover_, goog.ui.HoverCard.EventType.TRIGGER,
@@ -180,26 +169,6 @@ ydn.crm.su.ui.record.Secondary.prototype.onBeforeShow_ = function(ev) {
   var id = trigger.getAttribute('data-id');
   var mn = trigger.getAttribute('data-module');
   this.hover_.refreshRecord(/** @type {ydn.crm.su.ModuleName} */(mn), id);
-};
-
-
-/**
- * Attach related record as child panel.
- * @param {!ydn.crm.su.Record} r
- * @private
- */
-ydn.crm.su.ui.record.Secondary.prototype.attachChild_ = function(r) {
-  var sugar = this.getModel().getSugar();
-  var child_panel = this.getChildByRecordId(r.getId());
-  if (child_panel) {
-    var model = child_panel.getModel();
-    model.setRecord(r);
-  } else {
-    var record_model = new ydn.crm.su.model.Record(sugar, r);
-    child_panel = new ydn.crm.su.ui.record.Record(record_model, this.getDomHelper());
-    child_panel.setEnableSecondary(ydn.crm.su.ui.record.Record.EnableSecondary.DISABLED);
-    this.addChild(child_panel, true);
-  }
 };
 
 
@@ -299,12 +268,7 @@ ydn.crm.su.ui.record.Secondary.prototype.addEmbeddedChildren_ = function() {
   model.listEmbedded().addCallbacks(function(arr) {
     for (var i = 0; i < arr.length; i++) {
       var r = /** @type {!SugarCrm.Record} */(arr[i]);
-      if (ydn.crm.su.ui.record.Secondary.USE_RECORD) {
-        var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
-        this.attachChild_(new ydn.crm.su.Record(model.getDomain(), mn, r));
-      } else {
-        this.attachItem_(r);
-      }
+      this.attachItem_(r);
     }
   }, function(e) {
     window.console.error(e);
@@ -337,11 +301,7 @@ ydn.crm.su.ui.record.Secondary.prototype.addRelationChildren_ = function() {
       for (var i = 0; i < arr.length; i++) {
         var r = /** @type {!SugarCrm.Record} */(arr[i]);
         var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
-        if (ydn.crm.su.ui.record.Secondary.USE_RECORD) {
-          this.attachChild_(new ydn.crm.su.Record(model.getDomain(), mn, r));
-        } else {
-          this.attachItem_(r);
-        }
+        this.attachItem_(r);
       }
     }, this);
   } else {
