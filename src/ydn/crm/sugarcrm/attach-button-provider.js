@@ -446,7 +446,7 @@ ydn.crm.su.AttachButton.prototype.renderAttachment_ = function(anchor, opt_doc) 
   var parts = this.getDownloadInfo();
   this.id_ = '';
   this.module_ = null;
-  if (opt_doc && opt_doc['deleted'] != 0) {
+  if (opt_doc && opt_doc['deleted'] != '1') {
     this.id_ = opt_doc.id;
     if (opt_doc['_module']) {
       this.module_ = opt_doc['_module'];
