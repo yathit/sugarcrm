@@ -26,13 +26,14 @@ ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
 var btn = document.getElementById('chr');
 btn.onclick = function(e) {
   var req = {
-    'module': 'Contacts',
+    'store': 'Contacts',
     'index': 'ydn$emails',
-    'id': 'kyawtun@yathit.com'
+    'key': 'kyawtun@yathit.com'
   };
-  sugar.getChannel().send(ydn.crm.ch.SReq.GET, req).addCallbacks(function(data) {
+  sugar.getChannel().send(ydn.crm.ch.SReq.QUERY, [req]).addCallbacks(function(data) {
     if (data) {
-      var r = new ydn.crm.su.Record(sugar.getDomain(), req.module, data);
+      var obj = data[0].result[0];
+      var r = new ydn.crm.su.Record(sugar.getDomain(), req.module, obj);
       record.setRecord(r);
     } else {
       window.console.error(req.id + ' not found.');
