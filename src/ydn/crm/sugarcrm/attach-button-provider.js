@@ -381,7 +381,8 @@ ydn.crm.su.AttachButton.prototype.decorate = function(anchor) {
     'key': mid + '/' + parts.fn
   }, {
     'store': ydn.crm.su.ModuleName.NOTES,
-    'index': 'name',
+    'prefix': true,
+    'index': 'filename',
     'key': mid + '/' + parts.fn
   }];
   this.getChannel().send(ydn.crm.ch.SReq.QUERY, query).addCallbacks(function(x) {
@@ -445,7 +446,7 @@ ydn.crm.su.AttachButton.prototype.renderAttachment_ = function(anchor, opt_doc) 
   var parts = this.getDownloadInfo();
   this.id_ = '';
   this.module_ = null;
-  if (opt_doc) {
+  if (opt_doc && opt_doc['deleted'] != 0) {
     this.id_ = opt_doc.id;
     if (opt_doc['_module']) {
       this.module_ = opt_doc['_module'];
@@ -461,8 +462,9 @@ ydn.crm.su.AttachButton.prototype.renderAttachment_ = function(anchor, opt_doc) 
     var title = 'View ' + this.module_ + ' detail on sidebar';
     this.button_.setAttribute('data-tooltip', title);
   } else {
+    var upload = !!opt_doc ? 'Re-upload' : 'Upload';
     svg = ydn.crm.ui.createSvgIcon('cloud-upload', 'att-icon');
-    this.button_.setAttribute('data-tooltip', 'Upload to SugarCRM');
+    this.button_.setAttribute('data-tooltip', upload + ' to SugarCRM');
   }
   this.button_.innerHTML = '';
   this.button_.appendChild(svg);
@@ -516,6 +518,9 @@ ydn.crm.su.AttachButton.prototype.uploadAttachment = function(email_id, name) {
     ydn.crm.msg.Manager.setStatus(mid, 'Uploaded attachment: ');
     ydn.crm.msg.Manager.updateStatus(mid, 'Done.');
     ydn.crm.shared.logAnalyticValue('ui.upload', 'attachment', 'OK');
+    this.button_.innerHTML = '';
+    var svg = ydn.crm.ui.createSvgIcon('sugarcrm-bw', 'att-icon');
+    this.button_.appendChild(svg);
     return note;
   }, function(e) {
     ydn.crm.shared.logAnalyticValue('ui.upload', 'attachment', 'fail');

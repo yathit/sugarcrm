@@ -112,7 +112,7 @@ ydn.crm.su.Archiver.prototype.configureMenuItem = function(widget) {
         window.console.log(arr);
       }
       var record = arr[0] && arr[0]['result'] ? arr[0]['result'][0] : null;
-      if (record) {
+      if (record && record['deleted'] != '1') {
         var link = this.sugar_.getRecordViewLink(
             ydn.crm.su.ModuleName.EMAILS, record['id']);
         widget.setMenuItemDetail(this.getName(), true, 'View Archive',
@@ -120,7 +120,8 @@ ydn.crm.su.Archiver.prototype.configureMenuItem = function(widget) {
         widget.setButtonMessageDetail(ydn.crm.su.Archiver.MENU_NAME, true,
             ydn.crm.su.Archiver.SVG_ICON_NAME, 'This message is archived.');
       } else {
-        widget.setMenuItemDetail(this.getName(), true, 'Archive', null);
+        var lbl = record ? 'Re-archive' : 'Archive';
+        widget.setMenuItemDetail(this.getName(), true, lbl, null);
       }
     }, function(e) {
       widget.setMenuItemDetail(this.getName(), false, 'Archive', null);
