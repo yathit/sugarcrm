@@ -34,17 +34,17 @@
 .secondary {
   > section {
     margin: 4px 0;
-    max-height: 16em;
-    overflow-y: auto;
     > .header {
       font-style: italic;
       color: gray;
-      border-bottom: darkgreen solid thin;
+      /* border-bottom: #d3d3d3 solid thin; */
     }
     > ul {
       list-style: none;
       padding-left: 0;
       margin: 4px 0;
+      max-height: 16em;
+      overflow-y: auto;
 
       > li {
         margin: 2px 0;

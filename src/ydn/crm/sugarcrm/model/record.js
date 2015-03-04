@@ -196,6 +196,14 @@ ydn.crm.su.model.Record.prototype.getModuleName = function() {
 
 
 /**
+ * @return {?Date}
+ */
+ydn.crm.su.model.Record.prototype.getDueDate = function() {
+  return this.record.getDueDate();
+};
+
+
+/**
  * @return {SugarCrm.ModuleInfo}
  */
 ydn.crm.su.model.Record.prototype.getModuleInfo = function() {
@@ -567,11 +575,19 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
 
   var top = opt_top || 5;
 
+  var modules = [];
+  var info = this.getModuleInfo();
+  for (var i = 0; i < ydn.crm.su.Modules.length; i++) {
+    if (ydn.crm.su.Modules[i].toLowerCase() in info.link_fields) {
+      modules.push(ydn.crm.su.Modules[i]);
+    }
+  }
+
   var total = 0;
 
   var checkDone = function() {
     total++;
-    if (total >= ydn.crm.su.relatedModules.length) {
+    if (total >= modules.length) {
       df.callback();
     }
   };
@@ -581,9 +597,8 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
    * @this {ydn.crm.su.model.Record}
    */
   var fetch = function(idx) {
-    var to = ydn.crm.su.relatedModules[idx];
+    var to = modules[idx];
     if (!to) {
-      df.callback();
       return;
     }
     var data = {
@@ -613,7 +628,7 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
     }, this);
   };
 
-  for (var i = 0; i < ydn.crm.su.relatedModules.length; i++) {
+  for (var i = 0; i < modules.length; i++) {
     fetch.call(this, i);
   }
 
@@ -628,6 +643,7 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
  * default to 5.
  * @return {!ydn.async.Deferred<!Array<!SugarCrm.Record>>}
  * @see #listEmbedded
+ * @see #listRelated
  */
 ydn.crm.su.model.Record.prototype.listRelatedActivities = function(opt_top) {
   var df = new ydn.async.Deferred();

@@ -173,6 +173,24 @@ ydn.crm.su.Record.prototype.getId = function() {
 
 
 /**
+ * Get due date.
+ * @return {?Date}
+ */
+ydn.crm.su.Record.prototype.getDueDate = function() {
+  var field = ydn.crm.su.Record.getFieldNameForDeadline(this.module);
+  if (!field) {
+    return null;
+  }
+  var val = this.value(field);
+  if (goog.isString(val)) {
+    return ydn.crm.su.utils.parseDate(val);
+  } else {
+    return null;
+  }
+};
+
+
+/**
  * Get record modified date.
  * @return {number}
  */
@@ -219,10 +237,11 @@ ydn.crm.su.Record.getFieldNameForDeadline = function(m_name) {
     return 'date_due';
   } else if (m_name == ydn.crm.su.ModuleName.OPPORTUNITIES) {
     return 'date_closed';
-  } else if (m_name == ydn.crm.su.ModuleName.CASES) {
-    return 'date_modified';
-  } else {
+  } else if (m_name == ydn.crm.su.ModuleName.CALLS ||
+      m_name == ydn.crm.su.ModuleName.MEETINGS) {
     return 'date_start';
+  } else {
+    return 'date_modified';
   }
 };
 

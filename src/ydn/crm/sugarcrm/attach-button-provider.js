@@ -377,10 +377,11 @@ ydn.crm.su.AttachButton.prototype.decorate = function(anchor) {
   var query = [{
     'store': ydn.crm.su.ModuleName.DOCUMENTS,
     'index': 'filename',
+    'prefix': true, // Note: SugarCRM may append file extension
     'key': mid + '/' + parts.fn
   }, {
     'store': ydn.crm.su.ModuleName.NOTES,
-    'index': 'filename',
+    'index': 'name',
     'key': mid + '/' + parts.fn
   }];
   this.getChannel().send(ydn.crm.ch.SReq.QUERY, query).addCallbacks(function(x) {

@@ -69,9 +69,7 @@ ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentForPeople_ = function(e
  */
 ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentForActivity_ = function(el, record) {
   var ele_desc = el.querySelector('.summary');
-  var app = /** @type {ydn.crm.su.model.AppointmentGroup} */(
-      record.getGroupModel('appointment'));
-  var due = app.getDueDate();
+  var due = record.getDueDate();
   if (due) {
     ele_desc.textContent = due.toLocaleString();
   } else {

@@ -26,12 +26,14 @@
 /**
 * secondary panel
 * @param className
+* @param title
 */
 {template .secondaryPanel}
 <section class="{$className}">
   <div class="header flex-bar">
-    <span class="expander"></span>
-    <span class="title center">Activities</span>
+    <span class="expander svg-button"></span>
+    <span class="title center">{$title}</span>
+    <span name="count"></span>
     <span name="menu"></span>
   </div>
   <ul></ul>

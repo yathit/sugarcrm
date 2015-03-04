@@ -76,32 +76,3 @@ ydn.crm.su.model.AppointmentGroup.prototype.getDefaultFieldValue = function(fn) 
     return undefined;
   }
 };
-
-
-/**
- * Get due date of the activity. This return Date value converted from
- *   Calls -> date_start
- *   Tasks -> date_due
- *   Meetings -> date_start
- *   Opportunities -> date_closed
- *
- * @return {?Date}
- */
-ydn.crm.su.model.AppointmentGroup.prototype.getDueDate = function() {
-
-  var info = this.getModuleInfo();
-  var fields = info.module_fields;
-  var val;
-  if ('date_due' in fields) {
-    val = this.getFieldValue('date_due');
-  } else if ('date_start' in fields) {
-    val = this.getFieldValue('date_start');
-  } else if ('date_closed' in fields) {
-    val = this.getFieldValue('date_closed');
-  }
-  if (!!val && goog.isString(val)) {
-    return ydn.crm.su.utils.parseDate(val);
-  } else {
-    return null;
-  }
-};

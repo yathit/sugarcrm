@@ -23,8 +23,10 @@
 
 
 goog.provide('ydn.crm.su.ui.record.Secondary');
+goog.require('goog.positioning.AnchoredViewportPosition');
 goog.require('ydn.crm.su.ui.record.HoverCard');
 goog.require('ydn.crm.su.ui.record.RecordItemRenderer');
+goog.require('ydn.crm.ui');
 
 
 
@@ -52,7 +54,26 @@ ydn.crm.su.ui.record.Secondary = function(model, opt_dom) {
    */
   this.hover_ = null;
 
-  this.activity_ = new ydn.crm.su.ui.record.Secondary.Section(this, 'activity');
+  /**
+   * @type {ydn.crm.su.ui.record.Secondary.Section}
+   * @private
+   */
+  this.activity_ = new ydn.crm.su.ui.record.Secondary.Section(this,
+      ydn.crm.su.ui.record.Secondary.SectionType.ACTIVITY);
+
+  /**
+   * @type {ydn.crm.su.ui.record.Secondary.Section}
+   * @private
+   */
+  this.related_ = new ydn.crm.su.ui.record.Secondary.Section(this,
+      ydn.crm.su.ui.record.Secondary.SectionType.RELATED);
+
+  /**
+   * @type {ydn.crm.su.ui.record.Secondary.Section}
+   * @private
+   */
+  this.email_ = new ydn.crm.su.ui.record.Secondary.Section(this,
+      ydn.crm.su.ui.record.Secondary.SectionType.EMAIL);
 };
 goog.inherits(ydn.crm.su.ui.record.Secondary, goog.ui.Component);
 
@@ -63,6 +84,10 @@ goog.inherits(ydn.crm.su.ui.record.Secondary, goog.ui.Component);
 ydn.crm.su.ui.record.Secondary.DEBUG = false;
 
 
+/**
+ * @const
+ * @type {Array.<?ydn.ui.FlyoutMenu.ItemOption>}
+ */
 ydn.crm.su.ui.record.Secondary.ACTIVITY_MENUS =
     /** @type {Array.<?ydn.ui.FlyoutMenu.ItemOption>} */([{
       label: 'New Tasks',
@@ -101,6 +126,8 @@ ydn.crm.su.ui.record.Secondary.prototype.createDom = function() {
 
   var content = this.getContentElement();
   this.activity_.render(content);
+  this.related_.render(content);
+  this.email_.render(content);
 
   var sugar = this.getModel().getSugar();
   this.hover_ = new ydn.crm.su.ui.record.HoverCard(sugar, content, dom);
@@ -126,13 +153,29 @@ ydn.crm.su.ui.record.Secondary.prototype.enterDocument = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ydn.crm.su.ui.record.Secondary.prototype.disposeInternal = function() {
+  this.activity_.dispose();
+  this.related_.dispose();
+  this.email_.dispose();
+  this.activity_ = null;
+  this.related_ = null;
+  this.email_ = null;
+  ydn.crm.su.ui.record.Secondary.base(this, 'disposeInternal');
+};
+
+
+/**
  * @param {goog.events.BrowserEvent} ev
  * @private
  */
 ydn.crm.su.ui.record.Secondary.prototype.onActivityUlClick_ = function(ev) {
-  var cmds = this.activity_.handleClick(ev);
-  if (cmds) {
-    console.log(cmds);
+  if (ev.target instanceof Element) {
+    var cmds = this.activity_.handleClick(ev);
+    if (cmds) {
+      console.log(cmds);
+    }
   }
 };
 
@@ -144,8 +187,8 @@ ydn.crm.su.ui.record.Secondary.prototype.onActivityUlClick_ = function(ev) {
  */
 ydn.crm.su.ui.record.Secondary.prototype.onTrigger_ = function(ev) {
   var trigger = ev.anchor;
-  var pos = new goog.positioning.AnchoredPosition(trigger,
-      goog.positioning.Corner.TOP_LEFT);
+  var pos = new goog.positioning.AnchoredViewportPosition(trigger,
+      goog.positioning.Corner.TOP_LEFT, true);
   this.hover_.setPosition(pos);
   return true;
 };
@@ -169,6 +212,8 @@ ydn.crm.su.ui.record.Secondary.prototype.onBeforeShow_ = function(ev) {
  */
 ydn.crm.su.ui.record.Secondary.prototype.reset = function() {
   this.activity_.reset();
+  this.related_.reset();
+  this.email_.reset();
   var root = this.getElement();
   var data_id = root.removeAttribute('data-id');
 };
@@ -212,10 +257,7 @@ ydn.crm.su.ui.record.Secondary.prototype.addRelationChildren_ = function() {
   var model = this.getModel();
   var root = this.getElement();
 
-  var is_people = ydn.crm.su.PEOPLE_MODULES.indexOf(model.getModuleName()) >= 0;
-  this.activity_.setVisible(is_people);
-  
-  model.listRelatedActivities().addProgback(function(arr) {
+  model.listRelated().addProgback(function(arr) {
     if (ydn.crm.su.ui.record.Secondary.DEBUG) {
       window.console.log(arr);
     }
@@ -225,7 +267,21 @@ ydn.crm.su.ui.record.Secondary.prototype.addRelationChildren_ = function() {
     for (var i = 0; i < arr.length; i++) {
       var r = /** @type {!SugarCrm.Record} */(arr[i]);
       var mn = /** @type {ydn.crm.su.ModuleName} */ (r._module);
-      this.activity_.addItem(r);
+      var is_activity = false;
+      if (ydn.crm.su.ACTIVITY_MODULES.indexOf(mn) >= 0) {
+        var record = new ydn.crm.su.Record(model.getDomain(), mn, r);
+        var due = record.getDueDate();
+        if (due && due > new Date()) {
+          is_activity = true;
+        }
+      }
+      if (mn == ydn.crm.su.ModuleName.EMAILS) {
+        this.email_.addItem(r);
+      } else if (is_activity) {
+        this.activity_.addItem(r);
+      } else {
+        this.related_.addItem(r);
+      }
     }
   }, this);
 };
@@ -257,6 +313,16 @@ ydn.crm.su.ui.record.Secondary.prototype.refresh = function() {
 };
 
 
+/**
+ * @enum {string}
+ */
+ydn.crm.su.ui.record.Secondary.SectionType = {
+  ACTIVITY: 'activity',
+  EMAIL: 'email',
+  RELATED: 'related'
+};
+
+
 
 /**
  * Section class.
@@ -272,8 +338,20 @@ ydn.crm.su.ui.record.Secondary.Section = function(parent, name) {
    * @private
    */
   this.parent_ = parent;
+  /**
+   * @final
+   * @type {string}
+   * @private
+   */
+  this.type_ = name;
+  var title = 'Related';
+  if (name == ydn.crm.su.ui.record.Secondary.SectionType.ACTIVITY) {
+    title = 'Upcoming Activities';
+  } else if (name == ydn.crm.su.ui.record.Secondary.SectionType.EMAIL) {
+    title = 'Emails';
+  }
   this.root_ = goog.soy.renderAsElement(templ.ydn.crm.su.secondaryPanel,
-      {className: name});
+      {className: name, title: title});
 
   /**
    * @type {ydn.ui.FlyoutMenu}
@@ -282,6 +360,11 @@ ydn.crm.su.ui.record.Secondary.Section = function(parent, name) {
   this.menu_ = new ydn.ui.FlyoutMenu(undefined,
       ydn.crm.su.ui.record.Secondary.ACTIVITY_MENUS);
 
+  /**
+   * @protected
+   * @type {goog.events.EventHandler}
+   */
+  this.handler = new goog.events.EventHandler(this);
 };
 
 
@@ -291,9 +374,71 @@ ydn.crm.su.ui.record.Secondary.Section = function(parent, name) {
  */
 ydn.crm.su.ui.record.Secondary.Section.prototype.render = function(el) {
   el.appendChild(this.root_);
+  var expander = this.root_.querySelector('.header .expander');
+  var ul = this.root_.querySelector('ul');
+  goog.style.setElementShown(ul, false);
+  var svg = ydn.crm.ui.createSvgIcon('unfold-more');
+  expander.appendChild(svg);
   var activity_menu = this.root_.querySelector('.header [name=menu]');
   this.menu_.render(activity_menu);
   goog.style.setElementShown(activity_menu, false);
+  this.handler.listen(expander, 'click', this.onExpanderClick);
+  var pref = window.localStorage.getItem(this.getPrefKey_());
+  if (pref) {
+    if (pref.charAt(0) == '1') {
+      this.setExpand_(true);
+    } else {
+      this.setExpand_(false);
+    }
+  }
+};
+
+
+/**
+ * Dispose.
+ */
+ydn.crm.su.ui.record.Secondary.Section.prototype.dispose = function() {
+  this.handler.dispose();
+  this.handler = null;
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ */
+ydn.crm.su.ui.record.Secondary.Section.prototype.onExpanderClick = function(ev) {
+  this.setExpand(!this.isExpanded());
+};
+
+
+/**
+ * @return {boolean}
+ */
+ydn.crm.su.ui.record.Secondary.Section.prototype.isExpanded = function() {
+  return goog.style.isElementShown(this.root_.querySelector('ul'));
+};
+
+
+/**
+ * @param {boolean} val
+ * @private
+ */
+ydn.crm.su.ui.record.Secondary.Section.prototype.setExpand_ = function(val) {
+  var ul = this.root_.querySelector('ul');
+  goog.style.setElementShown(ul, val);
+  var expander = this.root_.querySelector('.header .expander');
+  var svg = ydn.crm.ui.createSvgIcon(val ? 'unfold-less' : 'unfold-more');
+  expander.replaceChild(svg, expander.firstElementChild);
+};
+
+
+/**
+ * @param {boolean} val
+ */
+ydn.crm.su.ui.record.Secondary.Section.prototype.setExpand = function(val) {
+  this.setExpand_(val);
+  var pref = val ? '1' : '0';
+  window.localStorage.setItem(this.getPrefKey_(), pref);
 };
 
 
@@ -313,6 +458,8 @@ ydn.crm.su.ui.record.Secondary.Section.prototype.handleClick = function(e) {
 ydn.crm.su.ui.record.Secondary.Section.prototype.reset = function() {
   var ul = this.root_.querySelector('ul');
   ul.innerHTML = '';
+  var count = this.root_.querySelector('.header [name=count]');
+  count.innerHTML = '0';
 };
 
 
@@ -345,6 +492,15 @@ ydn.crm.su.ui.record.Secondary.Section.prototype.getItemByRecordId = function(id
 
 
 /**
+ * @return {string}
+ * @private
+ */
+ydn.crm.su.ui.record.Secondary.Section.prototype.getPrefKey_ = function() {
+  return 'section-section-' + this.parent_.getModel().getModuleName() + '-' + this.type_;
+};
+
+
+/**
  * Attach related record item.
  * @param {!SugarCrm.Record} r
  */
@@ -356,6 +512,8 @@ ydn.crm.su.ui.record.Secondary.Section.prototype.addItem = function(r) {
     item.setAttribute('data-id', r.id);
     item.setAttribute('data-module', r._module);
     ul.appendChild(item);
+    var count = this.root_.querySelector('.header [name=count]');
+    count.innerHTML = String(ul.childElementCount);
   }
   this.parent_.item_renderer.render(item, r);
 };
