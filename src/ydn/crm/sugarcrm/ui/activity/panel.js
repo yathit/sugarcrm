@@ -325,8 +325,18 @@ ydn.crm.su.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
     'module': m_name,
     'id': id
   };
-  ch.send(ydn.crm.ch.SReq.GET, query).addCallbacks(function(obj) {
-    if (obj && obj['id']) {
+  var token;
+  var df = ch.send(ydn.crm.ch.SReq.GET, query);
+  df.addProgback(function(obj) {
+    var r = /** @type {SugarCrm.Record} */(obj);
+    if (r && r.id) {
+      token = r.date_modified;
+      this.showRecord_(m_name, r);
+    }
+  }, this);
+  df.addCallbacks(function(obj) {
+    var r = /** @type {SugarCrm.Record} */(obj);
+    if (r && r.id && r.date_modified != token) {
       this.showRecord_(m_name, obj);
     } else {
       ydn.crm.msg.Manager.addStatus(m_name + ' record: ' + id + ' not found.');
