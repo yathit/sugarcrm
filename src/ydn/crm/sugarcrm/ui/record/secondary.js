@@ -344,11 +344,11 @@ ydn.crm.su.ui.record.Secondary.Section = function(parent, name) {
    * @private
    */
   this.type_ = name;
-  var title = 'Related';
+  var title = chrome.i18n.getMessage('Related');
   if (name == ydn.crm.su.ui.record.Secondary.SectionType.ACTIVITY) {
-    title = 'Upcoming Activities';
+    title = chrome.i18n.getMessage('Upcoming_Activities');
   } else if (name == ydn.crm.su.ui.record.Secondary.SectionType.EMAIL) {
-    title = 'Emails';
+    title = chrome.i18n.getMessage('Emails');
   }
   this.root_ = goog.soy.renderAsElement(templ.ydn.crm.su.secondaryPanel,
       {className: name, title: title});

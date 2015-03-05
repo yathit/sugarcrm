@@ -155,7 +155,7 @@ ydn.crm.su.ui.activity.Panel.prototype.createDom = function() {
   var search_svg = ydn.crm.ui.createSvgIcon('magnifying-glass');
   search_el.appendChild(search_svg);
   var search_tab = new goog.ui.Tab(search_el);
-  search_tab.setTooltip('Search');
+  search_tab.setTooltip(chrome.i18n.getMessage('Search'));
   this.tabbar.addChild(search_tab, true);
   search_tab.getContentElement().classList.add(
       ydn.crm.su.ui.activity.Panel.CSS_CLASS_SEARCH);
@@ -164,7 +164,7 @@ ydn.crm.su.ui.activity.Panel.prototype.createDom = function() {
   var new_svg = ydn.crm.ui.createSvgIcon('plus');
   new_el.appendChild(new_svg);
   var new_tab = new goog.ui.Tab(new_el);
-  new_tab.setTooltip('Create a new record');
+  new_tab.setTooltip(chrome.i18n.getMessage('New_tooltip'));
   this.tabbar.addChild(new_tab, true);
   new_tab.getContentElement().classList.add(
       ydn.crm.su.ui.activity.Panel.CSS_CLASS_NEW);
@@ -173,7 +173,7 @@ ydn.crm.su.ui.activity.Panel.prototype.createDom = function() {
   var feed_svg = ydn.crm.ui.createSvgIcon('rss');
   feed_el.appendChild(feed_svg);
   var feed_tab = new goog.ui.Tab(feed_el);
-  feed_tab.setTooltip('Activity feed');
+  feed_tab.setTooltip(chrome.i18n.getMessage('Activity_feed'));
   this.tabbar.addChild(feed_tab, true);
   feed_tab.getContentElement().classList.add(
       ydn.crm.su.ui.activity.Panel.CSS_CLASS_FEED);
@@ -441,7 +441,7 @@ ydn.crm.su.ui.activity.Panel.prototype.setActivityCount = function(cnt, since) {
   var ele = tab.getContentElement().firstElementChild;
   if (cnt > 0) {
     var t = goog.date.relative.format(since.getTime()) || since.toLocaleDateString();
-    tab.setTooltip(cnt + ' records updated since ' + t);
+    tab.setTooltip(chrome.i18n.getMessage('ActivityCount', [cnt, t]));
   } else {
     tab.setTooltip('');
   }
@@ -457,13 +457,12 @@ ydn.crm.su.ui.activity.Panel.prototype.setCount = function(name, cnt) {
   var tab = /** @type {goog.ui.Tab} */ (this.tabbar.getChildAt(idx + 3));
   var ele = tab.getContentElement().querySelector('.' +
       ydn.crm.su.ui.activity.Panel.CSS_CLASS_TAB_LABEL);
-  var tooltip = cnt ? cnt + ' ' : 'No ';
+  var count = cnt ? cnt + '' : 'No';
   if (name == ydn.crm.su.ModuleName.CASES) {
-    tooltip += 'Cases assigned to you.';
+    tab.setTooltip(chrome.i18n.getMessage('Cases_assign', [count]));
   } else {
-    tooltip += 'upcoming ' + name + ' in this week.';
+    tab.setTooltip(chrome.i18n.getMessage('Upcoming_count', [count, name]));
   }
-  tab.setTooltip(tooltip);
 
   var root = tab.getElement();
   var el = root.querySelector('.count');
