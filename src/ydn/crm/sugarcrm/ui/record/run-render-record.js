@@ -33,7 +33,7 @@ btn.onclick = function(e) {
   sugar.getChannel().send(ydn.crm.ch.SReq.QUERY, [req]).addCallbacks(function(data) {
     if (data) {
       var obj = data[0].result[0];
-      var r = new ydn.crm.su.Record(sugar.getDomain(), req.module, obj);
+      var r = new ydn.crm.su.Record(sugar.getDomain(), req.store, obj);
       record.setRecord(r);
     } else {
       window.console.error(req.id + ' not found.');

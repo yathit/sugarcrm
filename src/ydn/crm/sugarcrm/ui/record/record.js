@@ -41,6 +41,7 @@ goog.require('ydn.crm.ui.StatusBar');
 goog.require('ydn.debug.ILogger');
 goog.require('ydn.ui');
 goog.require('ydn.ui.FlyoutMenu');
+goog.require('goog.date.duration');
 goog.require('ydn.ui.MessageDialog');
 
 
@@ -256,6 +257,13 @@ ydn.crm.su.ui.record.Record.prototype.getHeaderElement = function() {
 
 
 /**
+ * @const
+ * @type {string} error class
+ */
+ydn.crm.su.ui.record.Record.CSS_CLASS_NECK = 'neck';
+
+
+/**
  * @inheritDoc
  */
 ydn.crm.su.ui.record.Record.prototype.createDom = function() {
@@ -266,7 +274,9 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
   root.className = this.getCssClass() + ' ' + this.getModel().getModuleName();
   var ele_header = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
+  var neck = dom.createDom('div', ydn.crm.su.ui.record.Record.CSS_CLASS_NECK);
   root.appendChild(ele_header);
+  root.appendChild(neck);
   root.appendChild(content);
 
   ele_header.classList.add(ydn.crm.su.ui.record.CSS_HEADER);
@@ -965,6 +975,9 @@ ydn.crm.su.ui.record.Record.prototype.isActive = function() {
  * @param {boolean} val
  */
 ydn.crm.su.ui.record.Record.prototype.setActive = function(val) {
+  if (val) {
+    this.getModel().validate();
+  }
   if (val == this.isActive()) {
     return;
   }
@@ -1231,6 +1244,9 @@ ydn.crm.su.ui.record.Record.prototype.resetHeader = function() {
 
   var ok = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
   goog.style.setElementShown(ok, false);
+
+  var neck = this.getElement().querySelector('.neck');
+  neck.textContent = '';
 };
 
 
@@ -1246,12 +1262,24 @@ ydn.crm.su.ui.record.Record.prototype.refreshHeader = function() {
     window.console.log('refreshHeader:' + m_name + ':' + record);
   }
   var ele_title = ele_header.querySelector('a.' + ydn.crm.su.ui.record.CSS_HEADER_TITLE);
+  var neck = this.getElement().querySelector('.neck');
+  goog.style.setElementShown(neck, false);
   if (record.isNew()) {
     ele_title.innerHTML = '';
     ele_title.href = '';
     ele_title.target = '';
     this.head_menu.setEnableMenuItem(ydn.crm.su.ui.record.Record.MenuName.DUPLICATE, false);
   } else {
+    if (record.isDeleted()) {
+      goog.style.setElementShown(neck, true);
+      var ago = '';
+      var updated = record.getUpdated();
+      if (updated) {
+        ago = goog.date.duration.format(goog.now() - updated) + ' ago';
+      }
+      neck.textContent = chrome.i18n.getMessage('record_deleted',
+          [record.value('modified_by_name'), ago]);
+    }
     ele_title.textContent = record.getLabel();
     ele_title.href = record.getViewLink();
     ele_title.target = '_blank';

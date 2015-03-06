@@ -12,6 +12,13 @@
 
 .record-panel {
 
+  > .neck {
+    background-color: red;
+    color: white;
+    padding: 2px;
+    margin: 2px;
+  }
+
   > .content {
 
     > .secondary {

@@ -68,6 +68,12 @@ ydn.crm.su.model.Record = function(parent, r) {
    */
   this.groups_ = {};
 
+  /**
+   * @type {goog.async.Deferred}
+   * @private
+   */
+  this.validated_ = null;
+
   if (ydn.crm.su.model.Record.DEBUG) {
     this.randomId_ = Math.random();
   }
@@ -114,6 +120,67 @@ ydn.crm.su.model.Record.prototype.getId = function() {
  */
 ydn.crm.su.model.Record.prototype.value = function(name) {
   return this.record.value(name);
+};
+
+
+/**
+ * Check whether a deleted record.
+ * @return {boolean}
+ */
+ydn.crm.su.model.Record.prototype.isDeleted = function() {
+  return this.record.isDeleted();
+};
+
+
+/**
+ * Get record modified date.
+ * @return {number}
+ */
+ydn.crm.su.model.Record.prototype.getUpdated = function() {
+  return this.record.getUpdated();
+};
+
+
+/**
+ * Validate data freshness to server.
+ * The will cause data to be read again from the server. If modified date is
+ * different, `updated` event will dispatch and validate will be resolved
+ * with `true`.
+ * @return {!goog.async.Deferred<?boolean>} return `false` if data is fresh.
+ * return `true` if data is updated. `null` if validation fail.
+ */
+ydn.crm.su.model.Record.prototype.validate = function() {
+  if (this.record.isNew()) {
+    return goog.async.Deferred.succeed(false);
+  }
+  if (this.validated_) {
+    return this.validated_.branch();
+  } else {
+    var data = {
+      'module': this.getModuleName(),
+      'id': this.getId()
+    };
+    var ch = this.parent.getChannel();
+    this.validated_ = ch.send(ydn.crm.ch.SReq.FETCH, data).addCallback(function(x) {
+      if (ydn.crm.su.model.Record.DEBUG) {
+        window.console.log(this.record.getData(), x);
+      }
+      var r = /** @type {!SugarCrm.Record} */(x);
+      if (r && r.id == this.getId()) {
+        if (r.date_modified == this.value('date_modified')) {
+          return false;
+        } else {
+          var record = new ydn.crm.su.Record(this.getDomain(), this.getModuleName(), r);
+          this.setRecord(record);
+          return true;
+        }
+      } else {
+        this.validated_ = null; // validation fail.
+        return null;
+      }
+    }, this);
+    return this.validated_;
+  }
 };
 
 

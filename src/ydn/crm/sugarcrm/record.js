@@ -84,6 +84,15 @@ ydn.crm.su.Record.prototype.isNew = function() {
 
 
 /**
+ * Check whether a deleted record.
+ * @return {boolean}
+ */
+ydn.crm.su.Record.prototype.isDeleted = function() {
+  return this.obj['deleted'] == '1';
+};
+
+
+/**
  * @return {boolean} return record has valid record id.
  * @see #hasData to check existence of data.
  * @deprecated use #isNew instead
