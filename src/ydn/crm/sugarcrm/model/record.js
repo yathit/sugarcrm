@@ -165,6 +165,10 @@ ydn.crm.su.model.Record.prototype.validate = function() {
       if (ydn.crm.su.model.Record.DEBUG) {
         window.console.log(this.record.getData(), x);
       }
+      if (!this.validated_) {
+        // record is not the one we are doing.
+        return;
+      }
       var r = /** @type {!SugarCrm.Record} */(x);
       if (r && r.id == this.getId()) {
         if (r.date_modified == this.value('date_modified')) {
@@ -470,12 +474,14 @@ ydn.crm.su.model.Record.prototype.setRecord = function(record) {
   if (record == this.record) {
     // OK.
   } else if (!record) {
+    this.validated_ = null;
     if (!this.record.isNew()) {
       this.record.setData(null);
       this.groups_ = {};
       this.dispatchEvent(new ydn.crm.su.model.events.RecordChangeEvent(null, this));
     }
   } else {
+    this.validated_ = null;
     this.groups_ = {};
     if (record.getModule() != this.record.getModule()) {
       var old_module = this.record.getModule();

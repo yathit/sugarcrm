@@ -203,7 +203,14 @@ ydn.crm.su.ui.record.Record.prototype.setEnableSecondary = function(val) {
  * @private
  */
 ydn.crm.su.ui.record.Record.prototype.validateSecondaryPanel_ = function() {
-  if (this.enable_secondary == ydn.crm.su.ui.record.Record.EnableSecondary.ALWAYS ||
+  var model = this.getModel();
+  if (model.isNew()) {
+    if (this.secondary_panel) {
+      this.removeChild(this.secondary_panel, true);
+      this.secondary_panel.dispose();
+      this.secondary_panel = null;
+    }
+  } else if (this.enable_secondary == ydn.crm.su.ui.record.Record.EnableSecondary.ALWAYS ||
       (this.enable_secondary == ydn.crm.su.ui.record.Record.EnableSecondary.ENABLED &&
       this.isActive())) {
     if (!this.secondary_panel) {
@@ -473,12 +480,6 @@ ydn.crm.su.ui.record.Record.prototype.doSave = function() {
  */
 ydn.crm.su.ui.record.Record.prototype.onSaveClick = function(e) {
   e.stopPropagation();
-  if (!this.body_panel.hasChanged()) {
-    if (ydn.crm.su.ui.record.Record.DEBUG) {
-      window.console.info('No change');
-    }
-    return;
-  }
   this.doSave();
 };
 
