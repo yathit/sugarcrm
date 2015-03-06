@@ -91,8 +91,11 @@ ydn.crm.su.Archiver.prototype.getName = function() {
 ydn.crm.su.Archiver.prototype.configureMenuItem = function(widget) {
   widget.setButtonMessageDetail(ydn.crm.su.Archiver.MENU_NAME, false,
       ydn.crm.su.Archiver.SVG_ICON_NAME);
+  var lbl_archive = chrome.i18n.getMessage('Archive');
+  var lbl_re_archive = chrome.i18n.getMessage('Re_archive');
+  var lbl_view_archive = chrome.i18n.getMessage('View_Archive');
   if (!this.sugar_) {
-    widget.setMenuItemDetail(this.getName(), false, 'Archive', null);
+    widget.setMenuItemDetail(this.getName(), false, lbl_archive, null);
   }
   if (!this.sugar_) {
     return;
@@ -115,16 +118,16 @@ ydn.crm.su.Archiver.prototype.configureMenuItem = function(widget) {
       if (record && record['deleted'] != '1') {
         var link = this.sugar_.getRecordViewLink(
             ydn.crm.su.ModuleName.EMAILS, record['id']);
-        widget.setMenuItemDetail(this.getName(), true, 'View Archive',
+        widget.setMenuItemDetail(this.getName(), true, lbl_view_archive,
             link);
         widget.setButtonMessageDetail(ydn.crm.su.Archiver.MENU_NAME, true,
             ydn.crm.su.Archiver.SVG_ICON_NAME, 'This message is archived.');
       } else {
-        var lbl = record ? 'Re-archive' : 'Archive';
+        var lbl = record ? lbl_re_archive : lbl_archive;
         widget.setMenuItemDetail(this.getName(), true, lbl, null);
       }
     }, function(e) {
-      widget.setMenuItemDetail(this.getName(), false, 'Archive', null);
+      widget.setMenuItemDetail(this.getName(), false, lbl_archive, null);
       window.console.error(e);
     }, this);
   }
@@ -327,10 +330,24 @@ ydn.crm.su.Archiver.prototype.prepareArchive_ = function(widget) {
 ydn.crm.su.Archiver.prototype.onIMenuItem = function(widget, e) {
   var item = /** @type {goog.ui.MenuItem} */ (e.target);
 
-  var record = item.getModel();
-  if (record) {
+  var url = item.getModel();
+  if (goog.isString(url)) {
     // view archive
-    window.open(record, '_blank');
+    window.open(url, '_blank');
+    // in rare situation the archive may have deleted, in this case we need to
+    // show as upload functionality again.
+    var parts = this.sugar_.parseRecordViewLink(url);
+    var data = {
+      'module': parts.moduleName,
+      'id': parts.id
+    };
+    this.sugar_.send(ydn.crm.ch.SReq.FETCH, data).addCallback(function(r) {
+      if (!r || r['deleted'] == '1') {
+        item.setModel(null);
+        var lbl = chrome.i18n.getMessage('Re_archive');
+        widget.setMenuItemDetail(this.getName(), true, lbl, null);
+      }
+    }, this);
   } else {
     // archive
     this.prepareArchive_(widget);

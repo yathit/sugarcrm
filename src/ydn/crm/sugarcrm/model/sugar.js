@@ -399,6 +399,19 @@ ydn.crm.su.model.Sugar.prototype.getRecordViewLink = function(module, id) {
 
 
 /**
+ * @param {string} url
+ * @return {ydn.crm.su.ViewLinkParts}
+ */
+ydn.crm.su.model.Sugar.prototype.parseRecordViewLink = function(url) {
+  if (this.isVersion7()) {
+    return ydn.crm.su.parseViewLinkV7(url);
+  } else {
+    return ydn.crm.su.parseViewLinkV6(url);
+  }
+};
+
+
+/**
  * Set url.
  * @param {string} url
  */
@@ -479,7 +492,7 @@ ydn.crm.su.model.Sugar.load = function(about) {
 
 
 /**
- * @param {string} req
+ * @param {ydn.crm.ch.SReq} req
  * @param {*=} opt_data
  * @return {!ydn.async.Deferred}
  */
