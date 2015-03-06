@@ -68,7 +68,7 @@ ydn.crm.su.ui.group.Expander.prototype.createDom = function() {
   header.appendChild(dom.createDom('span', 'center'));
   var svg = ydn.crm.ui.createSvgIcon('unfold-more');
   var btn = dom.createDom('span', ydn.crm.ui.CSS_CLASS_SVG_BUTTON, svg);
-  btn.setAttribute('title', 'Edit');
+  btn.setAttribute('data-tooltip', 'Edit');
   header.appendChild(btn);
   var content = this.getElement().querySelector('.' +
       ydn.crm.ui.CSS_CLASS_CONTENT);
@@ -236,7 +236,7 @@ ydn.crm.su.ui.group.Expander.prototype.reset = function() {
   goog.base(this, 'reset');
   this.expand(false);
   var label = this.getHeaderLabel();
-  label.setAttribute('title', this.getModel().getGroupName());
+  label.setAttribute('data-tooltip', this.getModel().getGroupName());
 };
 
 

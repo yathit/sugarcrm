@@ -144,7 +144,7 @@ ydn.crm.ui.SimpleStatusBar.prototype.getElement = function() {
 ydn.crm.ui.SimpleStatusBar.prototype.setMessage = function(s, err) {
   var out = goog.base(this, 'setMessage', s, err);
   this.el_msg_.textContent = s;
-  this.el_msg_.setAttribute('title', this.el_msg_.textContent);
+  this.el_msg_.setAttribute('data-tooltip', this.el_msg_.textContent);
   if (err) {
     this.el_msg_.classList.add('error');
   } else {

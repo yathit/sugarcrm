@@ -36,7 +36,7 @@ ydn.crm.su.ui.group.SimpleGroupRenderer.prototype.decorate = function(ctrl) {
   var ele_value = dom.createDom('input', {
     'type': 'text',
     'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE,
-    'title': label,
+    'data-tooltip': label,
     'placeholder': label
   });
   root.appendChild(ele_value);
@@ -56,7 +56,7 @@ ydn.crm.su.ui.group.SimpleGroupRenderer.prototype.decorate = function(ctrl) {
         ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_ACTION_DETAIL;
     var action = dom.createDom('div', {
       'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_HOVER_BUTTON + ' ' + cls,
-      'title': opt.label
+      'data-tooltip': opt.label
     });
     var icon_name = cls == ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_ACTION_DELETE ?
         'delete' : 'more-horiz';
@@ -116,9 +116,9 @@ ydn.crm.su.ui.group.SimpleGroupRenderer.prototype.refresh = function(ctrl) {
   }
   var label = model.getGroupLabel();
   if (label) {
-    ele_field.setAttribute('title', label);
+    ele_field.setAttribute('data-tooltip', label);
   } else {
-    ele_field.removeAttribute('title');
+    ele_field.removeAttribute('data-tooltip');
   }
 
   var is_def = goog.isString(value) ? !goog.string.isEmpty(value) :

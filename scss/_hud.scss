@@ -53,9 +53,10 @@ $hud-button-height: 38px;
 
 
 .hud-popup {
-  padding: 4px;
+  padding: 0 4px 4px 4px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  border-radius: 3px;
+  border-radius-top-left: 3px;
+  border-radius-bottom-left: 3px;
   background-color: white;
   margin-left: 30px - $gmail-sidebar-width;
   width: $gmail-sidebar-width;
@@ -64,6 +65,11 @@ $hud-button-height: 38px;
   display: none;
   opacity: 1;
   position: relative;
+
+  .top-resizer {
+    cursor: row-resize;
+    height: 2px;
+  }
 }
 
 

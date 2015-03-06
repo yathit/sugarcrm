@@ -159,9 +159,9 @@ ydn.crm.su.ui.field.FieldRenderer.prototype.refresh = function(ctrl) {
   }
   var label = model.getLabel();
   if (label) {
-    ele_field.setAttribute('title', label);
+    ele_field.setAttribute('data-tooltip', label);
   } else {
-    ele_field.removeAttribute('title');
+    ele_field.removeAttribute('data-tooltip');
   }
 
   var is_def = model.hasFieldValue();

@@ -43,7 +43,7 @@ ydn.crm.su.ui.field.InlineFieldRenderer.prototype.createDom = function(field) {
   var dom = field.getDomHelper();
   var input = dom.createDom('input');
   input.classList.add(ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);
-  input.setAttribute('title', model.getLabel());
+  input.setAttribute('data-tooltip', model.getLabel());
 
   var el = dom.createDom('span', this.getCssClass() + ' ' + ydn.crm.su.ui.field.InlineFieldRenderer.CSS_CLASS, [input]);
   el.setAttribute('name', model.getFieldName());

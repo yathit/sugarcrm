@@ -56,7 +56,7 @@ ydn.crm.su.ui.group.ListRenderer.prototype.createDom = function(x) {
   root.setAttribute('name', model.getGroupName());
   root.classList.add(ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS);
   var head = dom.createDom('div');
-  head.setAttribute('title', model.getGroupLabel());
+  head.setAttribute('data-tooltip', model.getGroupLabel());
   root.appendChild(head);
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(head);

@@ -77,7 +77,7 @@ ydn.crm.su.ui.record.HeaderRenderer.prototype.reset = function(ctrl) {
 
   var title = dom.createDom('a', {
     'class': ydn.crm.su.ui.record.CSS_HEADER_TITLE + ' center',
-    'title': 'Open in SugarCRM'
+    'data-tooltip': 'Open in SugarCRM'
   });
 
   var icon = dom.createDom('span', ydn.crm.su.ui.record.CSS_HEADER_ICON,

@@ -128,7 +128,7 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
   var div_svg = dom.createDom('div', 'icon-box', svg);
   var ele_title = dom.createDom('div', {
     'class': 'main-title',
-    'title': 'SugarCRM'}, [div_svg, a]);
+    'data-tooltip': 'SugarCRM'}, [div_svg, a]);
   root.appendChild(ele_title);
   var grants = [];
   if (!ydn.crm.su.ui.Header.USE_IFRAME) {

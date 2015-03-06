@@ -38,7 +38,7 @@ ydn.crm.su.ui.group.NameRenderer.prototype.decorate = function(ctrl) {
       ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS);
   var a = ctrl.getDomHelper().createDom('a', {
     'class': ydn.crm.su.ui.group.NameRenderer.CLS_NAME_LUNCH + ' icon-box',
-    'title': 'Lunch in SugarCRM',
+    'data-tooltip': 'Lunch in SugarCRM',
     'target': model.getDomain(),
     'href': href
   });

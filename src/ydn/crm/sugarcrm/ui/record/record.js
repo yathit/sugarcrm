@@ -291,12 +291,12 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
   var record_type_badge = dom.createDom('span',
       ydn.crm.su.ui.record.CSS_HEADER_ICON);
   var gmail_icon = dom.createDom('a', {
-    'title': 'View in Gmail contact',
+    'data-tooltip': 'View in Gmail contact',
     'class': ydn.crm.ui.CSS_CLASS_BADGE_ICON + ' google'
   }, ydn.crm.ui.createSvgIcon('google', 'icons-small'));
   var save_btn = dom.createDom('span', 'svg-button ' + ydn.crm.ui.CSS_CLASS_OK_BUTTON,
       ydn.crm.ui.createSvgIcon('check-circle'));
-  save_btn.setAttribute('title', 'Save');
+  save_btn.setAttribute('data-tooltip', 'Save');
 
   ele_header.appendChild(record_type_badge);
   ele_header.appendChild(gmail_icon);

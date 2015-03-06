@@ -133,7 +133,7 @@ ydn.crm.su.ui.group.SuggestedRecord.prototype.reset = function() {
    */
   var model = this.getModel();
   input.setAttribute('placeholder', model.getGroupLabel());
-  input.setAttribute('title', model.getGroupLabel());
+  input.setAttribute('data-tooltip', model.getGroupLabel());
 };
 
 

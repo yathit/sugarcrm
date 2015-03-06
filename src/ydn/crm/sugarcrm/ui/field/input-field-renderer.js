@@ -55,7 +55,7 @@ ydn.crm.su.ui.field.InputFieldRenderer.prototype.createDom = function(field) {
   var ele_value = dom.createDom('input', {
     'type': input_type,
     'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE,
-    'title': label,
+    'data-tooltip': label,
     'placeholder': label
   });
   if (model.isRequired()) {

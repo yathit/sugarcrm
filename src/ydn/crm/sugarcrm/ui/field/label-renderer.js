@@ -38,7 +38,7 @@ ydn.crm.su.ui.field.LabelRenderer.prototype.createDom = function(field) {
 
   var ele_value = dom.createDom('label', {
     'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE,
-    'title': label
+    'data-tooltip': label
   });
   el.appendChild(ele_value);
 

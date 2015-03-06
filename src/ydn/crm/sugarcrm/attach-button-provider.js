@@ -277,7 +277,7 @@ ydn.crm.su.AttachButton.prototype.beginUpload_ = function() {
         el.classList.add('error');
       }
       var msg = String(e.message || e);
-      el.setAttribute('title', msg);
+      el.setAttribute('data-tooltip', msg);
       ydn.crm.msg.Manager.updateStatus(msg_id, 'fail to upload ' + parts.fn + ' ' + msg);
     }, this);
   }, this);

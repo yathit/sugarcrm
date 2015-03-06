@@ -41,7 +41,7 @@ ydn.crm.su.ui.field.TextFieldRenderer.prototype.createDom = function(field) {
 
   ele_value = dom.createDom(goog.dom.TagName.TEXTAREA, {
     'class': ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE,
-    'title': label,
+    'data-tooltip': label,
     'rows': '4',
     'placeholder': label
   });

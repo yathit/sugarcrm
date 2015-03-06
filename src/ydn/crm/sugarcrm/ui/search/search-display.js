@@ -99,7 +99,7 @@ ydn.crm.su.ui.SearchDisplay.prototype.createDom = function() {
   this.addChild(this.result_panel, true);
   var ele_input = search_input.getElement().querySelector('input');
   ele_input.setAttribute('placeholder', 'Search ...');
-  ele_input.setAttribute('title', 'Search name, email, phone, id, title, description, etc.');
+  ele_input.setAttribute('data-tooltip', 'Search name, email, phone, id, title, description, etc.');
 };
 
 
