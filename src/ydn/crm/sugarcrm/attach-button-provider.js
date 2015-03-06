@@ -225,6 +225,7 @@ ydn.crm.su.AttachButton.prototype.onBtnClick_ = function(ev) {
     var rve = new ydn.crm.su.events.RecordViewEvent(
         this.module_, this.id_);
     this.provider_.dispatchEvent(rve);
+    this.validateRecord_();
   } else {
     this.beginUpload_();
   }
@@ -459,12 +460,13 @@ ydn.crm.su.AttachButton.prototype.renderAttachment_ = function(anchor, opt_doc) 
   var svg;
   if (this.id_) {
     svg = ydn.crm.ui.createSvgIcon('sugarcrm-bw', 'att-icon');
-    var title = 'View ' + this.module_ + ' detail on sidebar';
+    var title = chrome.i18n.getMessage('View_record_on_sidebar', [this.module_]);
     this.button_.setAttribute('data-tooltip', title);
   } else {
-    var upload = !!opt_doc ? 'Re-upload' : 'Upload';
+    var upload = !!opt_doc ? 'Re_upload' : 'Upload';
+    upload = chrome.i18n.getMessage(upload);
     svg = ydn.crm.ui.createSvgIcon('cloud-upload', 'att-icon');
-    this.button_.setAttribute('data-tooltip', upload + ' to SugarCRM');
+    this.button_.setAttribute('data-tooltip', upload);
   }
   this.button_.innerHTML = '';
   this.button_.appendChild(svg);
@@ -526,4 +528,28 @@ ydn.crm.su.AttachButton.prototype.uploadAttachment = function(email_id, name) {
     ydn.crm.shared.logAnalyticValue('ui.upload', 'attachment', 'fail');
   }, this);
 
+};
+
+
+/**
+ * Validate record value with server for freshness.
+ * @private
+ */
+ydn.crm.su.AttachButton.prototype.validateRecord_ = function() {
+
+  var data = {
+    'module': this.module_,
+    'id': this.id_
+  };
+  this.getChannel().send(ydn.crm.ch.SReq.FETCH, data).addCallback(function(r) {
+    if (!r || r['deleted'] == '1') {
+      this.id_ = '';
+      this.module_ = null;
+      var lbl = chrome.i18n.getMessage('Re_upload');
+      var svg = ydn.crm.ui.createSvgIcon('cloud-upload', 'att-icon');
+      this.button_.innerHTML = '';
+      this.button_.appendChild(svg);
+      this.button_.setAttribute('data-tooltip', lbl);
+    }
+  }, this);
 };

@@ -325,6 +325,29 @@ ydn.crm.su.Archiver.prototype.prepareArchive_ = function(widget) {
 
 
 /**
+ * Validate record value with server for freshness.
+ * @param {goog.ui.MenuItem} item
+ * @param {ydn.crm.gmail.MessageHeaderWidget} widget
+ * @private
+ */
+ydn.crm.su.Archiver.prototype.validateViewLink_ = function(item, widget) {
+  var url = /** @type {string} */ (item.getModel());
+  var parts = this.sugar_.parseRecordViewLink(url);
+  var data = {
+    'module': parts.moduleName,
+    'id': parts.id
+  };
+  this.sugar_.send(ydn.crm.ch.SReq.FETCH, data).addCallback(function(r) {
+    if (!r || r['deleted'] == '1') {
+      item.setModel(null);
+      var lbl = chrome.i18n.getMessage('Re_archive');
+      widget.setMenuItemDetail(this.getName(), true, lbl, null);
+    }
+  }, this);
+};
+
+
+/**
  * @override
  */
 ydn.crm.su.Archiver.prototype.onIMenuItem = function(widget, e) {
@@ -336,18 +359,7 @@ ydn.crm.su.Archiver.prototype.onIMenuItem = function(widget, e) {
     window.open(url, '_blank');
     // in rare situation the archive may have deleted, in this case we need to
     // show as upload functionality again.
-    var parts = this.sugar_.parseRecordViewLink(url);
-    var data = {
-      'module': parts.moduleName,
-      'id': parts.id
-    };
-    this.sugar_.send(ydn.crm.ch.SReq.FETCH, data).addCallback(function(r) {
-      if (!r || r['deleted'] == '1') {
-        item.setModel(null);
-        var lbl = chrome.i18n.getMessage('Re_archive');
-        widget.setMenuItemDetail(this.getName(), true, lbl, null);
-      }
-    }, this);
+    this.validateViewLink_(item, widget);
   } else {
     // archive
     this.prepareArchive_(widget);
