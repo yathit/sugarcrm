@@ -22,6 +22,7 @@
 
 
 goog.provide('ydn.crm.su.AttachButtonProvider');
+goog.require('ydn.crm.IUser');
 goog.require('ydn.crm.ch.SReq');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su.IAttachButtonProvider');
@@ -33,6 +34,7 @@ goog.require('ydn.gmail.Utils');
 
 /**
  * Upload attachment to email or document.
+ * @param {ydn.crm.IUser} user
  * @param {ydn.crm.su.model.Sugar} sugar
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @constructor
@@ -41,8 +43,14 @@ goog.require('ydn.gmail.Utils');
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @implements {ydn.crm.su.IAttachButtonProvider}
  */
-ydn.crm.su.AttachButtonProvider = function(sugar, gmail_observer) {
+ydn.crm.su.AttachButtonProvider = function(user, sugar, gmail_observer) {
   goog.base(this);
+  /**
+   * @protected
+   * @final
+   * @type {ydn.crm.IUser}
+   */
+  this.user = user;
   /**
    * @type {ydn.crm.su.model.Sugar}
    * @protected
@@ -227,7 +235,9 @@ ydn.crm.su.AttachButton.prototype.onBtnClick_ = function(ev) {
     this.provider_.dispatchEvent(rve);
     this.validateRecord_();
   } else {
-    this.beginUpload_();
+    if (this.provider_.user.hasFeature(ydn.crm.base.Feature.ATTACHMENT, true)) {
+      this.beginUpload_();
+    }
   }
 };
 

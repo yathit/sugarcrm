@@ -31,13 +31,20 @@ goog.require('ydn.ui.MessageBox');
 
 /**
  * Archive email message to SugarCRM.
+ * @param {ydn.crm.IUser} us
  * @param {ydn.crm.su.model.Sugar} sugar
  * @param {ydn.crm.su.AttachButtonProvider} attacher
  * @constructor
  * @struct
  * @implements {ydn.crm.ui.IMenuItemProvider}
  */
-ydn.crm.su.Archiver = function(sugar, attacher) {
+ydn.crm.su.Archiver = function(us, sugar, attacher) {
+  /**
+   * @final
+   * @type {ydn.crm.IUser}
+   * @private
+   */
+  this.user_ = us;
   /**
    * @final
    * @type {ydn.crm.su.model.Sugar}
@@ -243,6 +250,9 @@ ydn.crm.su.Archiver.prototype.archive_ = function(widget, info, opt_record) {
       }
     }
     if (has_attachment) {
+      if (!this.user_.hasFeature(ydn.crm.base.Feature.ATTACHMENT, true)) {
+        return;
+      }
       var perms = {
         'origins': origins
       };

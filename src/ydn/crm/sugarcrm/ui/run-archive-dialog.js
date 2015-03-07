@@ -64,6 +64,9 @@ btn2.onclick = function(e) {
 user.onReady().addCallbacks(function() {
   ydn.crm.su.model.Sugar.list().addCallbacks(function(arr) {
     sugar = arr[0];
+    if (!sugar) {
+      window.console.error('No sugar');
+    }
     document.querySelector('.inj').style.display = '';
   }, function(e) {
     window.console.error(e);
