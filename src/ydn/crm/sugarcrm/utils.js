@@ -41,7 +41,8 @@ ydn.crm.su.utils.toRecordEntry = function(name_value_entries) {
     var entry = /** @type {SugarCrm.NameValueEntry} */ (name_value_entries);
     var obj = /** @type {!Object} */ ({});
     for (var key in entry.name_value_list) {
-      obj[key] = entry.name_value_list[key].value;
+      var name = entry.name_value_list[key].name;
+      obj[name] = entry.name_value_list[key].value;
     }
     return /** @type {!SugarCrm.Record} */ (obj);
   } else {
