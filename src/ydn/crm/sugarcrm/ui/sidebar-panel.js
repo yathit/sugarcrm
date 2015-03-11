@@ -21,6 +21,7 @@ goog.require('ydn.crm.su.ui.SugarPanel');
  */
 ydn.crm.ui.SidebarPanel = function(opt_dom) {
   goog.base(this, opt_dom);
+  // todo: should this be part of sugarcrm-app instead of separate class.
 };
 goog.inherits(ydn.crm.ui.SidebarPanel, goog.ui.Component);
 
