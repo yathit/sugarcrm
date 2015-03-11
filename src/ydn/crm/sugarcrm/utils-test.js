@@ -37,6 +37,13 @@ function test_datetime_input() {
 }
 
 
+function testIncrementDateModified() {
+  var record = {
+    date_modified: '2015-03-07 03:19:19'
+  };
+  ydn.crm.su.utils.incrementDateModified(record);
+  assertEquals('2015-03-07 03:19:20', record.date_modified);
+}
 
 
 

@@ -352,6 +352,8 @@ ydn.crm.su.Archiver.prototype.validateViewLink_ = function(item, widget) {
       item.setModel(null);
       var lbl = chrome.i18n.getMessage('Re_archive');
       widget.setMenuItemDetail(this.getName(), true, lbl, null);
+      widget.setButtonMessageDetail(ydn.crm.su.Archiver.MENU_NAME, true, 'ydn-logo',
+          'view archive');
     }
   }, this);
 };

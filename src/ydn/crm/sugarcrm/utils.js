@@ -124,3 +124,17 @@ ydn.crm.su.utils.fromDateTimeLocalString = function(date_value) {
   var d = new Date(date_value + offset * 60000);
   return ydn.crm.su.utils.toDateString(d);
 };
+
+
+/**
+ * Increment one digit to date_modified field.
+ * Used in cache invalidation hack.
+ * @param {!SugarCrm.Record} record
+ */
+ydn.crm.su.utils.incrementDateModified = function(record) {
+  if (record.date_modified) {
+    var date = ydn.crm.su.utils.parseDate(record.date_modified);
+    date = new Date(date.getTime() + 1000); // increment one second.
+    record.date_modified = ydn.crm.su.utils.toDateString(date);
+  }
+};
