@@ -101,8 +101,7 @@ ydn.crm.su.model.BaseGroup.getNormallyHideDefaultSetting = function(name) {
  * @see #hasFieldValue
  */
 ydn.crm.su.model.BaseGroup.prototype.hasField = function(name) {
-  var module_info = this.module.getModuleInfo();
-  var info = module_info.module_fields[name];
+  var info = this.getFieldInfo(name);
   if (!info) {
     return false;
   }
@@ -119,10 +118,11 @@ ydn.crm.su.model.BaseGroup.prototype.listFields = function() {
   var fields = [];
   for (var name in module_info.module_fields) {
     var field = module_info.module_fields[name];
+    var field_name = field.name;
     if (this.group_name && field.group == this.group_name) {
-      fields.push(name);
+      fields.push(field_name);
     } else if (!this.group_name && !field.group) {
-      fields.push(name);
+      fields.push(field_name);
     }
   }
   return fields;

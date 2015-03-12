@@ -313,7 +313,15 @@ ydn.crm.su.model.Record.prototype.isSimple = function() {
  */
 ydn.crm.su.model.Record.prototype.getFieldInfo = function(name) {
   var info = this.getModuleInfo();
-  return info.module_fields[name];
+  var fields = info.module_fields;
+  if (goog.isArray(fields)) {
+    for (var i = 0; i < fields.length; i++) {
+      if (fields[i].name == name) {
+        return fields[i];
+      }
+    }
+  }
+  return fields[name];
 };
 
 
