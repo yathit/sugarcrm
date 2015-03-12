@@ -707,6 +707,11 @@ ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
     'to_addrs': info.to_addrs,
     'type': 'archived'
   };
+  if (!this.isVersion7()) {
+    var parts = obj['date_sent'].split(' ');
+    obj['date_start'] = parts[0] || '';
+    obj['time_start'] = parts[1] || '';
+  }
   return this.send(ydn.crm.ch.SReq.NEW_RECORD, {
     'module': ydn.crm.su.ModuleName.EMAILS,
     'record': obj
