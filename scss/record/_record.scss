@@ -111,46 +111,54 @@
   }
 }
 
-.ydn-crm .relationship-item {
-  display: inline-block;
-  border: thin solid transparent;
-  padding: 2px 4px;
-  margin: 2px;
-  border-radius: 4px;
+.ydn-crm
 
+.relationships-panel {
+  > .content {
+    min-height: 24px; /* make no height by adding first item */
+  }
 
-  .clear {
+  .relationship-item {
     display: inline-block;
+    border: thin solid transparent;
+    padding: 2px 4px;
+    margin: 2px;
+    border-radius: 4px;
 
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    box-sizing: border-box;
-    font-weight: bold;
-    color: #808080;
-    text-align: center;
-    margin-left: 4px;
-    cursor: pointer;
+    .clear {
+      display: inline-block;
 
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      box-sizing: border-box;
+      font-weight: bold;
+      color: #808080;
+      text-align: center;
+      margin-left: 4px;
+      cursor: pointer;
+
+    }
+
+    .clear:hover {
+      color: white;
+      background-color: red;
+
+    }
+  }
+  .relationship-item:hover {
+    border: thin solid #add8e6;
   }
 
-  .clear:hover {
-    color: white;
-    background-color: red;
+  .relationship-item:not(:hover) {
+    .clear {
+      visibility: hidden;
 
+    }
   }
 }
 
-.relationship-item:hover {
-  border: thin solid #add8e6;
-}
 
-.relationship-item:not(:hover) {
-  .clear {
-    visibility: hidden;
-
-  }
-}
 
 .upload-dialog, .archive-dialog {
   > div {

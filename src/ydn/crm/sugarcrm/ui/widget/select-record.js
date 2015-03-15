@@ -52,7 +52,7 @@ goog.require('ydn.crm.ui');
  * @param {boolean=} opt_multi multiple field selector.
  * @constructor
  * @struct
- * @extends {goog.Disposable}
+ * @extends {goog.events.EventTarget}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_node, opt_multi) {
@@ -91,8 +91,25 @@ ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_node, opt_mul
    */
   this.input_ = null;
 
+  /**
+   * @protected
+   * @type {goog.events.EventHandler}
+   */
+  this.handler = new goog.events.EventHandler(this);
+
+  this.handler.listen(this.ac, [goog.ui.ac.AutoComplete.EventType.UPDATE], this.delegateEvent_);
+
 };
-goog.inherits(ydn.crm.su.ui.widget.SelectRecord, goog.Disposable);
+goog.inherits(ydn.crm.su.ui.widget.SelectRecord, goog.events.EventTarget);
+
+
+/**
+ * @param {goog.events.Event} e
+ * @private
+ */
+ydn.crm.su.ui.widget.SelectRecord.prototype.delegateEvent_ = function(e) {
+  this.dispatchEvent(e);
+};
 
 
 /**
@@ -180,9 +197,11 @@ ydn.crm.su.ui.widget.SelectRecord.prototype.disposeInternal = function() {
   this.renderer.dispose();
   this.input_handler.dispose();
   this.ac.dispose();
+  this.handler.dispose();
   this.renderer = null;
   this.matcher = null;
   this.input_handler = null;
+  this.handler = null;
   this.ac = null;
   this.sugar = null;
   ydn.crm.su.ui.widget.SelectRecord.base(this, 'disposeInternal');

@@ -64,6 +64,13 @@ goog.inherits(ydn.crm.su.ui.Relationships, goog.ui.Component);
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ydn.crm.su.ui.Relationships.CSS_NAME = 'relationships-panel';
+
+
+/**
  * @inheritDoc
  */
 ydn.crm.su.ui.Relationships.prototype.getContentElement = function() {
@@ -77,8 +84,9 @@ ydn.crm.su.ui.Relationships.prototype.getContentElement = function() {
 ydn.crm.su.ui.Relationships.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
+  root.classList.add(ydn.crm.su.ui.Relationships.CSS_NAME);
   var dom = this.getDomHelper();
-  var h3 = dom.createDom('h3', 'Relationships');
+  var h3 = dom.createDom('h3', ydn.crm.ui.CSS_CLASS_HEAD, 'Relationships');
   root.appendChild(h3);
   root.appendChild(dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT));
 
@@ -115,9 +123,28 @@ ydn.crm.su.ui.Relationships.prototype.enterDocument = function() {
   handler.listen(input, goog.events.EventType.FOCUS, this.onInputFocus_);
   handler.listen(input, goog.events.EventType.BLUR, this.onRelBlur_);
   handler.listen(select, goog.events.EventType.CHANGE, this.onSelectChange_);
+  handler.listen(this.sel_record_, goog.ui.ac.AutoComplete.EventType.UPDATE, this.onInputChange_);
 
   var content = this.getContentElement();
   handler.listen(content, goog.events.EventType.CLICK, this.onContentClick_);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.su.ui.Relationships.prototype.onInputChange_ = function(e) {
+  var row = e.row;
+  if (row) {
+    var r = /** @type {SugarCrm.Record} */(row);
+    this.addRelationship({
+      module_name: r._module,
+      id: r.id,
+      name: r.name
+    });
+    this.clear_();
+  }
 };
 
 
@@ -145,6 +172,20 @@ ydn.crm.su.ui.Relationships.prototype.onInputFocus_ = function(e) {
  */
 ydn.crm.su.ui.Relationships.prototype.onSelectChange_ = function(e) {
   var div = goog.dom.getAncestorByClass(e.target, 'select-record');
+  var input = div.querySelector('input');
+  input.value = '';
+  input.removeAttribute('data-id');
+  var a = div.querySelector('a');
+  a.href = '';
+  goog.style.setElementShown(a, false);
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.su.ui.Relationships.prototype.clear_ = function() {
+  var div = this.getElement().querySelector('.select-record');
   var input = div.querySelector('input');
   input.value = '';
   input.removeAttribute('data-id');
@@ -220,7 +261,7 @@ ydn.crm.su.ui.Relationships.prototype.addRelationship = function(model) {
       return ch;
     }
   }
-  var item = new ydn.crm.su.ui.Relationships.Item(model, this.getDomHelper());
+  var item = new ydn.crm.su.ui.Relationships.Item(this.meta_, model, this.getDomHelper());
   this.addChild(item, true);
   return item;
 };
@@ -239,14 +280,16 @@ ydn.crm.su.ui.Relationships.ItemModel;
 
 /**
  * Relationship Item.
+ * @param {ydn.crm.su.Meta} meta
  * @param {ydn.crm.su.ui.Relationships.ItemModel} model
  * @param {goog.dom.DomHelper=} opt_dom Optional DOM helper.
  * @constructor
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.ui.Relationships.Item = function(model, opt_dom) {
+ydn.crm.su.ui.Relationships.Item = function(meta, model, opt_dom) {
   ydn.crm.su.ui.Relationships.Item.base(this, 'constructor', opt_dom);
+  this.meta_ = meta;
   this.setModel(model);
 };
 goog.inherits(ydn.crm.su.ui.Relationships.Item, goog.ui.Component);
@@ -274,7 +317,9 @@ ydn.crm.su.ui.Relationships.Item.prototype.createDom = function() {
   var dom = this.getDomHelper();
   var model = this.getModel();
   var icon = dom.createDom('span', 'icon small', ydn.crm.su.toModuleSymbol(model.module_name));
-  var content = dom.createDom('span', 'content');
+  var content = dom.createDom('a', 'content');
+  content.href = this.meta_.getRecordViewLink(model.module_name, model.id);
+  content.setAttribute('target', '_blank');
   var clear_btn = dom.createDom('div', 'clear', 'x');
   root.classList.add(ydn.crm.su.ui.Relationships.Item.CSS_NAME);
   root.classList.add('record-header');
