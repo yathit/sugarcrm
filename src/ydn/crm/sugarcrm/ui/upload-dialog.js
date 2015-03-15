@@ -24,6 +24,7 @@
 goog.provide('ydn.crm.su.ui.UploadDialog');
 goog.require('goog.dom');
 goog.require('goog.soy');
+goog.require('ydn.crm.su.ui.Relationships');
 goog.require('ydn.crm.su.ui.widget.SelectRecord');
 goog.require('ydn.ui');
 goog.require('ydn.ui.MessageDialog');
