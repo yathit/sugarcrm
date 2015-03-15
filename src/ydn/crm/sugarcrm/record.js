@@ -288,26 +288,36 @@ ydn.crm.su.Record.moduleAsVerb = function(name) {
 
 
 /**
- * Get suitable title of this record.
+ * Get suitable label of given record.
+ * @param {Object} obj
+ * @return {string}
+ */
+ydn.crm.su.Record.getLabel = function(obj) {
+  if (!obj) {
+    return '';
+  }
+  if (obj['name']) {
+    return obj['name'];
+  }
+  var full_name = obj['full_name'] || obj['name'];
+  if (full_name) {
+    return full_name;
+  } else if (obj['first_name'] || obj['last_name']) {
+    var first_name = (obj['first_name'] || '').trim();
+    var last_name = (obj['last_name'] || '').trim();
+    return first_name + ' ' + last_name;
+  } else {
+    return obj['id'];
+  }
+};
+
+
+/**
+ * Get suitable label of this record.
  * @return {string}
  */
 ydn.crm.su.Record.prototype.getLabel = function() {
-  if (!this.obj) {
-    return '';
-  }
-  if (this.obj['name']) {
-    return this.obj['name'];
-  }
-  var full_name = this.obj['full_name'] || this.obj['name'];
-  if (full_name) {
-    return full_name;
-  } else if (this.obj['first_name'] || this.obj['last_name']) {
-    var first_name = (this.obj['first_name'] || '').trim();
-    var last_name = (this.obj['last_name'] || '').trim();
-    return first_name + ' ' + last_name;
-  } else {
-    return this.obj[this.key_path];
-  }
+  return ydn.crm.su.Record.getLabel(this.obj);
 };
 
 

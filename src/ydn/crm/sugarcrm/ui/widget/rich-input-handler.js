@@ -60,7 +60,7 @@ ydn.crm.su.ui.widget.RichInputHandler.prototype.selectRow = function(row) {
       .selectRow.call(this, row);
   var input = this.ac_.getTarget();
   var record = /** @type {SugarCrm.Record} */(row);
-  input.value = record.name;
+  input.value = ydn.crm.su.Record.getLabel(record);
   input.setAttribute('data-id', record.id);
   input.setAttribute('data-name', record.name);
   var a = input.nextElementSibling;

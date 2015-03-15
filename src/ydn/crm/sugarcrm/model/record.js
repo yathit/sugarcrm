@@ -658,9 +658,18 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
 
   var modules = [];
   var info = this.getModuleInfo();
-  for (var i = 0; i < ydn.crm.su.Modules.length; i++) {
-    if (ydn.crm.su.Modules[i].toLowerCase() in info.link_fields) {
-      modules.push(ydn.crm.su.Modules[i]);
+  if (info.link_fields) {
+    for (var i = 0; i < ydn.crm.su.Modules.length; i++) {
+      if (ydn.crm.su.Modules[i].toLowerCase() in info.link_fields) {
+        modules.push(ydn.crm.su.Modules[i]);
+      }
+    }
+  } else {
+    var mn = this.getModuleName();
+    if (mn == ydn.crm.su.ModuleName.CONTACTS || mn == ydn.crm.su.ModuleName.LEADS) {
+      modules = [ydn.crm.su.ModuleName.CALLS];
+    } else {
+      modules = [ydn.crm.su.ModuleName.CONTACTS];
     }
   }
 

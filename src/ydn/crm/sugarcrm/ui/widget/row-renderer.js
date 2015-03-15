@@ -28,7 +28,7 @@ ydn.crm.su.ui.widget.RowRenderer.prototype.renderRow = function(row, token, elem
     return;
   }
   var record = /** @type {SugarCrm.Record} */(row['data']);
-  var label = record.name;
+  var label = ydn.crm.su.Record.getLabel(record);
   // label as name itself is not distinguishable, so append by email,
   // account_name, id, etc.
   var email = ydn.crm.su.Record.getEmail(record);
