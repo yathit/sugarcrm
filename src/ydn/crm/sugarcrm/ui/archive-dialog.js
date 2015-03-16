@@ -173,6 +173,23 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
 
 
 /**
+ * @param {ydn.crm.su.ui.ArchiveDialog} dialog
+ * @param {ydn.crm.su.Meta} meta
+ * @param {string} email
+ * @private
+ */
+ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
+  meta.queryByEmail(email).addCallback(function(x) {
+    var r = /** @type {SugarCrm.Record} */(x[0]);
+    if (!r) {
+      return;
+    }
+    dialog.addRelationship(r._module, r.id, r.name);
+  });
+};
+
+
+/**
  * Show modal dialog.
  * @param {ydn.crm.su.Meta} meta
  * @param {ydn.gmail.Utils.EmailInfo} info message info.
@@ -194,6 +211,12 @@ ydn.crm.su.ui.ArchiveDialog.showModel = function(meta, info, opt_record) {
     dialog.dispose();
   };
   dialog.dialog.showModal();
+
+  var emails = info.to_addrs.split(', ').concat(info.to_addrs.split(', '));
+  for (var i = 0; i < emails.length; i++) {
+    ydn.crm.su.ui.ArchiveDialog.addRel_(dialog, meta, emails[i]);
+  }
+
   return df;
 };
 

@@ -645,15 +645,15 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
   }
   var query = [{
     'store': ydn.crm.su.ModuleName.ACCOUNTS,
-    'index': 'ydn$email',
+    'index': 'ydn$emails',
     'key': email
   }, {
     'store': ydn.crm.su.ModuleName.CONTACTS,
-    'index': 'ydn$email',
+    'index': 'ydn$emails',
     'key': email
   }, {
     'store': ydn.crm.su.ModuleName.LEADS,
-    'index': 'ydn$email',
+    'index': 'ydn$emails',
     'key': email
   }];
   return this.getChannel().send(ydn.crm.ch.SReq.QUERY,

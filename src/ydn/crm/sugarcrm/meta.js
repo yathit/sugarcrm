@@ -62,6 +62,15 @@ ydn.crm.su.Meta.prototype.getChannel = function() {};
 
 
 /**
+ * Query people module records by email.
+ * @param {string} email email address to query.
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>} list of record. the record value
+ * has `_module` for respective module name.
+ */
+ydn.crm.su.Meta.prototype.queryByEmail = function(email) {};
+
+
+/**
  * Query module information.
  * @param {ydn.crm.su.ModuleName} name
  * @return {SugarCrm.ModuleInfo}
