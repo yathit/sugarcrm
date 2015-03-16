@@ -453,21 +453,49 @@ ydn.crm.su.ui.record.Record.prototype.handleHeaderMenuClick = function(e) {
 
 
 /**
+ * Process do save after confirmation.
+ * @param {SugarCrm.Record} patches
+ * @returns {!goog.async.Deferred}
+ * @private
+ */
+ydn.crm.su.ui.record.Record.prototype.doSave_ = function(patches) {
+  var is_new_record = this.getModel().isNew();
+  var id = is_new_record ? '' : this.getModel().getId();
+  var lid = ydn.crm.shared.logAnalyticBegin('ui.record', 'save', id);
+  return this.patch(patches).addCallbacks(function(r) {
+    ydn.crm.shared.logAnalyticEnd(lid, r.id, 1);
+  }, function(e) {
+    ydn.crm.shared.logAnalyticEnd(lid, null, {'message': String(e)});
+  });
+};
+
+
+/**
  * Save current data.
+ * @param {boolean=} opt_confirm confirm save by showing patch object.
  * @return {!goog.async.Deferred}
  */
-ydn.crm.su.ui.record.Record.prototype.doSave = function() {
+ydn.crm.su.ui.record.Record.prototype.doSave = function(opt_confirm) {
   var is_new_record = this.getModel().isNew();
   var patches = is_new_record ?
       this.body_panel.collectData() : this.body_panel.getPatch();
   if (patches) {
-    var id = is_new_record ? '' : this.getModel().getId();
-    var lid = ydn.crm.shared.logAnalyticBegin('ui.record', 'save', id);
-    return this.patch(patches).addCallbacks(function(r) {
-      ydn.crm.shared.logAnalyticEnd(lid, r.id, 1);
-    }, function(e) {
-      ydn.crm.shared.logAnalyticEnd(lid, null, {'message': String(e)});
-    });
+    if (opt_confirm) {
+      var title = chrome.i18n.getMessage('confirm_record_update');
+      var msg_el = document.createElement();
+      var btns = [{
+        name: ydn.ui.MessageDialog.Button.OK,
+        label: 'Submit',
+        isDefault: true
+      }, {
+        name: ydn.ui.MessageDialog.Button.CANCEL,
+        label: 'Close',
+        isCancel: true
+      }];
+      ydn.ui.MessageDialog(title, msg_el, btns);
+    } else {
+      this.doSave_(patches);
+    }
   } else {
     return goog.async.Deferred.fail(new Error('Nothing to save.'));
   }
