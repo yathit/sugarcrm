@@ -33,12 +33,13 @@ goog.require('ydn.crm.su.ui.widget.SelectRecord');
 /**
  * Relationship selection panel.
  * @param {ydn.crm.su.Meta} meta
+ * @param {ydn.crm.su.ModuleName} mn target relationship module.
  * @param {goog.dom.DomHelper=} opt_dom Optional DOM helper.
  * @constructor
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.ui.Relationships = function(meta, opt_dom) {
+ydn.crm.su.ui.Relationships = function(meta, mn, opt_dom) {
   ydn.crm.su.ui.Relationships.base(this, 'constructor', opt_dom);
   /**
    * @type {ydn.crm.su.Meta}
@@ -50,7 +51,7 @@ ydn.crm.su.ui.Relationships = function(meta, opt_dom) {
    * @private
    */
   this.sel_record_ = null;
-  var module_info = meta.getModuleInfo(ydn.crm.su.ModuleName.DOCUMENTS);
+  var module_info = meta.getModuleInfo(mn);
   /**
    * @type {Array<ydn.crm.su.ModuleName>}
    */
@@ -316,14 +317,15 @@ ydn.crm.su.ui.Relationships.Item.prototype.createDom = function() {
   var root = this.getElement();
   var dom = this.getDomHelper();
   var model = this.getModel();
-  var icon = dom.createDom('span', 'icon small', ydn.crm.su.toModuleSymbol(model.module_name));
+  var mn = /** @type {ydn.crm.su.ModuleName} */(model.module_name);
+  var icon = dom.createDom('span', 'icon small', ydn.crm.su.toModuleSymbol(mn));
   var content = dom.createDom('a', 'content');
-  content.href = this.meta_.getRecordViewLink(model.module_name, model.id);
+  content.href = this.meta_.getRecordViewLink(mn, model.id);
   content.setAttribute('target', '_blank');
   var clear_btn = dom.createDom('div', 'clear', 'x');
   root.classList.add(ydn.crm.su.ui.Relationships.Item.CSS_NAME);
   root.classList.add('record-header');
-  root.classList.add(model.module_name);
+  root.classList.add(mn);
   root.classList.add('flex-bar');
   content.textContent = model.name;
   root.appendChild(icon);

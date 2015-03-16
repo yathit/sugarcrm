@@ -24,7 +24,7 @@
 goog.provide('ydn.crm.su.ui.ArchiveDialog');
 goog.require('goog.dom');
 goog.require('goog.soy');
-goog.require('ydn.crm.su.ui.widget.SelectRecord');
+goog.require('ydn.crm.su.ui.Relationships');
 goog.require('ydn.string');
 goog.require('ydn.ui');
 goog.require('ydn.ui.MessageDialog');
@@ -62,22 +62,12 @@ ydn.crm.su.ui.ArchiveDialog = function(meta, info) {
    */
   this.meta_ = meta;
 
-  var module_info = meta.getModuleInfo(ydn.crm.su.ModuleName.EMAILS);
   /**
-   * @type {Array<ydn.crm.su.ModuleName>}
-   */
-  this.relationship_modules = ydn.crm.su.getRelationshipCacheModule(module_info,
-      [ydn.crm.su.ModuleName.ACCOUNTS,
-        ydn.crm.su.ModuleName.CONTACTS,
-        ydn.crm.su.ModuleName.OPPORTUNITIES,
-        ydn.crm.su.ModuleName.CASES]);
-
-  /**
-   * @type {ydn.crm.su.ui.widget.SelectRecord}
+   * @type {ydn.crm.su.ui.Relationships}
    * @private
    */
-  this.sel_record_ = new ydn.crm.su.ui.widget.SelectRecord(meta, undefined, this.dialog);
-  this.addRelationshipRow_();
+  this.rel_panel_ = new ydn.crm.su.ui.Relationships(meta, ydn.crm.su.ModuleName.EMAILS);
+  this.rel_panel_.render(content.querySelector('section[name="rel-panel"]'));
 
   var checks = content.querySelectorAll('ul input[type=checkbox]');
   for (var i = 0; i < checks.length; i++) {
@@ -174,23 +164,10 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
       attachments[i] = label.value;
     }
   }
-  var relationships = [];
-  var rows = content.querySelectorAll('.select-record');
-  for (var i = 0; i < rows.length; i++) {
-    var input = rows[i].querySelector('input');
-    var select = rows[i].querySelector('select');
-    var id = input.getAttribute('data-id');
-    if (!id || !input.value) {
-      continue;
-    }
-    relationships.push({
-      'module_name': ydn.crm.su.toModuleName(select.value),
-      'id': id
-    });
-  }
+
   return {
     document_names: attachments,
-    relationships: relationships
+    relationships: this.rel_panel_.getRelationships()
   };
 };
 
@@ -222,136 +199,17 @@ ydn.crm.su.ui.ArchiveDialog.showModel = function(meta, info, opt_record) {
 
 
 /**
- * @param {goog.events.BrowserEvent} e
- * @private
- */
-ydn.crm.su.ui.ArchiveDialog.prototype.onInputFocus_ = function(e) {
-  this.attachSelectRecord_(/** @type {Element} */(e.currentTarget));
-};
-
-
-/**
- * Attach select record auto completer.
- * @param {Element} input
- * @private
- */
-ydn.crm.su.ui.ArchiveDialog.prototype.attachSelectRecord_ = function(input) {
-  if (!(input instanceof HTMLInputElement)) {
-    window.console.error('input must be HTMLInputElement', input);
-    return;
-  }
-  var div = goog.dom.getAncestorByTagNameAndClass(input, 'div',
-      ydn.crm.su.ui.widget.SelectRecord.CSS_CLASS);
-  var sel = div.querySelector('select');
-  var mn = ydn.crm.su.toModuleName(sel.value);
-  this.sel_record_.setModule(mn);
-  this.sel_record_.attach(div);
-};
-
-
-/**
- * @return {Element}
- */
-ydn.crm.su.ui.ArchiveDialog.prototype.getRelationshipsPanel = function() {
-  var content = this.getContentElement();
-  return content.querySelector('[name=relationships]');
-};
-
-
-/**
- * Add a row for relationship.
- * @private
- * @return {Element} newly created record.
- */
-ydn.crm.su.ui.ArchiveDialog.prototype.addRelationshipRow_ = function() {
-  var div = this.getRelationshipsPanel();
-
-  var row = goog.soy.renderAsElement(templ.ydn.crm.inj.selectRecord, {
-    use_sel: true
-  });
-
-  var a = row.querySelector('a');
-  a.classList.add('spacer');
-
-  var select = row.querySelector('select');
-  for (var i = 0; i < this.relationship_modules.length; i++) {
-    var option = document.createElement('option');
-    option.value = this.relationship_modules[i];
-    option.textContent = this.relationship_modules[i];
-    select.appendChild(option);
-  }
-  var input = row.querySelector('input');
-
-  this.handler.listen(input, goog.events.EventType.FOCUS, this.onInputFocus_);
-  this.handler.listen(input, goog.events.EventType.BLUR, this.onRelBlur_);
-  this.handler.listen(select, goog.events.EventType.CHANGE, this.onSelectChange_);
-
-  div.appendChild(row);
-  return row;
-};
-
-
-/**
  * Add a relationship.
  * @param {string} mn module name.
  * @param {string} id
  * @param {string} name
  */
 ydn.crm.su.ui.ArchiveDialog.prototype.addRelationship = function(mn, id, name) {
-  var row = this.addRelRowIfNecessary_();
-  var select = row.querySelector('select');
-  select.value = mn;
-  if (select.selectedIndex >= 0) {
-    var input = row.querySelector('input.value');
-    input.setAttribute('data-id', id);
-    input.value = name;
-    this.addRelRowIfNecessary_();
-  } else {
-    throw new Error('record has not _module to add relationships');
-  }
-};
-
-
-/**
- * @param {goog.events.BrowserEvent} e
- * @private
- */
-ydn.crm.su.ui.ArchiveDialog.prototype.onSelectChange_ = function(e) {
-  var div = goog.dom.getAncestorByClass(e.target,
-      ydn.crm.su.ui.widget.SelectRecord.CSS_CLASS);
-  var input = div.querySelector('input');
-  input.value = '';
-  input.removeAttribute('data-id');
-  var a = div.querySelector('a');
-  a.href = '';
-  goog.style.setElementShown(a, false);
-};
-
-
-/**
- * @param {goog.events.BrowserEvent} e
- * @private
- */
-ydn.crm.su.ui.ArchiveDialog.prototype.onRelBlur_ = function(e) {
-  this.addRelRowIfNecessary_();
-};
-
-
-/**
- * @private
- * @return {Element} the empty row or newly created row.
- */
-ydn.crm.su.ui.ArchiveDialog.prototype.addRelRowIfNecessary_ = function() {
-  // add rows if no empty input in relationships.
-  var content = this.getRelationshipsPanel();
-  var inputs = content.querySelectorAll('input[class=value]');
-  for (var i = 0; i < inputs.length; i++) {
-    if (!inputs[i].value) {
-      return goog.dom.getAncestorByClass(inputs[i],
-          ydn.crm.su.ui.widget.SelectRecord.CSS_CLASS);
-    }
-  }
-  return this.addRelationshipRow_();
+  this.rel_panel_.addRelationship({
+    module_name: mn,
+    id: id,
+    name: name
+  });
 };
 
 
@@ -360,8 +218,8 @@ ydn.crm.su.ui.ArchiveDialog.prototype.addRelRowIfNecessary_ = function() {
  */
 ydn.crm.su.ui.ArchiveDialog.prototype.dispose = function() {
   this.meta_ = null;
-  this.sel_record_.dispose();
-  this.sel_record_ = null;
+  this.rel_panel_.dispose();
+  this.rel_panel_ = null;
   ydn.crm.su.ui.ArchiveDialog.base(this, 'dispose');
 };
 

@@ -25,7 +25,6 @@ goog.provide('ydn.crm.su.ui.UploadDialog');
 goog.require('goog.dom');
 goog.require('goog.soy');
 goog.require('ydn.crm.su.ui.Relationships');
-goog.require('ydn.crm.su.ui.widget.SelectRecord');
 goog.require('ydn.ui');
 goog.require('ydn.ui.MessageDialog');
 
@@ -76,22 +75,13 @@ ydn.crm.su.ui.UploadDialog = function(meta, mid, file_name) {
    */
   this.meta_ = meta;
 
-  var module_info = meta.getModuleInfo(ydn.crm.su.ModuleName.DOCUMENTS);
   /**
-   * @type {Array<ydn.crm.su.ModuleName>}
-   */
-  this.relationship_modules = ydn.crm.su.getRelationshipCacheModule(module_info,
-      [ydn.crm.su.ModuleName.ACCOUNTS,
-        ydn.crm.su.ModuleName.CONTACTS,
-        ydn.crm.su.ModuleName.OPPORTUNITIES,
-        ydn.crm.su.ModuleName.CASES]);
-
-  /**
-   * @type {ydn.crm.su.ui.widget.SelectRecord}
+   * @type {ydn.crm.su.ui.Relationships}
    * @private
    */
-  this.sel_record_ = new ydn.crm.su.ui.widget.SelectRecord(meta, undefined, this.dialog);
-  this.addRelationshipRow_();
+  this.rel_panel_ = new ydn.crm.su.ui.Relationships(meta, ydn.crm.su.ModuleName.DOCUMENTS);
+  this.rel_panel_.render(content.querySelector('section[name="rel-panel"]'));
+
 };
 goog.inherits(ydn.crm.su.ui.UploadDialog, ydn.ui.MessageDialog);
 
@@ -113,24 +103,11 @@ ydn.crm.su.ui.UploadDialog.prototype.getReturnValue = function() {
   var content = this.getContentElement();
   var doc_el = content.querySelector('input[name=document_name]');
   var description_el = content.querySelector('textarea[name=description]');
-  var relationships = [];
-  var rows = content.querySelectorAll('.select-record');
-  for (var i = 0; i < rows.length; i++) {
-    var input = rows[i].querySelector('input');
-    var select = rows[i].querySelector('select');
-    var id = input.getAttribute('data-id');
-    if (!id || !input.value) {
-      continue;
-    }
-    relationships.push({
-      'module_name': ydn.crm.su.toModuleName(select.value),
-      'id': id
-    });
-  }
+
   return {
     document_name: doc_el.value,
     description: description_el.value,
-    relationships: relationships
+    relationships: this.rel_panel_.getRelationships()
   };
 };
 
@@ -159,111 +136,12 @@ ydn.crm.su.ui.UploadDialog.showModel = function(meta, mid, file_name) {
 
 
 /**
- * @param {goog.events.BrowserEvent} e
- * @private
- */
-ydn.crm.su.ui.UploadDialog.prototype.onSelectChange_ = function(e) {
-  var div = goog.dom.getAncestorByClass(e.target, 'select-record');
-  var input = div.querySelector('input');
-  input.value = '';
-  input.removeAttribute('data-id');
-  var a = div.querySelector('a');
-  a.href = '';
-  goog.style.setElementShown(a, false);
-};
-
-
-/**
- * @param {goog.events.BrowserEvent} e
- * @private
- */
-ydn.crm.su.ui.UploadDialog.prototype.onInputFocus_ = function(e) {
-  this.attachSelectRecord_(/** @type {Element} */(e.currentTarget));
-};
-
-
-/**
- * Attach select record auto completer.
- * @param {Element} input
- * @private
- */
-ydn.crm.su.ui.UploadDialog.prototype.attachSelectRecord_ = function(input) {
-  if (!(input instanceof HTMLInputElement)) {
-    window.console.error('input must be HTMLInputElement', input);
-    return;
-  }
-  var div = goog.dom.getAncestorByTagNameAndClass(input, 'div', 'select-record');
-  var sel = div.querySelector('select');
-  var mn = ydn.crm.su.toModuleName(sel.value);
-  this.sel_record_.setModule(mn);
-  this.sel_record_.attach(div);
-};
-
-
-/**
- * Add a row for relationship.
- * @private
- */
-ydn.crm.su.ui.UploadDialog.prototype.addRelationshipRow_ = function() {
-  var content = this.getContentElement();
-  var div = content.querySelector('.upload-dialog');
-
-  var row = goog.soy.renderAsElement(templ.ydn.crm.inj.selectRecord, {
-    use_sel: true
-  });
-
-  var a = row.querySelector('a');
-  a.classList.add('spacer');
-
-  var select = row.querySelector('select');
-  for (var i = 0; i < this.relationship_modules.length; i++) {
-    var option = document.createElement('option');
-    option.value = this.relationship_modules[i];
-    option.textContent = this.relationship_modules[i];
-    select.appendChild(option);
-  }
-  var input = row.querySelector('input');
-
-  this.handler.listen(input, goog.events.EventType.FOCUS, this.onInputFocus_);
-  this.handler.listen(input, goog.events.EventType.BLUR, this.onRelBlur_);
-  this.handler.listen(select, goog.events.EventType.CHANGE, this.onSelectChange_);
-
-  div.appendChild(row);
-};
-
-
-/**
- * @param {goog.events.BrowserEvent} e
- * @private
- */
-ydn.crm.su.ui.UploadDialog.prototype.onRelBlur_ = function(e) {
-  this.addRelRowIfNecessary_();
-};
-
-
-/**
- * @private
- */
-ydn.crm.su.ui.UploadDialog.prototype.addRelRowIfNecessary_ = function() {
-  // add rows if no empty input in relationships.
-  var content = this.getContentElement();
-  var inputs = content.querySelectorAll('input[class=value]');
-  for (var i = 0; i < inputs.length; i++) {
-    if (!inputs[i].value) {
-      return;
-    }
-  }
-  this.addRelationshipRow_();
-};
-
-
-/**
  * @override
  */
 ydn.crm.su.ui.UploadDialog.prototype.dispose = function() {
   this.meta_ = null;
-  this.sel_record_.dispose();
-  this.sel_record_ = null;
+  this.rel_panel_.dispose();
+  this.rel_panel_ = null;
   ydn.crm.su.ui.UploadDialog.base(this, 'dispose');
 };
 
