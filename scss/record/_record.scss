@@ -158,9 +158,23 @@
 }
 
 .record-patch-compare {
+  > div {
+    border: thin solid lightgray;
+    padding: 4px;
+  }
+
+  > div:last-child {
+    border-left: none;
+  }
+
   pre {
     overflow: auto;
   }
+}
+
+.record-patch-note {
+  margin: 8px 0;
+  font-style: italic;
 }
 
 .upload-dialog, .archive-dialog {

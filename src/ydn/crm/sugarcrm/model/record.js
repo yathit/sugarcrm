@@ -397,6 +397,13 @@ ydn.crm.su.model.Record.prototype.updateRecord_ = function(patch) {
 
 
 /**
+ * @define {boolean} when sending a patch, old field that is not changed,
+ * are also to be submitted.
+ */
+ydn.crm.su.model.Record.PATCH_WITH_OLD_FIELDS = true;
+
+
+/**
  * Patch record and update to server.
  * @param {Object} patches field name-value pair as Object.
  * @return {!goog.async.Deferred.<SugarCrm.Record>} Resolved with record object
@@ -406,10 +413,14 @@ ydn.crm.su.model.Record.prototype.patch = function(patches) {
   if (!patches || Object.keys(patches) == 0) {
     return goog.async.Deferred.succeed(false);
   }
-  var obj = ydn.object.clone(this.record.getData());
-  for (var key in patches) {
-    obj[key] = patches[key];
+  var obj = /** @type {SugarCrm.Record} */(patches);
+  if (ydn.crm.su.model.Record.PATCH_WITH_OLD_FIELDS) {
+    obj = ydn.object.clone(this.record.getData());
+    for (var key in patches) {
+      obj[key] = patches[key];
+    }
   }
+
   var record = new ydn.crm.su.Record(this.getDomain(), this.getModuleName(), obj);
 
   return this.parent.saveRecord(record).addCallback(function(x) {

@@ -206,7 +206,7 @@ ydn.crm.su.model.NameGroup.prototype.getAdditionalOptions = function() {
  * @inheritDoc
  */
 ydn.crm.su.model.NameGroup.prototype.isGroupValueEditable = function() {
-  return false;
+  return !this.hasField('full_name');
 };
 
 
