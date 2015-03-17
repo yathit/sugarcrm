@@ -33,7 +33,7 @@ goog.inherits(ydn.crm.su.model.NameGroup, ydn.crm.su.model.Group);
  * @return {string}
  */
 ydn.crm.su.model.NameGroup.makeFullName = function(full_name, first_name,
-                                                         last_name) {
+                                                   last_name) {
   var fn = '';
   if (!full_name) {
     fn += first_name || '';
@@ -206,7 +206,7 @@ ydn.crm.su.model.NameGroup.prototype.getAdditionalOptions = function() {
  * @inheritDoc
  */
 ydn.crm.su.model.NameGroup.prototype.isGroupValueEditable = function() {
-  return !this.hasField('full_name');
+  return true;
 };
 
 

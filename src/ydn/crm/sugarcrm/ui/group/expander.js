@@ -24,12 +24,6 @@ goog.require('ydn.crm.su.ui.group.Group');
 ydn.crm.su.ui.group.Expander = function(model, opt_dom) {
   goog.base(this, model, opt_dom);
   /**
-   * Patch object on edit.
-   * @protected
-   * @type {?Object}
-   */
-  this.patches = null;
-  /**
    * @protected
    * @type {goog.events.KeyHandler}
    */
@@ -108,7 +102,9 @@ ydn.crm.su.ui.group.Expander.prototype.expand = function(val) {
   if (val) {
     root.classList.add('edit');
     if (label.tagName == 'INPUT') {
+      this.onLabelChanged();
       label.setAttribute('disabled', 'disabled');
+      label.value = 'Edit ' + this.getModel().getGroupName();
     } else {
       label.textContent = 'Edit ' + this.getModel().getGroupName();
     }
@@ -118,6 +114,7 @@ ydn.crm.su.ui.group.Expander.prototype.expand = function(val) {
     root.classList.remove('edit');
     if (label.tagName == 'INPUT') {
       label.removeAttribute('disabled');
+      label.value = this.getModel().getGroupValue();
     } else {
       label.textContent = this.getModel().getGroupValue();
     }
@@ -143,7 +140,7 @@ ydn.crm.su.ui.group.Expander.prototype.enterDocument = function() {
     var header = this.getElement().querySelector('.' +
         ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER);
     header.classList.add('field-like');
-    this.getHandler().listen(input, 'blur', this.onLabelChanged);
+    this.getHandler().listen(input, 'blur', this.onLabelChanged_);
     this.keyHandler = new goog.events.KeyHandler(input);
     this.getHandler().listen(this.keyHandler, goog.events.KeyHandler.EventType.KEY, this.onInputKey_);
   }
@@ -156,30 +153,53 @@ ydn.crm.su.ui.group.Expander.prototype.enterDocument = function() {
  */
 ydn.crm.su.ui.group.Expander.prototype.onInputKey_ = function(k) {
   if (k.keyCode == goog.events.KeyCodes.ENTER) {
-    this.onLabelChanged(k);
+    this.onLabelChanged();
   }
 };
 
 
 /**
  * @param {goog.events.Event} ev
+ * @private
+ */
+ydn.crm.su.ui.group.Expander.prototype.onLabelChanged_ = function(ev) {
+  this.onLabelChanged();
+};
+
+
+/**
+ * Set group value.
+ * @param {string} val
+ * @return {Object} return a patch object as result of setting group value.
+ * return `null` if no change required.
  * @protected
  */
-ydn.crm.su.ui.group.Expander.prototype.onLabelChanged = function(ev) {
+ydn.crm.su.ui.group.Expander.prototype.setGroupValue = function(val) {
+  var model = this.getModel();
+  var patch = model.setGroupValue(val);
+  if (patch) {
+    for (var field_name in patch) {
+      if (model.hasField(field_name)) {
+        this.simulateEditByField(field_name, patch[field_name]);
+      }
+    }
+  }
+  return patch;
+};
+
+
+/**
+ * @protected
+ */
+ydn.crm.su.ui.group.Expander.prototype.onLabelChanged = function() {
 
   var model = this.getModel();
   var input = this.getElement().querySelector('.' +
       ydn.crm.su.ui.group.GroupRenderer.CSS_CLASS_HEADER + ' input');
-  var patch = model.setGroupValue(input.value);
+  var patch = this.setGroupValue(input.value);
   if (patch) {
     var ce = new ydn.crm.su.ui.events.ChangedEvent(patch, this);
     this.dispatchEvent(ce);
-    if (!ce.defaultPrevented) {
-      if (!this.patches) {
-        this.patches = {};
-      }
-      goog.object.extend(this.patches, ce.patches);
-    }
   }
 };
 
@@ -251,59 +271,3 @@ ydn.crm.su.ui.group.Expander.prototype.disposeInternal = function() {
   ydn.crm.su.ui.group.Expander.base(this, 'disposeInternal');
 };
 
-
-/**
-* @inheritDoc
-*/
-ydn.crm.su.ui.group.Expander.prototype.collectData = function() {
-  var out = goog.base(this, 'collectData');
-  if (this.patches) {
-    var new_out = {};
-    for (var name in this.patches) {
-      new_out[name] = this.patches[name];
-    }
-    if (out) {
-      for (var name in out) {
-        if (goog.isDefAndNotNull(out[name])) {
-          new_out[name] = out[name];
-        }
-      }
-    }
-    return new_out;
-  }
-  return out;
-};
-
-
-/**
-* @inheritDoc
-*/
-ydn.crm.su.ui.group.Expander.prototype.hasChanged = function() {
-  if (this.patches) {
-    return true;
-  }
-  return goog.base(this, 'hasChanged');
-};
-
-
-/**
- * @inheritDoc
- */
-ydn.crm.su.ui.group.Expander.prototype.getPatch = function() {
-  var out = goog.base(this, 'getPatch');
-  if (this.patches) {
-    var new_out = {};
-    for (var name in this.patches) {
-      new_out[name] = this.patches[name];
-    }
-    if (out) {
-      for (var name in out) {
-        if (out[name]) {
-          new_out[name] = out[name];
-        }
-      }
-    }
-    return new_out;
-  }
-  return out;
-};
