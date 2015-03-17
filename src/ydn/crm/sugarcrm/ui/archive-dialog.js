@@ -52,7 +52,7 @@ ydn.crm.su.ui.ArchiveDialog = function(meta, info) {
   var title = 'Archive email';
   var content = ydn.crm.su.ui.ArchiveDialog.renderContent_(info);
 
-  var btns = [ydn.ui.MessageDialog.Button.OK, ydn.ui.MessageDialog.Button.CANCEL];
+  var btns = ydn.ui.MessageDialog.createOKCancelButtonSet();
   ydn.crm.su.ui.ArchiveDialog.base(this, 'constructor', title, content, btns);
 
   /**

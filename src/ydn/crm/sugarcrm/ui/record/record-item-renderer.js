@@ -102,7 +102,7 @@ ydn.crm.su.ui.record.RecordItemRenderer.prototype.render = function(el, r) {
   el.setAttribute('data-id', r.id);
   var root = el.firstElementChild;
 
-  var mn = ydn.crm.su.toModuleName(r._module);
+  var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
   root.classList.add(mn);
   var record = new ydn.crm.su.model.Record(this.sugar_,
       new ydn.crm.su.Record(this.sugar_.getDomain(), mn, r));

@@ -96,6 +96,7 @@ ydn.crm.su.ui.SearchResultList.prototype.getCssClass = function() {
 ydn.crm.su.ui.SearchResultList.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
+  root.classList.add(this.getCssClass());
   var dom = this.getDomHelper();
   var header = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT,
@@ -125,7 +126,7 @@ ydn.crm.su.ui.SearchResultList.prototype.enterDocument = function() {
   var model = this.getModel();
   hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.RESET, this.onReset_);
   hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.ADD, this.onAddResult_);
-  hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.UPDATED, this.onAddResult_);
+  hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.PROGRESS, this.onProgress_);
 };
 
 
@@ -143,6 +144,13 @@ ydn.crm.su.ui.SearchResultList.prototype.getUlElement = function() {
  * @private
  */
 ydn.crm.su.ui.SearchResultList.prototype.onReset_ = function(e) {
+  this.reset();
+};
+
+
+/**
+ */
+ydn.crm.su.ui.SearchResultList.prototype.reset = function() {
   this.getUlElement().innerHTML = '';
 };
 
@@ -167,6 +175,15 @@ ydn.crm.su.ui.SearchResultList.prototype.onAddResult_ = function(e) {
  */
 ydn.crm.su.ui.SearchResultList.prototype.onUpdateResult_ = function(e) {
   this.updateResult(e.index);
+};
+
+
+/**
+ * @param {ydn.crm.su.model.events.SearchProgressEvent} e
+ * @private
+ */
+ydn.crm.su.ui.SearchResultList.prototype.onProgress_ = function(e) {
+  console.log(e.level);
 };
 
 

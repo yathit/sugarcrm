@@ -22,6 +22,7 @@
 
 
 goog.provide('ydn.crm.su.ui.HomeBar');
+goog.require('goog.ui.CheckBoxMenuItem');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.Css3MenuButtonRenderer');
 goog.require('goog.ui.Menu');
@@ -83,15 +84,26 @@ ydn.crm.su.ui.HomeBar.prototype.createDom = function() {
   var add_menu = new goog.ui.Menu(dom);
   for (var i = 0; i < ydn.crm.su.EDITABLE_MODULES.length; i++) {
     var mn = ydn.crm.su.EDITABLE_MODULES[i];
-    add_menu.addChild(new goog.ui.MenuItem('New ' + mn, mn), true);
+    add_menu.addChild(new goog.ui.MenuItem('New ' + mn, mn, dom), true);
   }
   var svg = ydn.crm.ui.createSvgIcon('add');
   var add_btn = new goog.ui.MenuButton(svg, add_menu,
       null, dom);
 
+  var target_menu = new goog.ui.Menu(dom);
+  for (var i = 0; i < ydn.crm.su.CacheModules.length; i++) {
+    var mn = ydn.crm.su.CacheModules[i];
+    target_menu.addChild(new goog.ui.CheckBoxMenuItem(mn, mn, dom), true);
+  }
+  var svg_f = ydn.crm.ui.createSvgIcon('filter-list');
+  var target_btn = new goog.ui.MenuButton(svg_f, target_menu,
+      null, dom);
+
   var search_input = new wgui.TextInput('');
 
   this.addChild(add_btn, true);
+  this.addChild(target_btn, true);
+  goog.style.setElementShown(add_btn.getElement(), false);
   this.addChild(search_input, true);
 };
 
@@ -101,7 +113,25 @@ ydn.crm.su.ui.HomeBar.prototype.createDom = function() {
  * @return {wgui.TextInput}
  */
 ydn.crm.su.ui.HomeBar.prototype.getSearchInput = function() {
-  return /** @type {wgui.TextInput} */ (this.getChildAt(1));
+  return /** @type {wgui.TextInput} */ (this.getChildAt(2));
+};
+
+
+/**
+ * @protected
+ * @return {goog.ui.MenuButton}
+ */
+ydn.crm.su.ui.HomeBar.prototype.getFilterMenuButton = function() {
+  return /** @type {goog.ui.MenuButton} */ (this.getChildAt(1));
+};
+
+
+/**
+ * @protected
+ * @return {goog.ui.Menu}
+ */
+ydn.crm.su.ui.HomeBar.prototype.getFilterMenu = function() {
+  return this.getFilterMenuButton().getMenu();
 };
 
 
@@ -113,6 +143,24 @@ ydn.crm.su.ui.HomeBar.prototype.enterDocument = function() {
   var search_input = this.getSearchInput();
   this.getHandler().listen(search_input, goog.ui.Component.EventType.ACTION,
       this.onSearch_, true);
+
+  this.getHandler().listen(this.getFilterMenu(), goog.ui.Component.EventType.ACTION,
+      this.onFilter_);
+};
+
+
+/**
+ * @param {goog.events.Event} e
+ * @private
+ */
+ydn.crm.su.ui.HomeBar.prototype.onFilter_ = function(e) {
+  var item = /** @type {goog.ui.CheckBoxMenuItem} */(e.target);
+  var mn = /** @type {ydn.crm.su.ModuleName} */ (item.getModel());
+  if (item.isChecked()) {
+    this.getModel().setTargetModule(mn);
+  } else {
+    this.getModel().setTargetModule(null);
+  }
 };
 
 

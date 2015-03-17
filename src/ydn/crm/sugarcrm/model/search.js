@@ -22,6 +22,10 @@
  */
 
 goog.provide('ydn.crm.su.model.Search');
+goog.require('goog.array');
+goog.require('goog.events.EventTarget');
+goog.require('goog.math');
+goog.require('ydn.crm.su.model.events');
 
 
 
@@ -83,11 +87,30 @@ ydn.crm.su.model.Search.prototype.getSugar = function() {
 
 
 /**
+ * Set target module.
+ * @param {?ydn.crm.su.ModuleName} mn set `null` to clear any target module.
+ */
+ydn.crm.su.model.Search.prototype.setTargetModule = function(mn) {
+  if (mn == this.record_type_) {
+    return;
+  }
+  this.record_type_ = mn;
+  var q = this.q_;
+  this.q_ = '';
+  this.search(q);
+};
+
+
+/**
  * Search records.
  * @param {string} query
  */
 ydn.crm.su.model.Search.prototype.search = function(query) {
-  this.q_ = query.trim();
+  query = query.trim();
+  if (query == this.q_) {
+    return;
+  }
+  this.q_ = query;
   var ev = new ydn.crm.su.model.events.SearchResetEvent(this.q_, this);
   this.dispatchEvent(ev);
   this.stack_ = new ydn.crm.su.model.Search.Stack(this.record_type_);
@@ -118,17 +141,19 @@ ydn.crm.su.model.Search.prototype.addResult_ = function(r, index, q) {
   } else {
     r._score = 0.5;
   }
-  var idx = goog.array.binarySelect(this.results_, function(a) {
+
+  var idx = goog.array.binarySearch(this.results_, function(a) {
     return a.id == r.id ? 0 : a._score > r._score ? 1 : -1;
   });
   if (idx < 0) {
-    // existing record
-    var ex = this.results_[-idx];
-    ex._score += r._score;
-    idx = -idx;
-  } else {
+    idx = -(idx + 1);
     goog.array.insertAt(this.results_, r, idx);
+  } else {
+    // existing record
+    var ex = this.results_[idx];
+    ex._score += r._score;
   }
+
   var ev = new ydn.crm.su.model.events.SearchResultAddEvent(idx, this);
   this.dispatchEvent(ev);
 };
@@ -142,9 +167,6 @@ ydn.crm.su.model.Search.prototype.addResult_ = function(r, index, q) {
  * @private
  */
 ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) {
-  if (ydn.crm.su.model.Search.DEBUG) {
-    window.console.log(m_name, index, q);
-  }
 
   this.sugar_.listRecord(m_name, index, q, true).addCallbacks(function(arr) {
     if (ydn.crm.su.model.Search.DEBUG) {
@@ -187,12 +209,18 @@ ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
 
   var task = this.stack_.getTask();
   var q = this.q_;
+
+  var m_name = this.stack_.getModule();
+  if (ydn.crm.su.model.Search.DEBUG) {
+    window.console.log(m_name, task, q);
+  }
+
   if (task == ydn.crm.su.model.Search.Task.ID) {
     // Task 0. query email
-    this.updateSearchFor_(this.stack_.getModule(), 'id', this.q_);
+    this.updateSearchFor_(m_name, 'id', this.q_);
   } else if (task == ydn.crm.su.model.Search.Task.EMAIL) {
     // Task 0. query email
-    this.updateSearchFor_(this.stack_.getModule(), 'ydn$emails', this.q_);
+    this.updateSearchFor_(m_name, 'ydn$emails', this.q_);
   } else if (task == ydn.crm.su.model.Search.Task.PHONE) {
     // Task 1. query phone
     var m = q.match(/\d/g);
@@ -202,17 +230,20 @@ ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
       this.updateSearch_();
       return;
     }
-    this.updateSearchFor_(this.stack_.getModule(), 'ydn$phones', this.q_);
+    this.updateSearchFor_(m_name, 'ydn$phones', this.q_);
   } else if (task == ydn.crm.su.model.Search.Task.FULL_TEXT) {
     // Task 2. full text search on name
-    this.sugar_.searchRecord(this.stack_.getModule(), q).addCallbacks(function(x) {
+    this.sugar_.searchRecord(m_name, q, true).addCallbacks(function(x) {
       var arr = /** @type {!Array<!SugarCrm.ScoredRecord>} */ (x);
+      if (ydn.crm.su.model.Search.DEBUG) {
+        window.console.log(m_name, task, x);
+      }
       for (var i = 0; i < arr.length; i++) {
         this.addResult_(arr[i], 'full-text', q);
       }
       this.updateSearch_();
     }, function(e) {
-      throw e;
+      window.console.error(e);
     }, this);
   } else {
     // done.
@@ -228,7 +259,6 @@ ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
 ydn.crm.su.model.Search.prototype.getResultAt = function(idx) {
   return this.results_[idx];
 };
-
 
 
 /**
@@ -293,20 +323,21 @@ ydn.crm.su.model.Search.tasks = [ydn.crm.su.model.Search.Task.ID,
  * @return {boolean} return `true` if next execution task exist.
  */
 ydn.crm.su.model.Search.Stack.prototype.next = function() {
-  if (this.target_mn_ == -1) {
-    // all modules
-    this.task_idx_++;
-    if (this.task_idx_ >= ydn.crm.su.model.Search.tasks.length) {
+  this.task_idx_++;
+  if (this.task_idx_ >= ydn.crm.su.model.Search.tasks.length) {
+    if (this.target_mn_) {
+      return false;
+    } else {
       this.task_idx_ = 0;
       this.mn_idx_++;
+      if (this.mn_idx_ >= ydn.crm.su.CacheModules.length) {
+        return false;
+      } else {
+        return true;
+      }
     }
-    if (this.mn_idx_ >= ydn.crm.su.CacheModules.length) {
-      return false;
-    }
-    return true;
   } else {
-    // specific module
-    return false;
+    return true;
   }
 };
 
@@ -316,7 +347,7 @@ ydn.crm.su.model.Search.Stack.prototype.next = function() {
  * @return {ydn.crm.su.model.Search.Task}
  */
 ydn.crm.su.model.Search.Stack.prototype.getTask = function() {
-  return ydn.crm.su.model.Search.Task[this.task_idx_];
+  return ydn.crm.su.model.Search.tasks[this.task_idx_];
 };
 
 

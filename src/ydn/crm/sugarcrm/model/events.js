@@ -314,6 +314,7 @@ goog.inherits(ydn.crm.su.model.events.SearchEvent, goog.events.Event);
  * @enum {string} event type for search events.
  */
 ydn.crm.su.model.events.SearchEvent.Type = {
+  PROGRESS: 'pg',
   UPDATED: 'up',
   ADD: 'ad',
   RESET: 'rs'
@@ -371,7 +372,7 @@ goog.inherits(ydn.crm.su.model.events.SearchUpdatedEvent, ydn.crm.su.model.event
  * @struct
  */
 ydn.crm.su.model.events.SearchProgressEvent = function(level, opt_event_target) {
-  goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.UPDATED, opt_event_target);
+  goog.base(this, ydn.crm.su.model.events.SearchEvent.Type.PROGRESS, opt_event_target);
   /**
    * @final
    * @type {number}

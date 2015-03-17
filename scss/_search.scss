@@ -14,6 +14,13 @@
   overflow: auto;
 }
 
+.snippet-panel {
+  > .content > UL {
+    list-style: none;
+    padding-left: 0;
+  }
+}
+
 
 
 

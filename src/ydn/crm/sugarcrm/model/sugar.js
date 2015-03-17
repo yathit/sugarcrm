@@ -626,6 +626,8 @@ ydn.crm.su.model.Sugar.prototype.searchRecord = function(module_name, q, opt_fet
           var r = /** @type {SugarCrm.ScoredRecord} */(res.fullTextResult[i].record);
           if (r) {
             r._score = res.fullTextResult[i].score;
+            r._module = module_name;
+            out.push(r);
           }
         }
         return out;

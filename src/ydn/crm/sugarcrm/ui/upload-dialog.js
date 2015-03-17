@@ -59,7 +59,7 @@ ydn.crm.su.ui.UploadDialog = function(meta, mid, file_name) {
   var doc_el = content.querySelector('input[name=document_name]');
   doc_el.value = file_name;
 
-  var btns = [ydn.ui.MessageDialog.Button.OK, ydn.ui.MessageDialog.Button.CANCEL];
+  var btns = ydn.ui.MessageDialog.createOKCancelButtonSet();
   ydn.crm.su.ui.UploadDialog.base(this, 'constructor', title, content, btns);
 
   /**
