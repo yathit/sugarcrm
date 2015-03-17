@@ -10,6 +10,7 @@ goog.require('ydn.crm.su.ui.group.AssignUser');
 goog.require('ydn.crm.su.ui.group.Email');
 goog.require('ydn.crm.su.ui.group.Name');
 goog.require('ydn.crm.su.ui.group.Phone');
+goog.require('ydn.crm.su.ui.group.SuggestedRecord');
 goog.require('ydn.crm.test');
 
 var attach_el = document.getElementById('attach-el');
@@ -28,6 +29,7 @@ function test_new_email() {
   var group = record.getGroupModel('email');
   var panel = new ydn.crm.su.ui.group.Email(group);
   panel.render(attach_el);
+  panel.refresh();
   panel.simulateEditByField('email1', 'abc@example.com');
 
   var data = panel.collectData();
@@ -35,20 +37,67 @@ function test_new_email() {
   assertEquals('edited value', 'abc@example.com', data['email1']);
 }
 
-function test_edit_email() {
+function test_email_edit() {
   var record = ydn.crm.test.createContactRecord();
   var group = record.getGroupModel('email');
   var panel = new ydn.crm.su.ui.group.Email(group);
   panel.render(attach_el);
+  panel.refresh();
   panel.simulateEditByField('email1', 'abc@example.com');
 
   var email = record.value('email');
+  assertTrue('edited', panel.hasChanged());
   var patch = panel.getPatch();
-  assertTrue('edited', !!patch);
   assertEquals('edited value', 'abc@example.com', patch['email1']);
   assertUndefined('email2', patch['email2']);
   assertNotNullNorUndefined(patch['email']);
   assertEquals(email.length, patch['email'].length);
+}
+
+
+function test_email_no_edit() {
+  var r = {
+    "email": [
+      {
+        "email_address": "poholskyc@perich.com",
+        "email_address_caps": "POHOLSKYC@PERICH.COM",
+        "invalid_email": "0",
+        "opt_out": "0",
+        "date_created": "2014-12-03 20:34:28",
+        "date_modified": "2014-12-03 20:34:28",
+        "id": "26fc1a2c-ade3-e19c-a3e3-547f744f946d",
+        "email_address_id": "2721b7c8-75ff-efd2-7ad3-547f745518bc",
+        "bean_id": "1009c393-83bd-207d-c234-547f74cc5d5c",
+        "bean_module": "Contacts",
+        "primary_address": "1",
+        "reply_to_address": "0",
+        "deleted": "0"
+      }
+    ],
+    "email1": "poholskyc@perich.com",
+    "email2": "",
+    "invalid_email": "0",
+    "email_opt_out": "0",
+    "email_addresses_non_primary": ""
+  };
+  var record = ydn.crm.test.createContactRecord(null, r);
+  var group = record.getGroupModel('email');
+  var panel = new ydn.crm.su.ui.group.Email(group);
+  panel.render(attach_el);
+  panel.refresh();
+  assertFalse(panel.hasChanged());
+  assertNull(panel.getPatch());
+}
+
+
+function test_account_no_edit() {
+  var record = ydn.crm.test.createContactRecord();
+  var group = record.getGroupModel('account');
+  var panel = new ydn.crm.su.ui.group.SuggestedRecord(group);
+  panel.render(attach_el);
+  panel.refresh();
+  assertFalse(panel.hasChanged());
+  assertNull(panel.getPatch());
 }
 
 function test_new_phone() {
@@ -182,32 +231,6 @@ function test_assigned_user() {
   var field_el = attach_el.querySelector('div.record-group[name="assigned_user_name"] input.value');
   assertEquals('input value', exp_value, field_el.value);
   assertFalse(ctrl.hasChanged());
-}
-
-
-function test_name() {
-  var record = ydn.crm.test.createRecord(null, ydn.crm.su.ModuleName.CASES);
-  var model = record.getGroupModel('');
-  var ctrl = new ydn.crm.su.ui.group.Name(model);
-  ctrl.render(attach_el);
-  ctrl.simulateEditByField('name', 'Foo');
-  var data = ctrl.collectData();
-  assertTrue(ctrl.hasChanged());
-  assertEquals('Foo', data['name']);
-}
-
-
-function test_full_name() {
-  var record = ydn.crm.test.createRecord(null, ydn.crm.su.ModuleName.CONTACTS);
-  var model = record.getGroupModel('name');
-  var ctrl = new ydn.crm.su.ui.group.Name(model);
-  ctrl.render(attach_el);
-  ctrl.simulateEditByField('first_name', 'Foo');
-  ctrl.simulateEditByField('last_name', 'Bar');
-  var data = ctrl.collectData();
-  assertTrue(ctrl.hasChanged());
-  assertEquals('Foo', data['first_name']);
-  assertEquals('Bar', data['last_name']);
 }
 
 

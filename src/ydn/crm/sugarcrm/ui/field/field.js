@@ -414,7 +414,8 @@ ydn.crm.su.ui.field.Field.prototype.hasChanged = function() {
   if (!goog.isDefAndNotNull(val)) {
     val = model.getDefaultFieldValue();
   }
-  return val != this.collectData();
+  var new_val = this.collectData();
+  return val != new_val;
 };
 
 
@@ -428,7 +429,8 @@ ydn.crm.su.ui.field.Field.prototype.collectData = function() {
    * @type {ydn.crm.su.model.Field}
    */
   var model = this.getModel();
-  return ydn.crm.su.ui.field.Field.formatResult(new_value, model);
+  var val = ydn.crm.su.ui.field.Field.formatResult(new_value, model);
+  return val;
 };
 
 

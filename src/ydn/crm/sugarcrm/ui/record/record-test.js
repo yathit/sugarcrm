@@ -138,3 +138,138 @@ function test_edit_full_name() {
   assertTrue(called);
 }
 
+
+function test_single_edit() {
+  var r = {
+    "assigned_user_name": "",
+    "modified_by_name": "Chad Hutchins",
+    "created_by_name": "Chad Hutchins",
+    "my_favorite": false,
+    "following": "",
+    "id": "1009c393-83bd-207d-c234-547f74cc5d5c",
+    "name": "Carol Poholsky",
+    "date_entered": "2014-12-03 20:34:28",
+    "date_modified": "2014-12-03 20:34:28",
+    "modified_user_id": "1",
+    "created_by": "1",
+    "doc_owner": "",
+    "user_favorites": "",
+    "description": "",
+    "deleted": "0",
+    "assigned_user_id": "",
+    "team_id": "1",
+    "team_set_id": "1",
+    "team_count": "",
+    "team_name": "Global",
+    "email": [
+      {
+        "email_address": "poholskyc@perich.com",
+        "email_address_caps": "POHOLSKYC@PERICH.COM",
+        "invalid_email": "0",
+        "opt_out": "0",
+        "date_created": "2014-12-03 20:34:28",
+        "date_modified": "2014-12-03 20:34:28",
+        "id": "26fc1a2c-ade3-e19c-a3e3-547f744f946d",
+        "email_address_id": "2721b7c8-75ff-efd2-7ad3-547f745518bc",
+        "bean_id": "1009c393-83bd-207d-c234-547f74cc5d5c",
+        "bean_module": "Contacts",
+        "primary_address": "1",
+        "reply_to_address": "0",
+        "deleted": "0"
+      }
+    ],
+    "email1": "poholskyc@perich.com",
+    "email2": "",
+    "invalid_email": "0",
+    "email_opt_out": "0",
+    "email_addresses_non_primary": "",
+    "salutation": "",
+    "first_name": "Carol",
+    "last_name": "Poholsky",
+    "full_name": "Carol Poholsky",
+    "title": "",
+    "facebook": "",
+    "twitter": "",
+    "googleplus": "",
+    "department": "",
+    "do_not_call": "0",
+    "phone_home": "",
+    "phone_mobile": "",
+    "phone_work": "",
+    "phone_other": "",
+    "phone_fax": "",
+    "primary_address_street": "",
+    "primary_address_street_2": "",
+    "primary_address_street_3": "",
+    "primary_address_city": "",
+    "primary_address_state": "",
+    "primary_address_postalcode": "",
+    "primary_address_country": "",
+    "alt_address_street": "",
+    "alt_address_street_2": "",
+    "alt_address_street_3": "",
+    "alt_address_city": "",
+    "alt_address_state": "",
+    "alt_address_postalcode": "",
+    "alt_address_country": "",
+    "assistant": "",
+    "assistant_phone": "",
+    "picture": "",
+    "email_and_name1": "",
+    "lead_source": "",
+    "dnb_principal_id": "",
+    "opportunity_role_fields": "                                                                                                                                                                                                                                                              ",
+    "opportunity_role_id": "",
+    "opportunity_role": "",
+    "reports_to_id": "",
+    "report_to_name": "",
+    "birthdate": false,
+    "portal_name": "",
+    "portal_active": "0",
+    "portal_password": "",
+    "portal_password1": "",
+    "portal_app": "",
+    "preferred_language": "",
+    "campaign_id": "",
+    "campaign_name": "",
+    "c_accept_status_fields": "                                                                                                                                                                                                                                                              ",
+    "m_accept_status_fields": "                                                                                                                                                                                                                                                              ",
+    "accept_status_id": "",
+    "accept_status_name": "",
+    "accept_status_calls": "",
+    "accept_status_meetings": "",
+    "sync_contact": false,
+    "mkto_sync": "0",
+    "mkto_id": "",
+    "mkto_lead_score": "",
+    "is_customer_c": "yes",
+    "newsletter_c": "0",
+    "products_c": "",
+    "mailchimp_dropdown_c": "first_choice",
+    "query_name": "",
+    "gcontact_id": "",
+    "maps_lat": "",
+    "maps_long": "",
+    "ydn$emails": [
+      "poholskyc@perich.com",
+      "poholskyc@perich.com"
+    ],
+    "ydn$phones": []
+  };
+
+  var record = ydn.crm.test.createRecord(null, ydn.crm.su.ModuleName.CONTACTS, r);
+  var record_panel = new ydn.crm.su.ui.record.Record(record);
+  var called = false;
+  record_panel.patch = function(patch) {
+    console.log(patch);
+    assertEquals('last_name', 'Poholskys', patch['last_name']);
+    assertEquals('number of changes', 1, Object.keys(patch).length);
+    called = true;
+  };
+  record_panel.render(mock_el);
+  record_panel.refresh();
+  record_panel.simulateEdit({'last_name': 'Poholskys'}, true);
+  assertTrue(called);
+
+}
+

@@ -303,7 +303,7 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
   }, ydn.crm.ui.createSvgIcon('google', 'icons-small'));
   var save_btn = dom.createDom('span', 'svg-button ' + ydn.crm.ui.CSS_CLASS_OK_BUTTON,
       ydn.crm.ui.createSvgIcon('check-circle'));
-  save_btn.setAttribute('data-tooltip', 'Save');
+  save_btn.setAttribute('data-tooltip', 'Save or Show changes (Alt+Click)');
 
   ele_header.appendChild(record_type_badge);
   ele_header.appendChild(gmail_icon);
@@ -455,7 +455,7 @@ ydn.crm.su.ui.record.Record.prototype.handleHeaderMenuClick = function(e) {
 /**
  * Process do save after confirmation.
  * @param {SugarCrm.Record} patches
- * @returns {!goog.async.Deferred}
+ * @return {!goog.async.Deferred}
  * @private
  */
 ydn.crm.su.ui.record.Record.prototype.doSave_ = function(patches) {
@@ -476,13 +476,26 @@ ydn.crm.su.ui.record.Record.prototype.doSave_ = function(patches) {
  * @return {!goog.async.Deferred}
  */
 ydn.crm.su.ui.record.Record.prototype.doSave = function(opt_confirm) {
-  var is_new_record = this.getModel().isNew();
+  var model = this.getModel();
+  var is_new_record = model.isNew();
   var patches = is_new_record ?
       this.body_panel.collectData() : this.body_panel.getPatch();
   if (patches) {
     if (opt_confirm) {
       var title = chrome.i18n.getMessage('confirm_record_update');
-      var msg_el = document.createElement();
+      var originals = {};
+      if (!is_new_record) {
+        for (var name in patches) {
+          originals[name] = model.value(name);
+        }
+      }
+      var bar = ydn.ui.getTemplateById('record-patch-compare-template').content;
+      var msg_el = document.createElement('div');
+      msg_el.appendChild(bar.cloneNode(true));
+      msg_el.querySelector('pre[name=original]').textContent = JSON.stringify(
+          originals, null, 2);
+      msg_el.querySelector('pre[name=patch]').textContent = JSON.stringify(
+          patches, null, 2);
       var btns = [{
         name: ydn.ui.MessageDialog.Button.OK,
         label: 'Submit',
@@ -492,9 +505,15 @@ ydn.crm.su.ui.record.Record.prototype.doSave = function(opt_confirm) {
         label: 'Close',
         isCancel: true
       }];
-      ydn.ui.MessageDialog(title, msg_el, btns);
+      return ydn.ui.MessageDialog.showModal(title, msg_el, btns).addCallback(function(ok) {
+        if (ok == ydn.ui.MessageDialog.Button.OK) {
+          return this.doSave_(patches);
+        } else {
+          return null;
+        }
+      }, this);
     } else {
-      this.doSave_(patches);
+      return this.doSave_(patches);
     }
   } else {
     return goog.async.Deferred.fail(new Error('Nothing to save.'));
@@ -508,7 +527,7 @@ ydn.crm.su.ui.record.Record.prototype.doSave = function(opt_confirm) {
  */
 ydn.crm.su.ui.record.Record.prototype.onSaveClick = function(e) {
   e.stopPropagation();
-  this.doSave();
+  this.doSave(!!e.altKey);
 };
 
 

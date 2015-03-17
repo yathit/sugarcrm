@@ -89,6 +89,10 @@ ydn.crm.su.model.EmailGroup.prototype.isBean = function() {
  * @return {boolean}
  */
 ydn.crm.su.model.EmailGroup.prototype.hasField = function(name) {
+  var has = goog.base(this, 'hasField', name);
+  if (has) {
+    return has;
+  }
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
@@ -107,6 +111,10 @@ ydn.crm.su.model.EmailGroup.prototype.hasField = function(name) {
  * @see #hasField
  */
 ydn.crm.su.model.EmailGroup.prototype.hasFieldValue = function(name) {
+  var has = goog.base(this, 'hasFieldValue', name);
+  if (has) {
+    return has;
+  }
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
@@ -116,10 +124,8 @@ ydn.crm.su.model.EmailGroup.prototype.hasFieldValue = function(name) {
         return goog.isDefAndNotNull(x.email_address);
       }
     }
-    return false;
-  } else {
-    return goog.base(this, 'hasFieldValue', name);
   }
+  return false;
 };
 
 
@@ -129,6 +135,7 @@ ydn.crm.su.model.EmailGroup.prototype.hasFieldValue = function(name) {
  * @return {?string}
  */
 ydn.crm.su.model.EmailGroup.prototype.getFieldValueByEmailId = function(name) {
+  // todo: remove this ?
   var email = this.module.value('email');
   if (goog.isArray(email)) {
     var beans = /** @type {Array.<SugarCrm.EmailField>} */ (/** @type {*} */ (email));
@@ -138,10 +145,16 @@ ydn.crm.su.model.EmailGroup.prototype.getFieldValueByEmailId = function(name) {
         return obj.email_address;
       }
     }
-    return null;
-  } else {
-    return this.module.getStringValue(name);
   }
+  return this.module.getStringValue(name);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.su.model.EmailGroup.prototype.getFieldValue = function(name) {
+  return this.getFieldValueByEmailId(name) || undefined;
 };
 
 

@@ -244,11 +244,11 @@ ydn.crm.su.ui.group.Expander.prototype.reset = function() {
  * @override
  */
 ydn.crm.su.ui.group.Expander.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
   if (this.keyHandler) {
     this.keyHandler.dispose();
     this.keyHandler = null;
   }
+  ydn.crm.su.ui.group.Expander.base(this, 'disposeInternal');
 };
 
 

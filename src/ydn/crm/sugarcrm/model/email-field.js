@@ -69,6 +69,15 @@ ydn.crm.su.model.EmailField.prototype.hasFieldValue = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ydn.crm.su.model.EmailField.prototype.getField = function() {
+  var email_model = this.getParentModel();
+  return email_model.getFieldValue(this.field_name);
+};
+
+
+/**
  * @return {?boolean}
  */
 ydn.crm.su.model.EmailField.prototype.isOptOut = function() {

@@ -186,7 +186,7 @@ ydn.crm.su.ui.group.SuggestedRecord.prototype.hasChanged = function() {
   var input = this.getInputElement();
   var model = this.getModel();
   var id_field = model.getRelateFieldId();
-  return input.getAttribute('data-id') != this.getModel().getStringValue(id_field);
+  return input.getAttribute('data-id') != this.getModel().valueAsString(id_field);
 };
 
 

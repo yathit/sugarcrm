@@ -23,6 +23,9 @@ function test_name_edit() {
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('name');
   var panel = new ydn.crm.su.ui.group.Name(group);
+  ydn.crm.su.model.NameGroup.prototype.isGroupValueEditable = function() {
+    return true;
+  };
   panel.render(attach_el);
   panel.simulateEditByField('first_name', 'Kyaw');
 
@@ -44,6 +47,9 @@ function test_input_change() {
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('name');
   var panel = new ydn.crm.su.ui.group.Name(group);
+  ydn.crm.su.model.NameGroup.prototype.isGroupValueEditable = function() {
+    return true;
+  };
   panel.render(attach_el);
   editGroupLabel(panel, 'Kyaw Tun');
   assertTrue('edited', panel.hasChanged());
@@ -54,6 +60,9 @@ function test_patch_by_group_label() {
   var record = ydn.crm.test.createContactRecord();
   var group = record.getGroupModel('name');
   var panel = new ydn.crm.su.ui.group.Name(group);
+  ydn.crm.su.model.NameGroup.prototype.isGroupValueEditable = function() {
+    return true;
+  };
   panel.render(attach_el);
   editGroupLabel(panel, 'Kyaw Tun');
   var data = panel.getPatch();
@@ -66,6 +75,9 @@ function test_collect_by_group_label() {
   var record = ydn.crm.test.createContactRecord(null, {});
   var group = record.getGroupModel('name');
   var panel = new ydn.crm.su.ui.group.Name(group);
+  ydn.crm.su.model.NameGroup.prototype.isGroupValueEditable = function() {
+    return true;
+  };
   panel.render(attach_el);
   editGroupLabel(panel, 'Kyaw Tun');
   var data = panel.collectData();
