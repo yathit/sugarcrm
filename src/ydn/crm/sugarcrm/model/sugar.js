@@ -346,6 +346,19 @@ ydn.crm.su.model.Sugar.prototype.getBaseUrl = function() {
 
 
 /**
+ * Chrome host permission request object.
+ * @return {{origins: (Array.<string>|undefined), permissions: (Array.<string>|undefined)}}
+ */
+ydn.crm.su.model.Sugar.prototype.getPermissionObject = function() {
+  var url = this.getBaseUrl();
+  goog.asserts.assertString(url);
+  var uri = new goog.Uri(url);
+  uri.setPath('/*');
+  return {'origins': [uri.toString()]};
+};
+
+
+/**
  * Get sugar crm instance url.
  * @return {string}
  */

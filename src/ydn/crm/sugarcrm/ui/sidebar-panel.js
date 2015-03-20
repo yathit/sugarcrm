@@ -137,58 +137,46 @@ ydn.crm.ui.SidebarPanel.prototype.getSugarCrmPanel = function() {
 
 /**
  * Set SugarCRM.
- * @param {?SugarCrm.About} about
- * @return {!goog.async.Deferred<ydn.crm.su.model.GDataSugar>}
+ * @param {?SugarCrm.Details} details
+ * @return {ydn.crm.su.model.GDataSugar}
  */
-ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(about) {
-  var link_panel = this.getHeaderElement().querySelector('.' +
+ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(details) {
+  var no_sugar = this.getHeaderElement().querySelector('.' +
       ydn.crm.ui.SidebarPanel.CSS_CLASS_NO_SUGAR_PANEL);
-  var q = link_panel.querySelector('a');
+  var q = no_sugar.querySelector('a');
   var panel = this.getSugarCrmPanel();
-  if (!about || !about.isLogin) {
-    goog.style.setElementShown(link_panel, true);
+  var about = details ? details.about : null;
+  if (!about) {
+    goog.style.setElementShown(no_sugar, true);
     if (panel) {
       goog.style.setElementShown(panel.getElement(), false);
     }
-    return goog.async.Deferred.fail(null);
-  } else {
-    goog.style.setElementShown(link_panel, false);
+    return null;
   }
+  goog.style.setElementShown(no_sugar, false);
+
   if (panel) {
     var model = panel.getModel();
     if (model.getDomain() == about.domain) {
       goog.log.finer(this.logger, 'sugar panel ' + model.getDomain() + ' already exists.');
-      return goog.async.Deferred.fail(null);
+      return null;
     }
     goog.log.fine(this.logger, 'disposing sugar panel ' + model.getDomain());
     this.removeChild(panel, true);
     model.dispose();
     panel.dispose();
   }
-  var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
+
   var us = ydn.crm.ui.UserSetting.getInstance();
 
-  return ch.send(ydn.crm.ch.SReq.DETAILS).addCallbacks(function(x) {
-    panel = this.getSugarCrmPanel();
-    if (panel) {
-      goog.log.fine(this.logger, 'existing sugar panel detect');
-      return null;
-    }
-    var details = /** @type {SugarCrm.Details} */ (x);
-    for (var i = 0; i < details.modulesInfo.length; i++) {
-      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
-    }
-    var ac = us.getLoginEmail();
-    var sugar = new ydn.crm.su.model.GDataSugar(details.about,
-        details.modulesInfo, ac, details.serverInfo);
-    panel = new ydn.crm.su.ui.SugarPanel(sugar, this.dom_);
-    goog.log.fine(this.logger, 'sugar panel ' + about.domain + ' added.');
-    this.addChild(panel, true);
-    goog.style.setElementShown(link_panel, false);
-    return sugar;
-  }, function(e) {
-    window.console.error(e);
-  }, this);
+  var ac = us.getLoginEmail();
+  var sugar = new ydn.crm.su.model.GDataSugar(details.about,
+      details.modulesInfo, ac, details.serverInfo);
+  panel = new ydn.crm.su.ui.SugarPanel(sugar, this.dom_);
+  goog.log.fine(this.logger, 'sugar panel ' + about.domain + ' added.');
+  this.addChild(panel, true);
+
+  return sugar;
 
 };
 
