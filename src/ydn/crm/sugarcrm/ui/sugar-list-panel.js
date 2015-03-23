@@ -59,13 +59,6 @@ ydn.crm.ui.SugarListPanel.CSS_CLASS = 'sidebar';
  * @const
  * @type {string}
  */
-ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS = 'sidebar-status';
-
-
-/**
- * @const
- * @type {string}
- */
 ydn.crm.ui.SugarListPanel.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
 
 

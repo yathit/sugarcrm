@@ -35,7 +35,6 @@ goog.require('ydn.msg.Message');
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
- * @see ydn.crm.ui.SugarListPanel
  */
 ydn.crm.ui.SugarWrapperPanel = function(opt_dom) {
   goog.base(this, opt_dom);

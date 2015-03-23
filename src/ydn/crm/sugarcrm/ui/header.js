@@ -120,7 +120,6 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
   root.appendChild(ele_title);
   var grants = [];
 
-  var href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE) + '#credentials';
   var target = 'option-page';
   var msg = 'Setup host permission';
 
@@ -128,10 +127,7 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
   // using button inside a doesn't work, possible for strict security of chrome extension
   var btn_grant = dom.createDom('a', {
     'className': 'maia-button blue',
-    'href': href,
-    'data-window-height': '40',
-    'data-window-width': '200',
-    'target': target
+    'href': '#host-permission'
   }, msg);
   btn_grant.setAttribute('title', 'Your permission is required to connect your' +
       ' server from this extension. Without permission request to server will be slow.');
@@ -139,12 +135,13 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
 
   var div_grant = dom.createDom('div', {'class': 'host-permission'}, grants);
   root.appendChild(div_grant);
-  var un = dom.createDom('input', {'name': 'username', 'type': 'text'});
+  var div_no_login_msg = dom.createDom('div', null, 'Login fail.');
+  var un = dom.createDom('a', {'name': 'username', 'type': 'text'}, 'Re-login');
   var div_username = dom.createDom('div', null, [un]);
-  var ps = dom.createDom('input', {'name': 'password', 'type': 'password'});
+  var ps = dom.createDom('a', {'name': 'password', 'type': 'password'}, 'Setup');
   var div_password = dom.createDom('div', null, [ps]);
   var div_msg = dom.createDom('div', 'message');
-  var div_login = dom.createDom('div', 'login-form', [div_username, div_password, div_msg]);
+  var div_login = dom.createDom('div', 'login-form', [div_no_login_msg, div_password, div_msg]);
   var content_ele = dom.createDom('div', ydn.crm.su.ui.Header.CSS_CLASS_CONTENT);
   root.appendChild(div_login);
   root.appendChild(content_ele);
@@ -174,7 +171,7 @@ ydn.crm.su.ui.Header.prototype.enterDocument = function() {
 
   handler.listen(this.getModel(), ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT,
       this.handleHostGrant);
-  handler.listen(this.getModel(), ydn.crm.su.SugarEvent.LOGIN,
+  handler.listen(this.getModel(), [ydn.crm.su.SugarEvent.LOGIN, ydn.crm.su.SugarEvent.LOGOUT],
       this.handleModelLogin);
 
 };
@@ -189,17 +186,15 @@ ydn.crm.su.ui.Header.prototype.onGrantHostPermission = function(e) {
   var model = this.getModel();
   var domain = model.getDomain();
   var permissions = model.getPermissionObject();
-  if (chrome.permissions) {
-    chrome.permissions.request(permissions);
-  } else {
-    // content script does not have permissions api.
-    ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION, permissions).addBoth(function(x) {
-      var grant = this.getElement().querySelector('.host-permission');
-      if (x === true) {
-        goog.style.setElementShown(grant, false);
-      }
-    }, this);
-  }
+
+  // content script does not have permissions api.
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION, permissions).addBoth(function(x) {
+    var grant = this.getElement().querySelector('.host-permission');
+    if (x === true) {
+      goog.style.setElementShown(grant, false);
+    }
+  }, this);
+
 };
 
 
@@ -251,37 +246,6 @@ ydn.crm.su.ui.Header.prototype.handleLogin = function(keyEvent) {
 
 
 /**
- * @param {string} domain
- * @private
- */
-ydn.crm.su.ui.Header.prototype.injectGrantIframe_ = function(domain) {
-  domain = encodeURIComponent(domain);
-  var grant = this.getElement().querySelector('.host-permission');
-  var iframe_ele = grant.querySelector('IFRAME');
-  if (iframe_ele) {
-    var uri = new goog.Uri(iframe_ele.src);
-    if (uri.getQuery() == domain) {
-      return;
-    } else {
-      grant.removeChild(iframe_ele);
-    }
-  }
-  if (ydn.crm.su.ui.Header.DEBUG) {
-    window.console.log('injected host permiossion iframe for ' + domain);
-  }
-  var iframe_url = chrome.extension.getURL(ydn.crm.base.HOST_PERMISSION_PAGE);
-  iframe_ele = this.dom_.createElement('IFRAME');
-  iframe_ele.setAttribute('frameborder', '0');
-  iframe_ele.setAttribute('name', 'host-permission');
-  iframe_ele.src = iframe_url + '?' + domain;
-  grant.appendChild(iframe_ele);
-  if (ydn.crm.su.ui.Header.DEBUG) {
-    window.console.log(grant, iframe_ele);
-  }
-};
-
-
-/**
  * @return {string}
  */
 ydn.crm.su.ui.Header.prototype.getDomain = function() {
@@ -311,15 +275,8 @@ ydn.crm.su.ui.Header.prototype.handleSugarChanged = function() {
   goog.style.setElementShown(grant, false);
   goog.style.setElementShown(root, true);
   goog.style.setElementShown(content_ele, true);
-  if (!model.isLogin()) {
-    var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, domain).send(ydn.crm.ch.SReq.ABOUT);
-    ch.addCallback(function(x) {
-      // window.console.log('about ', x);
-      var about = /** @type {SugarCrm.About} */ (x);
-      goog.style.setElementShown(login, !about.isLogin);
-    });
-  }
-  if (model.isLogin() && !model.hasHostPermission()) {
+
+  if (!model.hasHostPermission()) {
 
     var hp_url = chrome.extension.getURL(ydn.crm.base.HOST_PERMISSION_PAGE);
     var a_grant = grant.querySelector('a');
@@ -327,6 +284,13 @@ ydn.crm.su.ui.Header.prototype.handleSugarChanged = function() {
 
     goog.style.setElementShown(grant, true);
     goog.style.setElementShown(content_ele, false);
+  } else if (!model.isLogin()) {
+    var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, domain).send(ydn.crm.ch.SReq.ABOUT);
+    ch.addCallback(function(x) {
+      // window.console.log('about ', x);
+      var about = /** @type {SugarCrm.About} */ (x);
+      goog.style.setElementShown(login, !about.isLogin);
+    });
   }
 };
 
