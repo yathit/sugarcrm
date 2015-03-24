@@ -68,11 +68,27 @@ ydn.crm.su.ui.SugarPanel.prototype.createDom = function() {
   var head_ele = this.getElement().querySelector('.' +
       ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_HEAD);
   var content_ele = this.getContentElement();
-  goog.style.setElementShown(content_ele, false);
 
   var header_panel = new ydn.crm.su.ui.Header(this.getModel(), dom);
   this.addChild(header_panel);
   header_panel.render(head_ele);
+
+  var activity_panel = new ydn.crm.su.ui.activity.Panel(this.getModel(), dom);
+  this.addChild(activity_panel, true);
+
+  goog.style.setElementShown(content_ele, this.getModel().hasHostPermission());
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.su.ui.SugarPanel.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+
+  this.getHandler().listen(this.getModel(), ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT,
+      this.handleHostGrant);
+
 };
 
 
@@ -88,10 +104,25 @@ ydn.crm.su.ui.SugarPanel.prototype.logger =
  * @return {ydn.crm.su.ui.Header}
  * @private
  */
-ydn.crm.su.ui.SimpleSugarPanel.prototype.getHeader_ = function() {
+ydn.crm.su.ui.SugarPanel.prototype.getHeader_ = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
     if (child instanceof ydn.crm.su.ui.Header) {
+      return child;
+    }
+  }
+  return null;
+};
+
+
+/**
+ * @return {ydn.crm.su.ui.activity.Panel}
+ * @private
+ */
+ydn.crm.su.ui.SugarPanel.prototype.getActivityPanel_ = function() {
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var child = this.getChildAt(i);
+    if (child instanceof ydn.crm.su.ui.activity.Panel) {
       return child;
     }
   }
@@ -104,6 +135,16 @@ ydn.crm.su.ui.SimpleSugarPanel.prototype.getHeader_ = function() {
  * @param {ydn.crm.su.ModuleName} m_name
  * @param {string} id
  */
-ydn.crm.su.ui.SimpleSugarPanel.prototype.showRecord = function(m_name, id) {
-  this.getHeader_().showRecord(m_name, id);
+ydn.crm.su.ui.SugarPanel.prototype.showRecord = function(m_name, id) {
+  this.getActivityPanel_().showRecord(m_name, id);
+};
+
+
+/**
+ * Listen model event for host grant access.
+ * @param {Event} e
+ */
+ydn.crm.su.ui.SugarPanel.prototype.handleHostGrant = function(e) {
+  var has_per = this.getModel().hasHostPermission();
+  goog.style.setElementShown(this.getContentElement(), has_per);
 };

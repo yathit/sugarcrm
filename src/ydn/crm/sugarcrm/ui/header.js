@@ -27,7 +27,6 @@ goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.su');
-goog.require('ydn.crm.su.ui.activity.Panel');
 
 
 
@@ -141,7 +140,7 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
   var ps = dom.createDom('a', {'name': 'password', 'type': 'password'}, 'Setup');
   var div_password = dom.createDom('div', null, [ps]);
   var div_msg = dom.createDom('div', 'message');
-  var div_login = dom.createDom('div', 'login-form', [div_no_login_msg, div_password, div_msg]);
+  var div_login = dom.createDom('div', 'login-form', [div_no_login_msg, div_username, div_password, div_msg]);
   var content_ele = dom.createDom('div', ydn.crm.su.ui.Header.CSS_CLASS_CONTENT);
   root.appendChild(div_login);
   root.appendChild(content_ele);
@@ -149,9 +148,6 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
   goog.style.setElementShown(div_login, !model.isLogin());
   goog.style.setElementShown(content_ele, this.getModel().hasHostPermission());
 
-  // todo: move to content section.
-  var activity_panel = new ydn.crm.su.ui.activity.Panel(model, dom);
-  this.addChild(activity_panel, true);
 };
 
 
@@ -292,31 +288,6 @@ ydn.crm.su.ui.Header.prototype.handleSugarChanged = function() {
       goog.style.setElementShown(login, !about.isLogin);
     });
   }
-};
-
-
-/**
- * @return {ydn.crm.su.ui.activity.Panel}
- * @private
- */
-ydn.crm.su.ui.Header.prototype.getActivityPanel_ = function() {
-  for (var i = 0; i < this.getChildCount(); i++) {
-    var child = this.getChildAt(i);
-    if (child instanceof ydn.crm.su.ui.activity.Panel) {
-      return child;
-    }
-  }
-  return null;
-};
-
-
-/**
- * Show record.
- * @param {ydn.crm.su.ModuleName} m_name
- * @param {string} id
- */
-ydn.crm.su.ui.Header.prototype.showRecord = function(m_name, id) {
-  this.getActivityPanel_().showRecord(m_name, id);
 };
 
 

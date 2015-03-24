@@ -37,6 +37,7 @@ goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.su.model.GDataSugar');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.json');
+goog.require('ydn.crm.su.ui.activity.Panel');
 
 
 
