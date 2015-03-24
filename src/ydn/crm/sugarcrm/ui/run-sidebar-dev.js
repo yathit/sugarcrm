@@ -21,17 +21,19 @@ panel.render(document.querySelector('.inj'));
 var activity_panel, new_record_panel;
 
 user.onReady().addCallbacks(function() {
-  ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(
-      function(sugars) {
-        console.log(sugars);
-        panel.setSugarCrm(sugars[0]).addCallbacks(function(x) {
-          activity_panel = panel.getChildAt(0).getChildAt(0).getChildAt(0);
-          new_record_panel = activity_panel.getChildAt(2);
-          sugar = x;
-        }, function(e) {
-          window.console.error(e);
-        });
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallback(
+      function(sugar) {
+        console.log(sugar);
+        goog.asserts.assert(!!sugar);
+        panel.setSugarCrm(sugar);
 
+        //.addCallbacks(function(x) {
+        //  activity_panel = panel.getChildAt(0).getChildAt(0).getChildAt(0);
+        //  new_record_panel = activity_panel.getChildAt(2);
+        //  sugar = x;
+        //}, function(e) {
+        //  window.console.error(e);
+        //});
       }, this);
 }, function(e) {
   window.console.error(e);
