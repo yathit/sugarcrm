@@ -252,6 +252,19 @@ ydn.crm.su.ui.Header.prototype.handleModelLogin = function(e) {
  */
 ydn.crm.su.ui.Header.prototype.handleHostGrant = function(e) {
   this.refresh();
+  var model = this.getModel();
+  var me = this;
+  if (model.hasHostPermission() && !model.isLogin()) {
+    setTimeout(function() {
+      if (!model.isLogin()) {
+        model.retryLogin().addCallback(function() {
+          me.refresh();
+        });
+      } else {
+        me.refresh();
+      }
+    }, 1000);
+  }
 };
 
 
@@ -292,6 +305,7 @@ ydn.crm.su.ui.Header.prototype.dispatchOpenDrawer = function() {
   evt.initCustomEvent(ydn.crm.ui.EventType.DRAWER_REQUEST, true, true, {'open': true});
   var root = this.getElement();
   setTimeout(function() {
+    goog.asserts.assertObject(evt);
     root.dispatchEvent(evt);
   }, 1000);
 };

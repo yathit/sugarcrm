@@ -30,6 +30,7 @@
 goog.provide('ydn.crm.su.model.Sugar');
 goog.require('goog.events.EventHandler');
 goog.require('ydn.crm.Ch');
+goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su.Meta');
 goog.require('ydn.crm.su.model.ImmutableRecord');
 goog.require('ydn.crm.su.model.Sugar');
@@ -478,7 +479,7 @@ ydn.crm.su.model.Sugar.prototype.retryLogin = function() {
         this.initUser_();
         return this.updateStatus();
       }, function(e) {
-        ydn.msg.Manager.addStatus('Retry login fail: ' + (e ? e.message || e : ''));
+        ydn.crm.msg.Manager.addStatus('Retry login fail: ' + (e ? e.message || e : ''));
       }, this);
 };
 
