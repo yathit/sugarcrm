@@ -91,8 +91,8 @@ ydn.crm.su.ui.SugarPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   this.getHandler().listen(this.getModel(), [ydn.crm.su.SugarEvent.LOGIN,
-        ydn.crm.su.SugarEvent.LOGOUT],
-      this.handleLoginChange_);
+    ydn.crm.su.SugarEvent.LOGOUT],
+  this.handleLoginChange_);
 
 };
 

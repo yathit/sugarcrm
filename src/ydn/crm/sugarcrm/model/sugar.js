@@ -227,6 +227,18 @@ ydn.crm.su.model.Sugar.prototype.isLogin = function() {
 
 
 /**
+ * @param {SugarCrm.Record} obj
+ * @private
+ */
+ydn.crm.su.model.Sugar.prototype.setUser_ = function(obj) {
+  if (obj && obj.id) {
+    this.user_ = new ydn.crm.su.Record(this.getDomain(),
+        ydn.crm.su.ModuleName.USERS, obj);
+  }
+};
+
+
+/**
  * Initialize user.
  * @private
  */
@@ -234,11 +246,7 @@ ydn.crm.su.model.Sugar.prototype.initUser_ = function() {
   if (this.about) {
     if (this.about.userName) {
       this.send(ydn.crm.ch.SReq.LOGIN_USER).addCallback(function(obj) {
-        if (obj && obj['id']) {
-          var user = /** @type {SugarCrm.Record} */ (obj);
-          this.user_ = new ydn.crm.su.Record(this.getDomain(),
-              ydn.crm.su.ModuleName.USERS, user);
-        }
+        this.setUser_(obj);
       }, this);
     }
 
@@ -453,6 +461,8 @@ ydn.crm.su.model.Sugar.prototype.doLogin = function(username, password) {
   var ch = ydn.msg.getChannel();
   return ch.send(ydn.crm.ch.Req.LOGIN_SUGAR, info)
       .addCallback(function(data) {
+        this.initUser_();
+        this.initUserInfo_();
         this.setAbout(data);
       }, this);
 };
@@ -463,8 +473,12 @@ ydn.crm.su.model.Sugar.prototype.doLogin = function(username, password) {
  */
 ydn.crm.su.model.Sugar.prototype.retryLogin = function() {
   return this.getChannel().send(ydn.crm.ch.SReq.LOGIN)
-      .addCallback(function(login_user) {
+      .addCallbacks(function(login_user) {
+        this.login_info_ = /** @type {SugarCrm.LoginRecord} */ (login_user);
+        this.initUser_();
         return this.updateStatus();
+      }, function(e) {
+        ydn.msg.Manager.addStatus('Retry login fail: ' + (e ? e.message || e : ''));
       }, this);
 };
 

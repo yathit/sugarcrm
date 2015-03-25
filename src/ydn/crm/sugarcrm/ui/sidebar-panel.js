@@ -144,6 +144,9 @@ ydn.crm.ui.SidebarPanel.prototype.setSugarCrm = function(details) {
     if (panel) {
       goog.style.setElementShown(panel.getElement(), false);
     }
+    var evt = document.createEvent('CustomEvent');
+    evt.initCustomEvent(ydn.crm.ui.EventType.DRAWER_REQUEST, true, true, {'open': true});
+    no_sugar.dispatchEvent(evt);
     return null;
   }
   goog.style.setElementShown(no_sugar, false);

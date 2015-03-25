@@ -205,7 +205,6 @@ ydn.crm.su.ui.Header.prototype.onReLogin_ = function(e) {
  * Relogin.
  */
 ydn.crm.su.ui.Header.prototype.reLogin = function() {
-  console.log('re-login');
   var model = this.getModel();
   model.retryLogin().addBoth(function(info) {
     console.log(info);
@@ -286,6 +285,19 @@ ydn.crm.su.ui.Header.prototype.getDomain = function() {
 
 
 /**
+ * Dispatch open drawer request to hud panel.
+ */
+ydn.crm.su.ui.Header.prototype.dispatchOpenDrawer = function() {
+  var evt = document.createEvent('CustomEvent');
+  evt.initCustomEvent(ydn.crm.ui.EventType.DRAWER_REQUEST, true, true, {'open': true});
+  var root = this.getElement();
+  setTimeout(function() {
+    root.dispatchEvent(evt);
+  }, 1000);
+};
+
+
+/**
  * Refresh UI by showing/hiding panels.
  */
 ydn.crm.su.ui.Header.prototype.refresh = function() {
@@ -298,10 +310,12 @@ ydn.crm.su.ui.Header.prototype.refresh = function() {
     goog.style.setElementShown(grant, true);
     goog.style.setElementShown(div_login, false);
     goog.style.setElementShown(content, false);
+    this.dispatchOpenDrawer();
   } else if (!model.isLogin()) {
     goog.style.setElementShown(grant, false);
     goog.style.setElementShown(div_login, true);
     goog.style.setElementShown(content, false);
+    this.dispatchOpenDrawer();
   } else {
     goog.style.setElementShown(grant, false);
     goog.style.setElementShown(div_login, false);
