@@ -450,9 +450,21 @@ ydn.crm.su.model.Sugar.prototype.doLogin = function(username, password) {
   info.baseUrl = this.getBaseUrl();
   info.username = username;
   info.password = password;
-  return this.send(ydn.crm.ch.SReq.LOGIN, info)
+  var ch = ydn.msg.getChannel();
+  return ch.send(ydn.crm.ch.Req.LOGIN_SUGAR, info)
       .addCallback(function(data) {
         this.setAbout(data);
+      }, this);
+};
+
+
+/**
+ * @return {!goog.async.Deferred}
+ */
+ydn.crm.su.model.Sugar.prototype.retryLogin = function() {
+  return this.getChannel().send(ydn.crm.ch.SReq.LOGIN)
+      .addCallback(function(login_user) {
+        return this.updateStatus();
       }, this);
 };
 

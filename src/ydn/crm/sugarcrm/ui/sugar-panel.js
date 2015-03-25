@@ -36,6 +36,7 @@ goog.provide('ydn.crm.su.ui.SugarPanel');
 goog.require('ydn.crm.su.model.GDataSugar');
 goog.require('ydn.crm.su.ui.Header');
 goog.require('ydn.crm.su.ui.SimpleSugarPanel');
+goog.require('ydn.crm.su.ui.activity.Panel');
 
 
 
@@ -69,14 +70,17 @@ ydn.crm.su.ui.SugarPanel.prototype.createDom = function() {
       ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_HEAD);
   var content_ele = this.getContentElement();
 
-  var header_panel = new ydn.crm.su.ui.Header(this.getModel(), dom);
+  var model = this.getModel();
+  var header_panel = new ydn.crm.su.ui.Header(model, dom);
   this.addChild(header_panel);
   header_panel.render(head_ele);
 
-  var activity_panel = new ydn.crm.su.ui.activity.Panel(this.getModel(), dom);
+  var activity_panel = new ydn.crm.su.ui.activity.Panel(model, dom);
   this.addChild(activity_panel, true);
 
-  goog.style.setElementShown(content_ele, this.getModel().hasHostPermission());
+  var ok = model.isLogin();
+  goog.style.setElementShown(content_ele, ok);
+
 };
 
 
@@ -86,8 +90,9 @@ ydn.crm.su.ui.SugarPanel.prototype.createDom = function() {
 ydn.crm.su.ui.SugarPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
-  this.getHandler().listen(this.getModel(), ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT,
-      this.handleHostGrant);
+  this.getHandler().listen(this.getModel(), [ydn.crm.su.SugarEvent.LOGIN,
+        ydn.crm.su.SugarEvent.LOGOUT],
+      this.handleLoginChange_);
 
 };
 
@@ -143,8 +148,9 @@ ydn.crm.su.ui.SugarPanel.prototype.showRecord = function(m_name, id) {
 /**
  * Listen model event for host grant access.
  * @param {Event} e
+ * @private
  */
-ydn.crm.su.ui.SugarPanel.prototype.handleHostGrant = function(e) {
-  var has_per = this.getModel().hasHostPermission();
+ydn.crm.su.ui.SugarPanel.prototype.handleLoginChange_ = function(e) {
+  var has_per = this.getModel().isLogin();
   goog.style.setElementShown(this.getContentElement(), has_per);
 };

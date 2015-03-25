@@ -27,6 +27,7 @@ goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.su');
+goog.require('ydn.ui');
 
 
 
@@ -134,19 +135,29 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
 
   var div_grant = dom.createDom('div', {'class': 'host-permission'}, grants);
   root.appendChild(div_grant);
-  var div_no_login_msg = dom.createDom('div', null, 'Login fail.');
-  var un = dom.createDom('a', {'name': 'username', 'type': 'text'}, 'Re-login');
-  var div_username = dom.createDom('div', null, [un]);
-  var ps = dom.createDom('a', {'name': 'password', 'type': 'password'}, 'Setup');
-  var div_password = dom.createDom('div', null, [ps]);
+  var div_no_login_msg = dom.createDom('div', null, chrome.i18n.getMessage('Login_fail'));
+  var un = dom.createDom('a', {
+    'name': 'retry',
+    'class': 'maia-button blue',
+    'href': '#retry'},
+  chrome.i18n.getMessage('Retry'));
+  var div_retry = dom.createDom('div', 'centered-div', [un]);
+  var href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
+  var ps = dom.createDom('a', {
+    'name': 'setup',
+    'href': href},
+  chrome.i18n.getMessage('Setup_SugarCRM'));
+  ps.className = ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_SUGAR_SETUP_LINK;
+  ps.setAttribute('data-window-height', '600');
+  ps.setAttribute('data-window-width', '800');
+  var div_setup = dom.createDom('div', 'centered-div', [ps]);
   var div_msg = dom.createDom('div', 'message');
-  var div_login = dom.createDom('div', 'login-form', [div_no_login_msg, div_username, div_password, div_msg]);
+  var div_login = dom.createDom('div', 'login-form', [div_no_login_msg, div_retry, div_setup, div_msg]);
   var content_ele = dom.createDom('div', ydn.crm.su.ui.Header.CSS_CLASS_CONTENT);
   root.appendChild(div_login);
   root.appendChild(content_ele);
-  goog.style.setElementShown(div_grant, !model.hasHostPermission());
-  goog.style.setElementShown(div_login, !model.isLogin());
-  goog.style.setElementShown(content_ele, this.getModel().hasHostPermission());
+
+  this.refresh();
 
 };
 
@@ -170,6 +181,36 @@ ydn.crm.su.ui.Header.prototype.enterDocument = function() {
   handler.listen(this.getModel(), [ydn.crm.su.SugarEvent.LOGIN, ydn.crm.su.SugarEvent.LOGOUT],
       this.handleModelLogin);
 
+  var a_setup = root.querySelector('a.' +
+      ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_SUGAR_SETUP_LINK);
+  handler.listen(a_setup, 'click', ydn.ui.openPageAsDialog, true);
+  var a_re_login = root.querySelector('[name=retry]');
+  handler.listen(a_re_login, 'click', this.onReLogin_);
+
+};
+
+
+/**
+ * Handle grant host permission grant.
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.su.ui.Header.prototype.onReLogin_ = function(e) {
+  e.preventDefault();
+  this.reLogin();
+};
+
+
+/**
+ * Relogin.
+ */
+ydn.crm.su.ui.Header.prototype.reLogin = function() {
+  console.log('re-login');
+  var model = this.getModel();
+  model.retryLogin().addBoth(function(info) {
+    console.log(info);
+    this.refresh();
+  }, this);
 };
 
 
@@ -180,14 +221,17 @@ ydn.crm.su.ui.Header.prototype.enterDocument = function() {
 ydn.crm.su.ui.Header.prototype.onGrantHostPermission = function(e) {
   e.preventDefault();
   var model = this.getModel();
-  var domain = model.getDomain();
   var permissions = model.getPermissionObject();
 
   // content script does not have permissions api.
   ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION, permissions).addBoth(function(x) {
     var grant = this.getElement().querySelector('.host-permission');
     if (x === true) {
-      goog.style.setElementShown(grant, false);
+      if (!model.isLogin()) {
+        this.reLogin();
+      } else {
+        this.refresh();
+      }
     }
   }, this);
 
@@ -208,10 +252,7 @@ ydn.crm.su.ui.Header.prototype.handleModelLogin = function(e) {
  * @param {Event} e
  */
 ydn.crm.su.ui.Header.prototype.handleHostGrant = function(e) {
-  var grant = this.getElement().querySelector('.host-permission');
-  var has_per = this.getModel().hasHostPermission();
-  goog.style.setElementShown(grant, !has_per);
-  goog.style.setElementShown(this.getContentElement(), has_per);
+  this.refresh();
 };
 
 
@@ -228,12 +269,7 @@ ydn.crm.su.ui.Header.prototype.handleLogin = function(keyEvent) {
     var msg = div_login.querySelector('.message');
     msg.textContent = 'logging in...';
     model.doLogin(un, ps).addCallbacks(function(info) {
-      if (model.isLogin()) {
-        msg.textContent = '';
-        goog.style.setElementShown(div_login, false);
-      } else {
-        msg.textContent = 'login failed';
-      }
+      this.refresh();
     }, function(e) {
       msg.textContent = 'Error: ' + e;
     }, this);
@@ -246,6 +282,31 @@ ydn.crm.su.ui.Header.prototype.handleLogin = function(keyEvent) {
  */
 ydn.crm.su.ui.Header.prototype.getDomain = function() {
   return this.getModel().getDomain();
+};
+
+
+/**
+ * Refresh UI by showing/hiding panels.
+ */
+ydn.crm.su.ui.Header.prototype.refresh = function() {
+  var root = this.getElement();
+  var grant = root.querySelector('.host-permission');
+  var div_login = root.querySelector('.login-form');
+  var content = this.getContentElement();
+  var model = this.getModel();
+  if (!model.hasHostPermission()) {
+    goog.style.setElementShown(grant, true);
+    goog.style.setElementShown(div_login, false);
+    goog.style.setElementShown(content, false);
+  } else if (!model.isLogin()) {
+    goog.style.setElementShown(grant, false);
+    goog.style.setElementShown(div_login, true);
+    goog.style.setElementShown(content, false);
+  } else {
+    goog.style.setElementShown(grant, false);
+    goog.style.setElementShown(div_login, false);
+    goog.style.setElementShown(content, true);
+  }
 };
 
 

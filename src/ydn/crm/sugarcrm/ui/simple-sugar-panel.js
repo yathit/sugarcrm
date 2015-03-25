@@ -37,7 +37,6 @@ goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.su.model.GDataSugar');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.json');
-goog.require('ydn.crm.su.ui.activity.Panel');
 
 
 
@@ -62,6 +61,13 @@ goog.inherits(ydn.crm.su.ui.SimpleSugarPanel, goog.ui.Component);
  * @define {boolean} debug flag.
  */
 ydn.crm.su.ui.SimpleSugarPanel.DEBUG = false;
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
 
 
 /**

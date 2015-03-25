@@ -51,13 +51,6 @@ ydn.crm.ui.SidebarPanel.CSS_CLASS = 'sidebar';
  * @const
  * @type {string}
  */
-ydn.crm.ui.SidebarPanel.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
-
-
-/**
- * @const
- * @type {string}
- */
 ydn.crm.ui.SidebarPanel.CSS_CLASS_NO_SUGAR_PANEL = 'no-sugar-panel';
 
 
@@ -85,9 +78,9 @@ ydn.crm.ui.SidebarPanel.prototype.createDom = function() {
   var no_sugar_login = dom.createDom('div',
       ydn.crm.ui.SidebarPanel.CSS_CLASS_NO_SUGAR_PANEL);
   var a = dom.createElement('a');
-  a.textContent = 'Setup SugarCRM';
+  a.textContent = chrome.i18n.getMessage('Setup_SugarCRM');
   a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
-  a.className = ydn.crm.ui.SidebarPanel.CSS_CLASS_SUGAR_SETUP_LINK + ' maia-button blue';
+  a.className = ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_SUGAR_SETUP_LINK + ' maia-button blue';
   a.setAttribute('data-window-height', '600');
   a.setAttribute('data-window-width', '800');
   no_sugar_login.appendChild(a);
@@ -121,7 +114,7 @@ ydn.crm.ui.SidebarPanel.prototype.enterDocument = function() {
   var handler = this.getHandler();
 
   var a_grant = this.getHeaderElement().querySelector('a.' +
-      ydn.crm.ui.SidebarPanel.CSS_CLASS_SUGAR_SETUP_LINK);
+      ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_SUGAR_SETUP_LINK);
   handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
 };
 

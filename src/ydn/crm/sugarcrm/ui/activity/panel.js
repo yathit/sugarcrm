@@ -211,7 +211,6 @@ ydn.crm.su.ui.activity.Panel.prototype.enterDocument = function() {
   hd.listen(this.tabbar, goog.ui.Component.EventType.UNSELECT, this.handleTabUnSelect_);
   hd.listen(this.detail_panel, ydn.crm.su.events.EventType.VIEW_RECORD, this.onViewRecord_);
   hd.listen(this.detail_panel, ydn.crm.su.events.EventType.NEW_RECORD, this.onNewRecord_);
-  goog.style.setElementShown(this.getElement(), false);
   goog.style.setElementShown(this.new_record.getElement(), false);
   goog.style.setElementShown(this.detail_panel.getElement(), false);
   // if already login, update at the beginning.
@@ -388,7 +387,6 @@ ydn.crm.su.ui.activity.Panel.prototype.updateActivity_ = function() {
     if (ans.length > 0) {
       // Note: result are sorted by date_modified in descending ordering.
       var since = ydn.crm.su.utils.parseDate(ans[ans.length - 1]['date_modified']);
-      goog.style.setElementShown(this.getElement(), true);
       this.setActivityCount(ans.length, since);
     }
   }, function(e) {
@@ -424,7 +422,6 @@ ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
       // so that event if renderer fail, updating continue.
       this.updateUpcomingActivity_(true, next);
     }
-    goog.style.setElementShown(this.getElement(), true);
     this.setCount(m_name, query_result.length);
   }, function(e) {
     throw e;
