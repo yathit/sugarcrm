@@ -117,6 +117,7 @@ ydn.crm.su.model.Field.prototype.getFieldId = function() {
 /**
  * Get field value for string type.
  * @return {?string} `null` if not a string value or field value is not set.
+ * @see #getField
  */
 ydn.crm.su.model.Field.prototype.getStringValue = function() {
   return this.parent.module.getStringValue(this.field_name);
@@ -147,6 +148,7 @@ ydn.crm.su.model.Field.prototype.getDefaultStringValue = function() {
 /**
  * Get raw field value.
  * @return {ydn.crm.su.RecordValue}
+ * @see #getStringValue
  */
 ydn.crm.su.model.Field.prototype.getField = function() {
   return this.parent.module.value(this.field_name);

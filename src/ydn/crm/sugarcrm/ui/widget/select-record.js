@@ -14,7 +14,7 @@
 
 
 /**
- * @fileoverview Record selector.
+ * @fileoverview Record field selector.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -32,7 +32,13 @@ goog.require('ydn.crm.ui');
 
 
 /**
- * Record selector.
+ * Record field selector.
+ *
+ * Provide auto-suggestion input box for selecting existing record from database.
+ * Record are suggested by prefix search on email, name, id and full text search
+ * on name, title and description.
+ *
+ * A link is provided after selection.
  * <pre>
  *   var sr = ydn.crm.su.ui.widget.SelectRecord.getInstanceFor(sugar, 'Leads');
  *   var span = document.createElement('span');

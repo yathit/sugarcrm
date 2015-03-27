@@ -207,8 +207,9 @@ ydn.crm.su.ui.Header.prototype.onReLogin_ = function(e) {
 ydn.crm.su.ui.Header.prototype.reLogin = function() {
   var model = this.getModel();
   model.retryLogin().addBoth(function(info) {
-    console.log(info);
     this.refresh();
+    var val = this.getModel().isLogin() ? 'ok' : 'fail';
+    ydn.crm.shared.logAnalyticValue('ui.sugarcrm', 'retry-login', val);
   }, this);
 };
 

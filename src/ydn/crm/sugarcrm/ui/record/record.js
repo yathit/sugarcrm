@@ -25,6 +25,7 @@
 
 
 goog.provide('ydn.crm.su.ui.record.Record');
+goog.require('goog.date.duration');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su');
@@ -41,7 +42,6 @@ goog.require('ydn.crm.ui.StatusBar');
 goog.require('ydn.debug.ILogger');
 goog.require('ydn.ui');
 goog.require('ydn.ui.FlyoutMenu');
-goog.require('goog.date.duration');
 goog.require('ydn.ui.MessageDialog');
 
 

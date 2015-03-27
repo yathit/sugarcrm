@@ -321,5 +321,15 @@ function test_parse_extra_last_with_sal() {
 }
 
 
-
+function test_escape_entities() {
+  var original = {
+    'salutation': 'Mr. ',
+    'first_name': 'Kyaw&#039;s',
+    'last_name': 'Tun',
+    'full_name': 'Mr. Kyaw&#039;s Tun',
+    'name': 'Kyaw&#039;s Tun'
+  };
+  var ng = this.makeNameGroup(original);
+  assertEquals('first_name', "Kyaw's", ng.getStringValue('first_name'));
+}
 

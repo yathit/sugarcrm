@@ -113,13 +113,27 @@ ydn.crm.su.model.Record.prototype.getId = function() {
 
 
 /**
+ * List of fields need to escape HTML entities, such as &quot, &#039s.
+ * @const
+ * @type {Array<string>}
+ */
+ydn.crm.su.model.Record.HTML_ESCAPE_FIELDS = ['name', 'full_name', 'first_name',
+  'last_name'];
+
+
+/**
  * Get record field value.
  * @param {string} name field name
  * @return {ydn.crm.su.RecordValue} field value.
  * @see #getStringValue
  */
 ydn.crm.su.model.Record.prototype.value = function(name) {
-  return this.record.value(name);
+  var val = this.record.value(name);
+  if (ydn.crm.su.model.Record.HTML_ESCAPE_FIELDS.indexOf(name) >= 0 &&
+      goog.isString(val)) {
+    val = goog.string.unescapeEntities(val);
+  }
+  return val;
 };
 
 
@@ -197,7 +211,7 @@ ydn.crm.su.model.Record.prototype.validate = function() {
  * @see #value for getting raw field value.
  */
 ydn.crm.su.model.Record.prototype.getStringValue = function(name) {
-  var s = this.record.value(name);
+  var s = this.value(name);
   return /** @type {?string} */ (goog.isString(s) ? s : null);
 };
 
@@ -220,7 +234,7 @@ ydn.crm.su.model.Record.prototype.hasValue = function(name) {
  * @see #value for getting raw field value.
  */
 ydn.crm.su.model.Record.prototype.valueAsString = function(name) {
-  var s = this.record.value(name);
+  var s = this.value(name);
   if (goog.isString(s)) {
     return s;
   } else if (goog.isDefAndNotNull(s)) {

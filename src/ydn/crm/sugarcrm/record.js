@@ -317,7 +317,8 @@ ydn.crm.su.Record.getLabel = function(obj) {
  * @return {string}
  */
 ydn.crm.su.Record.prototype.getLabel = function() {
-  return ydn.crm.su.Record.getLabel(this.obj);
+  var label = ydn.crm.su.Record.getLabel(this.obj);
+  return goog.string.unescapeEntities(label);
 };
 
 
