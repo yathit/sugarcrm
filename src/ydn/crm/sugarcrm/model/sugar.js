@@ -152,7 +152,13 @@ ydn.crm.su.model.Sugar.prototype.handleMessage = function(e) {
     var about = /** @type {SugarCrm.About} */ (e.getData());
     if (!!about && about.domain == this.getDomain()) {
       this.setAbout(about);
+      if (this.isLogin()) {
+        this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.LOGIN, this));
+      } else {
+        this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.LOGOUT, this));
+      }
     }
+
   } else if (e.type == ydn.crm.ch.BReq.HOST_PERMISSION && this.about) {
     var msg = e.getData();
     if (msg['grant'] && msg['grant'] == this.getDomain()) {
