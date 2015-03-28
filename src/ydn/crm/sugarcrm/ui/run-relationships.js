@@ -25,7 +25,7 @@ btn.onclick = function(e) {
       module_name: mn,
       id: r.id,
       name: r.name
-    })
+    });
   });
 };
 
@@ -33,7 +33,7 @@ user.onReady().addCallbacks(function() {
   ydn.crm.su.model.Sugar.list().addCallbacks(function(arr) {
     sugar = arr[0];
     btn.style.display = '';
-    panel = new ydn.crm.su.ui.Relationships(sugar);
+    panel = new ydn.crm.su.ui.Relationships(sugar, ydn.crm.su.ModuleName.CONTACTS);
     panel.render(document.getElementById('relationships-panel'));
   }, function(e) {
     window.console.error(e);

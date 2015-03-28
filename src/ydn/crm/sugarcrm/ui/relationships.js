@@ -139,10 +139,11 @@ ydn.crm.su.ui.Relationships.prototype.onInputChange_ = function(e) {
   var row = e.row;
   if (row) {
     var r = /** @type {SugarCrm.Record} */(row);
+    var label = ydn.crm.su.Record.getLabel(r);
     this.addRelationship({
       module_name: r._module,
       id: r.id,
-      name: r.name
+      name: label
     });
     this.clear_();
   }

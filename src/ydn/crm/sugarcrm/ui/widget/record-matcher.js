@@ -124,9 +124,42 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
       window.console.log(out.map(function(x) {return {id: x.id, name: x.name}}));
     }
     matchHandler(token, out);
+    return out;
   }, function(e) {
     matchHandler(token, []);
     window.console.error(e);
+    return [];
+  }, this).addBoth(function(client) {
+    // continue search in server side
+    var q = {
+      'modules': [this.module],
+      'term': token
+    };
+    this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE,
+        q).addCallback(function(server) {
+      // make result interlace with client and server side.
+      var arr = [];
+      var already = function(r) {
+        return arr.some(function(x) {
+          return x['id'] == r['id'];
+        });
+      };
+      for (var i = 0; i < server.length; i++) {
+        arr.push(server[i]);
+        if (client[i]) {
+          if (!already(client[i])) {
+            arr.push(client[i]);
+          }
+        }
+      }
+      for (var i = server.length; i < client.length; i++) {
+        if (!already(client[i])) {
+          arr.push(client[i]);
+        }
+      }
+      console.log(client, server, arr);
+      matchHandler(token, arr);
+    }, this);
   }, this);
 };
 

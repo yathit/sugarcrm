@@ -22,15 +22,15 @@ var renderInput = function(mn) {
   document.body.appendChild(h3);
   document.body.appendChild(root);
   var input = root.querySelector('input');
+  var sel = ydn.crm.su.ui.widget.SelectRecord.getInstanceFor(sugar, mn);
   input.onfocus = function(e) {
-    var sel = ydn.crm.su.ui.widget.SelectRecord.getInstanceFor(sugar, mn);
     sel.attach(root);
   };
 };
 
 ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
   sugar = /** @type {ydn.crm.su.model.GDataSugar} */ (models[0]);
-  document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
+  document.getElementById('sugarcrm-instance').textContent = sugar.getBaseUrl();
 
   for (var i = 0; i < ydn.crm.su.PEOPLE_MODULES.length; i++) {
     renderInput(ydn.crm.su.PEOPLE_MODULES[i]);

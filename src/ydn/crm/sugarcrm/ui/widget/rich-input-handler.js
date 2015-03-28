@@ -56,13 +56,12 @@ goog.inherits(ydn.crm.su.ui.widget.RichInputHandler, goog.ui.ac.InputHandler);
  * @override
  */
 ydn.crm.su.ui.widget.RichInputHandler.prototype.selectRow = function(row) {
-  var suppressUpdate = ydn.crm.su.ui.widget.RichInputHandler.superClass_
-      .selectRow.call(this, row);
+  var suppressUpdate = ydn.crm.su.ui.widget.RichInputHandler.base(this, 'selectRow', row);
   var input = this.ac_.getTarget();
   var record = /** @type {SugarCrm.Record} */(row);
   input.value = ydn.crm.su.Record.getLabel(record);
   input.setAttribute('data-id', record.id);
-  input.setAttribute('data-name', record.name);
+  input.setAttribute('data-name', input.value);
   var a = input.nextElementSibling;
   if (a.tagName == 'A' && record._module) {
     var mn = /** @type {ydn.crm.su.ModuleName} */(record._module);
