@@ -142,6 +142,7 @@ ydn.crm.su.ui.SugarPanel.prototype.getActivityPanel_ = function() {
  */
 ydn.crm.su.ui.SugarPanel.prototype.showRecord = function(m_name, id) {
   this.getActivityPanel_().showRecord(m_name, id);
+  this.getHeader_().dispatchOpenDrawer();
 };
 
 
