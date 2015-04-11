@@ -32,7 +32,7 @@ goog.require('goog.ui.TabBar');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su.ui.HomePanel');
 goog.require('ydn.crm.su.ui.NewRecord');
-goog.require('ydn.crm.su.ui.SearchPanel');
+goog.require('ydn.crm.su.ui.HomePanel');
 goog.require('ydn.crm.su.ui.activity.DetailPanel');
 goog.require('ydn.crm.su.utils');
 
@@ -64,9 +64,9 @@ ydn.crm.su.ui.activity.Panel = function(model, dom) {
 
   /**
    * @protected
-   * @type {ydn.crm.su.ui.SearchPanel}
+   * @type {ydn.crm.su.ui.HomePanel}
    */
-  this.search = new ydn.crm.su.ui.SearchPanel(model, dom);
+  this.search = new ydn.crm.su.ui.HomePanel(model, dom);
 
   var new_record = new ydn.crm.su.model.Record(model,
       new ydn.crm.su.Record(model.getDomain(), ydn.crm.su.DEFAULT_MODULE));

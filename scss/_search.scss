@@ -15,9 +15,14 @@
 }
 
 .snippet-panel {
-  > .content > UL {
-    list-style: none;
-    padding-left: 0;
+  > .content {
+    max-height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    > UL {
+      list-style: none;
+      padding-left: 0;
+    }
   }
 }
 

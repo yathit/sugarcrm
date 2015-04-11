@@ -228,7 +228,7 @@ ydn.crm.su.ui.SearchResultList.prototype.onUpdateResult_ = function(e) {
  * @private
  */
 ydn.crm.su.ui.SearchResultList.prototype.onProgress_ = function(e) {
-  console.log(e.level);
+  // console.log(e.level);
 };
 
 
@@ -244,7 +244,7 @@ ydn.crm.su.ui.SearchResultList.prototype.addResult = function(r, idx) {
   if (node) {
     ul.insertBefore(li, node);
   } else {
-    if (goog.DEBUG) {
+    if (ydn.crm.su.ui.SearchResultList.DEBUG) {
       window.console.warn('Node ' + idx + ' not exists.');
     }
     ul.appendChild(li);

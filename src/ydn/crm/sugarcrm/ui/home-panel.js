@@ -25,6 +25,7 @@ goog.provide('ydn.crm.su.ui.HomePanel');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.su.ui.HomeBar');
 goog.require('ydn.crm.su.ui.SearchResultList');
+goog.require('ydn.crm.su.ui.record.Record');
 
 
 
