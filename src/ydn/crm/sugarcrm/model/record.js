@@ -725,14 +725,22 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
     var req = this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, data);
     req.addProgback(function(arr) {
       for (var i = 0; i < arr.length; i++) {
-        arr[i]['_module'] = to;
+        if (arr[i]) {
+          arr[i]['_module'] = to;
+        } else {
+          goog.array.removeAt(arr, i);
+        }
       }
       df.notify(arr);
     }, this);
     req.addCallbacks(function(arr) {
       if (arr) {
-        for (var i = 0; i < arr.length; i++) {
-          arr[i]['_module'] = to;
+        for (var i = arr.length = 1; i >= 0; i--) {
+          if (arr[i]) {
+            arr[i]['_module'] = to;
+          } else {
+            goog.array.removeAt(arr, i);
+          }
         }
       }
       df.notify(arr);

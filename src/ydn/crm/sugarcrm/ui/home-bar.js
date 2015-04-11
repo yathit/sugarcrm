@@ -104,6 +104,7 @@ ydn.crm.su.ui.HomeBar.prototype.createDom = function() {
   this.addChild(add_btn, true);
   this.addChild(target_btn, true);
   goog.style.setElementShown(add_btn.getElement(), false);
+  goog.style.setElementShown(target_btn.getElement(), false);
   this.addChild(search_input, true);
 };
 

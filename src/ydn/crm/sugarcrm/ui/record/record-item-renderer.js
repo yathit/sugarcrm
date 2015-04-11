@@ -96,13 +96,14 @@ ydn.crm.su.ui.record.RecordItemRenderer.prototype.contentDefault_ = function(el,
  * @param {SugarCrm.Record} r record.
  */
 ydn.crm.su.ui.record.RecordItemRenderer.prototype.render = function(el, r) {
+  var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
   el.innerHTML = '';
   var t = ydn.ui.getTemplateById('record-item-template').content;
   el.appendChild(t.cloneNode(true));
   el.setAttribute('data-id', r.id);
+  el.setAttribute('data-module', mn);
   var root = el.firstElementChild;
 
-  var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
   root.classList.add(mn);
   var record = new ydn.crm.su.model.Record(this.sugar_,
       new ydn.crm.su.Record(this.sugar_.getDomain(), mn, r));

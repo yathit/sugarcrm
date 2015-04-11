@@ -31,6 +31,7 @@ goog.require('ydn.crm.su');
 goog.require('ydn.crm.su.model.Search');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui.events');
+goog.require('ydn.crm.su.ui.record.HoverCard');
 goog.require('ydn.crm.su.ui.record.RecordItemRenderer');
 goog.require('ydn.ui');
 
@@ -50,6 +51,12 @@ ydn.crm.su.ui.SearchResultList = function(model, opt_dom) {
   this.setModel(model);
   this.item_renderer_ = new ydn.crm.su.ui.record.RecordItemRenderer(
       model.getSugar());
+  /**
+   * @type {ydn.crm.su.ui.record.HoverCard}
+   * @private
+   */
+  this.hover_ = null;
+
 };
 goog.inherits(ydn.crm.su.ui.SearchResultList, goog.ui.Component);
 
@@ -103,6 +110,10 @@ ydn.crm.su.ui.SearchResultList.prototype.createDom = function() {
       dom.createDom('ul'));
   root.appendChild(header);
   root.appendChild(content);
+
+  var sugar = this.getModel().getSugar();
+  this.hover_ = new ydn.crm.su.ui.record.HoverCard(sugar, content, dom);
+
 };
 
 
@@ -127,6 +138,11 @@ ydn.crm.su.ui.SearchResultList.prototype.enterDocument = function() {
   hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.RESET, this.onReset_);
   hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.ADD, this.onAddResult_);
   hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.PROGRESS, this.onProgress_);
+
+  hd.listen(this.hover_, goog.ui.HoverCard.EventType.TRIGGER,
+      this.onTrigger_);
+  hd.listen(this.hover_, goog.ui.HoverCard.EventType.BEFORE_SHOW,
+      this.onBeforeShow_);
 };
 
 
@@ -136,6 +152,35 @@ ydn.crm.su.ui.SearchResultList.prototype.enterDocument = function() {
  */
 ydn.crm.su.ui.SearchResultList.prototype.getUlElement = function() {
   return this.getContentElement().querySelector('ul');
+};
+
+
+/**
+ * Handle on hover card trigger.
+ * @param {goog.ui.HoverCard.TriggerEvent} ev
+ * @return {boolean}
+ * @private
+ */
+ydn.crm.su.ui.SearchResultList.prototype.onTrigger_ = function(ev) {
+  var trigger = ev.anchor;
+  var pos = new goog.positioning.AnchoredViewportPosition(trigger,
+      goog.positioning.Corner.TOP_LEFT, true);
+  this.hover_.setPosition(pos);
+  return true;
+};
+
+
+/**
+ * Handle on hover card before show.
+ * @param {goog.events.Event} ev
+ * @private
+ */
+ydn.crm.su.ui.SearchResultList.prototype.onBeforeShow_ = function(ev) {
+
+  var trigger = this.hover_.getAnchorElement();
+  var id = trigger.getAttribute('data-id');
+  var mn = trigger.getAttribute('data-module');
+  this.hover_.refreshRecord(/** @type {ydn.crm.su.ModuleName} */(mn), id);
 };
 
 

@@ -181,6 +181,7 @@ ydn.crm.su.ui.record.Secondary.prototype.onActivityUlClick_ = function(ev) {
 
 
 /**
+ * Handle on hover card trigger.
  * @param {goog.ui.HoverCard.TriggerEvent} ev
  * @return {boolean}
  * @private
@@ -195,6 +196,7 @@ ydn.crm.su.ui.record.Secondary.prototype.onTrigger_ = function(ev) {
 
 
 /**
+ * Handle on hover card before show.
  * @param {goog.events.Event} ev
  * @private
  */
