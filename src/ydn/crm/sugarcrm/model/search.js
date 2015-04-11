@@ -52,6 +52,12 @@ ydn.crm.su.model.Search = function(sugar) {
    */
   this.q_ = '';
   /**
+   * Order by.
+   * @type {string} either 'date_modified', 'name' or '' (default)
+   * @private
+   */
+  this.order_by_ = '';
+  /**
    *
    * @type {?ydn.crm.su.ModuleName}
    * @private

@@ -133,7 +133,8 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     // continue search in server side
     var q = {
       'modules': [this.module],
-      'term': token
+      'term': token,
+      'limit': 5
     };
     this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE,
         q).addCallback(function(server) {
