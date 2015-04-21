@@ -73,6 +73,12 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     'key': token
   }, {
     'store': this.module,
+    'index': 'ydn$emails',
+    'limit': 4,
+    'prefix': true,
+    'key': token.toLocaleLowerCase()
+  }, {
+    'store': this.module,
     'index': 'name',
     'limit': 2,
     'prefix': true,
@@ -85,13 +91,14 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     'threshold': 0.2,
     'q': token
   }];
+
   var dfs = new goog.async.DeferredList([
     this.meta.getChannel().send(ydn.crm.ch.SReq.QUERY, q),
     this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH, fq)
   ]);
   dfs.addCallbacks(function(x) {
     if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
-      window.console.log(x);
+      window.console.log(q, fq, x);
     }
     var arr = /** @type {Array<CrmApp.QueryResult>} */(x[0][1]);
     var out = [];
@@ -139,27 +146,24 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE,
         q).addCallback(function(server) {
       // make result interlace with client and server side.
+      if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
+        console.log(client, server);
+      }
       var arr = [];
       var already = function(r) {
-        return arr.some(function(x) {
+        return client.some(function(x) {
           return x['id'] == r['id'];
         });
       };
       for (var i = 0; i < server.length; i++) {
-        arr.push(server[i]);
-        if (client[i]) {
-          if (!already(client[i])) {
-            arr.push(client[i]);
-          }
+        if (!already(server[i])) {
+          arr.unshift(server[i]);
         }
       }
-      for (var i = server.length; i < client.length; i++) {
-        if (!already(client[i])) {
-          arr.push(client[i]);
-        }
+      if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
+        console.log(client, server, arr);
       }
-      console.log(client, server, arr);
-      matchHandler(token, arr);
+      matchHandler(token, client);
     }, this);
   }, this);
 };

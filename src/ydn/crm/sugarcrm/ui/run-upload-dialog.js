@@ -10,6 +10,8 @@ ydn.msg.initPipe('dev');
 var user = ydn.crm.ui.UserSetting.getInstance();
 var sugar;
 
+ydn.crm.su.ui.widget.RecordMatcher.DEBUG =  true;
+
 var btn = document.getElementById('upload');
 btn.onclick = function(e) {
   ydn.crm.su.ui.UploadDialog.showModel(sugar, 'm123', 'name.png').addCallbacks(function(obj) {
