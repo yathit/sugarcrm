@@ -19,7 +19,7 @@ ydn.crm.su.ui.events.Type = {
   SAVE: 'save',
   NEW: 'new',
   /**
-   * @desc a new record created event.
+   * a new record created event.
    */
   CREATED: 'created'
 };
