@@ -129,6 +129,9 @@ ydn.crm.su.ui.ArchiveDialog.renderContent_ = function(info) {
   } else {
     goog.style.setElementShown(att_el, false);
   }
+
+  content.querySelector('[name=from]').textContent = info.from_addr;
+  content.querySelector('[name=to]').textContent = info.to_addrs;
   var word_count_el = content.querySelector('.word-count');
   word_count_el.textContent = String(ydn.string.countByReg(info.html, /\w+/g));
   return content;
