@@ -320,7 +320,8 @@
 {template .wrongLogin}
   {@param ydn_login: string}
   {@param gmail: string}
-<div>Currently you are login as {print $ydn_login} to Yathit server, {print $gmail} must login to use here.</div>
+  {@param ext_id: string}
+<div>Currently you are login as {print $ydn_login} to Yathit server, {print $gmail} must <a href="chrome-extension://{print $ext_id}/option-page.html" target="option-page">login</a> to use here.</div>
 {/template}
 
 
