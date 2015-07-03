@@ -592,7 +592,7 @@ ydn.crm.su.model.Sugar.prototype.listRecords = function(m_name, opt_order,
  * @return {!goog.async.Deferred<!Array.<SugarCrm.Record>>}
  */
 ydn.crm.su.model.Sugar.prototype.listRecord = function(m_name, opt_order,
-                                                       opt_range, opt_prefix, opt_limit, opt_offset) {
+    opt_range, opt_prefix, opt_limit, opt_offset) {
   goog.asserts.assert(ydn.crm.su.Modules.indexOf(m_name) >= 0, m_name);
   var query = {
     'store': m_name

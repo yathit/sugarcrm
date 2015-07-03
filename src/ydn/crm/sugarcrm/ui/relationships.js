@@ -270,6 +270,59 @@ ydn.crm.su.ui.Relationships.prototype.addRelationship = function(model) {
 
 
 /**
+ * Add suggestion for possible relationship records.
+ * @param {string} email email address of interested record.
+ * @param {Array<ydn.crm.su.ModuleName>} opt_target_modules optional target module
+ * name, default to {@link #relationship_modules}.
+ */
+ydn.crm.su.ui.Relationships.prototype.suggestByEmail = function(
+    email, opt_target_modules) {
+  this.meta_.queryByEmail(email).addCallback(function(x) {
+    var records = /** @type {!Array<!SugarCrm.Record>} */(x);
+    for (var i = 0; i < records.length; i++) {
+      console.log(records[i]);
+      var mn = /** @type {ydn.crm.su.ModuleName} */(records[i]._module);
+      this.suggest(mn, records[i].id, opt_target_modules);
+    }
+  }, this);
+};
+
+
+/**
+ * Add suggestion for possible relationship records.
+ * @param {ydn.crm.su.ModuleName} mn interested record module name.
+ * @param {string} id email interested record id.
+ * @param {Array<ydn.crm.su.ModuleName>=} opt_target_modules optional target module
+ * name, default to {@link #relationship_modules}.
+ * @see #suggestByEmail
+ */
+ydn.crm.su.ui.Relationships.prototype.suggest = function(mn, id,
+                                                         opt_target_modules) {
+  if (!mn) {
+    throw new Error('mn');
+  }
+  var modules = opt_target_modules || this.relationship_modules;
+  var q = {
+    'emails':
+  }
+  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED_BY_EMAILS, q);
+};
+
+
+/**
+ * Add suggestion for possible relationship records.
+ * @param {ydn.crm.su.ModuleName} mn interested record module name.
+ * @param {string} id email interested record id.
+ * @param {Array<ydn.crm.su.ModuleName>} modules target module names.
+ * @return {!goog.async.Deferred<Array>} list of record sorted by modified
+ * descending.
+ */
+ydn.crm.su.ui.Relationships.prototype.getRelatedRecords_ = function(mn, id, modules) {
+
+};
+
+
+/**
  * @typedef {{
  *   id: string,
  *   module_name: string,

@@ -15,7 +15,9 @@
 
 
 /**
- * @fileoverview SugarCRM meta data.
+ * @fileoverview Interface for immutable SugarCRM model.
+ *
+ * This is implemented in {@link ydn.crm.su.model.Sugar}.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
