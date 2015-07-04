@@ -67,7 +67,7 @@ goog.inherits(ydn.crm.su.ui.Relationships, goog.ui.Component);
 /**
  * @define {boolean} debug variable.
  */
-ydn.crm.su.ui.Relationships.DEBUG = true;
+ydn.crm.su.ui.Relationships.DEBUG = false;
 
 
 /**

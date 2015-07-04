@@ -80,7 +80,7 @@ goog.inherits(ydn.crm.su.ui.ArchiveDialog, ydn.ui.MessageDialog);
 /**
  * @define {boolean} debug variable.
  */
-ydn.crm.su.ui.ArchiveDialog.DEBUG = true;
+ydn.crm.su.ui.ArchiveDialog.DEBUG = false;
 
 
 /**
@@ -188,18 +188,21 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
  * @private
  */
 ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
-  meta.queryByEmail(email).addCallback(function(x) {
-    var r = /** @type {SugarCrm.Record} */(x[0]);
-    if (ydn.crm.su.ui.ArchiveDialog.DEBUG) {
-      window.console.log('addRel_', email, x, r);
-    }
-    if (!r) {
-      return;
-    }
-    dialog.addRelationship(r._module, r.id, r.name);
-    dialog.rel_panel_.addSuggestionByEmail(email,
-        [ydn.crm.su.ModuleName.OPPORTUNITIES, ydn.crm.su.ModuleName.CASES]);
-  });
+  if (!meta.hasVersion('6')) {
+    // these relationship are automatically added.
+    meta.queryByEmail(email).addCallback(function(x) {
+      var r = /** @type {SugarCrm.Record} */(x[0]);
+      if (ydn.crm.su.ui.ArchiveDialog.DEBUG) {
+        window.console.log('addRel_', email, x, r);
+      }
+      if (r) {
+        dialog.addRelationship(r._module, r.id, r.name);
+      }
+    });
+  }
+
+  dialog.rel_panel_.addSuggestionByEmail(email,
+      [ydn.crm.su.ModuleName.OPPORTUNITIES, ydn.crm.su.ModuleName.CASES]);
 };
 
 

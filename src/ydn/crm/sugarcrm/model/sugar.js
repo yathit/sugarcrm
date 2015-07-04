@@ -178,14 +178,13 @@ ydn.crm.su.model.Sugar.prototype.getVersion = function() {
 /**
  * Check require version.
  * <pre>
- *   sugar.hasVersion('7');
+ *   sugar.hasVersion('6'); // return true for 6.5 and 7.1 version.
  * </pre>
  * @param {string} ver sugarcrm version, such as '7'.
  * @return {boolean} return true if sugarcrm version is higher or equal to
  * given version.
- * @private
  */
-ydn.crm.su.model.Sugar.prototype.hasVersion_ = function(ver) {
+ydn.crm.su.model.Sugar.prototype.hasVersion = function(ver) {
   return goog.string.compareVersions(this.getVersion(), ver) >= 0;
 };
 
@@ -195,7 +194,7 @@ ydn.crm.su.model.Sugar.prototype.hasVersion_ = function(ver) {
  */
 ydn.crm.su.model.Sugar.prototype.isVersion7 = function() {
   if (!goog.isDefAndNotNull(this.is_version_7_) && this.info) {
-    this.is_version_7_ = this.hasVersion_('7');
+    this.is_version_7_ = this.hasVersion('7');
   }
   return this.is_version_7_;
 };
@@ -809,6 +808,7 @@ ydn.crm.su.model.Sugar.prototype.saveRecord = function(record) {
 /**
  * Get list of sugarcrm instance, of which login.
  * @return {!goog.async.Deferred.<Array.<ydn.crm.su.model.Sugar>>}
+ * @deprecated use {@link #get} instead.
  */
 ydn.crm.su.model.Sugar.list = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
@@ -824,6 +824,19 @@ ydn.crm.su.model.Sugar.list = function() {
       }
     }
     return goog.async.DeferredList.gatherResults(dfs);
+  });
+};
+
+
+/**
+ * Get the sugarcrm instance, of which login.
+ * @return {!goog.async.Deferred.<ydn.crm.su.model.Sugar>}
+ */
+ydn.crm.su.model.Sugar.get = function() {
+  var user = ydn.crm.ui.UserSetting.getInstance();
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallback(function(details) {
+    return new ydn.crm.su.model.Sugar(details.about, details.modulesInfo,
+        details.serverInfo, null, details.loginInfo);
   });
 };
 

@@ -46,6 +46,15 @@ ydn.crm.su.Meta.prototype.isVersion7 = function() {};
 
 
 /**
+ * Check require version.
+ * @param {string} ver sugarcrm version, such as '7'.
+ * @return {boolean} return true if sugarcrm version is higher or equal to
+ * given version.
+ */
+ydn.crm.su.Meta.prototype.hasVersion = function(ver) {};
+
+
+/**
  * @return {string} instance domain of sugarcrm.
  */
 ydn.crm.su.Meta.prototype.getDomain = function() {};
