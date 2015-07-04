@@ -352,11 +352,11 @@ ydn.crm.su.ui.Relationships.prototype.addSuggestionByEmail = function(
     email, opt_target_modules) {
   var modules = opt_target_modules || this.relationship_modules;
   var q = {
-    'emails': [email],
+    'email': email,
     'modules': modules,
     'limit': 5
   };
-  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED_BY_EMAILS, q).addCallback(function(arr) {
+  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED_BY_EMAIL, q).addCallback(function(arr) {
     if (ydn.crm.su.ui.Relationships.DEBUG) {
       window.console.log('suggestion', email, arr);
     }
@@ -364,19 +364,6 @@ ydn.crm.su.ui.Relationships.prototype.addSuggestionByEmail = function(
       this.addSuggestion_(arr[i], email);
     }
   }, this);
-};
-
-
-/**
- * Add suggestion for possible relationship records.
- * @param {ydn.crm.su.ModuleName} mn interested record module name.
- * @param {string} id email interested record id.
- * @param {Array<ydn.crm.su.ModuleName>} modules target module names.
- * @return {!goog.async.Deferred<Array>} list of record sorted by modified
- * descending.
- */
-ydn.crm.su.ui.Relationships.prototype.getRelatedRecords_ = function(mn, id, modules) {
-
 };
 
 
