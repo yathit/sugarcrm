@@ -78,6 +78,12 @@ goog.inherits(ydn.crm.su.ui.ArchiveDialog, ydn.ui.MessageDialog);
 
 
 /**
+ * @define {boolean} debug variable.
+ */
+ydn.crm.su.ui.ArchiveDialog.DEBUG = true;
+
+
+/**
  * @typedef {{
  *   document_names: Array<string|undefined>,
  *   relationships: Array<SugarCrm.ModuleNameIdPair>
@@ -184,10 +190,15 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
 ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
   meta.queryByEmail(email).addCallback(function(x) {
     var r = /** @type {SugarCrm.Record} */(x[0]);
+    if (ydn.crm.su.ui.ArchiveDialog.DEBUG) {
+      window.console.log('addRel_', email, x, r);
+    }
     if (!r) {
       return;
     }
     dialog.addRelationship(r._module, r.id, r.name);
+    dialog.rel_panel_.addSuggestionByEmail(email,
+        [ydn.crm.su.ModuleName.OPPORTUNITIES, ydn.crm.su.ModuleName.CASES]);
   });
 };
 
@@ -215,7 +226,7 @@ ydn.crm.su.ui.ArchiveDialog.showModel = function(meta, info, opt_record) {
   };
   dialog.dialog.showModal();
 
-  var emails = info.to_addrs.split(', ').concat(info.to_addrs.split(', '));
+  var emails = info.to_addrs.split(', ').concat(info.from_addr.split(', '));
   for (var i = 0; i < emails.length; i++) {
     ydn.crm.su.ui.ArchiveDialog.addRel_(dialog, meta, emails[i]);
   }
