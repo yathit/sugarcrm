@@ -733,7 +733,7 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
  */
 ydn.crm.su.model.Sugar.prototype.queryOneByEmail = function(email) {
   return this.queryByEmail(email).addCallback(function(arr) {
-    for (var i = 0; arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
       if (arr[i]['_module'] == ydn.crm.su.ModuleName.CONTACTS) {
         return arr[i];
       }

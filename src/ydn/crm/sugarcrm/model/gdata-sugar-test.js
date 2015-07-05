@@ -10,6 +10,7 @@ goog.require('ydn.crm.test');
 
 function setUp() {
   ydn.crm.test.initPipe();
+  ydn.crm.test.getMain().addMockSugarRespond(ydn.crm.ch.SReq.QUERY_BY_EMAIL_ON_SERVER, []);
 }
 
 
