@@ -293,6 +293,7 @@ ydn.crm.su.ui.Relationships.prototype.getSuggestionElement_ = function() {
     ul = document.createElement('UL');
     el.appendChild(document.createTextNode('Add '));
     el.appendChild(ul);
+    el.appendChild(document.createTextNode('?'));
   }
   return ul;
 };
@@ -307,7 +308,7 @@ ydn.crm.su.ui.Relationships.prototype.onSuggestionClick_ = function(e) {
   var li = goog.dom.getAncestorByTagNameAndClass(e.target, 'LI');
   var id = li.getAttribute('data-id');
   var mn = li.getAttribute('data-module');
-
+  li.parentElement.removeChild(li);
   this.addRelationship({
     module_name: mn,
     id: id,

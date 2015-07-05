@@ -338,21 +338,18 @@ ydn.crm.su.model.GDataSugar.prototype.processRecord_ = function(cm, opt_contact)
 
   var email = cm.getEmail();
 
-  return this.queryByEmail(email).addCallback(function(x) {
-    var query_results = /** @type {Array<SugarCrm.Record>} */ (x);
+  return this.queryOneByEmail(email).addCallback(function(x) {
+    var query_result = /** @type {SugarCrm.Record} */ (x);
     if (ydn.crm.su.model.GDataSugar.DEBUG) {
-      window.console.log('receiving ' + query_results.length + ' result for ' +
-          email, query_result);
+      window.console.log(email, query_result);
     }
-    if (query_results[0]) {
-      var query_result = query_results[0];
+    var r;
+    if (query_result) {
       var m_name = /** @type {ydn.crm.su.ModuleName} */ (query_result._module);
-      var r = new ydn.crm.su.Record(this.getDomain(), m_name,
+      r = new ydn.crm.su.Record(this.getDomain(), m_name,
           query_result);
-      return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact, r);
-    } else {
-      return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact);
     }
+    return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact, r);
   }, this);
 };
 

@@ -682,6 +682,7 @@ ydn.crm.su.model.Sugar.prototype.searchRecord = function(module_name, q, opt_fet
  * @param {string} email email address to query.
  * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>} list of record. the record value
  * has `_module` for respective module name.
+ * @see #queryOneByEmail
  */
 ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
   if (!goog.isString(email) || email.indexOf('@') == -1) {
@@ -714,6 +715,45 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
       }
     }
     return out;
+  }, this);
+};
+
+
+/**
+ * Query one people module record by email. This will search on server if not
+ * found in client database.
+ * <pre>
+ *   sugar.queryOneByEmail('nettie@example.name')
+ *   .addCallback(function(x) {console.log(x)});
+ * </pre>
+ * @param {string} email email address to query.
+ * @return {!goog.async.Deferred<SugarCrm.Record>} list of record. the record value
+ * has `_module` for respective module name.
+ * @see #queryByEmail
+ */
+ydn.crm.su.model.Sugar.prototype.queryOneByEmail = function(email) {
+  return this.queryByEmail(email).addCallback(function(arr) {
+    for (var i = 0; arr.length; i++) {
+      if (arr[i]['_module'] == ydn.crm.su.ModuleName.CONTACTS) {
+        return arr[i];
+      }
+    }
+    if (arr[0]) {
+      return arr[0];
+    }
+    var q = {'email': email};
+    return this.getChannel().send(ydn.crm.ch.SReq.QUERY_BY_EMAIL_ON_SERVER, q)
+        .addCallback(function(arr) {
+          for (var i = 0; arr.length; i++) {
+            if (arr[i]['_module'] == ydn.crm.su.ModuleName.CONTACTS) {
+              return arr[i];
+            }
+          }
+          if (arr[0]) {
+            return arr[0];
+          }
+          return null;
+    }, this);
   }, this);
 };
 
