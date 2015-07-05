@@ -831,6 +831,7 @@ ydn.crm.su.model.Sugar.list = function() {
 /**
  * Get the sugarcrm instance, of which login.
  * @return {!goog.async.Deferred.<ydn.crm.su.model.Sugar>}
+ * @see ydn.crm.su.model.GDataSugar#list
  */
 ydn.crm.su.model.Sugar.get = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();

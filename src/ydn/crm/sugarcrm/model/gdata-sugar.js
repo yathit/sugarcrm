@@ -337,32 +337,22 @@ ydn.crm.su.model.GDataSugar.prototype.update = function(cm) {
 ydn.crm.su.model.GDataSugar.prototype.processRecord_ = function(cm, opt_contact) {
 
   var email = cm.getEmail();
-  var query = [];
-  for (var i = 0; i < ydn.crm.su.PEOPLE_MODULES.length; i++) {
-    query[i] = {
-      'store': ydn.crm.su.PEOPLE_MODULES[i],
-      'index': 'ydn$emails',
-      'key': email
-    };
-  }
 
-  return this.getChannel().send(ydn.crm.ch.SReq.QUERY, query).addCallback(function(x) {
-    var query_results = /** @type {Array.<SugarCrm.Query>} */ (x);
-    for (var j = 0; j < query_results.length; j++) {
-      var query_result = query_results[j];
-      if (ydn.crm.su.model.GDataSugar.DEBUG) {
-        var n = query_result.result ? query_result.result.length : 0;
-        window.console.log(this + ' receiving sugarcrm ' + n + ' query result for ' +
-            email + ' to ' + query_result.store, query_result);
-      }
-      if (query_result.result[0]) {
-        var m_name = /** @type {ydn.crm.su.ModuleName} */ (query_result.store);
-        var r = new ydn.crm.su.Record(this.getDomain(), m_name,
-            query_result.result[0]);
-        return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact, r);
-      }
+  return this.queryByEmail(email).addCallback(function(x) {
+    var query_results = /** @type {Array<SugarCrm.Record>} */ (x);
+    if (ydn.crm.su.model.GDataSugar.DEBUG) {
+      window.console.log('receiving ' + query_results.length + ' result for ' +
+          email, query_result);
     }
-    return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact);
+    if (query_results[0]) {
+      var query_result = query_results[0];
+      var m_name = /** @type {ydn.crm.su.ModuleName} */ (query_result._module);
+      var r = new ydn.crm.su.Record(this.getDomain(), m_name,
+          query_result);
+      return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact, r);
+    } else {
+      return new ydn.crm.su.model.events.ContextChangeEvent(cm, opt_contact);
+    }
   }, this);
 };
 
@@ -527,6 +517,7 @@ ydn.crm.su.model.GDataSugar.prototype.update_ = function(cm) {
 /**
  * Get list of sugarcrm instance, of which login.
  * @return {!goog.async.Deferred<ydn.crm.su.model.GDataSugar>}
+ * @see ydn.crm.su.model.Sugar#get
  */
 ydn.crm.su.model.GDataSugar.list = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
