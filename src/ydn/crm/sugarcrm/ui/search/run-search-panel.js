@@ -7,6 +7,7 @@ ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
 var panel, sugar, search;
+ydn.crm.su.model.Search.DEBUG =  true;
 
 ydn.crm.su.model.GDataSugar.list().addCallback(function (models) {
 

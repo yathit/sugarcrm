@@ -350,7 +350,7 @@ ydn.crm.su.ui.activity.Panel.prototype.showRecord = function(m_name, id) {
     'id': id
   };
   var token;
-  var df = ch.send(ydn.crm.ch.SReq.GET, query);
+  var df = ch.send(ydn.crm.ch.SReq.FIND, query);
   df.addProgback(function(obj) {
     var r = /** @type {SugarCrm.Record} */(obj);
     if (r && r.id) {

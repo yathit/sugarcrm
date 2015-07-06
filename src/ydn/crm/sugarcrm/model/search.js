@@ -64,7 +64,7 @@ ydn.crm.su.model.Search = function(sugar) {
    */
   this.record_type_ = null;
   /**
-   * @type {ydn.crm.su.model.Search.Stack}
+   * @type {ydn.crm.su.model.Search.ClientStack}
    * @private
    */
   this.stack_ = null;
@@ -120,8 +120,9 @@ ydn.crm.su.model.Search.prototype.search = function(query) {
   this.results_ = [];
   var ev = new ydn.crm.su.model.events.SearchResetEvent(this.q_, this);
   this.dispatchEvent(ev);
-  this.stack_ = new ydn.crm.su.model.Search.Stack(this.record_type_);
-  this.updateSearch_();
+  this.doServerSearch_();
+  this.stack_ = new ydn.crm.su.model.Search.ClientStack(this.record_type_);
+  // this.updateClientSearch_();
 };
 
 
@@ -167,7 +168,7 @@ ydn.crm.su.model.Search.prototype.addResult_ = function(r, index, q) {
 
 
 /**
- * Update for an module query. This will invoke updateSearch_().
+ * Update for an module query. This will invoke updateClientSearch_().
  * @param {string} m_name
  * @param {string} index
  * @param {string} q
@@ -184,13 +185,39 @@ ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) 
       r._module = m_name;
       this.addResult_(r, index, q);
     }
-    this.updateSearch_();
+    this.updateClientSearch_();
   }, function(e) {
     if (ydn.crm.su.model.Search.DEBUG) {
       window.console.log(m_name, index, q, e);
     }
-    this.updateSearch_();
+    this.updateClientSearch_();
     throw e;
+  }, this);
+};
+
+
+/**
+ * Query on server side.
+ * @private
+ */
+ydn.crm.su.model.Search.prototype.doServerSearch_ = function() {
+  var q = this.q_;
+  var data = {'q': q};
+  this.sugar_.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE, data).addCallbacks(function(arr) {
+    if (ydn.crm.su.model.Search.DEBUG) {
+      window.console.log(q, arr);
+    }
+    for (var i = 0; i < arr.length; i++) {
+      var r = arr[i];
+      if (i == 0) {
+        r['_score'] = 1;
+      } else {
+        r['_score'] = 0.5;
+      }
+      this.addResult_(r, 'server', q);
+    }
+  }, function(e) {
+    window.console.error(e);
   }, this);
 };
 
@@ -201,7 +228,7 @@ ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) 
  * is available, current result are clear.
  * @private
  */
-ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
+ydn.crm.su.model.Search.prototype.updateClientSearch_ = function() {
   if (!this.stack_) {
     return;
   }
@@ -234,7 +261,7 @@ ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
     var number_of_digits = m ? m.length : 0;
     if (number_of_digits < 3) {
       // skip phone no search.
-      this.updateSearch_();
+      this.updateClientSearch_();
       return;
     }
     this.updateSearchFor_(m_name, 'ydn$phones', this.q_);
@@ -248,13 +275,13 @@ ydn.crm.su.model.Search.prototype.updateSearch_ = function() {
       for (var i = 0; i < arr.length; i++) {
         this.addResult_(arr[i], 'full-text', q);
       }
-      this.updateSearch_();
+      this.updateClientSearch_();
     }, function(e) {
       window.console.error(e);
     }, this);
   } else {
     // done.
-    this.updateSearch_();
+    this.updateClientSearch_();
   }
 };
 
@@ -283,7 +310,7 @@ ydn.crm.su.model.Search.prototype.getResultCount = function() {
  * module. `null` for any modules.
  * @constructor
  */
-ydn.crm.su.model.Search.Stack = function(mn) {
+ydn.crm.su.model.Search.ClientStack = function(mn) {
   /**
    * @final
    * @type {?ydn.crm.su.ModuleName}
@@ -329,7 +356,7 @@ ydn.crm.su.model.Search.tasks = [ydn.crm.su.model.Search.Task.ID,
  * Move to next stack.
  * @return {boolean} return `true` if next execution task exist.
  */
-ydn.crm.su.model.Search.Stack.prototype.next = function() {
+ydn.crm.su.model.Search.ClientStack.prototype.next = function() {
   this.task_idx_++;
   if (this.task_idx_ >= ydn.crm.su.model.Search.tasks.length) {
     if (this.target_mn_) {
@@ -353,7 +380,7 @@ ydn.crm.su.model.Search.Stack.prototype.next = function() {
  * Get current task.
  * @return {ydn.crm.su.model.Search.Task}
  */
-ydn.crm.su.model.Search.Stack.prototype.getTask = function() {
+ydn.crm.su.model.Search.ClientStack.prototype.getTask = function() {
   return ydn.crm.su.model.Search.tasks[this.task_idx_];
 };
 
@@ -362,7 +389,7 @@ ydn.crm.su.model.Search.Stack.prototype.getTask = function() {
  * Get current module.
  * @return {ydn.crm.su.ModuleName}
  */
-ydn.crm.su.model.Search.Stack.prototype.getModule = function() {
+ydn.crm.su.model.Search.ClientStack.prototype.getModule = function() {
   if (this.target_mn_) {
     return this.target_mn_;
   } else {
@@ -375,7 +402,7 @@ ydn.crm.su.model.Search.Stack.prototype.getModule = function() {
  * Get progress level.
  * @return {number} return progress level between 0 and 1 for start and finished.
  */
-ydn.crm.su.model.Search.Stack.prototype.getProgress = function() {
+ydn.crm.su.model.Search.ClientStack.prototype.getProgress = function() {
   var total = ydn.crm.su.model.Search.tasks.length;
   if (!this.target_mn_) {
     total = ydn.crm.su.model.Search.tasks.length * ydn.crm.su.CacheModules.length;
