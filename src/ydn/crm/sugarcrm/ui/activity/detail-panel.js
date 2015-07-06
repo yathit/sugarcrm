@@ -318,16 +318,17 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcomingItem_ = function(obj,
   verb = verb.charAt(0).toUpperCase() + verb.substr(1) + ' ';
   msg.appendChild(dom.createTextNode(verb));
 
+  var label = obj['summary'] || r.getLabel();
   var link = dom.createDom('a', {
     'href': sugar.getRecordViewLink(r.getModule(), r.getId()),
     'data-view': 'record',
     'data-module': r.getModule(),
     'data-id': r.getId(),
     'target': '_blank'
-  }, r.getLabel());
+  }, label);
 
   msg.appendChild(link);
-  var deadline = r.getDeadline();
+  var deadline = obj['summary'] ? new Date(obj['date_due']) : r.getDeadline();
   var time_msg = goog.date.relative.format(deadline.getTime()) || 'on ' + deadline.toLocaleDateString();
   msg.appendChild(dom.createTextNode(' ' + time_msg + '.'));
   var div = dom.createDom('div', null, [msg]);
@@ -353,43 +354,54 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderHeader_ = function(el) {
 /**
  * Render upcoming activity.
  * @param {ydn.crm.su.ModuleName} m_name one of ydn.crm.su.ACTIVITY_MODULES.
+ * @param {Array.<SugarCrm.Record>} results the activities.
+ * @return {number} number of upcoming items until next weekend.
+ */
+ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name, results) {
+
+  if (ydn.crm.su.ui.activity.DetailPanel.DEBUG) {
+    window.console.log('renderUpcoming ' + results.length + ' ' + m_name + ' items',
+        results);
+  }
+  var dom = this.getDomHelper();
+  var msg = dom.createDom('span');
+  var a = dom.createDom('a', {
+    'href': '#' + m_name,
+    'data-module': m_name,
+    'data-view': 'record'
+  }, 'New');
+  var head = dom.createDom('span', null, [msg, a]);
+  this.renderHeader_(head);
+
+  var cnt = 0;
+  var weekend = ydn.time.getWeekend();
+  for (var i = 0; i < results.length; i++) {
+    var r = this.renderUpcomingItem_(results[i], m_name);
+    var deadline = r.getDeadline();
+    if (m_name == ydn.crm.su.ModuleName.CASES) {
+      cnt++;
+    } else if (deadline < weekend) {
+      cnt++;
+    }
+  }
+  msg.textContent = cnt + ' upcoming ' + m_name + '. ';
+  return cnt;
+};
+
+
+/**
+ * Render upcoming activity.
+ * @param {ydn.crm.su.ModuleName} m_name one of ydn.crm.su.ACTIVITY_MODULES.
  * @return {!goog.async.Deferred<number>} number of upcoming items until next weekend.
  */
-ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name) {
+ydn.crm.su.ui.activity.DetailPanel.prototype.refreshUpcoming = function(m_name) {
   var q = this.genUpcomingQuery(m_name);
   if (ydn.crm.su.ui.activity.DetailPanel.DEBUG) {
     window.console.log('renderUpcoming for ' + m_name, q);
   }
   return this.getModel().send(ydn.crm.ch.SReq.VALUES, q).addCallbacks(function(arr) {
     var results = /** @type {Array.<SugarCrm.Record>} */ (arr);
-    if (ydn.crm.su.ui.activity.DetailPanel.DEBUG) {
-      window.console.log('receiving renderUpcoming ' + results.length + ' items',
-          q, arr);
-    }
-    var dom = this.getDomHelper();
-    var msg = dom.createDom('span');
-    var a = dom.createDom('a', {
-      'href': '#' + m_name,
-      'data-module': m_name,
-      'data-view': 'record'
-    }, 'New');
-    var head = dom.createDom('span', null, [msg, a]);
-    this.renderHeader_(head);
-
-    var cnt = 0;
-    var weekend = ydn.time.getWeekend();
-    for (var i = 0; i < results.length; i++) {
-      var r = this.renderUpcomingItem_(results[i], m_name);
-      var deadline = r.getDeadline();
-      if (m_name == ydn.crm.su.ModuleName.CASES) {
-        cnt++;
-      } else if (deadline < weekend) {
-        cnt++;
-      }
-    }
-    msg.textContent = cnt + ' upcoming ' + m_name + '. ';
-
-    return cnt;
+    return this.renderUpcoming(m_name, results);
   }, function(e) {
     throw e;
   }, this);

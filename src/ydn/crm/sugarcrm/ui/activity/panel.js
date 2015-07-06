@@ -26,6 +26,7 @@
 
 
 goog.provide('ydn.crm.su.ui.activity.Panel');
+goog.require('goog.asserts');
 goog.require('goog.date.relative');
 goog.require('goog.ui.Tab');
 goog.require('goog.ui.TabBar');
@@ -77,9 +78,23 @@ ydn.crm.su.ui.activity.Panel = function(model, dom) {
    */
   this.new_record = new ydn.crm.su.ui.NewRecord(new_record, dom);
 
-
+  /**
+   * @type {goog.async.Deferred}
+   * @private
+   */
+  this.df_up_activity_req_ = null;
+  /**
+   * @type {Array<Object>}
+   */
+  this.last_results_ = null;
 };
 goog.inherits(ydn.crm.su.ui.activity.Panel, goog.ui.Component);
+
+
+/**
+ * @define {boolean} debug flag.
+ */
+ydn.crm.su.ui.activity.Panel.DEBUG = false;
 
 
 /**
@@ -269,10 +284,7 @@ ydn.crm.su.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
       tab_name = 'feed';
     } else {
       var m_name = ydn.crm.su.ACTIVITY_MODULES[idx - 3];
-      tab_name = m_name;
-      this.detail_panel.renderUpcoming(m_name).addCallback(function(cnt) {
-        this.setCount(m_name, cnt);
-      }, this);
+      this.updateUpcomingFor_(m_name);
     }
   }
   ydn.crm.shared.logAnalyticValue('ui.activity', 'tab.click', tab_name);
@@ -308,6 +320,19 @@ ydn.crm.su.ui.activity.Panel.prototype.showRecord_ = function(m_name, obj) {
   var record = /** @type {ydn.crm.su.model.Record} */ (
       this.new_record.getModel());
   record.setRecord(r);
+};
+
+
+ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingForUsingClientFor_ = function(m_name) {
+  this.detail_panel.refreshUpcoming(m_name).addCallback(function(cnt) {
+    this.setCount(m_name, cnt);
+  }, this);
+};
+
+
+ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingFor_ = function(m_name) {
+  // this.updateUpcomingForUsingClientFor_(m_name);
+  this.updateUpcomingActivityUsingServer_(m_name);
 };
 
 
@@ -371,7 +396,7 @@ ydn.crm.su.ui.activity.Panel.prototype.updaterLater_ = function() {
     me.updateActivity_();
   }, 2000);
   setTimeout(function() {
-    me.updateUpcomingActivity_(true);
+    me.updateUpcomingActivity_();
   }, 3000);
 };
 
@@ -396,13 +421,13 @@ ydn.crm.su.ui.activity.Panel.prototype.updateActivity_ = function() {
 
 
 /**
- * Update upcoming activity display.
+ * Update upcoming activity display using data in client side.
  * @param {boolean=} opt_continue whether continue next.
  * @param {number=} opt_idx current activity to update. If not given, start with
  * 0 and continue to next after a time out. If over all activity modules, this stop.
  * @private
  */
-ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
+ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivityUsingClient_ = function(
     opt_continue, opt_idx) {
   var index = opt_idx || 0;
   var m_name = ydn.crm.su.ACTIVITY_MODULES[index];
@@ -420,12 +445,102 @@ ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivity_ = function(
     if (opt_continue) {
       // let next update do first before updating UI
       // so that event if renderer fail, updating continue.
-      this.updateUpcomingActivity_(true, next);
+      this.updateUpcomingActivityUsingClient_(true, next);
     }
     this.setCount(m_name, query_result.length);
   }, function(e) {
     throw e;
   }, this);
+};
+
+
+/**
+ * Refresh upcoming activity contents and tab label.
+ * @param {number} mi index of module name.
+ * @param {Array<SugarCrm.Record>} arr the activities.
+ */
+ydn.crm.su.ui.activity.Panel.prototype.refreshUpcomingActivity = function(mi, arr) {
+  var mn = /** @type {ydn.crm.su.ModuleName} */(ydn.crm.su.ACTIVITY_MODULES[mi]);
+  var tab_idx = mi + 3;
+  this.setCount(mn, arr.length);
+  this.detail_panel.renderUpcoming(mn, arr);
+};
+
+
+/**
+ * Process upcoming activities results from server, by distributing to each tabs.
+ * @param {number} mi index of module name.
+ * @param {Array<Object>} arr results.
+ */
+ydn.crm.su.ui.activity.Panel.prototype.processUpcomingActivitiesFor = function(mi, arr) {
+  var mn =  ydn.crm.su.ACTIVITY_MODULES[mi];
+  var activities = [];
+  for (var i = 0; i < arr.length; i++) {
+    var m = /** @type {ydn.crm.su.ModuleName} */(arr[i]['module']);
+    if (mn == m) {
+      arr[i]['_module'] = m; // use standard naming convention.
+      activities.push(arr[i]);
+    }
+  }
+  this.refreshUpcomingActivity(mi, /** @type {Array<SugarCrm.Record>} */(activities));
+};
+
+
+/**
+ * Process upcoming activities results from server, by distributing to each tabs.
+ * @param {Array<Object>} arr results.
+ * @param {string=} opt_mn update only module.
+ */
+ydn.crm.su.ui.activity.Panel.prototype.processUpcomingActivities = function(arr, opt_mn) {
+  if (opt_mn) {
+    var idx = ydn.crm.su.ACTIVITY_MODULES.indexOf(opt_mn);
+    goog.asserts.assert(idx >= 0);
+    this.processUpcomingActivitiesFor(idx, arr);
+    return;
+  }
+  for (var i = 0; i < ydn.crm.su.ACTIVITY_MODULES.length; i++) {
+    this.processUpcomingActivitiesFor(i, arr);
+  }
+};
+
+
+/**
+ * Update upcoming activity tab panels using server call.
+ * @param {string=} opt_mn update only module.
+ * @return {goog.async.Deferred}
+ * @private
+ */
+ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivityUsingServer_ = function(opt_mn) {
+  if (this.last_results_) {
+    this.processUpcomingActivities(this.last_results_, opt_mn);
+  }
+  if (this.df_up_activity_req_) {
+    return this.df_up_activity_req_;
+  }
+  this.df_up_activity_req_ = this.getModel().getChannel().send(ydn.crm.ch.SReq.FETCH_UPCOMING_ACTIVITIES)
+      .addCallbacks(function(x) {
+        if (ydn.crm.su.ui.activity.Panel.DEBUG) {
+          window.console.log(x);
+        }
+        this.last_results_ = x;
+        this.processUpcomingActivities(x, opt_mn);
+        setTimeout((function() {
+          this.df_up_activity_req_ = null;
+        }).bind(this), 3000);
+      }, function(e) {
+        this.df_up_activity_req_ = null;
+        window.console.error(e);
+      }, this);
+  return this.df_up_activity_req_;
+};
+
+
+/**
+ * Update upcoming activity display
+ * @private
+ */
+ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivity_ = function() {
+  this.updateUpcomingActivityUsingServer_();
 };
 
 
