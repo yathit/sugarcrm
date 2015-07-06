@@ -25,7 +25,6 @@
 goog.provide('ydn.crm.su.ui.record.HoverCard');
 goog.require('goog.ui.HoverCard');
 goog.require('templ.ydn.crm.su');
-goog.require('ydn.crm.su.ui.record.Record');
 
 
 
