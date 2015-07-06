@@ -74,6 +74,12 @@ ydn.crm.su.model.Search = function(sugar) {
    * @private
    */
   this.results_ = [];
+  /**
+   * Flag to indicate server side search has returned the result.
+   * @type {boolean}
+   * @private
+   */
+  this.server_done_ = false;
 };
 goog.inherits(ydn.crm.su.model.Search, goog.events.EventTarget);
 
@@ -120,9 +126,9 @@ ydn.crm.su.model.Search.prototype.search = function(query) {
   this.results_ = [];
   var ev = new ydn.crm.su.model.events.SearchResetEvent(this.q_, this);
   this.dispatchEvent(ev);
-  this.doServerSearch_();
   this.stack_ = new ydn.crm.su.model.Search.ClientStack(this.record_type_);
-  // this.updateClientSearch_();
+  this.doServerSearch_();
+  this.updateClientSearch_();
 };
 
 
@@ -147,11 +153,11 @@ ydn.crm.su.model.Search.prototype.addResult_ = function(r, index, q) {
   } else if (index == 'id') {
     r._score = 1;
   } else {
-    r._score = 0.5;
+    r._score = r._score ||  0.5;
   }
 
-  var idx = goog.array.binarySearch(this.results_, function(a) {
-    return a.id == r.id ? 0 : a._score > r._score ? 1 : -1;
+  var idx = goog.array.binarySearch(this.results_, r, function(a, b) {
+    return a.id == b.id ? 0 : a._score > b._score ? -1 : 1;
   });
   if (idx < 0) {
     idx = -(idx + 1);
@@ -203,6 +209,7 @@ ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) 
 ydn.crm.su.model.Search.prototype.doServerSearch_ = function() {
   var q = this.q_;
   var data = {'q': q};
+  this.server_done_ = false;
   this.sugar_.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE, data).addCallbacks(function(arr) {
     if (ydn.crm.su.model.Search.DEBUG) {
       window.console.log(q, arr);
@@ -216,9 +223,26 @@ ydn.crm.su.model.Search.prototype.doServerSearch_ = function() {
       }
       this.addResult_(r, 'server', q);
     }
+    this.server_done_ = true;
+    this.dispatchProgress_();
   }, function(e) {
+    this.server_done_ = true;
+    this.dispatchProgress_();
     window.console.error(e);
   }, this);
+};
+
+
+ydn.crm.su.model.Search.prototype.dispatchProgress_ = function() {
+  if (!this.stack_ && this.server_done_) {
+    this.dispatchEvent(new ydn.crm.su.model.events.SearchProgressEvent(1, this));
+    return;
+  }
+  var level = this.stack_.getProgress();
+  if (!this.server_done_) {
+    level -= 0.2;
+  }
+  this.dispatchEvent(new ydn.crm.su.model.events.SearchProgressEvent(level, this));
 };
 
 
@@ -232,14 +256,13 @@ ydn.crm.su.model.Search.prototype.updateClientSearch_ = function() {
   if (!this.stack_) {
     return;
   }
+  this.dispatchProgress_();
   if (!this.stack_.next()) {
     this.stack_ = null;
-    this.dispatchEvent(new ydn.crm.su.model.events.SearchProgressEvent(1, this));
     return;
   }
 
-  var level = this.stack_.getProgress();
-  this.dispatchEvent(new ydn.crm.su.model.events.SearchProgressEvent(level, this));
+
 
   var task = this.stack_.getTask();
   var q = this.q_;
