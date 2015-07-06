@@ -117,6 +117,7 @@ ydn.crm.su.model.Search.prototype.search = function(query) {
     return;
   }
   this.q_ = query;
+  this.results_ = [];
   var ev = new ydn.crm.su.model.events.SearchResetEvent(this.q_, this);
   this.dispatchEvent(ev);
   this.stack_ = new ydn.crm.su.model.Search.Stack(this.record_type_);
