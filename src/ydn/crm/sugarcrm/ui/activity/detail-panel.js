@@ -373,6 +373,9 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name, r
   var head = dom.createDom('span', null, [msg, a]);
   this.renderHeader_(head);
 
+  var content = this.getContentElement();
+  content.innerHTML = '';
+
   var cnt = 0;
   var weekend = ydn.time.getWeekend();
   for (var i = 0; i < results.length; i++) {
