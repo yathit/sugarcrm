@@ -56,17 +56,21 @@ goog.inherits(ydn.crm.su.ui.widget.RichInputHandler, goog.ui.ac.InputHandler);
  * @override
  */
 ydn.crm.su.ui.widget.RichInputHandler.prototype.selectRow = function(row) {
-  var suppressUpdate = ydn.crm.su.ui.widget.RichInputHandler.base(this, 'selectRow', row);
   var input = this.ac_.getTarget();
   var record = /** @type {SugarCrm.Record} */(row);
-  input.value = ydn.crm.su.Record.getLabel(record);
+  var label = ydn.crm.su.Record.getLabel(record);
+  var email = ydn.crm.su.Record.getEmail(record);
+  if (email) {
+    label += ' <' + email + '>';
+  }
+  input.value = label;
   input.setAttribute('data-id', record.id);
   input.setAttribute('data-name', input.value);
   var a = input.nextElementSibling;
-  if (a.tagName == 'A' && record._module) {
+  if (a && a.tagName == 'A' && record._module) {
     var mn = /** @type {ydn.crm.su.ModuleName} */(record._module);
     a.href = this.meta.getRecordViewLink(mn, record.id);
     goog.style.setElementShown(a, true);
   }
-  return suppressUpdate;
+  return false;
 };
