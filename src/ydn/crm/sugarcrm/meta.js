@@ -75,10 +75,20 @@ ydn.crm.su.Meta.prototype.getChannel = function() {};
 /**
  * Query people module records by email.
  * @param {string} email email address to query.
- * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>} list of record. the record value
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}  list of record. the record value
  * has `_module` for respective module name.
  */
 ydn.crm.su.Meta.prototype.queryByEmail = function(email) {};
+
+
+/**
+ * Query one people module record by email. This will search on server if not
+ * found in client database.
+ * @param {string} email email address to query.
+ * @return {!goog.async.Deferred<SugarCrm.Record>} list of record. the record value
+ * has `_module` for respective module name.
+ */
+ydn.crm.su.Meta.prototype.queryOneByEmail = function(email) {};
 
 
 /**

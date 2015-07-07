@@ -703,8 +703,12 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
   }];
   return this.getChannel().send(ydn.crm.ch.SReq.QUERY,
       query).addCallback(function(x) {
-    var out = [];
     var arr = /** @type {Array<CrmApp.QueryResult>} */(x);
+    if (arr.length == 0) {
+      var q = {'email': email};
+      return this.getChannel().send(ydn.crm.ch.SReq.QUERY_BY_EMAIL_ON_SERVER, q);
+    }
+    var out = [];
     for (var i = 0; i < arr.length; i++) {
       var result = arr[i];
       if (result.result && result.result[0]) {
