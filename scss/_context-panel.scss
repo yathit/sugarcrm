@@ -35,6 +35,22 @@
 }
 
 
+.suggestion-input {
+  text-align: left;
+  overflow: hidden;
+  padding: 3px 3px;
+  resize: none;
+  width: 40px;
+  color: black;
+  height: 16px !important;
+  background-color: white;
+  border: 0;
+  font-size: 13px;
+  outline: none;
+  box-shadow: none;
+}
+
+
 .suggestion-button {
   svg {
     fill:  #e8e8e8;
