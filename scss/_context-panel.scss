@@ -34,6 +34,42 @@
 
 }
 
+
+.suggestion-button {
+  svg {
+    fill:  #e8e8e8;
+  }
+
+  .goog-custom-button-outer-box {
+    border: 0;
+    background: none;
+  }
+
+  .goog-custom-button-inner-box {
+    border: 0;
+    background: none;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  &.goog-custom-button {
+    border: 0;
+    background: none;
+    vertical-align: top;
+    margin-top: 4px;
+  }
+
+  &.goog-custom-button.goog-custom-button-checked {
+    svg {
+      fill:  black;
+    }
+  }
+
+  &:hover {
+    background-color: #f7f7f7; // override svg-button hover state
+  }
+}
+
 .tracking-button {
   svg {
     fill:  #e8e8e8;
@@ -48,15 +84,15 @@
     border: 0;
     background: none;
   }
-}
 
-.tracking-button.goog-custom-button {
-  border: 0;
-  background: none;
-}
+  &.goog-custom-button {
+    border: 0;
+    background: none;
+  }
 
-.tracking-button:hover {
-  background-color: #f7f7f7; // override svg-button hover state
+  &:hover {
+    background-color: #f7f7f7; // override svg-button hover state
+  }
 }
 
 
