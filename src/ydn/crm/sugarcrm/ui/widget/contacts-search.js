@@ -25,16 +25,7 @@ ydn.crm.su.ui.widget.ContactsSearch = function(meta) {
    * @type {Element}
    * @private
    */
-  this.root_ = document.createElement('div');
-  this.root_.classList.add(ydn.crm.su.ui.widget.ContactsSearch.CSS_NAME);
-  this.root_.classList.add('inj');
-  var input = document.createElement('input');
-  input.setAttribute('title', 'Select contacts from SugarCRM');
-  input.className = 'value';
-  var div = document.createElement('div');
-  div.classList.add(ydn.crm.su.ui.widget.SelectRecord.CSS_CLASS);
-  div.appendChild(input);
-  this.root_.appendChild(div);
+  this.root_ = goog.soy.renderAsElement(templ.ydn.crm.inj.contactSearch);
 
   /**
    * @type {ydn.crm.su.ui.widget.SelectRecord}
@@ -97,6 +88,14 @@ ydn.crm.su.ui.widget.ContactsSearch.prototype.onUpdate_ = function(e) {
 };
 
 
+ydn.crm.su.ui.widget.ContactsSearch.prototype.hockin_ = function() {
+
+  this.handler.listen(this.root_, goog.events.EventType.FOCUSIN,
+      this.onFocus_, true);
+
+};
+
+
 /**
  * Attach contact search component. Previous attachment will be detach.
  * @param {Element} el the search component to attach on.
@@ -111,8 +110,12 @@ ydn.crm.su.ui.widget.ContactsSearch.prototype.attach = function(el, cb, opt_scop
   el.appendChild(this.root_);
   this.handler.listen(this.sel_record_, goog.ui.ac.AutoComplete.EventType.UPDATE,
       this.onUpdate_);
-  this.handler.listen(this.root_, goog.events.EventType.FOCUSIN,
-      this.onFocus_);
+  this.hockin_();
+  // var rect = goog.style.getBounds(this.root_);
+  // console.log(rect);
+  // this.root_.style.top = rect.top + 'px';
+  // this.root_.style.left = rect.left + 'px';
+
 };
 
 
