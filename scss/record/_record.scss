@@ -108,7 +108,7 @@
 
 .contact-search {
 
-  position: fixed;
+  position: fixed; // to break hidden overflow on y.
   z-index: 1000;
   display: inline-block;
   height: 20px;
