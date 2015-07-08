@@ -15,7 +15,7 @@ goog.provide('ydn.crm.su.ui.widget.SelectContactsDialog');
  * @extends {goog.ui.Component}
  */
 ydn.crm.su.ui.widget.SelectContactsDialog = function(meta, opt_dom) {
-  ydn.crm.su.ui.Relationships.base(this, 'constructor', opt_dom);
+  goog.ui.Component.base(this, 'constructor', opt_dom);
   /**
    * @type {ydn.crm.su.Meta}
    * @private
@@ -48,7 +48,7 @@ ydn.crm.su.ui.widget.SelectContactsDialog.DEBUG = false;
  * @const
  * @type {string}
  */
-ydn.crm.su.ui.widget.SelectContactsDialog.CSS_NAME = 'select-record-panel';
+ydn.crm.su.ui.widget.SelectContactsDialog.CSS_NAME = 'select-contacts-dialog';
 
 
 /**

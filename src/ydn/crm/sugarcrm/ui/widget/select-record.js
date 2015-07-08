@@ -46,9 +46,13 @@ goog.require('ydn.crm.ui');
  *   var input = document.createElement('input');
  *   input.className = 'value';
  *   span.appendChild(input);
- *   input.onfocus = function() {
+ *   span.onfocus = function() {
  *     sr.attach(span);
  *   };
+ *   // listen to goog.ui.ac.AutoComplete.EventType.UPDATE event for changes
+ *   goog.events.listen(sr, goog.ui.ac.AutoComplete.EventType.UPDATE, function(e) {
+ *     console.log(e);
+ *   });
  * </pre>
  * @param {ydn.crm.su.Meta} meta
  * @param {ydn.crm.su.ModuleName=} opt_m_name default to Accounts module.
@@ -59,7 +63,6 @@ goog.require('ydn.crm.ui');
  * @constructor
  * @struct
  * @extends {goog.events.EventTarget}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_node, opt_multi) {
   goog.base(this);
@@ -126,6 +129,16 @@ ydn.crm.su.ui.widget.SelectRecord.CSS_CLASS = 'select-record';
 
 
 /**
+ * Set output to email format, e.g:
+ *   Kyaw Tun <kyawtun@yathit.com>
+ * @param {boolean} val option value.
+ */
+ydn.crm.su.ui.widget.SelectRecord.prototype.setEmailOutput = function(val) {
+  this.input_handler.output_as_email = !!val;
+};
+
+
+/**
  * Set record module.
  * @param {ydn.crm.su.ModuleName} mn
  */
@@ -151,8 +164,12 @@ ydn.crm.su.ui.widget.SelectRecord.prototype.getModule = function() {
  * template.
  */
 ydn.crm.su.ui.widget.SelectRecord.prototype.attach = function(el) {
+  var input = el.querySelector('.select-record input.value');
+  if (input == this.input_) {
+    return;
+  }
   this.detach();
-  this.input_ = el.querySelector('.select-record input.value');
+  this.input_ = input;
   this.input_handler.attachInput(this.input_);
 };
 
