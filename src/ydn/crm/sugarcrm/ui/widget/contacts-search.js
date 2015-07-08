@@ -29,6 +29,7 @@ ydn.crm.su.ui.widget.ContactsSearch = function(meta) {
   this.root_.classList.add(ydn.crm.su.ui.widget.ContactsSearch.CSS_NAME);
   this.root_.classList.add('inj');
   var input = document.createElement('input');
+  input.setAttribute('title', 'Select contacts from SugarCRM');
   input.className = 'value';
   var div = document.createElement('div');
   div.classList.add(ydn.crm.su.ui.widget.SelectRecord.CSS_CLASS);
@@ -45,7 +46,7 @@ ydn.crm.su.ui.widget.ContactsSearch = function(meta) {
   this.sel_record_.setModule(ydn.crm.su.ModuleName.CONTACTS);
 
   /**
-   * @type {?function(string)}
+   * @type {?function(HTMLInputElement)}
    * @private
    */
   this.callback_ = null;
@@ -89,9 +90,8 @@ ydn.crm.su.ui.widget.ContactsSearch.prototype.onFocus_ = function(e) {
 
 ydn.crm.su.ui.widget.ContactsSearch.prototype.onUpdate_ = function(e) {
   if (this.callback_) {
-    var input = this.root_.querySelector('input');
-    var val = input.value;
-    this.callback_.call(this.opt_scope_, val);
+    var input = /** @type {HTMLInputElement} */(this.root_.querySelector('input'));
+    this.callback_.call(this.opt_scope_, input);
     input.value = '';
   }
 };
@@ -100,9 +100,9 @@ ydn.crm.su.ui.widget.ContactsSearch.prototype.onUpdate_ = function(e) {
 /**
  * Attach contact search component. Previous attachment will be detach.
  * @param {Element} el the search component to attach on.
- * @param {function(this:T, string)} cb callback with email address selected.
+ * @param {function(this:T, HTMLInputElement)} cb callback with email address selected.
  * @param {T=} opt_scope callback scope.
- * @template {T}
+ * @template T
  */
 ydn.crm.su.ui.widget.ContactsSearch.prototype.attach = function(el, cb, opt_scope) {
   this.detach();

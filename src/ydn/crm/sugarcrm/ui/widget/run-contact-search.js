@@ -8,7 +8,8 @@ ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
 var panel, sugar;
 
-var onUpdate = function(label) {
+var onUpdate = function(input) {
+  var label = input.value;
   console.log(label);
   document.getElementById('result').textContent = label;
 };
