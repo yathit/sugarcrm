@@ -45,6 +45,12 @@ ydn.crm.su.ui.widget.RichInputHandler = function(meta, opt_separators,
    * @type {ydn.crm.su.Meta}
    */
   this.meta = meta;
+
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.output_as_email_ = false;
 };
 goog.inherits(ydn.crm.su.ui.widget.RichInputHandler, goog.ui.ac.InputHandler);
 
@@ -59,9 +65,11 @@ ydn.crm.su.ui.widget.RichInputHandler.prototype.selectRow = function(row) {
   var input = this.ac_.getTarget();
   var record = /** @type {SugarCrm.Record} */(row);
   var label = ydn.crm.su.Record.getLabel(record);
-  var email = ydn.crm.su.Record.getEmail(record);
-  if (email) {
-    label += ' <' + email + '>';
+  if (this.output_as_email_) {
+    var email = ydn.crm.su.Record.getEmail(record);
+    if (email) {
+      label += ' <' + email + '>';
+    }
   }
   input.value = label;
   input.setAttribute('data-id', record.id);

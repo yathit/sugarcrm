@@ -23,9 +23,10 @@ var renderInput = function(mn) {
   document.body.appendChild(root);
   var input = root.querySelector('input');
   var sel = ydn.crm.su.ui.widget.SelectRecord.getInstanceFor(sugar, mn);
-  input.onfocus = function(e) {
+  root.addEventListener(goog.events.EventType.FOCUS, function(e) {
     sel.attach(root);
-  };
+  }, true);
+  console.log('renderred for ' + mn);
 };
 
 ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {

@@ -129,6 +129,17 @@ ydn.crm.su.ui.Relationships.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
+ydn.crm.su.ui.Relationships.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  this.sel_record_.dispose();
+  this.sel_record_ = null;
+  this.meta_ = null;
+};
+
+
+/**
+ * @inheritDoc
+ */
 ydn.crm.su.ui.Relationships.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var root = this.getElement();

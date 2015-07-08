@@ -165,7 +165,6 @@ ydn.crm.su.ui.widget.SelectRecord.prototype.detach = function() {
     this.input_handler.detachInput(this.input_);
     this.input_ = null;
   }
-
 };
 
 
