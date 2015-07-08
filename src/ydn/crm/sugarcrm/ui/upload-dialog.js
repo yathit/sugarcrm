@@ -48,7 +48,7 @@ goog.require('ydn.ui.MessageDialog');
  * @see ydn.crm.su.ui.ArchiveDialog
  */
 ydn.crm.su.ui.UploadDialog = function(meta, mid, file_name) {
-  var title = 'Upload document';
+  var title = 'Upload attachment as Documents record';
   var content = document.createElement('div');
   var t = ydn.ui.getTemplateById('upload-dialog-template').content;
   content.appendChild(t.cloneNode(true));
