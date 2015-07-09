@@ -55,7 +55,7 @@ goog.require('ydn.crm.ui');
  *   });
  * </pre>
  * @param {ydn.crm.su.Meta} meta
- * @param {ydn.crm.su.ModuleName=} opt_m_name default to Accounts module.
+ * @param {ydn.crm.su.ModuleName=} opt_m_name default to Contacts module.
  * @param {Element=} opt_node optional reference to the parent element
  *     that will hold the autocomplete elements. goog.dom.getDocument().body
  *     will be used if this is null.
@@ -72,7 +72,7 @@ ydn.crm.su.ui.widget.SelectRecord = function(meta, opt_m_name, opt_node, opt_mul
    */
   this.sugar = meta;
 
-  var m_name = opt_m_name || ydn.crm.su.ModuleName.ACCOUNTS;
+  var m_name = opt_m_name || ydn.crm.su.ModuleName.CONTACTS;
   /**
    * @protected
    * @type {ydn.crm.su.ui.widget.RecordMatcher}

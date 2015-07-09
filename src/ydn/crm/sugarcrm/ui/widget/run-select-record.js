@@ -13,6 +13,7 @@ var panel, sugar;
 var user = ydn.crm.ui.UserSetting.getInstance();
 var inj = document.querySelector('.inj');
 inj.style.maxWidth = '20em';
+ydn.crm.su.ui.widget.RecordMatcher.DEBUG =  true;
 
 var renderInput = function(mn) {
   var main = document.getElementById('main');
@@ -22,11 +23,12 @@ var renderInput = function(mn) {
   document.body.appendChild(h3);
   document.body.appendChild(root);
   var input = root.querySelector('input');
-  var sel = ydn.crm.su.ui.widget.SelectRecord.getInstanceFor(sugar, mn);
   root.addEventListener(goog.events.EventType.FOCUS, function(e) {
+    var sel = ydn.crm.su.ui.widget.SelectRecord.getInstanceFor(sugar, mn);
+    console.log('attach to ' + sel.getModule());
     sel.attach(root);
   }, true);
-  console.log('renderred for ' + mn);
+  console.log('rendered for ' +  mn);
 };
 
 ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
