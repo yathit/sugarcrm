@@ -11,7 +11,11 @@ goog.require('ydn.crm.su.ui.widget.SelectRecord');
 
 /**
  * Search contact for email address.
- * @param {ydn.crm.su.Meta} meta
+ * Use singleton method
+ * <pre>
+ *   var cs = ydn.crm.su.ui.widget.ContactsSearch.getInstance(meta);
+ * </pre>
+ * @param {ydn.crm.su.Meta} meta sugarcrm instance.
  * @constructor
  */
 ydn.crm.su.ui.widget.ContactsSearch = function(meta) {
@@ -54,6 +58,15 @@ ydn.crm.su.ui.widget.ContactsSearch = function(meta) {
    */
   this.handler = new goog.events.EventHandler(this);
 
+  this.handler.listen(this.sel_record_, goog.ui.ac.AutoComplete.EventType.UPDATE,
+      this.onUpdate_);
+  this.handler.listen(this.root_, goog.events.EventType.FOCUS,
+      this.onFocus_, true);
+  this.handler.listen(this.root_, goog.events.EventType.BLUR,
+      this.onBlur_, true);
+  var select = this.root_.querySelector('select');
+  this.handler.listen(select, goog.events.EventType.CHANGE, this.onSelect_);
+
 };
 
 
@@ -69,22 +82,58 @@ ydn.crm.su.ui.widget.ContactsSearch.DEBUG = false;
  */
 ydn.crm.su.ui.widget.ContactsSearch.CSS_NAME = 'contact-search';
 
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.su.ui.widget.ContactsSearch.CSS_NAME_FOCUS = 'select-focus';
+
 
 /**
  * @param {goog.events.BrowserEvent} e
  * @private
  */
 ydn.crm.su.ui.widget.ContactsSearch.prototype.onFocus_ = function(e) {
+  this.root_.querySelector('.select-record').classList.add(
+      ydn.crm.su.ui.widget.ContactsSearch.CSS_NAME_FOCUS);
   this.sel_record_.attach(this.root_);
 };
 
 
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.su.ui.widget.ContactsSearch.prototype.onBlur_ = function(e) {
+  this.root_.querySelector('.select-record').classList.remove(
+      ydn.crm.su.ui.widget.ContactsSearch.CSS_NAME_FOCUS);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.su.ui.widget.ContactsSearch.prototype.onSelect_ = function(e) {
+  var mn = this.root_.querySelector('select').value;
+  if (mn) {
+    this.sel_record_.setModule(mn);
+  }
+};
+
+
+/**
+ * Delegate on autosuggestion update callback.
+ * @param e
+ * @private
+ */
 ydn.crm.su.ui.widget.ContactsSearch.prototype.onUpdate_ = function(e) {
   if (this.callback_) {
     var input = /** @type {HTMLInputElement} */(this.root_.querySelector('input'));
     this.callback_.call(this.opt_scope_, input);
-    input.value = '';
   }
+  this.root_.querySelector('.select-record').classList.remove(
+      ydn.crm.su.ui.widget.ContactsSearch.CSS_NAME_FOCUS);
 };
 
 
@@ -100,10 +149,7 @@ ydn.crm.su.ui.widget.ContactsSearch.prototype.attach = function(el, cb, opt_scop
   this.callback_ = cb;
   this.opt_scope_ = opt_scope;
   el.appendChild(this.root_);
-  this.handler.listen(this.sel_record_, goog.ui.ac.AutoComplete.EventType.UPDATE,
-      this.onUpdate_);
-  this.handler.listen(this.root_, goog.events.EventType.FOCUS,
-      this.onFocus_, true);
+
 
 };
 
@@ -112,7 +158,6 @@ ydn.crm.su.ui.widget.ContactsSearch.prototype.detach = function() {
   if (this.root_.parentNode) {
     this.root_.parentNode.removeChild(this.root_);
   }
-  this.handler.removeAll();
   this.callback_ = null;
   this.opt_scope_ = null;
 };

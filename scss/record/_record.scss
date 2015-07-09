@@ -124,7 +124,23 @@
     .select-record {
       position: absolute;
       right: 0;
-      INPUT:not(:focus) {
+
+      SELECT {
+        display: none;
+        position: absolute;
+        right: -3px;
+        width: 46px;
+        top: 1px;
+        outline: none;
+        border: none;
+        background: none;
+      }
+
+      INPUT:focus + SELECT, SELECT:focus {
+        display: inline-block;
+      }
+
+      &:not(.select-focus) > INPUT:not(:focus) {
         width: 16px;
         outline: none;
         border: 0;
