@@ -106,6 +106,12 @@
   }
 }
 
+.contact-search-base {
+  position: absolute;
+  top: 10px;
+  right: 65px;
+}
+
 .contact-search {
 
   position: fixed; // to break hidden overflow on y.
