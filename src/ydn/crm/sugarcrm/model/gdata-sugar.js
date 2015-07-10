@@ -313,7 +313,7 @@ ydn.crm.su.model.GDataSugar.prototype.export2GData = function(record) {
  * @param {?ydn.crm.inj.Context} cm found in sniffing gmail thread.
  * @return {!goog.async.Deferred<ydn.crm.su.model.events.ContextChangeEvent>}
  */
-ydn.crm.su.model.GDataSugar.prototype.update = function(cm) {
+ydn.crm.su.model.GDataSugar.prototype.setContext = function(cm) {
   if (this.isLogin()) {
     return this.updateContext_(cm);
   } else {
@@ -328,13 +328,13 @@ ydn.crm.su.model.GDataSugar.prototype.update = function(cm) {
 
 
 /**
- * Update gmail context.
+ * Process context updating for SugarCRM records.
  * @param {ydn.crm.inj.Context} cm contact email found in sniffing gmail thread.
  * @param {ydn.gdata.m8.ContactEntry=} opt_contact
  * @return {!goog.async.Deferred<ydn.crm.su.model.events.ContextChangeEvent>}
  * @private
  */
-ydn.crm.su.model.GDataSugar.prototype.processRecord_ = function(cm, opt_contact) {
+ydn.crm.su.model.GDataSugar.prototype.processContextRecord_ = function(cm, opt_contact) {
 
   var email = cm.getEmail();
 
@@ -375,7 +375,7 @@ ydn.crm.su.model.GDataSugar.prototype.isInSynced = function() {
  * @return {!goog.async.Deferred<ydn.crm.su.model.events.ContextChangeEvent>}
  * @private
  */
-ydn.crm.su.model.GDataSugar.prototype.processSync_ = function(cm, contact) {
+ydn.crm.su.model.GDataSugar.prototype.processContextRecordWithGData_ = function(cm, contact) {
   var xp = contact.getExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
       this.getDomain());
   if (xp) {
@@ -399,46 +399,42 @@ ydn.crm.su.model.GDataSugar.prototype.processSync_ = function(cm, contact) {
           window.console.warn('link id: ' + xp.record_id + ' no longer available, deleting..');
           window.console.error('Removing external id not implemented');
         }
-        this.processRecord_(cm, contact);
+        this.processContextRecord_(cm, contact);
       }
     }, this);
   } else {
-    return this.processRecord_(cm, contact);
+    return this.processContextRecord_(cm, contact);
   }
 };
 
 
 /**
  * Process for GData contact if target email is exist in GData contacts list.
- * @param {ydn.crm.inj.Context} cm contact email found in sniffing gmail thread.
+ * @param {!ydn.crm.inj.Context} cm contact email found in sniffing gmail thread.
  * @return {!goog.async.Deferred}
  * @private
  */
-ydn.crm.su.model.GDataSugar.prototype.processContact_ = function(cm) {
+ydn.crm.su.model.GDataSugar.prototype.processContextGData_ = function(cm) {
 
-  if (cm) {
-    var email = cm.getEmail();
+  var email = cm.getEmail();
 
-    // query to gdata.
-    return ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, {'email': email}).addCallback(function(x) {
-      var results = /** @type {Array.<!ContactEntry>} */ (x);
-      var contacts = results.map(function(x) {
-        return new ydn.gdata.m8.ContactEntry(x);
-      });
-      var scores = cm.score(contacts);
-      if (ydn.crm.su.model.GDataSugar.DEBUG) {
-        window.console.log(results, scores, contacts);
-      }
-      if (contacts[0]) {
-        return this.processSync_(cm, contacts[0]);
-      } else {
-        return this.processRecord_(cm);
-      }
-    }, this);
-  } else {
-    var null_ev = new ydn.crm.su.model.events.ContextChangeEvent(null);
-    return goog.async.Deferred.succeed(null_ev);
-  }
+  // query to gdata.
+  var req = ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, {'email': email});
+  return req.addCallback(function (x) {
+    var results = /** @type {Array.<!ContactEntry>} */ (x);
+    var contacts = results.map(function (x) {
+      return new ydn.gdata.m8.ContactEntry(x);
+    });
+    var scores = cm.score(contacts);
+    if (ydn.crm.su.model.GDataSugar.DEBUG) {
+      window.console.log(results, scores, contacts);
+    }
+    if (contacts[0]) {
+      return this.processContextRecordWithGData_(cm, contacts[0]);
+    } else {
+      return this.processContextRecord_(cm);
+    }
+  }, this);
 };
 
 
@@ -452,7 +448,11 @@ ydn.crm.su.model.GDataSugar.prototype.updateContext_ = function(cm) {
   if (ydn.crm.su.model.GDataSugar.DEBUG) {
     window.console.log(this + ' update context for ' + cm);
   }
-  return this.processContact_(cm).addCallbacks(function(ev) {
+  if (!cm) {
+    var null_ev = new ydn.crm.su.model.events.ContextChangeEvent(null);
+    return goog.async.Deferred.succeed(null_ev);
+  }
+  return this.processContextGData_(cm).addCallbacks(function(ev) {
     var cce = /** @type {ydn.crm.su.model.events.ContextChangeEvent} */ (ev);
     this.contact_ = cce.gdata;
     this.context_ = cce.context;
