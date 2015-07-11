@@ -12,9 +12,7 @@
 
 
 .context-sidebar {
+  border-top: 1px solid #d8d8d8;
   border-bottom: 1px solid #d8d8d8;
 
-  .error .goog-custom-button-inner-box, .error .goog-custom-button-outer-box {
-    border-color: red !important;
-  }
 }
