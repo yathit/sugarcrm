@@ -91,6 +91,6 @@ ydn.crm.su.ui.group.Email.prototype.getFieldByName = function(name) {
   } else if (v7 && name == 'email2') {
     return /** @type {ydn.crm.su.ui.field.Field} */(this.getChildAt(1));
   } else {
-    return goog.base(this, 'getFieldByName', 'name');
+    return ydn.crm.su.ui.group.Email.base(this, 'getFieldByName', name);
   }
 };

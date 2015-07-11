@@ -105,9 +105,10 @@ function test_edit_name() {
   assertTrue(called);
 }
 
-function test_edit_email() {
 
-  var record = ydn.crm.test.createContactRecord(null);
+var edit_email_test = function(is_ce) {
+  var sugar = ydn.crm.test.createSugar(is_ce);
+  var record = ydn.crm.test.createContactRecord(sugar);
   var record_panel = new ydn.crm.su.ui.record.Record(record);
 
 
@@ -122,6 +123,16 @@ function test_edit_email() {
   record_panel.simulateEdit({'email1': 'foo@example.com'}, true);
 
   assertTrue(called);
+};
+
+
+function test_edit_email_ce() {
+  edit_email_test(true);
+}
+
+
+function test_edit_email_ent() {
+  edit_email_test(false);
 }
 
 
