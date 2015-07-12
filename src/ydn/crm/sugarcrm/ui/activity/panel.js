@@ -283,8 +283,8 @@ ydn.crm.su.ui.activity.Panel.prototype.handleTabSelect_ = function(e) {
       this.detail_panel.renderActivity();
       tab_name = 'feed';
     } else {
-      var m_name = ydn.crm.su.ACTIVITY_MODULES[idx - 3];
-      this.updateUpcomingFor_(m_name);
+      tab_name = ydn.crm.su.ACTIVITY_MODULES[idx - 3];
+      this.updateUpcomingFor_(tab_name);
     }
   }
   ydn.crm.shared.logAnalyticValue('ui.activity', 'tab.click', tab_name);
