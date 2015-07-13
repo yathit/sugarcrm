@@ -137,6 +137,14 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
         'name': 'message_id'
       }]
   },
+  'Employees': {
+    'FullTextIndex': {
+      'name': ['name']
+    }, 'indexes': [{
+      'name': 'email',
+      'keyPath': 'email1'
+    }]
+  },
   'Leads': {
     'FullTextIndex': {
       'name': ['name', 'first_name', 'last_name', 'full_name']
