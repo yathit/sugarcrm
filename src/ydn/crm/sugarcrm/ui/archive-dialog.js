@@ -147,7 +147,11 @@ ydn.crm.su.ui.ArchiveDialog.renderContent_ = function(info, user) {
       ul.appendChild(li);
     }
   } else {
-    goog.style.setElementShown(att_el, false);
+    if (info.attachments.length == 0) {
+      goog.style.setElementShown(att_el, false);
+    } else if (!has_att_feature) {
+      att_el.innerHTML = '<p><small>A <a href="https://www.yathit.com/shop/crmininbox-subscription.html" tabIndex="-1" style="outline: none;">subscription</a> is required for attachment.</small></p>';
+    }
   }
 
   content.querySelector('[name=from]').textContent = info.from_addr;

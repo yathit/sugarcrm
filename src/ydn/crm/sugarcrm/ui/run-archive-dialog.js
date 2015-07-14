@@ -46,7 +46,7 @@ var sugar;
 
 var iuser = {
   hasFeature: function() {
-    return true;
+    return false;
   }
 };
 
