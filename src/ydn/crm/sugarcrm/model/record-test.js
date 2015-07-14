@@ -130,6 +130,23 @@ function test_name_group_change() {
   record.setRecord(r2);
   var name_group = record.getGroupModel('name');
   assertTrue('name group', name_group instanceof ydn.crm.su.model.Group);
-
 }
 
+
+var parent_group_test = function(ce) {
+  var sugar = ydn.crm.test.createSugar(ce);
+  var r = new ydn.crm.su.Record(sugar.getDomain(),
+      ydn.crm.su.ModuleName.TASKS);
+  var record = new ydn.crm.su.model.Record(sugar, r);
+  var groups = record.listGroups();
+  assertTrue('has parent group', groups.indexOf('parent') >= 0);
+  assertFalse('not has parent_name group', groups.indexOf('parent_name') >= 0);
+};
+
+function test_parent_group_ce() {
+  parent_group_test(true);
+}
+
+function test_parent_group_ent() {
+  parent_group_test(false);
+}
