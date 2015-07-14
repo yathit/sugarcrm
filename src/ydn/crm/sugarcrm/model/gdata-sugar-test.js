@@ -32,7 +32,7 @@ function test_no_match() {
   var sugar = ydn.crm.test.createGDataSugar();
   var email = 'test@example.com';
   var cm = new ydn.crm.inj.Context('kyaw@email.com', email);
-  var df = sugar.update(cm);
+  var df = sugar.setContext(cm);
   assertNotNull('context', sugar.context_);
   assertNull('gdata', sugar.contact_);
   assertNull('record', sugar.record_);
@@ -46,7 +46,7 @@ function test_gdata_match() {
   var sugar = ydn.crm.test.createGDataSugar();
   var email = 'test@example.com';
   var cm = new ydn.crm.inj.Context('kyaw@email.com', email);
-  var df = sugar.update(cm);
+  var df = sugar.setContext(cm);
   assertNotNull('gdata', sugar.contact_);
   assertNull('record', sugar.record_);
 }
@@ -66,7 +66,7 @@ function test_synced() {
   }]);
   var email = 'test@example.com';
   var cm = new ydn.crm.inj.Context('kyaw@email.com', email);
-  var df = sugar.update(cm);
+  var df = sugar.setContext(cm);
   assertNotNull('gdata', sugar.contact_);
   assertNotNull('record', sugar.record_);
 }
@@ -82,7 +82,7 @@ function test_record_match() {
   var sugar = ydn.crm.test.createGDataSugar();
   var email = 'test@example.com';
   var cm = new ydn.crm.inj.Context('kyaw@email.com', email);
-  var df = sugar.update(cm);
+  var df = sugar.setContext(cm);
   assertNull('gdata', sugar.contact_);
   assertNotNull('record', sugar.record_);
 }

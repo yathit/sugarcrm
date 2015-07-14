@@ -1,30 +1,30 @@
 /**
- * @fileoverview SugarCrm module field.
+ * @fileoverview SugarCrm module field with datalist suggestion.
  */
 
 
-goog.provide('ydn.crm.su.ui.field.EnumFieldRenderer');
+goog.provide('ydn.crm.su.ui.field.DataListFieldRenderer');
 goog.require('ydn.crm.su.ui.field.InputFieldRenderer');
 
 
 
 /**
- * Create a new module record field.
+ * SugarCrm module field with datalist suggestion.
  * @constructor
  * @struct
  * @extends {ydn.crm.su.ui.field.InputFieldRenderer}
  */
-ydn.crm.su.ui.field.EnumFieldRenderer = function() {
+ydn.crm.su.ui.field.DataListFieldRenderer = function() {
   goog.base(this);
 };
-goog.inherits(ydn.crm.su.ui.field.EnumFieldRenderer, ydn.crm.su.ui.field.InputFieldRenderer);
-goog.addSingletonGetter(ydn.crm.su.ui.field.EnumFieldRenderer);
+goog.inherits(ydn.crm.su.ui.field.DataListFieldRenderer, ydn.crm.su.ui.field.InputFieldRenderer);
+goog.addSingletonGetter(ydn.crm.su.ui.field.DataListFieldRenderer);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.su.ui.field.EnumFieldRenderer.prototype.createDom = function(field) {
+ydn.crm.su.ui.field.DataListFieldRenderer.prototype.createDom = function(field) {
   var el = goog.base(this, 'createDom', field);
   var model = field.getModel();
   var ele_value = el.querySelector('.' + ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE);

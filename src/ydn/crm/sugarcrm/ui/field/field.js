@@ -15,7 +15,7 @@ goog.require('goog.ui.PopupMenu');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.su.ui.events.ChangedEvent');
 goog.require('ydn.crm.su.ui.field.CheckboxFieldRenderer');
-goog.require('ydn.crm.su.ui.field.EnumFieldRenderer');
+goog.require('ydn.crm.su.ui.field.SelectInputFieldRenderer');
 goog.require('ydn.crm.su.ui.field.FieldRenderer');
 goog.require('ydn.crm.su.ui.field.InputFieldRenderer');
 goog.require('ydn.crm.su.ui.field.TextFieldRenderer');
@@ -91,7 +91,7 @@ ydn.crm.su.ui.field.Field.selectFieldRenderer = function(type) {
   } else if (type == 'text') {
     return ydn.crm.su.ui.field.TextFieldRenderer.getInstance();
   } else if (type == 'enum') {
-    return ydn.crm.su.ui.field.EnumFieldRenderer.getInstance();
+    return ydn.crm.su.ui.field.SelectInputFieldRenderer.getInstance();
   } else {
     return ydn.crm.su.ui.field.InputFieldRenderer.getInstance();
   }
