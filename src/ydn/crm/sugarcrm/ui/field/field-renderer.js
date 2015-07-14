@@ -39,6 +39,13 @@ ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_EMPTY = 'empty';
  * @const
  * @type {string}
  */
+ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_LABEL = 'label';
+
+
+/**
+ * @const
+ * @type {string}
+ */
 ydn.crm.su.ui.field.FieldRenderer.CSS_CLASS_VALUE = 'value';
 
 

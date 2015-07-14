@@ -402,3 +402,4 @@ function test_tasks_appointment() {
   assertEquals('date_start', date_start, data['date_start']);
   assertEquals('date_due', date_due, data['date_due']);
 }
+

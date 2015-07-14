@@ -21,6 +21,14 @@
     }
   }
 
+  .field {
+    .label {
+      display: inline-block;
+      width: 6em;
+      overflow-x: hidden;
+    }
+  }
+
   .field-label {
     padding: 1px 0px 1px 1px;
     margin: 2px;

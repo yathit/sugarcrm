@@ -92,3 +92,23 @@ function test_data_start_change() {
   assertFalse(ctrl.hasChanged());
 }
 
+
+function test_select_renderer() {
+  var record = ydn.crm.test.createRecord(null, ydn.crm.su.ModuleName.TASKS);
+  /**
+   * @type {!ydn.crm.su.model.Group}
+   */
+  var group = record.getGroupModel('');
+  var model = group.createOrGetFieldModel('status');
+  var ctrl = new ydn.crm.su.ui.field.Field(model);
+  ctrl.render(mock_el);
+  ctrl.refresh();
+  var select = mock_el.querySelector('select.value');
+  assertNotNull('render with select', select);
+  var option = select.querySelector('option');
+  assertNotNull('has option', option);
+
+  var ex_val = model.getField();
+  var ac_val = ctrl.collectData();
+  assertEquals(ex_val, ac_val);
+}
