@@ -104,7 +104,6 @@ ydn.crm.su.ui.Relationships.prototype.createDom = function() {
   root.appendChild(h3);
   root.appendChild(dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT));
   root.appendChild(dom.createDom('div', ydn.crm.su.ui.Relationships.CSS_CLASS_SUGGESTIONS));
-
   var row = goog.soy.renderAsElement(templ.ydn.crm.inj.selectRecord, {
     use_sel: true
   });
@@ -302,7 +301,12 @@ ydn.crm.su.ui.Relationships.prototype.addRelationship = function(model) {
 
 
 ydn.crm.su.ui.Relationships.prototype.getSuggestionElement_ = function() {
-  var el = this.getElement().querySelector('.' + ydn.crm.su.ui.Relationships.CSS_CLASS_SUGGESTIONS);
+  var root = this.getElement();
+  if (!root) {
+    // this happen when dialog has been closed.
+    return null;
+  }
+  var el = root.querySelector('.' + ydn.crm.su.ui.Relationships.CSS_CLASS_SUGGESTIONS);
   var ul = el.querySelector('UL');
   if (!ul) {
     ul = document.createElement('UL');
@@ -339,7 +343,7 @@ ydn.crm.su.ui.Relationships.prototype.onSuggestionClick_ = function(e) {
  */
 ydn.crm.su.ui.Relationships.prototype.addSuggestion_ = function(record, opt_email) {
   var el = this.getSuggestionElement_();
-  if (el.querySelector('LI[data-id="' + record.id + '"]')) {
+  if (!el || el.querySelector('LI[data-id="' + record.id + '"]')) {
     return;
   }
   var li = document.createElement('LI');

@@ -43,14 +43,21 @@ goog.require('ydn.ui.MessageDialog');
  * @param {ydn.crm.su.Meta} meta
  * @param {ydn.gmail.Utils.EmailInfo} info message info.
  * of attachment.
+ * @param {ydn.crm.IUser=} opt_user optionally provide user for feature control.
  * @constructor
  * @const
  * @extends {ydn.ui.MessageDialog}
  * @see ydn.crm.su.ui.UploadDialog
  */
-ydn.crm.su.ui.ArchiveDialog = function(meta, info) {
+ydn.crm.su.ui.ArchiveDialog = function(meta, info, opt_user) {
   var title = 'Archive email';
-  var content = ydn.crm.su.ui.ArchiveDialog.renderContent_(info);
+
+  /**
+   * @type {ydn.crm.IUser}
+   * @private
+   */
+  this.user_ = opt_user || null;
+  var content = ydn.crm.su.ui.ArchiveDialog.renderContent_(info, this.user_);
 
   var btns = ydn.ui.MessageDialog.createOKCancelButtonSet();
   ydn.crm.su.ui.ArchiveDialog.base(this, 'constructor', title, content, btns);
@@ -96,10 +103,11 @@ ydn.crm.su.ui.ArchiveDialog.ReturnValue;
 
 /**
  * @param {ydn.gmail.Utils.EmailInfo} info
+ * @param {ydn.crm.IUser} user
  * @return {Element}
  * @private
  */
-ydn.crm.su.ui.ArchiveDialog.renderContent_ = function(info) {
+ydn.crm.su.ui.ArchiveDialog.renderContent_ = function(info, user) {
   var content = document.createElement('div');
   var t = ydn.ui.getTemplateById('archive-dialog-template').content;
   content.appendChild(t.cloneNode(true));
@@ -110,7 +118,10 @@ ydn.crm.su.ui.ArchiveDialog.renderContent_ = function(info) {
   message_id_el.value = info.message_id;
   message_id_el.setAttribute('disabled', '');
   var att_el = content.querySelector('[name=attachment]');
-  if (info.attachments.length > 0) {
+  var has_att_feature = user ?
+      user.hasFeature(ydn.crm.base.Feature.ATTACHMENT) : true;
+
+  if (info.attachments.length > 0 && has_att_feature) {
     var ul = att_el.querySelector('ul');
     for (var i = 0; i < info.attachments.length; i++) {
       var att = /** @type {ydn.gmail.Utils.AttachmentParts} */(info.attachments[i]);
@@ -125,7 +136,10 @@ ydn.crm.su.ui.ArchiveDialog.renderContent_ = function(info) {
       if (att.document_id) {
         chk.checked = true;
         chk.setAttribute('disabled', 'disabled');
+        chk.setAttribute('title', 'Document ' + att.document_id + ' already in CRM.');
         fn = att.document_name || att.fn;
+      } else {
+        chk.setAttribute('title', '');
       }
       input.value = fn;
       li.appendChild(chk);
@@ -208,11 +222,12 @@ ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
  * Show modal dialog.
  * @param {ydn.crm.su.Meta} meta
  * @param {ydn.gmail.Utils.EmailInfo} info message info.
+ * @param {ydn.crm.IUser} user optionally provide user for feature control.
  * @param {SugarCrm.Record=} opt_record parent record.
  * @return {!goog.async.Deferred<ydn.crm.su.ui.ArchiveDialog.ReturnValue>}
  */
-ydn.crm.su.ui.ArchiveDialog.showModel = function(meta, info, opt_record) {
-  var dialog = new ydn.crm.su.ui.ArchiveDialog(meta, info);
+ydn.crm.su.ui.ArchiveDialog.showModel = function(meta, info, user, opt_record) {
+  var dialog = new ydn.crm.su.ui.ArchiveDialog(meta, info, user);
   if (opt_record) {
     var mn = /** @type {ydn.crm.su.ModuleName} */(opt_record._module);
     dialog.addRelationship(mn, opt_record.id, opt_record.name);

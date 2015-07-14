@@ -44,18 +44,25 @@ var info2 = {
 };
 var sugar;
 
+var iuser = {
+  hasFeature: function() {
+    return true;
+  }
+};
+
 var btn1 = document.getElementById('archive1');
 btn1.onclick = function(e) {
-  ydn.crm.su.ui.ArchiveDialog.showModel(sugar, info).addCallbacks(function(obj) {
+  ydn.crm.su.ui.ArchiveDialog.showModel(sugar, info, iuser).addCallbacks(function(obj) {
     console.log(obj);
   }, function(val) {
     console.log('do not upload');
   });
 };
 
+
 var btn2 = document.getElementById('archive2');
 btn2.onclick = function(e) {
-  ydn.crm.su.ui.ArchiveDialog.showModel(sugar, info2, record).addCallbacks(function(obj) {
+  ydn.crm.su.ui.ArchiveDialog.showModel(sugar, info2, iuser, record).addCallbacks(function(obj) {
     console.log(obj);
   }, function(val) {
     console.log('do not upload');

@@ -238,7 +238,7 @@ ydn.crm.su.Archiver.prototype.processArchive_ = function(widget, info, result, o
  */
 ydn.crm.su.Archiver.prototype.archive_ = function(widget, info, opt_record) {
 
-  return ydn.crm.su.ui.ArchiveDialog.showModel(this.sugar_, info,
+  return ydn.crm.su.ui.ArchiveDialog.showModel(this.sugar_, info, this.user_,
       opt_record).addCallbacks(function(x) {
     var result = /** @type {ydn.crm.su.ui.ArchiveDialog.ReturnValue}*/(x);
     var has_attachment = false;
@@ -273,32 +273,6 @@ ydn.crm.su.Archiver.prototype.archive_ = function(widget, info, opt_record) {
     window.console.error(e);
   }, this);
 
-};
-
-
-/**
- * Bring up archive email dialog and process archive.
- * @param {ydn.crm.gmail.MessageHeaderWidget} widget
- * @param {ydn.gmail.Utils.EmailInfo} info
- * @param {ydn.crm.su.ModuleName=} opt_mn parent module name.
- * @param {string=} opt_id record id.
- * @private
- */
-ydn.crm.su.Archiver.prototype.promptArchive_ = function(widget, info, opt_mn, opt_id) {
-  var df = ydn.crm.su.ui.ArchiveDialog.showModel(this.sugar_, info);
-  var mid = ydn.crm.msg.Manager.addStatus('Archiving message');
-  this.sugar_.archiveEmail(info, opt_mn, opt_id).addCallbacks(function(record) {
-    ydn.crm.msg.Manager.setStatus(mid, 'Archived:');
-    var link = this.sugar_.getRecordViewLink(
-        ydn.crm.su.ModuleName.EMAILS, record['id']);
-    ydn.crm.msg.Manager.setLink(mid, link, 'view');
-    widget.setMenuItemDetail(this.getName(), true, 'View Archive',
-        link);
-    widget.setButtonMessageDetail(ydn.crm.su.Archiver.MENU_NAME, true,
-        ydn.crm.su.Archiver.SVG_ICON_NAME, 'This message is archived.');
-  }, function(e) {
-    ydn.crm.msg.Manager.setStatus(mid, 'Error archiving: ' + (e.message || e));
-  }, this);
 };
 
 
