@@ -294,7 +294,9 @@ ydn.crm.su.ui.Relationships.prototype.addRelationship = function(model) {
   }
   var item = new ydn.crm.su.ui.Relationships.Item(this.meta_, model, this.getDomHelper());
   this.addChild(item, true);
-  this.addSuggestionById(model.module_name, model.id);
+  if (ydn.crm.su.PEOPLE_MODULES.indexOf(model.module_name) >= 0) {
+    this.addSuggestionById(model.module_name, model.id);
+  }
   return item;
 };
 
