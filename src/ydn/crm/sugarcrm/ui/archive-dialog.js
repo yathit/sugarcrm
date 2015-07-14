@@ -195,7 +195,7 @@ ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
       window.console.log('addRel_', email, r);
     }
     if (r) {
-      dialog.addRelationship(r._module, r.id, r.name);
+      dialog.addRelationship(/** @type {ydn.crm.su.ModuleName} */(r._module), r.id, r.name);
     }
   });
 
@@ -214,7 +214,8 @@ ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
 ydn.crm.su.ui.ArchiveDialog.showModel = function(meta, info, opt_record) {
   var dialog = new ydn.crm.su.ui.ArchiveDialog(meta, info);
   if (opt_record) {
-    dialog.addRelationship(opt_record._module, opt_record.id, opt_record.name);
+    var mn = /** @type {ydn.crm.su.ModuleName} */(opt_record._module);
+    dialog.addRelationship(mn, opt_record.id, opt_record.name);
   }
   var df = new goog.async.Deferred();
   dialog.dialog.onclose = function(event) {
@@ -238,7 +239,7 @@ ydn.crm.su.ui.ArchiveDialog.showModel = function(meta, info, opt_record) {
 
 /**
  * Add a relationship.
- * @param {string} mn module name.
+ * @param {ydn.crm.su.ModuleName} mn module name.
  * @param {string} id
  * @param {string} name
  */

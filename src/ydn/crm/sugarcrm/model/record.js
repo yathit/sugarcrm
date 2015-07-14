@@ -722,7 +722,7 @@ ydn.crm.su.model.Record.prototype.listRelated = function(opt_top) {
       'to': to,
       'limit': top
     };
-    var req = this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, data);
+    var req = this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED_ASYNC, data);
     req.addProgback(function(arr) {
       for (var i = 0; i < arr.length; i++) {
         if (arr[i]) {
@@ -802,7 +802,7 @@ ydn.crm.su.model.Record.prototype.listRelatedActivities = function(opt_top) {
       'to': to,
       'limit': top
     };
-    var req = this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, data);
+    var req = this.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED_ASYNC, data);
     req.addProgback(function(arr) {
       for (var i = 0; i < arr.length; i++) {
         arr[i]['_module'] = to;

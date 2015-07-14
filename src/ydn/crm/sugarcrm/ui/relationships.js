@@ -167,9 +167,10 @@ ydn.crm.su.ui.Relationships.prototype.onInputChange_ = function(e) {
   var row = e.row;
   if (row) {
     var r = /** @type {SugarCrm.Record} */(row);
+    var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
     var label = ydn.crm.su.Record.getLabel(r);
     this.addRelationship({
-      module_name: r._module,
+      module_name: mn,
       id: r.id,
       name: label
     });
@@ -293,6 +294,7 @@ ydn.crm.su.ui.Relationships.prototype.addRelationship = function(model) {
   }
   var item = new ydn.crm.su.ui.Relationships.Item(this.meta_, model, this.getDomHelper());
   this.addChild(item, true);
+  this.addSuggestionById(model.module_name, model.id);
   return item;
 };
 
@@ -318,7 +320,7 @@ ydn.crm.su.ui.Relationships.prototype.onSuggestionClick_ = function(e) {
   e.preventDefault();
   var li = goog.dom.getAncestorByTagNameAndClass(e.target, 'LI');
   var id = li.getAttribute('data-id');
-  var mn = li.getAttribute('data-module');
+  var mn = /** @type {ydn.crm.su.ModuleName} */(li.getAttribute('data-module'));
   li.parentElement.removeChild(li);
   this.addRelationship({
     module_name: mn,
@@ -330,10 +332,10 @@ ydn.crm.su.ui.Relationships.prototype.onSuggestionClick_ = function(e) {
 
 /**
  * @param {SugarCrm.Record} record
- * @param {string} email
+ * @param {string=} opt_email
  * @private
  */
-ydn.crm.su.ui.Relationships.prototype.addSuggestion_ = function(record, email) {
+ydn.crm.su.ui.Relationships.prototype.addSuggestion_ = function(record, opt_email) {
   var el = this.getSuggestionElement_();
   if (el.querySelector('LI[data-id="' + record.id + '"]')) {
     return;
@@ -348,7 +350,11 @@ ydn.crm.su.ui.Relationships.prototype.addSuggestion_ = function(record, email) {
   if (record['account_name']) {
     label += ' (' + record['account_name'] + ')';
   }
-  a.setAttribute('title', record.name + ' for ' + email);
+  var tooltip = record.name;
+  if (opt_email) {
+    tooltip += ' for ' + opt_email;
+  }
+  a.setAttribute('title', tooltip);
   li.appendChild(a);
   el.appendChild(li);
 };
@@ -357,7 +363,7 @@ ydn.crm.su.ui.Relationships.prototype.addSuggestion_ = function(record, email) {
 /**
  * Add suggestion for possible relationship records.
  * @param {string} email email address of interested record.
- * @param {Array<ydn.crm.su.ModuleName>} opt_target_modules optional target module
+ * @param {Array<ydn.crm.su.ModuleName>=} opt_target_modules optional target module
  * name, default to {@link #relationship_modules}.
  */
 ydn.crm.su.ui.Relationships.prototype.addSuggestionByEmail = function(
@@ -380,9 +386,36 @@ ydn.crm.su.ui.Relationships.prototype.addSuggestionByEmail = function(
 
 
 /**
+ * Add suggestion for possible relationship records.
+ * @param {ydn.crm.su.ModuleName} mn module name of interested record.
+ * @param {string} id record id of interested record.
+ * @param {Array<ydn.crm.su.ModuleName>=} opt_target_modules optional target module
+ * name, default to {@link #relationship_modules}.
+ */
+ydn.crm.su.ui.Relationships.prototype.addSuggestionById = function(
+    mn, id, opt_target_modules) {
+  var modules = opt_target_modules || this.relationship_modules;
+  var q = {
+    'id': id,
+    'module': mn,
+    'modules': modules,
+    'limit': 5
+  };
+  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED_BY_EMAIL, q).addCallback(function(arr) {
+    if (ydn.crm.su.ui.Relationships.DEBUG) {
+      window.console.log('suggestion', mn, id, arr);
+    }
+    for (var i = 0; i < arr.length; i++) {
+      this.addSuggestion_(arr[i]);
+    }
+  }, this);
+};
+
+
+/**
  * @typedef {{
  *   id: string,
- *   module_name: string,
+ *   module_name: ydn.crm.su.ModuleName,
  *   name: string
  * }}
  */
