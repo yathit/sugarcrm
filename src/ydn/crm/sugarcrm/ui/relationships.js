@@ -376,7 +376,7 @@ ydn.crm.su.ui.Relationships.prototype.addSuggestionByEmail = function(
     'modules': modules,
     'limit': 5
   };
-  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED_BY_EMAIL, q).addCallback(function(arr) {
+  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, q).addCallback(function(arr) {
     if (ydn.crm.su.ui.Relationships.DEBUG) {
       window.console.log('suggestion', email, arr);
     }
@@ -403,7 +403,7 @@ ydn.crm.su.ui.Relationships.prototype.addSuggestionById = function(
     'modules': modules,
     'limit': 5
   };
-  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED_BY_EMAIL, q).addCallback(function(arr) {
+  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, q).addCallback(function(arr) {
     if (ydn.crm.su.ui.Relationships.DEBUG) {
       window.console.log('suggestion', mn, id, arr);
     }
