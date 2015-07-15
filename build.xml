@@ -24,6 +24,7 @@
     <property name="outputwrapper.app" value="(function(){%output%})();app=runApp();"/>
     <property name="sugarcrm-out.dir" location="${sugarcrm.dir}/jsc"/>
     <property name="sugarcrm-out.fn" value="ydn.crm.sugarcrm-${sugarcrm-ver}.js"/>
+    <property name="crmininbox-out.dir" location="${work.dir}/jsc"/>
     <property name="templ.dir" location="${sugarcrm.dir}/templ" />
     <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
     <property name="gss.dir" location="${sugarcrm.dir}/gss" />
@@ -101,13 +102,15 @@
             <closure-compile compilationlevel="@{comp-level}"
                              input="@{input.fn}"
                              input.dir="${sugarcrm.dir}/src"
-                             output.fn="${crmininbox.dir}/@{output.fn}">
+                             output.fn="${crmininbox-out.dir}/@{output.fn}">
                 <options>
                     <opt-arg/>
+                    <arg line='-f "--formatting=PRETTY_PRINT"'/>
                     <arg line='-f "--source_map_format=V3"'/>
-                    <arg line='-f "--create_source_map=${crmininbox.dir}/@{output.fn}.map"'/>
+                    <arg line='-f "--create_source_map=${crmininbox-out.dir}/@{output.fn}.map"'/>
                     <arg line='-p "${work.dir}/ydn-base/src"'/>
                     <arg line='-p "${work.dir}/ydn/src"'/>
+                    <arg line='-p "${work.dir}/crm/src"'/>
                     <arg line='-f "--flagfile=${flagfile}"'/>
                     <arg line='-f "--externs=${closure-compiler.dir}/contrib/externs/chrome_extensions.js"'/>
                     <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/misc.js"'/>
@@ -115,20 +118,21 @@
                     <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/gapi.js"'/>
                     <arg line='-f "--externs=${db-work.dir}/ydn/externs/ydn-server.js"'/>
                     <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/schema.js"'/>
+                    <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/misc.js"'/>
                     <arg line='-f "--output_wrapper=@{wrapper}"'/>
                 </options>
             </closure-compile>
-            <concat destfile="${crmininbox.dir}/${out.fn}" append="true">
+            <concat destfile="${crmininbox-out.dir}/${out.fn}" append="true">
                 //# sourceMappingURL=@{output.fn}.map
             </concat>
             <replace description="replace so with online repo path"
-                     file="${crmininbox.dir}/@{output.fn}.map"
+                     file="${crmininbox-out.dir}/@{output.fn}.map"
                      token="${work.dir}/closure-library/"
                      value="http://localhost/closure-library/"/>
             <replace description="replace so with online repo path"
-                     file="${crmininbox.dir}/@{output.fn}.map"
+                     file="${crmininbox-out.dir}/@{output.fn}.map"
                      token="${work.dir}/ydn/"
-                     value="http://localhost:8085/ydn/"/>
+                     value="http://localhost/db-work/ydn/"/>
         </sequential>
     </macrodef>
 
@@ -136,6 +140,7 @@
 
         <jscomp-msg input.fn="${work.dir}/ydn/src/msg/pipe.js"
                     output.fn="ydn.msg.js"
+                    comp-level="SIMPLE"
                     entrypoint="ydn.msg.Pipe">
             <opt-arg>
                 <arg line='-i "${work.dir}/ydn/src/msg/exports.js"'/>

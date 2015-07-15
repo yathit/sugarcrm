@@ -118,6 +118,7 @@ ydn.crm.su.ui.Relationships.prototype.createDom = function() {
     option.textContent = this.relationship_modules[i];
     select.appendChild(option);
   }
+  goog.style.setElementShown(select, true);
   var input = row.querySelector('input');
   root.appendChild(row);
 

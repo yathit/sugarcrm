@@ -85,6 +85,16 @@ ydn.crm.su.ui.group.SuggestedRecord.prototype.getRelateModuleName = function() {
 
 
 /**
+ * @return {HTMLSelectElement|HTMLInputElement} element of selected module type
+ */
+ydn.crm.su.ui.group.SuggestedRecord.prototype.getTypeSelElement = function() {
+  var el = this.getContentElement();
+  return /** @type {HTMLSelectElement|HTMLInputElement} */ (
+      el.querySelector('.parent-type'));
+};
+
+
+/**
  * @param {goog.events.BrowserEvent} e
  * @private
  */

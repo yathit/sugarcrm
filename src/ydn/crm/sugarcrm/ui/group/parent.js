@@ -87,7 +87,7 @@ ydn.crm.su.ui.group.Parent.prototype.reset = function() {
     var meta = model.getMeta();
     var options = model.getParentTypeOptions();
     for (var i = 0; i < options.length; i++) {
-      var mn = meta.tryToModuleName(options[i]);
+      var mn = model.optionValue2ModuleName(options[i]);
       if (!mn) {
         continue;
       }
@@ -125,18 +125,8 @@ ydn.crm.su.ui.group.Parent.prototype.getDataListId = function() {
  * @override
  */
 ydn.crm.su.ui.group.Parent.prototype.getRelateModuleName = function() {
-  var val = this.getTypeSelElement().value;
-  var mn = this.getModel().optionValue2ModuleName(val);
-  return mn || ydn.crm.su.ui.group.Parent.base(this, 'getRelateModuleName');
-};
-
-
-/**
- * @return {Element}
- */
-ydn.crm.su.ui.group.Parent.prototype.getTypeSelElement = function() {
-  var el = this.getContentElement();
-  return el.querySelector('.parent-type');
+  var val = /** @type {ydn.crm.su.ModuleName} */(this.getTypeSelElement().value);
+  return val || ydn.crm.su.ui.group.Parent.base(this, 'getRelateModuleName');
 };
 
 
