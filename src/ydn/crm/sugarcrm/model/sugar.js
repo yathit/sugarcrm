@@ -472,6 +472,59 @@ ydn.crm.su.model.Sugar.prototype.doLogin = function(username, password) {
 
 
 /**
+ * @param {string} name
+ * @return {ydn.crm.su.ModuleName|undefined} return undefined if not a valid
+ * module name.
+ * @see #tryToModuleName
+ */
+ydn.crm.su.model.Sugar.prototype.asModuleName = function(name) {
+  if (this.module_info[name]) {
+    return /** @type {ydn.crm.su.ModuleName} */(this.module_info[name].module_name);
+  }
+  for (var key in this.module_info) {
+    if (this.module_info[key].module_name == name) {
+      return /** @type {ydn.crm.su.ModuleName} */(this.module_info[name].module_name);
+    }
+  }
+};
+
+
+/**
+ * Heuristically convert given name to module name. Useful for converting
+ * lousy label to module name.
+ * <pre>
+ *   sugar.tryToModuleName('Account'); // return 'Accounts'
+ * </pre>
+ * @param {string} name
+ * @return {ydn.crm.su.ModuleName|undefined}
+ * @see asModuleName
+ */
+ydn.crm.su.model.Sugar.prototype.tryToModuleName = function(name) {
+  if (!name) {
+    return undefined;
+  }
+  var mn = this.asModuleName(name);
+  if (mn) {
+    return mn;
+  }
+  name = goog.string.capitalize(name.trim());
+  mn = this.asModuleName(name);
+  if (mn) {
+    return mn;
+  }
+  if (name == 'Opportunity') {
+    return ydn.crm.su.ModuleName.OPPORTUNITIES;
+  }
+  var plural = name + 's';
+  mn = this.asModuleName(plural);
+  if (mn) {
+    return mn;
+  }
+  return undefined;
+};
+
+
+/**
  * @return {!goog.async.Deferred}
  */
 ydn.crm.su.model.Sugar.prototype.retryLogin = function() {

@@ -79,7 +79,24 @@ ydn.crm.su.ui.group.Parent.prototype.enterDocument = function() {
 ydn.crm.su.ui.group.Parent.prototype.reset = function() {
   ydn.crm.su.ui.group.Parent.base(this, 'reset');
   var sel_type = this.getTypeSelElement();
-  sel_type.setAttribute('list', this.getDataListId());
+  if (sel_type.tagName == 'INPUT') {
+    sel_type.setAttribute('list', this.getDataListId());
+  } else if (sel_type.tagName == 'SELECT') {
+    sel_type.innerHTML = '';
+    var model =  this.getModel();
+    var meta = model.getMeta();
+    var options = model.getParentTypeOptions();
+    for (var i = 0; i < options.length; i++) {
+      var mn = meta.tryToModuleName(options[i]);
+      if (!mn) {
+        continue;
+      }
+      var option = document.createElement('option');
+      option.value = mn;
+      option.textContent = options[i];
+      sel_type.appendChild(option);
+    }
+  }
   sel_type.value = this.getModel().getDefaultParentType();
 };
 
@@ -133,7 +150,7 @@ ydn.crm.su.ui.group.Parent.prototype.refresh = function() {
    */
   var model = this.getModel();
   var sel_type = this.getTypeSelElement();
-  sel_type.value = model.valueAsString(model.getRelateFieldName()) ||
+  sel_type.value = model.valueAsString(model.getRelateFieldType()) ||
       model.getDefaultParentType();
 };
 

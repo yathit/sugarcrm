@@ -114,3 +114,15 @@ ydn.crm.su.Meta.prototype.isLogin = function() {};
 ydn.crm.su.Meta.prototype.getRecordViewLink = function(module, id) {
 
 };
+
+
+/**
+ * Heuristically convert given name to module name. Useful for converting
+ * lousy label to module name.
+ * <pre>
+ *   sugar.tryToModuleName('Account'); // return 'Accounts'
+ * </pre>
+ * @param {string} name
+ * @return {ydn.crm.su.ModuleName|undefined}
+ */
+ydn.crm.su.Meta.prototype.tryToModuleName = function(name) {};

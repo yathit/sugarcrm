@@ -9,6 +9,7 @@ goog.require('ydn.crm.su.ui.group.Appointment');
 goog.require('ydn.crm.su.ui.group.AssignUser');
 goog.require('ydn.crm.su.ui.group.Email');
 goog.require('ydn.crm.su.ui.group.Name');
+goog.require('ydn.crm.su.ui.group.Parent');
 goog.require('ydn.crm.su.ui.group.Phone');
 goog.require('ydn.crm.su.ui.group.SuggestedRecord');
 goog.require('ydn.crm.test');
@@ -401,5 +402,31 @@ function test_tasks_appointment() {
   assertTrue(ctrl.hasChanged());
   assertEquals('date_start', date_start, data['date_start']);
   assertEquals('date_due', date_due, data['date_due']);
+}
+
+
+function test_parent() {
+  var obj = {
+    "id": "1041135a-b41e-f1bf-656d-5414e1968eda",
+    "name": "Make travel arrangements",
+    "date_entered": "2014-09-14 00:28:31",
+    "date_modified": "2014-09-14 00:28:31",
+    "parent_type": "Opportunities",
+    "parent_name": "X-Sell Holdings - 1000 units",
+    "parent_id": "129d266d-789a-c562-409a-5414e185baa8"
+  };
+  var record = ydn.crm.test.createRecord(null, ydn.crm.su.ModuleName.TASKS, obj);
+  var model = record.getGroupModel('parent');
+  var ctrl = new ydn.crm.su.ui.group.Parent(model);
+  ctrl.render(attach_el);
+  ctrl.reset();
+  ctrl.refresh();
+  var data = ctrl.collectData();
+  assertEquals('parent_id', obj.parent_id, data['parent_id']);
+  assertEquals('parent_name', obj.parent_name, data['parent_name']);
+  assertEquals('parent_type', obj.parent_type, data['parent_type']);
+
+  var sel = attach_el.querySelector('select');
+  assertEquals('selected correct parent module type', obj.parent_type, sel.value);
 }
 

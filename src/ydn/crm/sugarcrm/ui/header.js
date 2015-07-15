@@ -112,6 +112,7 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
   var a = dom.createDom('a');
   a.textContent = model.getDomain();
   a.href = model.getHomeUrl();
+  a.setAttribute('target', model.getDomain());
   var svg = ydn.crm.ui.createSvgIcon('sugarcrm');
   var div_svg = dom.createDom('div', 'icon-box', svg);
   var ele_title = dom.createDom('div', {

@@ -60,7 +60,7 @@ ydn.crm.su.ui.group.SuggestedRecord.prototype.getModel;
  */
 ydn.crm.su.ui.group.SuggestedRecord.prototype.createDom = function() {
   ydn.crm.su.ui.group.SuggestedRecord.base(this, 'createDom');
-  var t = goog.soy.renderAsElement(templ.ydn.crm.inj.selectRecord, {});
+  var t = goog.soy.renderAsElement(templ.ydn.crm.inj.selectRecord, {use_sel: true});
   this.getContentElement().appendChild(t);
 };
 
