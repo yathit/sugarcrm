@@ -38,6 +38,7 @@ goog.require('ydn.crm.su.model.events');
 goog.require('ydn.crm.su.utils');
 goog.require('ydn.db.KeyRange');
 goog.require('ydn.debug.error.ConstraintError');
+goog.require('ydn.time');
 
 
 
@@ -1035,7 +1036,8 @@ ydn.crm.su.model.Sugar.prototype.upcomingActivities_ = function(mn, since, opt_u
 
 
 /**
- * @define {number} Cache period for upcoming activity query.
+ * @const
+ * @type {number} Cache period for upcoming activity query.
  */
 ydn.crm.su.model.Sugar.UP_ACT_PT = ydn.time.MINUTE;
 

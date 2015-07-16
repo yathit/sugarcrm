@@ -138,3 +138,13 @@ ydn.crm.su.utils.incrementDateModified = function(record) {
     record.date_modified = ydn.crm.su.utils.toDateString(date);
   }
 };
+
+
+/**
+ * @param {string} module
+ * @param {string} field
+ * @return {string}
+ */
+ydn.crm.su.utils.getModule2QueryColumnName = function(module, field) {
+  return module.toLowerCase() + '.' + field;
+};
