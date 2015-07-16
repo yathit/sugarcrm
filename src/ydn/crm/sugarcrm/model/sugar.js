@@ -44,8 +44,7 @@ goog.require('ydn.debug.error.ConstraintError');
 /**
  * SugarCRM service model.
  * <pre>
- *   ydn.crm.su.model.Sugar.list().addCallback(function(models) {
- *     var sugar = models[0];
+ *   ydn.crm.su.model.Sugar.get().addCallback(function(sugar) {
  *     if (sugar.isLogin()) {
  *       var q = {'store': 'Contact', key: 'abc'};
  *       sugar.send([q]).addCallback(function(data) {
@@ -56,8 +55,7 @@ goog.require('ydn.debug.error.ConstraintError');
  * <pre>
  * @param {SugarCrm.About} about setup for particular domain.
  * @param {Array.<SugarCrm.ModuleInfo>|Object.<SugarCrm.ModuleInfo>} arr
- * @param {SugarCrm.ServerInfo=} opt_info
- * @param {SugarCrm.Record=} opt_user login user info.
+ * @param {SugarCrm.ServerInfo=} opt_info server information.
  * @param {SugarCrm.LoginRecord=} opt_login_info login user info.
  * @constructor
  * @extends {goog.events.EventTarget}
@@ -65,7 +63,7 @@ goog.require('ydn.debug.error.ConstraintError');
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_user, opt_login_info) {
+ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_login_info) {
   goog.base(this);
   /**
    * @protected
@@ -104,10 +102,8 @@ ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_user, opt_login_info
    * @type {ydn.crm.su.Record}
    * @private
    */
-  this.user_ = new ydn.crm.su.Record(domain, ydn.crm.su.ModuleName.USERS, opt_user);
-  if (!opt_user) {
-    this.initUser_();
-  }
+  this.user_ = new ydn.crm.su.Record(domain, ydn.crm.su.ModuleName.USERS);
+  this.initUser_();
   /**
    * @type {SugarCrm.LoginRecord}
    * @private
@@ -130,6 +126,13 @@ ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_user, opt_login_info
    * @private
    */
   this.is_version_7_ = null;
+
+  /**
+   * Result of upcoming activities.
+   * @type {Object<goog.async.Deferred>}
+   * @private
+   */
+  this.df_upcoming_activities_ = {};
 };
 goog.inherits(ydn.crm.su.model.Sugar, goog.events.EventTarget);
 
@@ -889,6 +892,20 @@ ydn.crm.su.model.Sugar.prototype.findRecords = function(q, module_name) {
 
 
 /**
+ * Get upcoming activities.
+ * @param mn
+ */
+ydn.crm.su.model.Sugar.prototype.getUpcomingActivities = function(mn) {
+  if (!this.df_upcoming_activities_[mn]) {
+
+    return this.df_upcoming_activities_[mn];
+  } else {
+    return this.df_upcoming_activities_[mn].branch();
+  }
+};
+
+
+/**
  * Create a new Notes record.
  * @param {ydn.crm.su.Record} record Record to be saved.
  * @return {!ydn.async.Deferred}
@@ -934,13 +951,13 @@ ydn.crm.su.model.Sugar.get = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
   return ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallback(function(details) {
     return new ydn.crm.su.model.Sugar(details.about, details.modulesInfo,
-        details.serverInfo, null, details.loginInfo);
+        details.serverInfo, details.loginInfo);
   });
 };
 
 
 /**
- * @return {ydn.crm.su.model.Sugar}
+ * @return {!ydn.crm.su.model.Sugar}
  */
 ydn.crm.su.model.Sugar.prototype.clone = function() {
   var clone = new ydn.crm.su.model.Sugar(this.about, this.module_info,
