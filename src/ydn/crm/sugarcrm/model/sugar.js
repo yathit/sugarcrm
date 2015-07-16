@@ -1035,8 +1035,15 @@ ydn.crm.su.model.Sugar.prototype.upcomingActivities_ = function(mn, since, opt_u
 
 
 /**
+ * @define {number} Cache period for upcoming activity query.
+ */
+ydn.crm.su.model.Sugar.UP_ACT_PT = ydn.time.MINUTE;
+
+
+/**
  * Get upcoming activities.
  * @param {ydn.crm.su.ModuleName} mn
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
  */
 ydn.crm.su.model.Sugar.prototype.getUpcomingActivities = function(mn) {
   if (!this.df_upcoming_activities_[mn]) {
@@ -1048,10 +1055,15 @@ ydn.crm.su.model.Sugar.prototype.getUpcomingActivities = function(mn) {
     } else {
       this.df_upcoming_activities_[mn] = this.upcomingActivities_(mn, since);
     }
-    return this.df_upcoming_activities_[mn];
-  } else {
-    return this.df_upcoming_activities_[mn].branch();
+    this.df_upcoming_activities_[mn].addCallback(function() {
+      var df = this.df_upcoming_activities_[mn];
+      setTimeout((function() {
+        this.df_upcoming_activities_[mn] = null;
+      }).bind(this), ydn.crm.su.model.Sugar.UP_ACT_PT);
+    }, this);
   }
+  // make a branch so that the result is not modified.
+  return this.df_upcoming_activities_[mn].branch();
 };
 
 

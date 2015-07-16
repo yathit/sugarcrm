@@ -334,7 +334,7 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name, r
     'href': '#' + m_name,
     'data-module': m_name,
     'data-view': 'record'
-  }, 'New');
+  }, 'Create');
   var head = dom.createDom('span', null, [msg, a]);
   this.renderHeader_(head);
 

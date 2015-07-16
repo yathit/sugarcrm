@@ -38,6 +38,14 @@
   }
 }
 
+.record-panel {
+  .record-body {
+    .content > .field {
+      margin: 4px 0;
+    }
+  }
+}
+
 .secondary {
   > section {
     margin: 4px 0;
