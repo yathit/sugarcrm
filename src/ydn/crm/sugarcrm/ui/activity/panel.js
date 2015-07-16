@@ -438,8 +438,7 @@ ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivityUsingClient_ = func
   if (m_name != ydn.crm.su.ModuleName.CASES) {
     until = ydn.time.getWeekend();
   }
-  var query = this.detail_panel.genUpcomingQuery(m_name, until);
-  this.getModel().send(ydn.crm.ch.SReq.KEYS, query).addCallbacks(function(ans) {
+  this.getModel().getUpcomingActivities(m_name).addCallbacks(function(ans) {
     var query_result = /** @type {Array.<string>} */ (ans);
     var next = index + 1;
     if (opt_continue) {

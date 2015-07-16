@@ -231,42 +231,6 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.clear = function() {
 
 
 /**
- * Generate upcoming query from current time.
- * @param {ydn.crm.su.ModuleName} m_name one of ydn.crm.su.ACTIVITY_MODULES.
- * @param {Date=} opt_until date limit.
- * @return {CrmApp.ReqQuery} query
- */
-ydn.crm.su.ui.activity.DetailPanel.prototype.genUpcomingQuery = function(m_name, opt_until) {
-  var assigned_user_id = this.getModel().getUser().getId();
-  var reverse = false;
-  var start_date = ydn.crm.su.utils.toDateString(new Date());
-  var until = '\uffff';
-  if (m_name == ydn.crm.su.ModuleName.CASES) {
-    reverse = true;
-    start_date = '';
-    if (opt_until) {
-      start_date = ydn.crm.su.utils.toDateString(opt_until);
-    }
-  } else {
-    if (opt_until) {
-      until = ydn.crm.su.utils.toDateString(opt_until);
-    }
-  }
-
-  var kr = ydn.db.KeyRange.bound([assigned_user_id, start_date], [assigned_user_id, until]);
-
-  var query = {
-    'store': m_name,
-    'index': ydn.crm.su.Record.getIndexForDeadline(m_name),
-    'limit': 20,
-    'reverse': reverse,
-    'keyRange': kr.toJSON()
-  };
-  return /** @type {CrmApp.ReqQuery} */ (/** @type {Object} */ (query));
-};
-
-
-/**
  * Render recent activity.
  */
 ydn.crm.su.ui.activity.DetailPanel.prototype.renderActivity = function() {
@@ -399,15 +363,8 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name, r
  * @return {!goog.async.Deferred<number>} number of upcoming items until next weekend.
  */
 ydn.crm.su.ui.activity.DetailPanel.prototype.refreshUpcoming = function(m_name) {
-  var q = this.genUpcomingQuery(m_name);
-  if (ydn.crm.su.ui.activity.DetailPanel.DEBUG) {
-    window.console.log('refreshUpcoming for ' + m_name, q);
-  }
-  return this.getModel().send(ydn.crm.ch.SReq.VALUES, q).addCallbacks(function(arr) {
-    var results = /** @type {Array.<SugarCrm.Record>} */ (arr);
-    return this.renderUpcoming(m_name, results);
-  }, function(e) {
-    throw e;
+  return this.getModel().getUpcomingActivities(m_name).addCallback(function(arr) {
+    return this.renderUpcoming(m_name, arr);
   }, this);
 };
 

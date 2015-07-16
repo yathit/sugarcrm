@@ -291,8 +291,10 @@ ydn.crm.su.model.Sugar.prototype.updateStatus = function() {
 
 /**
  * @return {string} sugarcrm user name. This is `About.userName`, which is
- * same as `getUser().value('user_name')`.
- * @see #getUser for getting login user record.
+ * same as `getUser().value('user_name')`, but different from
+ * `getUser().value('name')`.
+ * This is also different from login user record id, which is available as
+ * @see #getUser for getting name of user using its login user record.
  */
 ydn.crm.su.model.Sugar.prototype.getUserName = function() {
   return this.about ? this.about.userName || '' : '';
@@ -819,6 +821,25 @@ ydn.crm.su.model.Sugar.prototype.queryOneByEmail = function(email) {
 
 
 /**
+ * Get Users module record id of login user.
+ * @return {string}
+ */
+ydn.crm.su.model.Sugar.prototype.getUserRecordId = function() {
+  // same as this.user_.value('user_id'), but login_info_ is primary data.
+  return this.login_info_ ? this.login_info_.user_id : '';
+};
+
+
+/**
+ * Get name value of Users module record id of login user.
+ * @return {string}
+ */
+ydn.crm.su.model.Sugar.prototype.getUserRecordName = function() {
+  return this.user_ ? this.user_.getStringValue('name') || '' : '';
+};
+
+
+/**
  * Archive an email to sugarcrm.
  * Attachments are ignored.
  * @param {ydn.gmail.Utils.EmailInfo} info email details.
@@ -836,8 +857,8 @@ ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
   var date_str = ydn.crm.su.utils.isValidDate(info.date_sent) ?
       ydn.crm.su.utils.toDateString(info.date_sent) : '';
   var obj = {
-    'assigned_user_id': this.user_.getStringValue('id'),
-    'assigned_user_name': this.user_.getStringValue('name'),
+    'assigned_user_id': this.getUserRecordId(),
+    'assigned_user_name': this.getUserRecordName(),
     'date_sent': date_str,
     'description': div.textContent,
     'description_html': info.html,
@@ -892,12 +913,141 @@ ydn.crm.su.model.Sugar.prototype.findRecords = function(q, module_name) {
 
 
 /**
+ * Get upcoming activities, except Cases activities.
+ * @param {Date} since
+ * @param {Date=} opt_until
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ * @private
+ */
+ydn.crm.su.model.Sugar.prototype.upcomingCasesActivities_ = function(since, opt_until) {
+  var mn = ydn.crm.su.ModuleName.CASES;
+  var assigned_user_id = this.user_.getId();
+  var reverse = false;
+  var start_date = ydn.crm.su.utils.toDateString(since);
+  var until = '\uffff';
+
+  reverse = true;
+  start_date = '';
+  if (opt_until) {
+    start_date = ydn.crm.su.utils.toDateString(opt_until);
+  }
+
+  var kr = ydn.db.KeyRange.bound([assigned_user_id, start_date], [assigned_user_id, until]);
+
+  var query = {
+    'store': mn,
+    'index': ydn.crm.su.Record.getIndexForDeadline(mn),
+    'limit': 20,
+    'reverse': reverse,
+    'keyRange': kr.toJSON()
+  };
+  if (ydn.crm.su.model.Sugar.DEBUG) {
+    window.console.log('upcomingActivities_ for ' + mn, query);
+  }
+
+  return this.send(ydn.crm.ch.SReq.VALUES, query).addCallbacks(function(arr) {
+    var results = /** @type {!Array<!SugarCrm.Record>} */ (arr);
+    return results;
+  }, function(e) {
+    window.console.error(e);
+  }, this);
+};
+
+
+/**
+ * Get upcoming activities, except Cases activities.
+ * @param {Date} since
+ * @param {Date=} opt_until
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ * @private
+ */
+ydn.crm.su.model.Sugar.prototype.upcomingMeetingActivities_ = function(since, opt_until) {
+  var mn = ydn.crm.su.ModuleName.MEETINGS;
+  var assigned_user_id = this.user_.getId();
+  var reverse = false;
+  var start_date = ydn.crm.su.utils.toDateString(since);
+  var until = '\uffff';
+
+  if (opt_until) {
+    until = ydn.crm.su.utils.toDateString(opt_until);
+  }
+
+  var kr = ydn.db.KeyRange.bound([assigned_user_id, start_date], [assigned_user_id, until]);
+
+  var query = {
+    'store': mn,
+    'index': ydn.crm.su.Record.getIndexForDeadline(mn),
+    'limit': 20,
+    'reverse': reverse,
+    'keyRange': kr.toJSON()
+  };
+  if (ydn.crm.su.model.Sugar.DEBUG) {
+    window.console.log('upcomingActivities_ for ' + mn, query);
+  }
+
+  return this.send(ydn.crm.ch.SReq.VALUES, query).addCallbacks(function(arr) {
+    var results = /** @type {!Array<!SugarCrm.Record>} */ (arr);
+    return results;
+  }, function(e) {
+    window.console.error(e);
+  }, this);
+};
+
+
+/**
+ * Get upcoming activities, except Cases activities.
+ * @param {ydn.crm.su.ModuleName} mn
+ * @param {Date} since
+ * @param {Date=} opt_until
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ * @private
+ */
+ydn.crm.su.model.Sugar.prototype.upcomingActivities_ = function(mn, since, opt_until) {
+  var assigned_user_id = this.user_.getId();
+  var reverse = false;
+  var start_date = ydn.crm.su.utils.toDateString(since);
+  var until = '\uffff';
+
+  if (opt_until) {
+    until = ydn.crm.su.utils.toDateString(opt_until);
+  }
+
+  var kr = ydn.db.KeyRange.bound([assigned_user_id, start_date], [assigned_user_id, until]);
+
+  var query = {
+    'store': mn,
+    'index': ydn.crm.su.Record.getIndexForDeadline(mn),
+    'limit': 20,
+    'reverse': reverse,
+    'keyRange': kr.toJSON()
+  };
+  if (ydn.crm.su.model.Sugar.DEBUG) {
+    window.console.log('upcomingActivities_ for ' + mn, query);
+  }
+
+  return this.send(ydn.crm.ch.SReq.VALUES, query).addCallbacks(function(arr) {
+    var results = /** @type {!Array<!SugarCrm.Record>} */ (arr);
+    return results;
+  }, function(e) {
+    window.console.error(e);
+  }, this);
+};
+
+
+/**
  * Get upcoming activities.
- * @param mn
+ * @param {ydn.crm.su.ModuleName} mn
  */
 ydn.crm.su.model.Sugar.prototype.getUpcomingActivities = function(mn) {
   if (!this.df_upcoming_activities_[mn]) {
-
+    var since = new Date();
+    if (mn == ydn.crm.su.ModuleName.CASES) {
+      this.df_upcoming_activities_[mn] = this.upcomingCasesActivities_(since);
+    } else if (mn == ydn.crm.su.ModuleName.MEETINGS) {
+      this.df_upcoming_activities_[mn] = this.upcomingMeetingActivities_(since);
+    } else {
+      this.df_upcoming_activities_[mn] = this.upcomingActivities_(mn, since);
+    }
     return this.df_upcoming_activities_[mn];
   } else {
     return this.df_upcoming_activities_[mn].branch();
