@@ -331,8 +331,8 @@ ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingForUsingClientFor_ = functi
 
 
 ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingFor_ = function(m_name) {
-  // this.updateUpcomingForUsingClientFor_(m_name);
-  this.updateUpcomingActivityUsingServer_(m_name);
+  this.updateUpcomingForUsingClientFor_(m_name);
+  // this.updateUpcomingActivityUsingServer_(m_name);
 };
 
 
@@ -540,7 +540,7 @@ ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivityUsingServer_ = func
  * @private
  */
 ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivity_ = function() {
-  this.updateUpcomingActivityUsingServer_();
+  this.updateUpcomingActivityUsingClient_(true);
 };
 
 
@@ -594,5 +594,4 @@ ydn.crm.su.ui.activity.Panel.prototype.setCount = function(name, cnt) {
       root.removeChild(el);
     }
   }
-
 };

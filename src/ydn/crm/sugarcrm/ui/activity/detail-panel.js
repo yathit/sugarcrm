@@ -329,7 +329,8 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcomingItem_ = function(obj,
 
   msg.appendChild(link);
   var deadline = obj['summary'] ? new Date(obj['date_due']) : r.getDeadline();
-  var time_msg = goog.date.relative.format(deadline.getTime()) || 'on ' + deadline.toLocaleDateString();
+  var time_msg = goog.date.relative.format(deadline.getTime()) || 'on ' +
+      deadline.toLocaleDateString();
   msg.appendChild(dom.createTextNode(' ' + time_msg + '.'));
   var div = dom.createDom('div', null, [msg]);
   div.className = ydn.crm.su.ui.activity.DetailPanel.CSS_CLASS_ITEM +
@@ -400,7 +401,7 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.renderUpcoming = function(m_name, r
 ydn.crm.su.ui.activity.DetailPanel.prototype.refreshUpcoming = function(m_name) {
   var q = this.genUpcomingQuery(m_name);
   if (ydn.crm.su.ui.activity.DetailPanel.DEBUG) {
-    window.console.log('renderUpcoming for ' + m_name, q);
+    window.console.log('refreshUpcoming for ' + m_name, q);
   }
   return this.getModel().send(ydn.crm.ch.SReq.VALUES, q).addCallbacks(function(arr) {
     var results = /** @type {Array.<SugarCrm.Record>} */ (arr);
@@ -409,5 +410,4 @@ ydn.crm.su.ui.activity.DetailPanel.prototype.refreshUpcoming = function(m_name) 
     throw e;
   }, this);
 };
-
 
