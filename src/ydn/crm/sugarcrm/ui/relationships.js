@@ -408,11 +408,15 @@ ydn.crm.su.ui.Relationships.prototype.addSuggestionById = function(
     'modules': modules,
     'limit': 5
   };
-  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, q).addCallback(function(arr) {
+  this.meta_.getChannel().send(ydn.crm.ch.SReq.QUERY_RELATED, q).addCallback(function(x) {
+    var arr = /** @type {Array<SugarCrm.Record>} */(x);
+    goog.array.sort(arr, function(a, b) {
+      return - goog.array.defaultCompare(a.date_modified, b.date_modified);
+    });
     if (ydn.crm.su.ui.Relationships.DEBUG) {
       window.console.log('suggestion', mn, id, arr);
     }
-    for (var i = 0; i < arr.length; i++) {
+    for (var i = 0; i < arr.length && i < 5; i++) {
       this.addSuggestion_(arr[i]);
     }
   }, this);

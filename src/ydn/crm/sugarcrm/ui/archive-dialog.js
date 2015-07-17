@@ -208,17 +208,15 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
 ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
 
   // in version ? these relationship are automatically added ?
-  meta.queryOneByEmail(email).addCallback(function(r) {
+  meta.queryByEmail(email).addCallback(function(arr) {
     if (ydn.crm.su.ui.ArchiveDialog.DEBUG) {
-      window.console.log('addRel_', email, r);
+      window.console.log('addRel_', email, arr);
     }
-    if (r) {
-      dialog.addRelationship(/** @type {ydn.crm.su.ModuleName} */(r._module), r.id, r.name);
+    for (var i = 0; i < arr.length; i++) {
+      var r = arr[i];
+      dialog.rel_panel_.addSuggestionById(/** @type {ydn.crm.su.ModuleName} */(r._module), r.id);
     }
   });
-
-  dialog.rel_panel_.addSuggestionByEmail(email,
-      [ydn.crm.su.ModuleName.OPPORTUNITIES, ydn.crm.su.ModuleName.CASES]);
 };
 
 

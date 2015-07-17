@@ -5,6 +5,8 @@
 ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 
 ydn.crm.su.ui.widget.RecordMatcher.DEBUG =  true;
+ydn.crm.su.ui.ArchiveDialog.DEBUG =  true;
+ydn.crm.su.ui.Relationships.DEBUG =  true;
 
 ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('dev');
