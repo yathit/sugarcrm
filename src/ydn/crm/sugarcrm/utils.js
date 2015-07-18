@@ -146,5 +146,9 @@ ydn.crm.su.utils.incrementDateModified = function(record) {
  * @return {string}
  */
 ydn.crm.su.utils.getModule2QueryColumnName = function(module, field) {
+  // TODO: use table_name from module info data.
+  if (module == ydn.crm.su.ModuleName.EMAIL_TEMPLATES) {
+    return 'email_templates.' + field;
+  }
   return module.toLowerCase() + '.' + field;
 };
