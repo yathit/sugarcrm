@@ -983,7 +983,7 @@ ydn.crm.su.model.Sugar.prototype.upcomingMeetingActivities_ = function(since, op
     'keyRange': kr.toJSON()
   };
   if (ydn.crm.su.model.Sugar.DEBUG) {
-    window.console.log('upcomingActivities_ for ' + mn, query);
+    window.console.log('upcomingMeetingActivities_', query);
   }
 
   return this.send(ydn.crm.ch.SReq.VALUES, query).addCallbacks(function(arr) {

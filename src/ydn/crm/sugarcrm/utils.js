@@ -141,14 +141,23 @@ ydn.crm.su.utils.incrementDateModified = function(record) {
 
 
 /**
- * @param {string} module
+ * @param {string|ydn.crm.su.ModuleName} module
+ * @return {string}
+ */
+ydn.crm.su.utils.getTableNameFromModule = function(module) {
+  // TODO: use table_name from module info data.
+  if (module == ydn.crm.su.ModuleName.EMAIL_TEMPLATES) {
+    return 'email_templates';
+  }
+  return module.toLowerCase();
+};
+
+
+/**
+ * @param {string|ydn.crm.su.ModuleName} module
  * @param {string} field
  * @return {string}
  */
 ydn.crm.su.utils.getModule2QueryColumnName = function(module, field) {
-  // TODO: use table_name from module info data.
-  if (module == ydn.crm.su.ModuleName.EMAIL_TEMPLATES) {
-    return 'email_templates.' + field;
-  }
-  return module.toLowerCase() + '.' + field;
+  return ydn.crm.su.utils.getTableNameFromModule(module) + '.' + field;
 };
