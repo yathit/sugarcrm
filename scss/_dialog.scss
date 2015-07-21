@@ -74,3 +74,28 @@
     }
   }
 }
+
+.update-option {
+  > DIV {
+    margin: 16px 2px;
+  }
+
+  .info {
+    max-height: 12em;
+    overflow-y: auto;
+  }
+
+  LABEL.default-option {
+    font-weight: bold;
+  }
+
+  .update-strategy {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    > * {
+      padding: 2px 8px;
+    }
+  }
+}
