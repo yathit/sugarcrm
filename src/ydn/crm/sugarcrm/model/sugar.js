@@ -32,6 +32,7 @@ goog.require('goog.events.EventHandler');
 goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su.Meta');
+goog.require('ydn.crm.su.SortedRecords');
 goog.require('ydn.crm.su.model.ImmutableRecord');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.model.events');
@@ -1047,7 +1048,7 @@ ydn.crm.su.model.Sugar.UP_ACT_PT = ydn.time.MINUTE;
  * @param {ydn.crm.su.ModuleName} mn
  * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
  */
-ydn.crm.su.model.Sugar.prototype.getUpcomingActivities = function(mn) {
+ydn.crm.su.model.Sugar.prototype.getUpcomingActivitiesClient = function(mn) {
   if (!this.df_upcoming_activities_[mn]) {
     var since = new Date();
     if (mn == ydn.crm.su.ModuleName.CASES) {
@@ -1063,6 +1064,37 @@ ydn.crm.su.model.Sugar.prototype.getUpcomingActivities = function(mn) {
         this.df_upcoming_activities_[mn] = null;
       }).bind(this), ydn.crm.su.model.Sugar.UP_ACT_PT);
     }, this);
+  }
+  // make a branch so that the result is not modified.
+  return this.df_upcoming_activities_[mn].branch();
+};
+
+
+/**
+ * Get upcoming activities.
+ * @param {ydn.crm.su.ModuleName} mn
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ */
+ydn.crm.su.model.Sugar.prototype.getUpcomingActivities = function(mn) {
+  if (!this.df_upcoming_activities_[mn]) {
+    this.df_upcoming_activities_[mn] = new goog.async.Deferred();
+    var data = {'module': mn};
+    var df = this.send(ydn.crm.ch.SReq.LIST_UPCOMING_ASYNC, data);
+    var field = ydn.crm.su.Record.getFieldNameForDeadline(mn);
+    var results = new ydn.crm.su.SortedRecords(field, true);
+
+    df.addProgback(function(x) {
+      console.log(mn, x);
+      results.addAll(x);
+    }, this);
+    df.addBoth(function() {
+      setTimeout((function() {
+        this.df_upcoming_activities_[mn] = null;
+      }).bind(this), ydn.crm.su.model.Sugar.UP_ACT_PT);
+      return results.records;
+    }, this);
+    this.df_upcoming_activities_[mn] = df;
+    return df;
   }
   // make a branch so that the result is not modified.
   return this.df_upcoming_activities_[mn].branch();
