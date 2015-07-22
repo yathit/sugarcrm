@@ -954,6 +954,26 @@ ydn.crm.su.ui.record.Record.prototype.postReset = function() {
 
 
 /**
+ * HACK:
+ * @private
+ */
+ydn.crm.su.ui.record.Record.prototype.fixHeightForScrollbar_ = function() {
+  var base_el = goog.dom.getAncestorByClass(this.getElement(), 'popup-content');
+  if (base_el) {
+    var max_height = base_el.style.maxHeight;
+    var gp = max_height.match(/100vh - (\d+)px/);
+    if (gp) {
+      var h = parseInt(gp[1], 10);
+      var el = this.getContentElement().querySelector('.record-body');
+      el.style.overflowY = 'auto';
+      el.style.maxHeight = 'calc(100vh - ' + (h + 150) + 'px)';
+    }
+
+  }
+};
+
+
+/**
  * Reset UI when record ID or user setting changed.
  * @protected
  */
@@ -963,6 +983,7 @@ ydn.crm.su.ui.record.Record.prototype.reset = function() {
     window.console.log('reset ' + model);
   }
   var root = this.getElement();
+  this.fixHeightForScrollbar_();
   this.resetHeader();
   this.refreshHeader();
   this.footer_panel.reset(this);

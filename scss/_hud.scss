@@ -11,7 +11,7 @@ $hud-button-height: 38px;
 
   .record-panel {
     .content {
-      max-height: 250px;
+
     }
   }
 }
@@ -64,6 +64,7 @@ $hud-button-height: 38px;
   display: none;
   opacity: 1;
   position: relative;
+  height: 100%;
 
   .top-resizer {
     cursor: row-resize;
@@ -76,12 +77,19 @@ $hud-button-height: 38px;
   display: flex;
   flex-direction: column;
 
+  .popup-header {
+    flex-shrink: 0;
+  }
+
   .popup-content {
+    flex-shrink: 1;
     flex-grow: 1;
+
   }
 
   .popup-footer {
     align-self: flex-end;
+    flex-shrink: 0;
   }
 }
 
