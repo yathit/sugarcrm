@@ -1084,7 +1084,6 @@ ydn.crm.su.model.Sugar.prototype.getUpcomingActivities = function(mn) {
     var results = new ydn.crm.su.SortedRecords(field, true);
 
     df.addProgback(function(x) {
-      console.log(mn, x);
       results.addAll(x);
     }, this);
     df.addBoth(function() {

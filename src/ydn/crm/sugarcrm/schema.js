@@ -324,6 +324,8 @@ ydn.crm.su.Schema.prototype.getStoreSchema = function(module_name) {
         name: 'name'
       }, {
         name: 'date_modified'
+      }, {
+        name: 'deleted'
       }
     ]
   }));

@@ -63,3 +63,13 @@ ydn.crm.su.UpdateCheckpoint.prototype.setSyncCheckPoint = function(mn, is_up, va
   }
 };
 
+
+/**
+ * Remove sync checkpoint.
+ * @param {ydn.crm.su.ModuleName} mn
+ */
+ydn.crm.su.UpdateCheckpoint.prototype.resetCheckPoint = function(mn) {
+  goog.global.localStorage.removeItem(this.makeCheckPointKey(mn, 'lower'));
+  goog.global.localStorage.removeItem(this.makeCheckPointKey(mn, 'upper'));
+};
+

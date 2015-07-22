@@ -440,15 +440,15 @@ ydn.crm.su.ui.activity.Panel.prototype.updateUpcomingActivityUsingClient_ = func
   }
   this.getModel().getUpcomingActivities(m_name).addCallbacks(function(ans) {
     var query_result = /** @type {Array.<string>} */ (ans);
+    this.setCount(m_name, query_result.length);
     var next = index + 1;
     if (opt_continue) {
       // let next update do first before updating UI
       // so that event if renderer fail, updating continue.
       this.updateUpcomingActivityUsingClient_(true, next);
     }
-    this.setCount(m_name, query_result.length);
   }, function(e) {
-    throw e;
+    window.console.error(e);
   }, this);
 };
 
