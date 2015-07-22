@@ -4,6 +4,7 @@
 
 ydn.crm.su.ui.activity.DetailPanel.DEBUG =  true;
 ydn.crm.su.ui.activity.Panel.DEBUG =  true;
+ydn.crm.su.model.Sugar.DEBUG =  true;
 
 ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
