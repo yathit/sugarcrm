@@ -1,7 +1,7 @@
 
 $hud-button-left: 16px;
-$hud-button-width: 21px;
-$hud-button-height: 38px;
+$hud-button-width: 26px;
+$hud-button-height: 42px;
 
 #sticky-hud-base {
   position: fixed;
@@ -24,7 +24,7 @@ $hud-button-height: 38px;
   width: $hud-button-width;
   height: $hud-button-height;
   outline: 0;
-  padding: 6px 0 0 2px;
+  padding: 8px 0 0 2px;
   border: 1px solid;
   border-color: #DDD #FFFFFF #DDD #DDD;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);

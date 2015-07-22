@@ -954,10 +954,11 @@ ydn.crm.su.ui.record.Record.prototype.postReset = function() {
 
 
 /**
- * HACK:
+ * FIXME: for scrolling to work.
  * @private
  */
 ydn.crm.su.ui.record.Record.prototype.fixHeightForScrollbar_ = function() {
+  window.console.log('fixHeightForScrollbar_');
   var base_el = goog.dom.getAncestorByClass(this.getElement(), 'popup-content');
   if (base_el) {
     var max_height = base_el.style.maxHeight;
