@@ -2,111 +2,115 @@
 
 @import "module-color";
 
-.Accounts > * > .icon, .Accounts > .icon {
+.bg-color {
+    background-color: grey;
+}
+
+.Accounts > * > .icon, .Accounts > .icon, .Accounts > .bg-color {
     background-color: $color-accounts;
 }
 
-.Bugs > * > .icon, .Bugs > .icon {
+.Bugs > * > .icon, .Bugs > .icon, .Bugs > .bg-color {
     background-color: $color-bugs;
 }
 
-.Calls > * > .icon, .Calls > .icon {
+.Calls > * > .icon, .Calls > .icon, .Calls > .bg-color {
     background-color: $color-calls;
 }
 
-.Calendar > * > .icon, .Calendar > .icon {
+.Calendar > * > .icon, .Calendar > .icon, .Calendar > .bg-color {
     background-color: $color-calendar;
 }
 
-.Campaigns > * > .icon, .Campaigns > .icon {
+.Campaigns > * > .icon, .Campaigns > .icon, .Campaigns > .bg-color {
     background-color: $color-campaigns;
 }
 
-.CampaignLog > * > .icon, .CampaignLog > .icon {
+.CampaignLog > * > .icon, .CampaignLog > .icon, .CampaignLog > .bg-color {
     background-color: $color-campaign-log;
 }
 
-.Cases > * > .icon, .Cases > .icon {
+.Cases > * > .icon, .Cases > .icon, .Cases > .bg-color {
     background-color: $color-cases;
 }
 
-.Contacts > * > .icon, .Contacts > .icon {
+.Contacts > * > .icon, .Contacts > .icon, .Contacts > .bg-color {
     background-color: $color-contacts;
 }
 
-.Documents > * > .icon, .Documents > .icon {
+.Documents > * > .icon, .Documents > .icon, .Documents > .bg-color {
     background-color: #81380f;
 }
 
 
-.Emails > * > .icon, .Emails > .icon,
-.EmailText > * > .icon, .EmailText > .icon,
-.EmailTemplates > * > .icon, .EmailTemplates > .icon {
+.Emails > * > .icon, .Emails > .icon, .Emails > .bg-color,
+.EmailText > * > .icon, .EmailText > .icon, .EmailText > .bg-color,
+.EmailTemplates > * > .icon, .EmailTemplates > .icon, .EmailTemplates > .bg-color {
     background-color: $color-emails;
 }
 
-.Employees > * > .icon, .Employees > .icon {
+.Employees > * > .icon, .Employees > .icon, .Employees > .bg-color {
     background-color: $color-employees;
 }
 
-.Files > * > .icon, .Files > .icon {
+.Files > * > .icon, .Files > .icon, .Files > .bg-color {
     background-color: $color-files;
 }
 
-.Forecasts > * > .icon, .Forecasts > .icon {
+.Forecasts > * > .icon, .Forecasts > .icon, .Forecasts > .bg-color {
     background-color: $color-forecasts;
 }
 
-.KBDocuments > * > .icon, .KBDocuments > .icon {
+.KBDocuments > * > .icon, .KBDocuments > .icon, .KBDocuments > .bg-color {
     background-color: $color-kb-documents;
 }
 
-.Leads > * > .icon, .Leads > .icon {
+.Leads > * > .icon, .Leads > .icon, .Leads > .bg-color {
     background-color: $color-leads;
 }
 
-.Meetings > * > .icon, .Meetings > .icon {
+.Meetings > * > .icon, .Meetings > .icon, .Meetings > .bg-color {
     background-color: $color-meetings;
 }
 
-.Notes > * > .icon, .Notes > .icon {
+.Notes > * > .icon, .Notes > .icon, .Notes > .bg-color {
     background-color: $color-notes;
 }
 
-.Opportunities > * > .icon, .Opportunities > .icon {
+.Opportunities > * > .icon, .Opportunities > .icon, .Opportunities > .bg-color {
     background-color: $color-opportunities;
 }
 
-.ProspectLists > * > .icon, .ProspectLists > .icon,
-.Prospects > * > .icon, .Prospects > .icon {
+.ProspectLists > * > .icon, .ProspectLists > .icon,, .ProspectLists > .bg-color
+.Prospects > * > .icon, .Prospects > .icon, .Prospects > .bg-color {
     background-color: $color-prospects;
 }
 
-.Reports > * > .icon, .Reports > .icon {
+.Reports > * > .icon, .Reports > .icon, .Reports > .bg-color {
     background-color: $color-reports
 }
 
-.RevenueLineItems > * > .icon, .RevenueLineItems > .icon {
+.RevenueLineItems > * > .icon, .RevenueLineItems > .icon, .RevenueLineItems > .bg-color {
     background-color: $color-revenue-line-items;
 }
 
-.Quotes > * > .icon, .Quotes > .icon {
+.Quotes > * > .icon, .Quotes > .icon, .Quotes > .bg-color {
     background-color: $color-quotes;
 }
 
-.Targets > * > .icon, .Targets > .icon {
+.Targets > * > .icon, .Targets > .icon, .Targets > .bg-color {
     background-color: $color-targets;
 }
 
-.Tasks > * > .icon, .Tasks > .icon {
+.Tasks > * > .icon, .Tasks > .icon, .Tasks > .bg-color {
     background-color: $color-tasks;
 }
 
-.Users > * > .icon, .Users > .icon {
+.Users > * > .icon, .Users > .icon, .Users > .bg-color {
     background-color: $color-users;
 }
 
-.Workflow > * > .icon, .Workflow > .icon {
+.Workflow > * > .icon, .Workflow > .icon, .Workflow > .bg-color {
     background-color: $color-workflow;
 }
 

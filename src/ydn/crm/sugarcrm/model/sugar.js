@@ -331,6 +331,15 @@ ydn.crm.su.model.Sugar.prototype.getModuleInfo = function(name) {
 
 
 /**
+ * @return {!Array<ydn.crm.su.ModuleName>} list of module available.
+ */
+ydn.crm.su.model.Sugar.prototype.listModules = function() {
+  return /** @type {!Array<ydn.crm.su.ModuleName>} */(Object.keys(
+      /** @type {!Object} */(this.module_info)));
+};
+
+
+/**
  * @return {boolean}
  */
 ydn.crm.su.model.Sugar.prototype.hasHostPermission = function() {
