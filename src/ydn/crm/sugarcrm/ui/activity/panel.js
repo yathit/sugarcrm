@@ -33,7 +33,6 @@ goog.require('goog.ui.TabBar');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su.ui.HomePanel');
 goog.require('ydn.crm.su.ui.NewRecord');
-goog.require('ydn.crm.su.ui.HomePanel');
 goog.require('ydn.crm.su.ui.activity.DetailPanel');
 goog.require('ydn.crm.su.utils');
 
@@ -472,7 +471,7 @@ ydn.crm.su.ui.activity.Panel.prototype.refreshUpcomingActivity = function(mi, ar
  * @param {Array<Object>} arr results.
  */
 ydn.crm.su.ui.activity.Panel.prototype.processUpcomingActivitiesFor = function(mi, arr) {
-  var mn =  ydn.crm.su.ACTIVITY_MODULES[mi];
+  var mn = ydn.crm.su.ACTIVITY_MODULES[mi];
   var activities = [];
   for (var i = 0; i < arr.length; i++) {
     var m = /** @type {ydn.crm.su.ModuleName} */(arr[i]['module']);

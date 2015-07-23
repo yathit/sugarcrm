@@ -958,19 +958,8 @@ ydn.crm.su.ui.record.Record.prototype.postReset = function() {
  * @private
  */
 ydn.crm.su.ui.record.Record.prototype.fixHeightForScrollbar_ = function() {
-  window.console.log('fixHeightForScrollbar_');
-  var base_el = goog.dom.getAncestorByClass(this.getElement(), 'popup-content');
-  if (base_el) {
-    var max_height = base_el.style.maxHeight;
-    var gp = max_height.match(/100vh - (\d+)px/);
-    if (gp) {
-      var h = parseInt(gp[1], 10);
-      var el = this.getContentElement().querySelector('.record-body');
-      el.style.overflowY = 'auto';
-      el.style.maxHeight = 'calc(100vh - ' + (h + 150) + 'px)';
-    }
-
-  }
+  var el = this.getContentElement().querySelector('.record-body');
+  ydn.crm.ui.fixHeightForScrollbar(el);
 };
 
 
