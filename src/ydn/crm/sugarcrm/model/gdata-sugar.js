@@ -25,7 +25,7 @@
  *   // Run some process
  *   gs.importToSugar('Leads');
  * </pre>
- *
+ * @see ydn.crm.su.model.GDataSugar#get for common instantiation pattern.
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
@@ -515,29 +515,21 @@ ydn.crm.su.model.GDataSugar.prototype.update_ = function(cm) {
  * @return {!goog.async.Deferred<ydn.crm.su.model.GDataSugar>}
  * @see ydn.crm.su.model.Sugar#get
  */
-ydn.crm.su.model.GDataSugar.list = function() {
+ydn.crm.su.model.GDataSugar.get = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
-  return user.onReady().branch().addCallback(function() {
+  return user.onReady().addCallback(function() {
 
-    return ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR_DOMAIN).addCallback(
-        function(sugars) {
-          var dfs = [];
-          for (var i = 0; i < sugars.length; i++) {
-            var domain = /** @type {string} */ (sugars[i]);
-            var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, domain);
-            var df = ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
-              var details = /** @type {SugarCrm.Details} */ (x);
-              for (var i = 0; i < details.modulesInfo.length; i++) {
-                ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
-              }
-              var ac = user.getLoginEmail();
-              return new ydn.crm.su.model.GDataSugar(details.about,
-                  details.modulesInfo, ac, details.serverInfo, details.loginInfo);
-            }, this);
-            dfs.push(df);
-          }
-          return goog.async.DeferredList.gatherResults(dfs);
-        }, this);
+    return ydn.msg.getChannel().send(
+        ydn.crm.ch.Req.GET_SUGAR).addCallback(function(x) {
+      var details = /** @type {SugarCrm.Details} */ (x);
+
+      for (var i = 0; i < details.modulesInfo.length; i++) {
+        ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+      }
+      var ac = user.getLoginEmail();
+      return new ydn.crm.su.model.GDataSugar(details.about,
+          details.modulesInfo, ac, details.serverInfo, details.loginInfo);
+    });
 
   });
 
