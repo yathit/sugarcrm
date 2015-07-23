@@ -148,7 +148,7 @@ ydn.crm.su.ui.Header.prototype.createDom = function() {
     'name': 'setup',
     'href': href},
   chrome.i18n.getMessage('Setup_SugarCRM'));
-  ps.className = ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_SUGAR_SETUP_LINK;
+  ps.className = ydn.crm.su.ui.CSS_CLASS_SUGAR_SETUP_LINK;
   ps.setAttribute('data-window-height', '600');
   ps.setAttribute('data-window-width', '800');
   var div_setup = dom.createDom('div', 'centered-div', [ps]);
@@ -183,7 +183,7 @@ ydn.crm.su.ui.Header.prototype.enterDocument = function() {
       this.handleModelLogin);
 
   var a_setup = root.querySelector('a.' +
-      ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_SUGAR_SETUP_LINK);
+      ydn.crm.su.ui.CSS_CLASS_SUGAR_SETUP_LINK);
   handler.listen(a_setup, 'click', ydn.ui.openPageAsDialog, true);
   var a_re_login = root.querySelector('[name=retry]');
   handler.listen(a_re_login, 'click', this.onReLogin_);

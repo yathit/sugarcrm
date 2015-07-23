@@ -67,13 +67,6 @@ ydn.crm.su.ui.SimpleSugarPanel.DEBUG = false;
  * @const
  * @type {string}
  */
-ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_SUGAR_SETUP_LINK = 'sugarcrm-link';
-
-
-/**
- * @const
- * @type {string}
- */
 ydn.crm.su.ui.SimpleSugarPanel.CSS_CLASS_HEAD = 'sugar-panel-head';
 
 
