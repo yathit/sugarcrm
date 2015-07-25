@@ -28,7 +28,7 @@ goog.provide('ydn.crm.su.ui.HoverResultList');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su');
-goog.require('ydn.crm.su.model.Search');
+goog.require('ydn.crm.su.model.OmniSearch');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui.events');
 goog.require('ydn.crm.su.ui.record.HoverCard');
@@ -38,8 +38,8 @@ goog.require('ydn.ui');
 
 
 /**
- * SugarCRM record panel.
- * @param {ydn.crm.su.model.Search} model
+ * Record snippet shows a brief description of the record.
+ * @param {ydn.crm.su.model.OmniSearch} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
@@ -76,7 +76,7 @@ ydn.crm.su.ui.HoverResultList.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.su.model.Search}
+ * @return {ydn.crm.su.model.OmniSearch}
  * @override
  */
 ydn.crm.su.ui.HoverResultList.prototype.getModel;
@@ -132,7 +132,7 @@ ydn.crm.su.ui.HoverResultList.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
   /**
-   * @type {ydn.crm.su.model.Search}
+   * @type {ydn.crm.su.model.OmniSearch}
    */
   var model = this.getModel();
   hd.listen(model, ydn.crm.su.model.events.SearchEvent.Type.RESET, this.onReset_);
@@ -206,7 +206,7 @@ ydn.crm.su.ui.HoverResultList.prototype.reset = function() {
  */
 ydn.crm.su.ui.HoverResultList.prototype.onAddResult_ = function(e) {
   /**
-   * @type {ydn.crm.su.model.Search}
+   * @type {ydn.crm.su.model.OmniSearch}
    */
   var model = this.getModel();
   var r = model.getResultAt(e.index);
@@ -259,7 +259,7 @@ ydn.crm.su.ui.HoverResultList.prototype.addResult = function(r, idx) {
  */
 ydn.crm.su.ui.HoverResultList.prototype.updateResult = function(idx) {
   /**
-   * @type {ydn.crm.su.model.Search}
+   * @type {ydn.crm.su.model.OmniSearch}
    */
   var model = this.getModel();
   var ul = this.getUlElement();

@@ -21,7 +21,7 @@
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
-goog.provide('ydn.crm.su.model.Search');
+goog.provide('ydn.crm.su.model.OmniSearch');
 goog.require('goog.array');
 goog.require('goog.events.EventTarget');
 goog.require('goog.math');
@@ -37,7 +37,7 @@ goog.require('ydn.crm.su.model.events');
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.model.Search = function(sugar) {
+ydn.crm.su.model.OmniSearch = function(sugar) {
   goog.base(this);
   /**
    * @final
@@ -64,7 +64,7 @@ ydn.crm.su.model.Search = function(sugar) {
    */
   this.record_type_ = null;
   /**
-   * @type {ydn.crm.su.model.Search.ClientStack}
+   * @type {ydn.crm.su.model.OmniSearch.ClientStack}
    * @private
    */
   this.stack_ = null;
@@ -81,19 +81,19 @@ ydn.crm.su.model.Search = function(sugar) {
    */
   this.server_done_ = false;
 };
-goog.inherits(ydn.crm.su.model.Search, goog.events.EventTarget);
+goog.inherits(ydn.crm.su.model.OmniSearch, goog.events.EventTarget);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.su.model.Search.DEBUG = false;
+ydn.crm.su.model.OmniSearch.DEBUG = false;
 
 
 /**
  * @return {ydn.crm.su.model.Sugar}
  */
-ydn.crm.su.model.Search.prototype.getSugar = function() {
+ydn.crm.su.model.OmniSearch.prototype.getSugar = function() {
   return this.sugar_;
 };
 
@@ -102,7 +102,7 @@ ydn.crm.su.model.Search.prototype.getSugar = function() {
  * Set target module.
  * @param {?ydn.crm.su.ModuleName} mn set `null` to clear any target module.
  */
-ydn.crm.su.model.Search.prototype.setTargetModule = function(mn) {
+ydn.crm.su.model.OmniSearch.prototype.setTargetModule = function(mn) {
   if (mn == this.record_type_) {
     return;
   }
@@ -117,7 +117,7 @@ ydn.crm.su.model.Search.prototype.setTargetModule = function(mn) {
  * Search records.
  * @param {string} query
  */
-ydn.crm.su.model.Search.prototype.search = function(query) {
+ydn.crm.su.model.OmniSearch.prototype.search = function(query) {
   query = query.trim();
   if (query == this.q_) {
     return;
@@ -126,7 +126,7 @@ ydn.crm.su.model.Search.prototype.search = function(query) {
   this.results_ = [];
   var ev = new ydn.crm.su.model.events.SearchResetEvent(this.q_, this);
   this.dispatchEvent(ev);
-  this.stack_ = new ydn.crm.su.model.Search.ClientStack(this.record_type_);
+  this.stack_ = new ydn.crm.su.model.OmniSearch.ClientStack(this.record_type_);
   this.doServerSearch_();
   this.updateClientSearch_();
 };
@@ -139,9 +139,9 @@ ydn.crm.su.model.Search.prototype.search = function(query) {
  * @param {string} q
  * @private
  */
-ydn.crm.su.model.Search.prototype.addResult_ = function(r, index, q) {
+ydn.crm.su.model.OmniSearch.prototype.addResult_ = function(r, index, q) {
   if (q != this.q_) {
-    if (ydn.crm.su.model.Search.DEBUG) {
+    if (ydn.crm.su.model.OmniSearch.DEBUG) {
       window.console.info('query no longer valid: ' + q + ': ' + this.q_);
     }
     return;
@@ -180,10 +180,10 @@ ydn.crm.su.model.Search.prototype.addResult_ = function(r, index, q) {
  * @param {string} q
  * @private
  */
-ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) {
+ydn.crm.su.model.OmniSearch.prototype.updateSearchFor_ = function(m_name, index, q) {
 
   this.sugar_.listRecord(m_name, index, q, true).addCallbacks(function(arr) {
-    if (ydn.crm.su.model.Search.DEBUG) {
+    if (ydn.crm.su.model.OmniSearch.DEBUG) {
       window.console.log(m_name, index, q, arr);
     }
     for (var i = 0; i < arr.length; i++) {
@@ -193,7 +193,7 @@ ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) 
     }
     this.updateClientSearch_();
   }, function(e) {
-    if (ydn.crm.su.model.Search.DEBUG) {
+    if (ydn.crm.su.model.OmniSearch.DEBUG) {
       window.console.log(m_name, index, q, e);
     }
     this.updateClientSearch_();
@@ -206,12 +206,12 @@ ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) 
  * Query on server side.
  * @private
  */
-ydn.crm.su.model.Search.prototype.doServerSearch_ = function() {
+ydn.crm.su.model.OmniSearch.prototype.doServerSearch_ = function() {
   var q = this.q_;
   var data = {'q': q};
   this.server_done_ = false;
   this.sugar_.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE, data).addCallbacks(function(arr) {
-    if (ydn.crm.su.model.Search.DEBUG) {
+    if (ydn.crm.su.model.OmniSearch.DEBUG) {
       window.console.log(q, arr);
     }
     for (var i = 0; i < arr.length; i++) {
@@ -233,7 +233,7 @@ ydn.crm.su.model.Search.prototype.doServerSearch_ = function() {
 };
 
 
-ydn.crm.su.model.Search.prototype.dispatchProgress_ = function() {
+ydn.crm.su.model.OmniSearch.prototype.dispatchProgress_ = function() {
   if (!this.stack_ && this.server_done_) {
     this.dispatchEvent(new ydn.crm.su.model.events.SearchProgressEvent(1, this));
     return;
@@ -252,7 +252,7 @@ ydn.crm.su.model.Search.prototype.dispatchProgress_ = function() {
  * is available, current result are clear.
  * @private
  */
-ydn.crm.su.model.Search.prototype.updateClientSearch_ = function() {
+ydn.crm.su.model.OmniSearch.prototype.updateClientSearch_ = function() {
   if (!this.stack_) {
     return;
   }
@@ -268,17 +268,17 @@ ydn.crm.su.model.Search.prototype.updateClientSearch_ = function() {
   var q = this.q_;
 
   var m_name = this.stack_.getModule();
-  if (ydn.crm.su.model.Search.DEBUG) {
+  if (ydn.crm.su.model.OmniSearch.DEBUG) {
     window.console.log(m_name, task, q);
   }
 
-  if (task == ydn.crm.su.model.Search.Task.ID) {
+  if (task == ydn.crm.su.model.OmniSearch.Task.ID) {
     // Task 0. query email
     this.updateSearchFor_(m_name, 'id', this.q_);
-  } else if (task == ydn.crm.su.model.Search.Task.EMAIL) {
+  } else if (task == ydn.crm.su.model.OmniSearch.Task.EMAIL) {
     // Task 0. query email
     this.updateSearchFor_(m_name, 'ydn$emails', this.q_);
-  } else if (task == ydn.crm.su.model.Search.Task.PHONE) {
+  } else if (task == ydn.crm.su.model.OmniSearch.Task.PHONE) {
     // Task 1. query phone
     var m = q.match(/\d/g);
     var number_of_digits = m ? m.length : 0;
@@ -288,11 +288,11 @@ ydn.crm.su.model.Search.prototype.updateClientSearch_ = function() {
       return;
     }
     this.updateSearchFor_(m_name, 'ydn$phones', this.q_);
-  } else if (task == ydn.crm.su.model.Search.Task.FULL_TEXT) {
+  } else if (task == ydn.crm.su.model.OmniSearch.Task.FULL_TEXT) {
     // Task 2. full text search on name
     this.sugar_.searchRecord(m_name, q, true).addCallbacks(function(x) {
       var arr = /** @type {!Array<!SugarCrm.ScoredRecord>} */ (x);
-      if (ydn.crm.su.model.Search.DEBUG) {
+      if (ydn.crm.su.model.OmniSearch.DEBUG) {
         window.console.log(m_name, task, x);
       }
       for (var i = 0; i < arr.length; i++) {
@@ -313,7 +313,7 @@ ydn.crm.su.model.Search.prototype.updateClientSearch_ = function() {
  * @param {number} idx
  * @return {SugarCrm.ScoredRecord}
  */
-ydn.crm.su.model.Search.prototype.getResultAt = function(idx) {
+ydn.crm.su.model.OmniSearch.prototype.getResultAt = function(idx) {
   return this.results_[idx];
 };
 
@@ -321,7 +321,7 @@ ydn.crm.su.model.Search.prototype.getResultAt = function(idx) {
 /**
  * @return {number} number of results.
  */
-ydn.crm.su.model.Search.prototype.getResultCount = function() {
+ydn.crm.su.model.OmniSearch.prototype.getResultCount = function() {
   return this.results_.length;
 };
 
@@ -333,7 +333,7 @@ ydn.crm.su.model.Search.prototype.getResultCount = function() {
  * module. `null` for any modules.
  * @constructor
  */
-ydn.crm.su.model.Search.ClientStack = function(mn) {
+ydn.crm.su.model.OmniSearch.ClientStack = function(mn) {
   /**
    * @final
    * @type {?ydn.crm.su.ModuleName}
@@ -357,7 +357,7 @@ ydn.crm.su.model.Search.ClientStack = function(mn) {
  * List of task.
  * @enum {number}
  */
-ydn.crm.su.model.Search.Task = {
+ydn.crm.su.model.OmniSearch.Task = {
   ID: 0,
   EMAIL: 1,
   PHONE: 2,
@@ -367,21 +367,21 @@ ydn.crm.su.model.Search.Task = {
 
 /**
  * Task queue.
- * @type {Array<ydn.crm.su.model.Search.Task>}
+ * @type {Array<ydn.crm.su.model.OmniSearch.Task>}
  */
-ydn.crm.su.model.Search.tasks = [ydn.crm.su.model.Search.Task.ID,
-  ydn.crm.su.model.Search.Task.EMAIL,
-  ydn.crm.su.model.Search.Task.PHONE,
-  ydn.crm.su.model.Search.Task.FULL_TEXT];
+ydn.crm.su.model.OmniSearch.tasks = [ydn.crm.su.model.OmniSearch.Task.ID,
+  ydn.crm.su.model.OmniSearch.Task.EMAIL,
+  ydn.crm.su.model.OmniSearch.Task.PHONE,
+  ydn.crm.su.model.OmniSearch.Task.FULL_TEXT];
 
 
 /**
  * Move to next stack.
  * @return {boolean} return `true` if next execution task exist.
  */
-ydn.crm.su.model.Search.ClientStack.prototype.next = function() {
+ydn.crm.su.model.OmniSearch.ClientStack.prototype.next = function() {
   this.task_idx_++;
-  if (this.task_idx_ >= ydn.crm.su.model.Search.tasks.length) {
+  if (this.task_idx_ >= ydn.crm.su.model.OmniSearch.tasks.length) {
     if (this.target_mn_) {
       return false;
     } else {
@@ -401,10 +401,10 @@ ydn.crm.su.model.Search.ClientStack.prototype.next = function() {
 
 /**
  * Get current task.
- * @return {ydn.crm.su.model.Search.Task}
+ * @return {ydn.crm.su.model.OmniSearch.Task}
  */
-ydn.crm.su.model.Search.ClientStack.prototype.getTask = function() {
-  return ydn.crm.su.model.Search.tasks[this.task_idx_];
+ydn.crm.su.model.OmniSearch.ClientStack.prototype.getTask = function() {
+  return ydn.crm.su.model.OmniSearch.tasks[this.task_idx_];
 };
 
 
@@ -412,7 +412,7 @@ ydn.crm.su.model.Search.ClientStack.prototype.getTask = function() {
  * Get current module.
  * @return {ydn.crm.su.ModuleName}
  */
-ydn.crm.su.model.Search.ClientStack.prototype.getModule = function() {
+ydn.crm.su.model.OmniSearch.ClientStack.prototype.getModule = function() {
   if (this.target_mn_) {
     return this.target_mn_;
   } else {
@@ -425,13 +425,13 @@ ydn.crm.su.model.Search.ClientStack.prototype.getModule = function() {
  * Get progress level.
  * @return {number} return progress level between 0 and 1 for start and finished.
  */
-ydn.crm.su.model.Search.ClientStack.prototype.getProgress = function() {
-  var total = ydn.crm.su.model.Search.tasks.length;
+ydn.crm.su.model.OmniSearch.ClientStack.prototype.getProgress = function() {
+  var total = ydn.crm.su.model.OmniSearch.tasks.length;
   if (!this.target_mn_) {
-    total = ydn.crm.su.model.Search.tasks.length * ydn.crm.su.CacheModules.length;
+    total = ydn.crm.su.model.OmniSearch.tasks.length * ydn.crm.su.CacheModules.length;
   }
   var current = this.task_idx_ +
-      this.mn_idx_ * ydn.crm.su.model.Search.tasks.length;
+      this.mn_idx_ * ydn.crm.su.model.OmniSearch.tasks.length;
   return goog.math.clamp(current / total, 0, 1);
 };
 

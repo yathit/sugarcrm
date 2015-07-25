@@ -43,10 +43,10 @@ ydn.crm.su.ui.HomePanel = function(model, opt_dom) {
   this.setModel(model);
   /**
    * Search model.
-   * @type {ydn.crm.su.model.Search}
+   * @type {ydn.crm.su.model.OmniSearch}
    * @private
    */
-  this.search_ = new ydn.crm.su.model.Search(model);
+  this.search_ = new ydn.crm.su.model.OmniSearch(model);
 };
 goog.inherits(ydn.crm.su.ui.HomePanel, goog.ui.Component);
 
@@ -67,7 +67,7 @@ ydn.crm.su.ui.HomePanel.prototype.getCssClass = function() {
 
 
 /**
- * @return {ydn.crm.su.model.Search}
+ * @return {ydn.crm.su.model.OmniSearch}
  * @override
  */
 ydn.crm.su.ui.HomePanel.prototype.getModel;

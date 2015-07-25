@@ -7,13 +7,13 @@ ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('popup');
 ydn.debug.log('ydn.crm', 'finer');
 var panel, sugar, search;
-ydn.crm.su.model.Search.DEBUG =  true;
+ydn.crm.su.model.OmniSearch.DEBUG =  true;
 
 ydn.crm.su.model.GDataSugar.list().addCallback(function (models) {
 
   sugar = models[0];
 
-  search = new ydn.crm.su.model.Search(sugar);
+  search = new ydn.crm.su.model.OmniSearch(sugar);
   panel = new ydn.crm.su.ui.HoverResultList(search);
   var root = document.getElementById('sync-panel-root');
   panel.render(root);
