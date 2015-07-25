@@ -37,7 +37,7 @@ goog.require('ydn.crm.su.ui.events');
 
 /**
  * Home page toolbar.
- * @param {ydn.crm.su.model.OmniSearch} model
+ * @param {ydn.crm.su.model.Search} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
@@ -67,7 +67,7 @@ ydn.crm.su.ui.HomeBar.prototype.getCssClass = function() {
 
 
 /**
- * @return {ydn.crm.su.model.OmniSearch}
+ * @return {ydn.crm.su.model.Search}
  * @override
  */
 ydn.crm.su.ui.HomeBar.prototype.getModel;

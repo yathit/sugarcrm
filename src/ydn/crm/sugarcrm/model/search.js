@@ -16,7 +16,8 @@
 /**
  * @fileoverview Search model for search display UI and search control.
  *
- * There is one search operation at a time.
+ * There is one search operation at a time. If not set target, this will search
+ * all modules.
  *                                                 `
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -32,13 +33,12 @@ goog.require('ydn.crm.su.model.events');
 /**
  * Search model for search display UI and search control.
  * @param {ydn.crm.su.model.Sugar} sugar
- * @param {ydn.crm.su.ModuleName} mn target module name.
  * @constructor
  * @extends {goog.events.EventTarget}
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.model.Search = function(sugar, mn) {
+ydn.crm.su.model.Search = function(sugar) {
   goog.base(this);
   /**
    * @final
@@ -59,11 +59,11 @@ ydn.crm.su.model.Search = function(sugar, mn) {
    */
   this.order_by_ = '';
   /**
-   * @final
-   * @type {ydn.crm.su.ModuleName}
+   *
+   * @type {?ydn.crm.su.ModuleName}
    * @private
    */
-  this.record_type_ = mn;
+  this.record_type_ = null;
   /**
    * @type {ydn.crm.su.model.Search.ClientStack}
    * @private
@@ -210,6 +210,9 @@ ydn.crm.su.model.Search.prototype.updateSearchFor_ = function(m_name, index, q) 
 ydn.crm.su.model.Search.prototype.doServerSearch_ = function() {
   var q = this.q_;
   var data = {'q': q};
+  if (this.record_type_) {
+    data['modules'] = [this.record_type_];
+  }
   this.server_done_ = false;
   this.sugar_.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE, data).addCallbacks(function(arr) {
     if (ydn.crm.su.model.Search.DEBUG) {
@@ -262,8 +265,6 @@ ydn.crm.su.model.Search.prototype.updateClientSearch_ = function() {
     this.stack_ = null;
     return;
   }
-
-
 
   var task = this.stack_.getTask();
   var q = this.q_;

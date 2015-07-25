@@ -4,7 +4,7 @@ goog.setTestOnly('ydn.crm.su.model.SearchTest');
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
 goog.require('ydn.crm.su.model.Record');
-goog.require('ydn.crm.su.model.OmniSearch');
+goog.require('ydn.crm.su.model.Search');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.test');
 
@@ -16,7 +16,7 @@ function setUp() {
 
 function test_ordering() {
   var sugar = ydn.crm.test.createSugar();
-  var search = new ydn.crm.su.model.OmniSearch(sugar);
+  var search = new ydn.crm.su.model.Search(sugar);
   search.q_ = 'john';
   search.addResult_({
     _module: "Contacts",
@@ -38,7 +38,7 @@ function test_ordering() {
 
 function test_repeat() {
   var sugar = ydn.crm.test.createSugar();
-  var search = new ydn.crm.su.model.OmniSearch(sugar);
+  var search = new ydn.crm.su.model.Search(sugar);
   search.q_ = 'john';
   search.addResult_({
     _module: "Contacts",
