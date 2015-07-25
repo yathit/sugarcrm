@@ -24,7 +24,7 @@
 goog.provide('ydn.crm.su.ui.HomePanel');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.su.ui.HomeBar');
-goog.require('ydn.crm.su.ui.SearchResultList');
+goog.require('ydn.crm.su.ui.HoverResultList');
 goog.require('ydn.crm.su.ui.record.Record');
 
 
@@ -83,7 +83,7 @@ ydn.crm.su.ui.HomePanel.prototype.createDom = function() {
 
   var sugar = this.getModel();
   var bar = new ydn.crm.su.ui.HomeBar(this.search_, dom);
-  var result = new ydn.crm.su.ui.SearchResultList(this.search_, dom);
+  var result = new ydn.crm.su.ui.HoverResultList(this.search_, dom);
 
   this.addChild(bar, true);
   this.addChild(result, true);

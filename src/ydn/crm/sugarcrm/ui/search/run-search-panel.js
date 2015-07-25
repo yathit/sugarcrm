@@ -14,7 +14,7 @@ ydn.crm.su.model.GDataSugar.list().addCallback(function (models) {
   sugar = models[0];
 
   search = new ydn.crm.su.model.Search(sugar);
-  panel = new ydn.crm.su.ui.SearchResultList(search);
+  panel = new ydn.crm.su.ui.HoverResultList(search);
   var root = document.getElementById('sync-panel-root');
   panel.render(root);
 

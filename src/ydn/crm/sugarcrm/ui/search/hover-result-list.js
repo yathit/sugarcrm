@@ -24,7 +24,7 @@
  */
 
 
-goog.provide('ydn.crm.su.ui.SearchResultList');
+goog.provide('ydn.crm.su.ui.HoverResultList');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su');
@@ -46,7 +46,7 @@ goog.require('ydn.ui');
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.ui.SearchResultList = function(model, opt_dom) {
+ydn.crm.su.ui.HoverResultList = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
   this.item_renderer_ = new ydn.crm.su.ui.record.RecordItemRenderer(
@@ -58,49 +58,49 @@ ydn.crm.su.ui.SearchResultList = function(model, opt_dom) {
   this.hover_ = null;
 
 };
-goog.inherits(ydn.crm.su.ui.SearchResultList, goog.ui.Component);
+goog.inherits(ydn.crm.su.ui.HoverResultList, goog.ui.Component);
 
 
 /**
  * @protected
  * @type {goog.log.Logger}
  */
-ydn.crm.su.ui.SearchResultList.prototype.logger =
-    goog.log.getLogger('ydn.crm.su.ui.SearchResultList');
+ydn.crm.su.ui.HoverResultList.prototype.logger =
+    goog.log.getLogger('ydn.crm.su.ui.HoverResultList');
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.su.ui.SearchResultList.DEBUG = false;
+ydn.crm.su.ui.HoverResultList.DEBUG = false;
 
 
 /**
  * @return {ydn.crm.su.model.Search}
  * @override
  */
-ydn.crm.su.ui.SearchResultList.prototype.getModel;
+ydn.crm.su.ui.HoverResultList.prototype.getModel;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.su.ui.SearchResultList.CSS_CLASS = 'snippet-panel';
+ydn.crm.su.ui.HoverResultList.CSS_CLASS = 'snippet-panel';
 
 
 /**
  * @return {string}
  */
-ydn.crm.su.ui.SearchResultList.prototype.getCssClass = function() {
-  return ydn.crm.su.ui.SearchResultList.CSS_CLASS;
+ydn.crm.su.ui.HoverResultList.prototype.getCssClass = function() {
+  return ydn.crm.su.ui.HoverResultList.CSS_CLASS;
 };
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.su.ui.SearchResultList.prototype.createDom = function() {
+ydn.crm.su.ui.HoverResultList.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   root.classList.add(this.getCssClass());
@@ -120,7 +120,7 @@ ydn.crm.su.ui.SearchResultList.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.su.ui.SearchResultList.prototype.getContentElement = function() {
+ydn.crm.su.ui.HoverResultList.prototype.getContentElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
 };
 
@@ -128,7 +128,7 @@ ydn.crm.su.ui.SearchResultList.prototype.getContentElement = function() {
 /**
  * @inheritDoc
  */
-ydn.crm.su.ui.SearchResultList.prototype.enterDocument = function() {
+ydn.crm.su.ui.HoverResultList.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
   /**
@@ -150,7 +150,7 @@ ydn.crm.su.ui.SearchResultList.prototype.enterDocument = function() {
  * @return {Element}
  * @protected
  */
-ydn.crm.su.ui.SearchResultList.prototype.getUlElement = function() {
+ydn.crm.su.ui.HoverResultList.prototype.getUlElement = function() {
   return this.getContentElement().querySelector('ul');
 };
 
@@ -161,7 +161,7 @@ ydn.crm.su.ui.SearchResultList.prototype.getUlElement = function() {
  * @return {boolean}
  * @private
  */
-ydn.crm.su.ui.SearchResultList.prototype.onTrigger_ = function(ev) {
+ydn.crm.su.ui.HoverResultList.prototype.onTrigger_ = function(ev) {
   var trigger = ev.anchor;
   var pos = new goog.positioning.AnchoredViewportPosition(trigger,
       goog.positioning.Corner.TOP_LEFT, true);
@@ -175,7 +175,7 @@ ydn.crm.su.ui.SearchResultList.prototype.onTrigger_ = function(ev) {
  * @param {goog.events.Event} ev
  * @private
  */
-ydn.crm.su.ui.SearchResultList.prototype.onBeforeShow_ = function(ev) {
+ydn.crm.su.ui.HoverResultList.prototype.onBeforeShow_ = function(ev) {
 
   var trigger = this.hover_.getAnchorElement();
   var id = trigger.getAttribute('data-id');
@@ -188,14 +188,14 @@ ydn.crm.su.ui.SearchResultList.prototype.onBeforeShow_ = function(ev) {
  * @param {ydn.crm.su.model.events.SearchResetEvent} e
  * @private
  */
-ydn.crm.su.ui.SearchResultList.prototype.onReset_ = function(e) {
+ydn.crm.su.ui.HoverResultList.prototype.onReset_ = function(e) {
   this.reset();
 };
 
 
 /**
  */
-ydn.crm.su.ui.SearchResultList.prototype.reset = function() {
+ydn.crm.su.ui.HoverResultList.prototype.reset = function() {
   this.getUlElement().innerHTML = '';
 };
 
@@ -204,7 +204,7 @@ ydn.crm.su.ui.SearchResultList.prototype.reset = function() {
  * @param {ydn.crm.su.model.events.SearchResultAddEvent} e
  * @private
  */
-ydn.crm.su.ui.SearchResultList.prototype.onAddResult_ = function(e) {
+ydn.crm.su.ui.HoverResultList.prototype.onAddResult_ = function(e) {
   /**
    * @type {ydn.crm.su.model.Search}
    */
@@ -218,7 +218,7 @@ ydn.crm.su.ui.SearchResultList.prototype.onAddResult_ = function(e) {
  * @param {ydn.crm.su.model.events.SearchUpdatedEvent} e
  * @private
  */
-ydn.crm.su.ui.SearchResultList.prototype.onUpdateResult_ = function(e) {
+ydn.crm.su.ui.HoverResultList.prototype.onUpdateResult_ = function(e) {
   this.updateResult(e.index);
 };
 
@@ -227,7 +227,7 @@ ydn.crm.su.ui.SearchResultList.prototype.onUpdateResult_ = function(e) {
  * @param {ydn.crm.su.model.events.SearchProgressEvent} e
  * @private
  */
-ydn.crm.su.ui.SearchResultList.prototype.onProgress_ = function(e) {
+ydn.crm.su.ui.HoverResultList.prototype.onProgress_ = function(e) {
   // console.log(e.level);
 };
 
@@ -237,14 +237,14 @@ ydn.crm.su.ui.SearchResultList.prototype.onProgress_ = function(e) {
  * @param {SugarCrm.ScoredRecord} r
  * @param {number} idx
  */
-ydn.crm.su.ui.SearchResultList.prototype.addResult = function(r, idx) {
+ydn.crm.su.ui.HoverResultList.prototype.addResult = function(r, idx) {
   var ul = this.getUlElement();
   var node = ul.children[idx];
   var li = this.getDomHelper().createDom('li');
   if (node) {
     ul.insertBefore(li, node);
   } else {
-    if (ydn.crm.su.ui.SearchResultList.DEBUG) {
+    if (ydn.crm.su.ui.HoverResultList.DEBUG) {
       window.console.warn('Node ' + idx + ' not exists.');
     }
     ul.appendChild(li);
@@ -257,7 +257,7 @@ ydn.crm.su.ui.SearchResultList.prototype.addResult = function(r, idx) {
  * Update result.
  * @param {number} idx the index the record has been changes.
  */
-ydn.crm.su.ui.SearchResultList.prototype.updateResult = function(idx) {
+ydn.crm.su.ui.HoverResultList.prototype.updateResult = function(idx) {
   /**
    * @type {ydn.crm.su.model.Search}
    */
@@ -282,7 +282,7 @@ ydn.crm.su.ui.SearchResultList.prototype.updateResult = function(idx) {
  * @return {ydn.crm.su.model.Sugar}
  * @private
  */
-ydn.crm.su.ui.SearchResultList.prototype.getSugar_ = function() {
+ydn.crm.su.ui.HoverResultList.prototype.getSugar_ = function() {
   return this.getModel().getSugar();
 };
 

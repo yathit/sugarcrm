@@ -123,58 +123,58 @@ CrmApp.ReqQuery = function() {};
 /**
  * @type {string} `ydn.crm.su.ModuleName`
  */
-CrmApp.ReqQuery.prototype.store;
+CrmApp.ReqQuery.prototype.store = '';
 
 
 /**
  * Index name. Default to 'id'.
  * @type {string|undefined} See `ydn.crm.su.Schema` for available indexes.
  */
-CrmApp.ReqQuery.prototype.index;
+CrmApp.ReqQuery.prototype.index = '';
 
 
 /**
  * @type {boolean|undefined} for prefix query, in combine with key.
  */
-CrmApp.ReqQuery.prototype.prefix;
+CrmApp.ReqQuery.prototype.prefix = false;
 
 
 /**
- * @type {?IDBKey} same as `KeyRange.only(key)`, but do normalization of the key
+ * @type {IDBKey?} same as `KeyRange.only(key)`, but do normalization of the key
  * for phone and email query. If prefix is true, this becomes
  * `KeyRange.starts(key)`
  */
-CrmApp.ReqQuery.prototype.key;
+CrmApp.ReqQuery.prototype.key = '';
 
 
 /**
- * @type {?number}
+ * @type {number?}
  */
-CrmApp.ReqQuery.prototype.limit;
+CrmApp.ReqQuery.prototype.limit = 10;
 
 
 /**
- * @type {?number}
+ * @type {number?}
  */
-CrmApp.ReqQuery.prototype.offset;
+CrmApp.ReqQuery.prototype.offset = 0;
 
 
 /**
- * @type {?boolean}
+ * @type {boolean?}
  */
-CrmApp.ReqQuery.prototype.reverse;
+CrmApp.ReqQuery.prototype.reverse = false;
 
 
 /**
- * @type {?boolean} key-only query.
+ * @type {boolean?} key-only query.
  */
-CrmApp.ReqQuery.prototype.keyOnly;
+CrmApp.ReqQuery.prototype.keyOnly = false;
 
 
 /**
- * @type {?IDBKeyRange}
+ * @type {IDBKeyRange?}
  */
-CrmApp.ReqQuery.prototype.keyRange;
+CrmApp.ReqQuery.prototype.keyRange = null;
 
 
 
@@ -188,9 +188,9 @@ CrmApp.QueryResult = function() {};
 
 
 /**
- * @type {Array.<SugarCrm.Record>} query result
+ * @type {!Array<!SugarCrm.Record>} query result
  */
-CrmApp.QueryResult.prototype.result;
+CrmApp.QueryResult.prototype.result = [];
 
 
 
