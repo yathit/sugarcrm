@@ -9,9 +9,9 @@ ydn.debug.log('ydn.crm', 'finer');
 var panel, sugar, search;
 ydn.crm.su.model.OmniSearch.DEBUG =  true;
 
-ydn.crm.su.model.GDataSugar.list().addCallback(function (models) {
+ydn.crm.su.model.GDataSugar.get().addCallback(function (x) {
 
-  sugar = models[0];
+  sugar = x;
 
   search = new ydn.crm.su.model.OmniSearch(sugar);
   panel = new ydn.crm.su.ui.HoverResultList(search);
@@ -27,6 +27,12 @@ el_search.addEventListener('keyup', function(e) {
     search.search(el_search.value);
   }
 }, false);
+
+
+var el_sel = document.getElementById('target');
+el_sel.onchange = function(e) {
+  search.setTargetModule(el_sel.value);
+};
 
 
 
