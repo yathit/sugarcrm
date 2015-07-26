@@ -289,26 +289,28 @@ ydn.crm.su.Record.moduleAsVerb = function(name) {
 
 /**
  * Get suitable label of given record.
- * @param {Object} obj
+ * @param {SugarCrm.Record} obj
  * @return {string}
  */
 ydn.crm.su.Record.getLabel = function(obj) {
+  var label = '';
   if (!obj) {
     return '';
   }
   if (obj['name']) {
-    return obj['name'];
+    label = obj['name'];
   }
   var full_name = obj['full_name'] || obj['name'];
   if (full_name) {
-    return full_name;
+    label = full_name;
   } else if (obj['first_name'] || obj['last_name']) {
     var first_name = (obj['first_name'] || '').trim();
     var last_name = (obj['last_name'] || '').trim();
-    return first_name + ' ' + last_name;
+    label = first_name + ' ' + last_name;
   } else {
-    return obj['id'];
+    label = obj['id'];
   }
+  return goog.string.unescapeEntities(label);
 };
 
 
@@ -317,8 +319,46 @@ ydn.crm.su.Record.getLabel = function(obj) {
  * @return {string}
  */
 ydn.crm.su.Record.prototype.getLabel = function() {
-  var label = ydn.crm.su.Record.getLabel(this.obj);
-  return goog.string.unescapeEntities(label);
+  return ydn.crm.su.Record.getLabel(this.obj);
+};
+
+
+/**
+ * Get suitable summary of given record.
+ * @param {SugarCrm.Record} obj
+ * @return {string}
+ */
+ydn.crm.su.Record.getSummary = function(obj) {
+  var summary = '';
+  if (!obj) {
+    return '';
+  }
+  if (obj['_module'] == ydn.crm.su.ModuleName.CONTACTS) {
+    summary = obj['title'] || '';
+    if (obj['account_name']) {
+      if (summary) {
+        summary += ' of ';
+      }
+      summary += obj['account_name'];
+    }
+  } else {
+    if (obj['description']) {
+      summary = obj['description'];
+    }
+    if (obj['title']) {
+      summary = obj['title'];
+    }
+  }
+  return goog.string.unescapeEntities(summary);
+};
+
+
+/**
+ * Get suitable summary of given record.
+ * @return {string}
+ */
+ydn.crm.su.Record.prototype.getSummary = function() {
+  return ydn.crm.su.Record.getSummary(this.obj);
 };
 
 
