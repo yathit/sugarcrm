@@ -216,7 +216,6 @@ ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
       var r = arr[i];
       var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
       dialog.addRelationship(mn, r.id, r.name);
-      dialog.rel_panel_.addSuggestionById(mn, r.id);
     }
   });
 };
