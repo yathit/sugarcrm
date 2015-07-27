@@ -48,14 +48,17 @@ goog.require('ydn.ui');
  */
 ydn.crm.su.ui.HoverResultList = function(model, opt_dom) {
   goog.base(this, opt_dom);
-  this.setModel(model);
-  this.item_renderer_ = new ydn.crm.su.ui.record.RecordItemRenderer(
-      model.getSugar());
+  /**
+   * @type {ydn.crm.su.ui.record.RecordItemRenderer}
+   * @private
+   */
+  this.item_renderer_ = null;
   /**
    * @type {ydn.crm.su.ui.record.HoverCard}
    * @private
    */
   this.hover_ = null;
+  this.setModel(model);
 
 };
 goog.inherits(ydn.crm.su.ui.HoverResultList, goog.ui.Component);
@@ -80,6 +83,21 @@ ydn.crm.su.ui.HoverResultList.DEBUG = false;
  * @override
  */
 ydn.crm.su.ui.HoverResultList.prototype.getModel;
+
+
+/**
+ * @override
+ */
+ydn.crm.su.ui.HoverResultList.prototype.setModel = function(model) {
+  ydn.crm.su.ui.HoverResultList.base(this, 'setModel', model);
+  if (!model) {
+    this.item_renderer_ = null;
+    return;
+  }
+  var search = /** @type {ydn.crm.su.model.Search} */(model);
+  this.item_renderer_ = new ydn.crm.su.ui.record.RecordItemRenderer(
+      search.getSugar());
+};
 
 
 /**
@@ -143,6 +161,7 @@ ydn.crm.su.ui.HoverResultList.prototype.enterDocument = function() {
       this.onTrigger_);
   hd.listen(this.hover_, goog.ui.HoverCard.EventType.BEFORE_SHOW,
       this.onBeforeShow_);
+
 };
 
 

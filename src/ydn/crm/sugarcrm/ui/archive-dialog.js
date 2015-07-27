@@ -214,7 +214,9 @@ ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
     }
     for (var i = 0; i < arr.length; i++) {
       var r = arr[i];
-      dialog.rel_panel_.addSuggestionById(/** @type {ydn.crm.su.ModuleName} */(r._module), r.id);
+      var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
+      dialog.addRelationship(mn, r.id, r.name);
+      dialog.rel_panel_.addSuggestionById(mn, r.id);
     }
   });
 };

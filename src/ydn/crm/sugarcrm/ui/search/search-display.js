@@ -27,8 +27,7 @@ goog.require('ydn.crm.su.ui.record.Record');
  */
 ydn.crm.su.ui.SearchDisplay = function(model, opt_dom) {
   goog.base(this, opt_dom);
-  goog.asserts.assertInstanceof(model, ydn.crm.su.model.Sugar,
-      'model must be ydn.crm.su.model.Sugar instance');
+
   this.setModel(model);
   /**
    * @type {Array.<ydn.crm.su.ui.SearchDisplay.SearchTask>}
