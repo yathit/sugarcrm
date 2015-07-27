@@ -28,6 +28,7 @@
 
 .module-record-list {
   > UL {
+    overflow-y: auto;
     list-style: none;
     padding-left: 0;
   }
