@@ -84,7 +84,7 @@ $hud-button-height: 42px;
   .popup-content {
     flex-shrink: 1;
     flex-grow: 1;
-
+    overflow: auto;
   }
 
   .popup-footer {
