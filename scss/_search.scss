@@ -28,9 +28,22 @@
 
 .module-record-list {
   > UL {
-    overflow-y: auto;
+    overflow-y: hidden;
+    height: 200px;
     list-style: none;
     padding-left: 0;
+
+    > LI {
+      height: 40px;
+      max-height: 40px;
+      overflow-y: hidden;
+      .record-header {
+        height: 22px;
+      }
+      .content {
+
+      }
+    }
   }
 }
 

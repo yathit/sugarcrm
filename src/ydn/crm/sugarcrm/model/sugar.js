@@ -1157,6 +1157,9 @@ ydn.crm.su.model.Sugar.list = function() {
 ydn.crm.su.model.Sugar.get = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
   return ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallback(function(details) {
+    for (var i = 0; i < details.modulesInfo.length; i++) {
+      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+    }
     return new ydn.crm.su.model.Sugar(details.about, details.modulesInfo,
         details.serverInfo, details.loginInfo);
   });

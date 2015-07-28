@@ -28,6 +28,10 @@ goog.require('ydn.crm.ui.IDesktopPage');
 
 /**
  * SugarCRM record page for desktop.
+ * <pre>
+ *   page = new ydn.crm.su.ui.RecordPage();
+ *   page.setSugar(sugar);
+ * </pre>
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
