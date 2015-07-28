@@ -326,6 +326,9 @@ ydn.crm.su.Schema.prototype.getStoreSchema = function(module_name) {
         name: 'date_modified'
       }, {
         name: 'deleted'
+      }, {
+        name: 'assigned_user_id, name',
+        keyPath: ['assigned_user_id', 'name']
       }
     ]
   }));

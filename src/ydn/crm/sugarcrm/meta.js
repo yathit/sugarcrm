@@ -126,3 +126,10 @@ ydn.crm.su.Meta.prototype.getRecordViewLink = function(module, id) {
  * @return {ydn.crm.su.ModuleName|undefined}
  */
 ydn.crm.su.Meta.prototype.tryToModuleName = function(name) {};
+
+
+/**
+ * Get Users module record id of login user.
+ * @return {string}
+ */
+ydn.crm.su.Meta.prototype.getUserRecordId = function() {};
