@@ -51,19 +51,18 @@ types.onchange = function(e) {
   });
 };
 
-ydn.crm.su.model.GDataSugar.list().addCallbacks(function(models) {
-  for (var i = 0; i < models.length; i++) {
-    sugar = /** @type {ydn.crm.su.model.GDataSugar} */ (models[i]);
+ydn.crm.su.model.GDataSugar.get().addCallbacks(function(x) {
+
+    sugar = /** @type {ydn.crm.su.model.GDataSugar} */ (x);
     document.getElementById('gmail-account').textContent = sugar.getGDataAccount();
 
     var r = new ydn.crm.su.Record(sugar.getDomain(), types.value);
     model = new ydn.crm.su.model.Record(sugar, r);
     panel = new ydn.crm.su.ui.record.Record(model);
     panel.render(document.getElementById('record-root'));
-    break;
-  }
+
 }, function(e) {
-  throw e;
+  console.error(e);
 });
 
 var btn_set = document.getElementById('set');
