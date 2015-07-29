@@ -9,6 +9,7 @@ goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui.ModulePage');
 goog.require('ydn.crm.ui.UserSetting');
+goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.msg');
 goog.require('ydn.ui');
 

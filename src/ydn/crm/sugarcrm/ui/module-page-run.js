@@ -6,11 +6,14 @@
 ydn.crm.msg.Manager.addConsumer(new ydn.crm.msg.ConsoleStatusBar());
 ydn.msg.initPipe('dev');
 ydn.debug.log('ydn.crm', 'finer');
-var panel, sugar, provider;
+var sugar;
 var user = ydn.crm.ui.UserSetting.getInstance();
 
 ydn.crm.shared.init();
 ydn.ui.setTemplateDocument('/inj-template.html');
+var panel = new ydn.crm.su.ui.ModulePage();
+var root = document.getElementById('root');
+panel.render(root);
 
 
 ydn.crm.su.model.Sugar.get().addCallback(function(x) {
@@ -19,11 +22,7 @@ ydn.crm.su.model.Sugar.get().addCallback(function(x) {
     window.console.error('no instance');
     return;
   }
-  var provider = new ydn.crm.su.ui.RecordListProvider();
-  provider.setSugar(sugar);
-  panel = new ydn.crm.su.ui.ModulePage(provider);
-  var root = document.getElementById('root');
-  panel.render(root);
+  panel.setSugar(sugar);
   var ul = root.querySelector('.module-record-list UL');
 });
 
