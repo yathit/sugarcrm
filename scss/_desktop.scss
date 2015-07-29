@@ -12,22 +12,34 @@
     height: 40px;
     margin: 4px;
     text-align: center;
+
+  }
+
+  .tile-container:not(:hover) .favorite {
+    display: none;
   }
 
   .record-tile {
     display: inline-block;
     width: 32px;
     height: 32px;
-    overflow: hidden;
     border-radius: 3px;
     padding: 4px;
     margin: 2px 8px;
     text-align: left;
-    cursor: pointer;
 
+    .favorite {
+      cursor: pointer;
+      position: relative;
+      right: -24px;
+      bottom: -4px;
+      fill: goldenrod;
+
+    }
     .symbol {
       color: white;
       text-align: left;
+      cursor: pointer;
     }
   }
 
@@ -36,6 +48,7 @@
     font-size: 80%;
     text-overflow: ellipsis;
     overflow: hidden;
+    cursor: pointer;
   }
 }
 
