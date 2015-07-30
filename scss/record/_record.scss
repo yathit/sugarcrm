@@ -75,6 +75,10 @@
 .record-item {
   margin: 4px 0;
 
+  .icon {
+    cursor: pointer;
+  }
+
   > .content {
     padding-left: 27px;
     font-size: 90%;

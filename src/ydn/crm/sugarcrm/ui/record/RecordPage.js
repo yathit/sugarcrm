@@ -93,8 +93,23 @@ ydn.crm.su.ui.RecordPage.prototype.toString = function() {
  * @override
  */
 ydn.crm.su.ui.RecordPage.prototype.onPageShow = function(obj) {
-  console.log(obj);
+
   var panel = /** @type {ydn.crm.su.ui.record.Record} */(this.getChildAt(0));
   var mn = /** @type {ydn.crm.su.ModuleName} */(obj['module']);
-  panel.newRecord(mn);
+  var id = obj['id'];
+  if (id) {
+    var record = /** @type {ydn.crm.su.model.Record} */(panel.getModel());
+    var data = {
+      'module': mn,
+      'id': id
+    };
+    var dm = record.getDomain();
+    var ch = record.getMeta().getChannel();
+    ch.send(ydn.crm.ch.SReq.GET, data).addCallback(function(obj) {
+      var r = new ydn.crm.su.Record(dm, mn, obj);
+      record.setRecord(r);
+    }, this);
+  } else {
+    panel.newRecord(mn);
+  }
 };

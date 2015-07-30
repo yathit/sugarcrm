@@ -23,6 +23,6 @@ ydn.crm.su.model.Sugar.get().addCallback(function(x) {
     return;
   }
   panel.setSugar(sugar);
-  var ul = root.querySelector('.module-record-list UL');
+  // panel.setModule(ydn.crm.su.ModuleName.CONTACTS);
 });
 
