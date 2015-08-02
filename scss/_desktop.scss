@@ -78,6 +78,17 @@
         padding: 1px 4px;
       }
     }
+
+    .wgui-textinput {
+      vertical-align: middle;
+      INPUT {
+        width: 107px;
+      }
+
+      .wgui-textinput-clear {
+        top: 2px;
+      }
+    }
   }
   > .content {
     min-width: 150px;
