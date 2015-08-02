@@ -18,46 +18,49 @@ ydn.crm.su.UpdateCheckpoint = function(db_name) {
    * @private
    * @final
    */
-  this.key_prefix_ = 'mck-' + db_name;
+  this.key_prefix_ = 'mcko-' + db_name;
 };
 
 
 /**
  * Get last sync key of the given module.
  * @param {ydn.crm.su.ModuleName} mn module name.
- * @param {string} lower true for lower bound, false for upper bound.
  * @return {string} the check point.
  * @protected
  */
-ydn.crm.su.UpdateCheckpoint.prototype.makeCheckPointKey = function(mn, lower) {
-  return this.key_prefix_ + '-' + mn + '-' + lower;
+ydn.crm.su.UpdateCheckpoint.prototype.makeCheckPointKey = function(mn) {
+  return this.key_prefix_ + '-' + mn;
 };
 
 
 /**
  * Get last sync checkup.
  * @param {ydn.crm.su.ModuleName} mn
- * @param {boolean} is_up true for upper bound.
- * @return {string}
+ * @return {SugarCrm.SyncCheckpoint}
  */
-ydn.crm.su.UpdateCheckpoint.prototype.getSyncCheckPoint = function(mn, is_up) {
-  var key = this.makeCheckPointKey(mn, is_up ? 'upper' : 'lower');
-  return /** @type {string} */(goog.global.localStorage.getItem(key));
+ydn.crm.su.UpdateCheckpoint.prototype.getSyncCheckPoint = function(mn) {
+  var key = this.makeCheckPointKey(mn);
+  var cache = /** @type {string} */(goog.global.localStorage.getItem(key));
+  if (goog.isString(cache)) {
+    return /** @type {SugarCrm.SyncCheckpoint} */(JSON.parse(cache));
+  } else {
+    return null;
+  }
 };
 
 
 /**
  * Set last sync checkup.
  * @param {ydn.crm.su.ModuleName} mn
- * @param {boolean} is_up true for upper bound.
- * @param {string|undefined} val a date time string to set. Invalid value will
- * not be set.
+ * @param {SugarCrm.SyncCheckpoint} val a date time string to set. Invalid
+ * value will not be set.
  */
-ydn.crm.su.UpdateCheckpoint.prototype.setSyncCheckPoint = function(mn, is_up, val) {
+ydn.crm.su.UpdateCheckpoint.prototype.setSyncCheckPoint = function(mn, val) {
   if (val) {
-    if (/^\d{4}/.test(val)) {
-      var key = this.makeCheckPointKey(mn, is_up ? 'upper' : 'lower');
-      goog.global.localStorage.setItem(key, val);
+    if (/^\d{4}/.test(val.lower) && /^\d{4}/.test(val.upper)) {
+      var key = this.makeCheckPointKey(mn);
+      val.updated = goog.now();
+      goog.global.localStorage.setItem(key, JSON.stringify(val));
     } else {
       window.console.error(val);
     }
@@ -70,7 +73,24 @@ ydn.crm.su.UpdateCheckpoint.prototype.setSyncCheckPoint = function(mn, is_up, va
  * @param {ydn.crm.su.ModuleName} mn
  */
 ydn.crm.su.UpdateCheckpoint.prototype.resetCheckPoint = function(mn) {
-  goog.global.localStorage.removeItem(this.makeCheckPointKey(mn, 'lower'));
-  goog.global.localStorage.removeItem(this.makeCheckPointKey(mn, 'upper'));
+  goog.global.localStorage.removeItem(this.makeCheckPointKey(mn));
+  goog.global.localStorage.removeItem(this.makeCheckPointKey(mn));
 };
 
+
+/**
+ * Update checkpoint.
+ * @param {ydn.crm.su.ModuleName} mn
+ * @param {string|undefined} lower
+ * @param {string=} upper
+ */
+ydn.crm.su.UpdateCheckpoint.prototype.updateCheckpoint = function(mn, lower, upper) {
+  var cp = /** @type {SugarCrm.SyncCheckpoint} */({});
+  if (!lower || !upper) {
+    cp = this.getSyncCheckPoint(mn);
+  }
+  cp.lower = lower || cp.lower;
+  cp.upper = upper || cp.upper;
+  goog.asserts.assert(cp.lower <= cp.updated, cp.lower + ' <= ' + cp.upper);
+  this.setSyncCheckPoint(mn, cp);
+};

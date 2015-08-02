@@ -33,6 +33,7 @@ goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui.events');
 goog.require('ydn.crm.su.ui.record.HoverCard');
 goog.require('ydn.crm.su.ui.record.RecordItemRenderer');
+goog.require('ydn.crm.ui.events');
 goog.require('ydn.ui');
 
 
@@ -44,7 +45,7 @@ goog.require('ydn.ui');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
+ * @see ydn.crm.su.ui.HoverRecordList
  */
 ydn.crm.su.ui.HoverResultList = function(model, opt_dom) {
   goog.base(this, opt_dom);
@@ -161,7 +162,33 @@ ydn.crm.su.ui.HoverResultList.prototype.enterDocument = function() {
       this.onTrigger_);
   hd.listen(this.hover_, goog.ui.HoverCard.EventType.BEFORE_SHOW,
       this.onBeforeShow_);
+  var ul = this.getContentElement().querySelector('UL');
+  hd.listen(ul, goog.events.EventType.CLICK, this.onClick_);
+};
 
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ * @private
+ */
+ydn.crm.su.ui.HoverResultList.prototype.onClick_ = function(ev) {
+  if (ev.target instanceof Element) {
+    if (ev.target.classList.contains('title') ||
+        ev.target.classList.contains('summary')) {
+      return;
+    }
+  }
+
+  var li = goog.dom.getAncestorByTagNameAndClass(ev.target, 'LI');
+  if (li) {
+    var data = {
+      'id': li.getAttribute('data-id'),
+      'module': li.getAttribute('data-module')
+    };
+    var se = new ydn.crm.ui.events.ShowPanelEvent(
+        ydn.crm.ui.PageName.NEW_RECORD, data, this);
+    this.dispatchEvent(se);
+  }
 };
 
 
@@ -303,6 +330,15 @@ ydn.crm.su.ui.HoverResultList.prototype.updateResult = function(idx) {
  */
 ydn.crm.su.ui.HoverResultList.prototype.getSugar_ = function() {
   return this.getModel().getSugar();
+};
+
+
+/**
+ * Set show or hide.
+ * @param {boolean} val
+ */
+ydn.crm.su.ui.HoverResultList.prototype.setVisible = function(val) {
+  goog.style.setElementShown(this.getElement(), val);
 };
 
 
