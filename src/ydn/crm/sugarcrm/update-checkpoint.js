@@ -50,7 +50,8 @@ ydn.crm.su.UpdateCheckpoint.prototype.getSyncCheckPoint = function(mn, is_up) {
  * Set last sync checkup.
  * @param {ydn.crm.su.ModuleName} mn
  * @param {boolean} is_up true for upper bound.
- * @param {string} val a date time string to set. Invalid value will not be set.
+ * @param {string|undefined} val a date time string to set. Invalid value will
+ * not be set.
  */
 ydn.crm.su.UpdateCheckpoint.prototype.setSyncCheckPoint = function(mn, is_up, val) {
   if (val) {
