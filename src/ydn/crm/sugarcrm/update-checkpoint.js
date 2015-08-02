@@ -44,7 +44,7 @@ ydn.crm.su.UpdateCheckpoint.prototype.getSyncCheckPoint = function(mn) {
   if (goog.isString(cache)) {
     return /** @type {SugarCrm.SyncCheckpoint} */(JSON.parse(cache));
   } else {
-    return null;
+    return /** @type {SugarCrm.SyncCheckpoint} */({});
   }
 };
 
@@ -91,6 +91,8 @@ ydn.crm.su.UpdateCheckpoint.prototype.updateCheckpoint = function(mn, lower, upp
   }
   cp.lower = lower || cp.lower;
   cp.upper = upper || cp.upper;
-  goog.asserts.assert(cp.lower <= cp.updated, cp.lower + ' <= ' + cp.upper);
+  if (cp.lower && cp.upper) {
+    goog.asserts.assert(cp.lower <= cp.updated, cp.lower + ' <= ' + cp.upper);
+  }
   this.setSyncCheckPoint(mn, cp);
 };
