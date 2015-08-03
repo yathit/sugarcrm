@@ -2,24 +2,13 @@
     <dirname property="sugarcrm.dir" file="${ant.file.sugarcrm}"/>
     <property name="work.dir" location="${sugarcrm.dir}/.." />
     <property name="home.dir" location="${user.home}"/>
-    <property name="db-work.dir" location="${home.dir}/db-work"/>
+    <property name="db-work.dir" location="${work.dir}/../db-work"/>
     <import file="${db-work.dir}/ydn-base/build.xml"/>
     <import file="${db-work.dir}/ydn/build.xml"/>
     <import file="${work.dir}/crm/build.xml"/>
     <property location="${sugarcrm.dir}/scss" name="scss.dir"/>
     <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
     <property name="src.bk" value="ydn-src-1" description="source code bucket"/>
-    <property name="lib.dir" location="${work.dir}/../lib"/>
-    <property name="jtidy.jar" value="${lib.dir}/jtidy/target/jtidy-r938.jar"/>
-    <condition property="gsutil" value="D:/opt/gsutil/gsutil"><os family="windows"/></condition>
-    <condition property="gsutil" value="/Users/kyawtun/opt/gsutil/gsutil"><os family="unix"/></condition>
-    <property name="closure-library.dir" value="${work.dir}/closure-library"/>
-    <property name="closure-compiler.dir" value="${lib.dir}/closure-compiler"/>
-    <property name="closure-compiler.jar" value="${closure-compiler.dir}/build/compiler.jar"/>
-    <property name="closure-templates.dir" value="${lib.dir}/closure-templates"/>
-    <property name="closure-stylesheets.dir" value="${lib.dir}/closure-stylesheets"/>
-    <property name="google-sites-liberation.jar" value="${lib.dir}/google-sites-liberation/target/google-sites-liberation-1.0.4-SNAPSHOT-jar-with-dependencies.jar"/>
-    <property name="js-test-driver.jar" value="${lib.dir}/js-test-driver/JsTestDriver.jar"/>
     <property name="outputwrapper.norun" value="(function(){%output%})();"/>
     <property name="outputwrapper.app" value="(function(){%output%})();app=runApp();"/>
     <property name="sugarcrm-out.dir" location="${sugarcrm.dir}/jsc"/>
