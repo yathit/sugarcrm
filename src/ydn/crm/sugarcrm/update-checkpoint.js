@@ -57,7 +57,7 @@ ydn.crm.su.UpdateCheckpoint.prototype.getSyncCheckPoint = function(mn) {
  */
 ydn.crm.su.UpdateCheckpoint.prototype.setSyncCheckPoint = function(mn, val) {
   if (val) {
-    if (/^\d{4}/.test(val.lower) && /^\d{4}/.test(val.upper)) {
+    if (/^\d{4}/.test(val.lower) || /^\d{4}/.test(val.upper)) {
       var key = this.makeCheckPointKey(mn);
       val.updated = goog.now();
       goog.global.localStorage.setItem(key, JSON.stringify(val));

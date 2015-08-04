@@ -758,11 +758,11 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
     return goog.async.Deferred.succeed([]);
   }
   var query = [{
-    'store': ydn.crm.su.ModuleName.ACCOUNTS,
+    'store': ydn.crm.su.ModuleName.CONTACTS,
     'index': 'ydn$emails',
     'key': email
   }, {
-    'store': ydn.crm.su.ModuleName.CONTACTS,
+    'store': ydn.crm.su.ModuleName.ACCOUNTS,
     'index': 'ydn$emails',
     'key': email
   }, {
@@ -780,11 +780,14 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
     var out = [];
     for (var i = 0; i < arr.length; i++) {
       var result = arr[i];
-      if (result.result && result.result[0]) {
+      var n = result.result ? result.result.length : 0;
+      for (var j = 0; j < n; j++) {
         // email is unique and should not have more than one record.
-        var r = /** @type {!SugarCrm.Record} */(result.result[0]);
-        r._module = query[i]['store'];
-        out.push(r);
+        var r = /** @type {!SugarCrm.Record} */(result.result[j]);
+        if (r['deleted'] != '1') {
+          r._module = query[i]['store'];
+          out.push(r);
+        }
       }
     }
     return out;
@@ -806,11 +809,6 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
  */
 ydn.crm.su.model.Sugar.prototype.queryOneByEmail = function(email) {
   return this.queryByEmail(email).addCallback(function(arr) {
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i]['_module'] == ydn.crm.su.ModuleName.CONTACTS) {
-        return arr[i];
-      }
-    }
     if (arr[0]) {
       return arr[0];
     }

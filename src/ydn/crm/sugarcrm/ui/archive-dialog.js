@@ -208,12 +208,11 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
 ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
 
   // in version ? these relationship are automatically added ?
-  meta.queryByEmail(email).addCallback(function(arr) {
+  meta.queryOneByEmail(email).addCallback(function(r) {
     if (ydn.crm.su.ui.ArchiveDialog.DEBUG) {
-      window.console.log('addRel_', email, arr);
+      window.console.log('addRel_', email, r);
     }
-    for (var i = 0; i < arr.length; i++) {
-      var r = arr[i];
+    if (r) {
       var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
       dialog.addRelationship(mn, r.id, r.name);
     }
