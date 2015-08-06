@@ -89,7 +89,7 @@ ydn.crm.su.Record.prototype.isNew = function() {
  * @return {boolean}
  */
 ydn.crm.su.Record.isDeleted = function(obj) {
-  return obj && obj['deleted'] == '1';
+  return !!obj && obj['deleted'] == '1';
 };
 
 
