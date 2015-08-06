@@ -85,10 +85,20 @@ ydn.crm.su.Record.prototype.isNew = function() {
 
 /**
  * Check whether a deleted record.
+ * @param {SugarCrm.Record} obj record object.
+ * @return {boolean}
+ */
+ydn.crm.su.Record.isDeleted = function(obj) {
+  return obj && obj['deleted'] == '1';
+};
+
+
+/**
+ * Check whether a deleted record.
  * @return {boolean}
  */
 ydn.crm.su.Record.prototype.isDeleted = function() {
-  return this.obj['deleted'] == '1';
+  return ydn.crm.su.Record.isDeleted(this.obj);
 };
 
 

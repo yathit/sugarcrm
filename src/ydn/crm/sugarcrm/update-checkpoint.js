@@ -1,5 +1,12 @@
 /**
  * @fileoverview Record update checkpoint.
+ *
+ * For synchronizing from server to client, checkpoint is keep in client so that
+ * to resume last sync process. A checkpoint record lower and upper bound of
+ * record identifier, date_modified, which is monotonously increasing. Between
+ * these continuous range, all records are in sync with server.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 goog.provide('ydn.crm.su.UpdateCheckpoint');
