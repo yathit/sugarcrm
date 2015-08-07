@@ -784,7 +784,7 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
       for (var j = 0; j < n; j++) {
         // email is unique and should not have more than one record.
         var r = /** @type {!SugarCrm.Record} */(result.result[j]);
-        if (ydn.crm.su.Record.isDeleted(r)) {
+        if (!ydn.crm.su.Record.isDeleted(r)) {
           r._module = query[i]['store'];
           out.push(r);
         }
