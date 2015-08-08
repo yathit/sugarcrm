@@ -272,7 +272,6 @@ function test_single_edit() {
   var record_panel = new ydn.crm.su.ui.record.Record(record);
   var called = false;
   record_panel.patch = function(patch) {
-    console.log(patch);
     assertEquals('last_name', 'Poholskys', patch['last_name']);
     assertEquals('number of changes', 1, Object.keys(patch).length);
     called = true;
