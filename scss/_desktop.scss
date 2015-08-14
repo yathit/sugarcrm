@@ -94,3 +94,15 @@
     min-width: 150px;
   }  
 }
+
+.sugarcrm-setting-page {
+  .sync-setting-panel {
+    DETAILS {
+      margin: 8px 0;
+    }
+
+    SUMMARY {
+      cursor: default;
+    }
+  }
+}
