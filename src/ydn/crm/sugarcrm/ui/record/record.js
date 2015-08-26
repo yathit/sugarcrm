@@ -301,8 +301,8 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
     'data-tooltip': 'View in Gmail contact',
     'class': ydn.crm.ui.CSS_CLASS_BADGE_ICON + ' google'
   }, ydn.crm.ui.createSvgIcon('google', 'icons-small'));
-  var save_btn = dom.createDom('span', 'svg-button ' + ydn.crm.ui.CSS_CLASS_OK_BUTTON,
-      ydn.crm.ui.createSvgIcon('check-circle'));
+  var save_btn = dom.createDom('span', ydn.crm.ui.CSS_CLASS_OK_BUTTON + ' maia-button blue',
+      'Save');
   save_btn.setAttribute('data-tooltip', 'Save or Show changes (Alt+Click)');
 
   ele_header.appendChild(record_type_badge);

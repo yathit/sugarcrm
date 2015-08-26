@@ -23,7 +23,6 @@
 
     > .secondary {
 
-
     }
 
     > .secondary:not(:hover) .record-panel:not(.active) .content {
@@ -34,6 +33,10 @@
   > .record-header {
     > .title {
       overflow-x: hidden;
+    }
+
+    > .ok-button {
+      padding: 2px 8px;
     }
   }
 }
