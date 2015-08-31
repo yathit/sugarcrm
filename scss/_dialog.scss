@@ -32,6 +32,12 @@
   }
 
   .info {
+    > DIV {
+      max-height: 1.2em;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
     span {
       font-style: italic;
     }
@@ -39,6 +45,17 @@
     .word-count {
       font-style: normal;
       font-weight: bold;
+    }
+
+  }
+
+  .propose-record {
+    UL {
+      margin: 8px 0;
+    }
+    LI {
+      display: inline-block;
+      padding: 0 4px 0 0;
     }
   }
 

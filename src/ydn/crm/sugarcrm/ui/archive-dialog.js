@@ -75,6 +75,7 @@ ydn.crm.su.ui.ArchiveDialog = function(meta, info, opt_user) {
    */
   this.rel_panel_ = new ydn.crm.su.ui.Relationships(meta, ydn.crm.su.ModuleName.EMAILS);
   this.rel_panel_.render(content.querySelector('section[name="rel-panel"]'));
+  this.rel_panel_.setProposeRecordSection(content.querySelector('.propose-record'));
 
   var checks = content.querySelectorAll('ul input[type=checkbox]');
   for (var i = 0; i < checks.length; i++) {
@@ -208,13 +209,35 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
 ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
 
   // in version ? these relationship are automatically added ?
-  meta.queryOneByEmail(email).addCallback(function(r) {
+  var domain = meta.getDomain();
+  meta.queryOneByEmail(email, true).addCallback(function(r) {
     if (ydn.crm.su.ui.ArchiveDialog.DEBUG) {
       window.console.log('addRel_', email, r);
     }
     if (r) {
       var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
       dialog.addRelationship(mn, r.id, r.name);
+    } else {
+      // allow to create new record for non existing one
+      var query = {'email': email};
+      ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, query).addCallbacks(function(arr) {
+        var obj = /** @type {!SugarCrm.Record} */({'email1': email});
+        if (arr[0]) {
+          ydn.crm.su.gdata.gdataContact2Record(domain,
+              ydn.crm.su.ModuleName.CONTACTS, arr[0], obj);
+        } else {
+          var span = document.querySelector('span[email="' + email + '"][name]');
+          if (span) {
+            obj['full_name'] = span['name'];
+            obj['name'] = span.textContent;
+          } else {
+            obj['name'] = email.match(/[^@]+/)[0];
+          }
+        }
+        dialog.addProposeRecord(ydn.crm.su.ModuleName.CONTACTS, obj);
+      }, function(e) {
+        window.console.error(e);
+      }, this);
     }
   });
 };
@@ -279,4 +302,13 @@ ydn.crm.su.ui.ArchiveDialog.prototype.dispose = function() {
   ydn.crm.su.ui.ArchiveDialog.base(this, 'dispose');
 };
 
+
+/**
+ * Add proposal to create a new record and relate to the archive email.
+ * @param {ydn.crm.su.ModuleName} mn module name.
+ * @param {SugarCrm.Record} obj record object.
+ */
+ydn.crm.su.ui.ArchiveDialog.prototype.addProposeRecord = function(mn, obj) {
+  this.rel_panel_.addProposeRecord(mn, obj);
+};
 

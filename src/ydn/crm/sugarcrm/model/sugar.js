@@ -749,11 +749,13 @@ ydn.crm.su.model.Sugar.prototype.searchRecord = function(module_name, q, opt_fet
 /**
  * Query people module records by email.
  * @param {string} email email address to query.
+ * @param {boolean=} opt_include_internal include internal people from 'Users'
+ * modules.
  * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>} list of record. the record value
  * has `_module` for respective module name.
  * @see #queryOneByEmail
  */
-ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
+ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email, opt_include_internal) {
   if (!goog.isString(email) || email.indexOf('@') == -1) {
     return goog.async.Deferred.succeed([]);
   }
@@ -770,6 +772,13 @@ ydn.crm.su.model.Sugar.prototype.queryByEmail = function(email) {
     'index': 'ydn$emails',
     'key': email
   }];
+  if (opt_include_internal) {
+    query.push({
+      'store': ydn.crm.su.ModuleName.USERS,
+      'index': 'ydn$emails',
+      'key': email
+    });
+  }
   return this.getChannel().send(ydn.crm.ch.SReq.QUERY,
       query).addCallback(function(x) {
     var arr = /** @type {Array<CrmApp.QueryResult>} */(x);

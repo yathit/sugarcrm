@@ -60,6 +60,12 @@ ydn.crm.su.ui.Relationships = function(meta, mn, opt_dom) {
         ydn.crm.su.ModuleName.CONTACTS,
         ydn.crm.su.ModuleName.OPPORTUNITIES,
         ydn.crm.su.ModuleName.CASES]);
+
+  /**
+   * @type {Element}
+   * @private
+   */
+  this.propose_section_ = null;
 };
 goog.inherits(ydn.crm.su.ui.Relationships, goog.ui.Component);
 
@@ -489,3 +495,28 @@ ydn.crm.su.ui.Relationships.Item.prototype.createDom = function() {
 };
 
 
+/**
+ * Render proposed record section.
+ * @param {Element} el
+ */
+ydn.crm.su.ui.Relationships.prototype.setProposeRecordSection = function(el) {
+  this.propose_section_ = el;
+};
+
+
+/**
+ * Add proposal to create a new record and relate to the archive email.
+ * @param {ydn.crm.su.ModuleName} mn module name.
+ * @param {SugarCrm.Record} obj record object.
+ */
+ydn.crm.su.ui.Relationships.prototype.addProposeRecord = function(mn, obj) {
+  var span = document.createElement('li');
+  span.textContent = obj.name;
+  span.setAttribute('data-full_name', obj['full_name'] || '');
+  span.setAttribute('data-email', ydn.crm.su.Record.getEmail(obj));
+  if (obj.id) {
+    span.setAttribute('data-id', obj.id);
+  }
+  goog.style.setElementShown(this.propose_section_, true);
+  this.propose_section_.querySelector('ul').appendChild(span);
+};

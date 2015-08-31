@@ -44,11 +44,23 @@ var info2 = {
   'subject': 'Test',
   'attachments': []
 };
+var info3 = {
+  'from_addr': 'kyawtun@yathit.com',
+  'to_addrs': 'stefano@digita.it, ica_visa_hq_administrator@ica.gov.sg,' +
+  ' planupdate@insightly.com, kyaw@ywathit.org, tun@ywathit.org,' +
+  ' okokisan@ywathit.org, saokisan@ywathit.org',
+  'date_sent': '2014-11-29T01:05:00.000Z',
+  'html': 'That is why StackOverflow.com is awesome',
+  'mailbox_id': '',
+  'message_id': '149f91526d1dd46a',
+  'subject': 'Test',
+  'attachments': []
+};
 var sugar;
 
 var iuser = {
   hasFeature: function() {
-    return false;
+    return true;
   }
 };
 
@@ -65,6 +77,15 @@ btn1.onclick = function(e) {
 var btn2 = document.getElementById('archive2');
 btn2.onclick = function(e) {
   ydn.crm.su.ui.ArchiveDialog.showModel(sugar, info2, iuser, record).addCallbacks(function(obj) {
+    console.log(obj);
+  }, function(val) {
+    console.log('do not upload');
+  });
+};
+
+var btn3 = document.getElementById('archive3');
+btn3.onclick = function(e) {
+  ydn.crm.su.ui.ArchiveDialog.showModel(sugar, info3, iuser, record).addCallbacks(function(obj) {
     console.log(obj);
   }, function(val) {
     console.log('do not upload');
