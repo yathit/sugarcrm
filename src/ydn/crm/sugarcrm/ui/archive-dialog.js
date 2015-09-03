@@ -217,7 +217,7 @@ ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
     if (r) {
       var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
       dialog.addRelationship(mn, r.id, r.name);
-    } else {
+    } else if (false) {
       // allow to create new record for non existing one
       var query = {'email': email};
       ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, query).addCallbacks(function(arr) {
