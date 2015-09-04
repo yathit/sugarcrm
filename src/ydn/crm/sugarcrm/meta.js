@@ -28,6 +28,7 @@ goog.provide('ydn.crm.su.Meta');
 
 /**
  * SugarCRM meta data.
+ * Implemented by {@link ydn.crm.su.model.Sugar}
  * @interface
  */
 ydn.crm.su.Meta = function() {};
@@ -127,6 +128,15 @@ ydn.crm.su.Meta.prototype.getRecordViewLink = function(module, id) {
  * @return {ydn.crm.su.ModuleName|undefined}
  */
 ydn.crm.su.Meta.prototype.tryToModuleName = function(name) {};
+
+
+/**
+ * @param {string} name
+ * @return {ydn.crm.su.ModuleName|undefined} return undefined if not a valid
+ * module name.
+ * @see #tryToModuleName
+ */
+ydn.crm.su.Meta.prototype.asModuleName = function(name) {};
 
 
 /**

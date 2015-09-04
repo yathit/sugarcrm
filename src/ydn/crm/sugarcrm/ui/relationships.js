@@ -55,7 +55,7 @@ ydn.crm.su.ui.Relationships = function(meta, mn, opt_dom) {
   /**
    * @type {Array<ydn.crm.su.ModuleName>}
    */
-  this.relationship_modules = ydn.crm.su.getRelationshipCacheModule(module_info,
+  this.relationship_modules = ydn.crm.su.getRelationshipModule(module_info,
       [ydn.crm.su.ModuleName.ACCOUNTS,
         ydn.crm.su.ModuleName.CONTACTS,
         ydn.crm.su.ModuleName.OPPORTUNITIES,
@@ -244,7 +244,8 @@ ydn.crm.su.ui.Relationships.prototype.attachSelectRecord_ = function(input) {
   }
   var div = goog.dom.getAncestorByTagNameAndClass(input, 'div', 'select-record');
   var sel = div.querySelector('select');
-  var mn = ydn.crm.su.toModuleName(sel.value);
+  var mn = this.meta_.asModuleName(sel.value);
+  goog.asserts.assertString(mn);
   this.sel_record_.setModule(mn);
   this.sel_record_.attach(div);
 };
