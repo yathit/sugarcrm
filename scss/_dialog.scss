@@ -32,7 +32,7 @@
   }
 
   .info {
-    > DIV {
+    > * {
       max-height: 1.2em;
       text-overflow: ellipsis;
       overflow: hidden;
