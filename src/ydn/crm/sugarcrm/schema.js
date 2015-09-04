@@ -40,25 +40,21 @@ goog.require('ydn.string');
  */
 ydn.crm.su.Schema = function(name, opt_info, opt_av, opt_mi, opt_user_data) {
   /**
-   * @protected
    * @final
    * @type {string}
    */
   this.name = name;
   /**
-   * @protected
    * @final
    * @type {SugarCrm.ServerInfo}
    */
   this.info = opt_info || null;
   /**
-   * @protected
    * @final
    * @type {Object<SugarCrm.AvailableModule>}
    */
   this.availableModules = opt_av || null;
   /**
-   * @protected
    * @final
    * @type {Object<SugarCrm.ModuleInfo>}
    */
@@ -225,6 +221,16 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   },
   'Users': {
   }
+};
+
+
+/**
+ * Get module info.
+ * @param {string} mn module name.
+ * @return {SugarCrm.ModuleInfo}
+ */
+ydn.crm.su.Schema.prototype.getModuleFields = function(mn) {
+  return this.modulesInfo[mn];
 };
 
 

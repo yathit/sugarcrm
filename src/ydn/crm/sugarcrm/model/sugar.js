@@ -592,9 +592,6 @@ ydn.crm.su.model.Sugar.load = function(about) {
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
   return ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
-    for (var i = 0; i < details.modulesInfo.length; i++) {
-      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
-    }
     return ch.send(ydn.crm.ch.SReq.SERVER_INFO).addCallback(function(info) {
       return new ydn.crm.su.model.Sugar(about, details, info);
     });
@@ -1164,9 +1161,6 @@ ydn.crm.su.model.Sugar.list = function() {
 ydn.crm.su.model.Sugar.get = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
   return ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallback(function(details) {
-    for (var i = 0; i < details.modulesInfo.length; i++) {
-      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
-    }
     return new ydn.crm.su.model.Sugar(details.about, details.modulesInfo,
         details.serverInfo, details.loginInfo);
   });
