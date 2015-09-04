@@ -32,11 +32,13 @@ goog.require('ydn.string');
 /**
  * SugarCRM database schema.
  * @param {string} name domain name
- * @param {SugarCrm.ServerInfo} info Server info.
- * @param {Object} user_data user setting data.
+ * @param {SugarCrm.ServerInfo=} opt_info Server info.
+ * @param {Array<SugarCrm.AvailableModule>=} opt_av
+ * @param {Array<SugarCrm.ModuleInfo>=} opt_mi
+ * @param {Object=} opt_user_data user setting data.
  * @constructor
  */
-ydn.crm.su.Schema = function(name, info, user_data) {
+ydn.crm.su.Schema = function(name, opt_info, opt_av, opt_mi, opt_user_data) {
   /**
    * @protected
    * @final
@@ -48,12 +50,30 @@ ydn.crm.su.Schema = function(name, info, user_data) {
    * @final
    * @type {SugarCrm.ServerInfo}
    */
-  this.info = null;
+  this.info = opt_info || null;
+  /**
+   * @protected
+   * @final
+   * @type {Object<SugarCrm.AvailableModule>}
+   */
+  this.availableModules = opt_av || null;
+  /**
+   * @protected
+   * @final
+   * @type {Object<SugarCrm.ModuleInfo>}
+   */
+  this.modulesInfo = {};
+  if (opt_mi) {
+    for (var i = 0; i < opt_mi.length; i++) {
+      ydn.crm.su.fixSugarCrmModuleMeta(opt_mi[i]);
+      this.modulesInfo[opt_mi[i].module_name] = opt_mi[i];
+    }
+  }
   /**
    * @protected
    * @type {Object}
    */
-  this.setting_data = user_data || {};
+  this.setting_data = opt_user_data || {};
 
   /**
    * @protected

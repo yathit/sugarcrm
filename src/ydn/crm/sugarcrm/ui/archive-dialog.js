@@ -210,6 +210,7 @@ ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
 
   // in version ? these relationship are automatically added ?
   var domain = meta.getDomain();
+  var create_new = false;
   meta.queryOneByEmail(email, true).addCallback(function(r) {
     if (ydn.crm.su.ui.ArchiveDialog.DEBUG) {
       window.console.log('addRel_', email, r);
@@ -217,7 +218,7 @@ ydn.crm.su.ui.ArchiveDialog.addRel_ = function(dialog, meta, email) {
     if (r) {
       var mn = /** @type {ydn.crm.su.ModuleName} */(r._module);
       dialog.addRelationship(mn, r.id, r.name);
-    } else if (false) {
+    } else if (create_new) {
       // allow to create new record for non existing one
       var query = {'email': email};
       ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, query).addCallbacks(function(arr) {
