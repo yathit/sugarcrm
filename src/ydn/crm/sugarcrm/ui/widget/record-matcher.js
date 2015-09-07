@@ -137,7 +137,7 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.clientSearch_ = function(token) {
 
 
 /**
- * @param {string} token
+ * @param {string|*} token
  * @return {!goog.async.Deferred}
  * @private
  */
