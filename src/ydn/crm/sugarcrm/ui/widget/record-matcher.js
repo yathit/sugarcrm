@@ -21,6 +21,7 @@
 
 
 goog.provide('ydn.crm.su.ui.widget.RecordMatcher');
+goog.require('ydn.async.DelayService');
 
 
 
@@ -41,6 +42,12 @@ ydn.crm.su.ui.widget.RecordMatcher = function(meta, m_name) {
    * @type {ydn.crm.su.ModuleName}
    */
   this.module = m_name;
+
+  /**
+   * @type {ydn.async.DelayService}
+   * @private
+   */
+  this.df_server_search_ = new ydn.async.DelayService(this.serverSearch_, 1000, this);
 };
 
 
@@ -51,22 +58,11 @@ ydn.crm.su.ui.widget.RecordMatcher.DEBUG = false;
 
 
 /**
- * Retrieve a set of matching rows from the server via ajax.
- * @param {string} token The text that should be matched; passed to the server
- *     as the 'token' query param.
- * @param {number} maxMatches The maximum number of matches requested from the
- *     server; passed as the 'max_matches' query param.  The server is
- *     responsible for limiting the number of matches that are returned.
- * @param {Function} matchHandler Callback to execute on the result after
- *     matching.
- * @param {string=} opt_fullString The full string from the input box.
+ * @param {string} token
+ * @return {!goog.async.Deferred}
+ * @private
  */
-ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
-    function(token, maxMatches, matchHandler, opt_fullString) {
-  if (!token || token.length == 0) {
-    matchHandler(token, []);
-    return;
-  }
+ydn.crm.su.ui.widget.RecordMatcher.prototype.clientSearch_ = function(token) {
   var q = [{
     'store': this.module,
     'index': 'id',
@@ -96,7 +92,7 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     this.meta.getChannel().send(ydn.crm.ch.SReq.QUERY, q),
     this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH, fq)
   ]);
-  dfs.addCallbacks(function(x) {
+  return dfs.addCallbacks(function(x) {
     if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
       window.console.log(q, fq, x);
     }
@@ -130,23 +126,56 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
       window.console.log(out.map(function(x) {return {id: x.id, name: x.name}}));
     }
-    matchHandler(token, out);
     return out;
   }, function(e) {
     // module may not cache, OK to go server side search.
     // matchHandler(token, []);
     // window.console.error(e);
     return [];
-  }, this).addBoth(function(client) {
+  }, this);
+};
+
+
+/**
+ * @param {string} token
+ * @return {!goog.async.Deferred}
+ * @private
+ */
+ydn.crm.su.ui.widget.RecordMatcher.prototype.serverSearch_ = function(token) {
+  var q = {
+    'modules': [this.module],
+    'q': token,
+    'quick': true,
+    'limit': 5
+  };
+  return this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE, q);
+};
+
+
+/**
+ * Retrieve a set of matching rows from the server via ajax.
+ * @param {string} token The text that should be matched; passed to the server
+ *     as the 'token' query param.
+ * @param {number} maxMatches The maximum number of matches requested from the
+ *     server; passed as the 'max_matches' query param.  The server is
+ *     responsible for limiting the number of matches that are returned.
+ * @param {Function} matchHandler Callback to execute on the result after
+ *     matching.
+ * @param {string=} opt_fullString The full string from the input box.
+ */
+ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows = function (token, maxMatches, matchHandler, opt_fullString) {
+  if (!token || token.length == 0) {
+    matchHandler(token, []);
+    return;
+  }
+  var df = this.clientSearch_(token);
+  df.addBoth(function(client) {
+    if (client.length) {
+      matchHandler(token, client);
+    }
     // continue search in server side
-    var q = {
-      'modules': [this.module],
-      'q': token,
-      'quick': true,
-      'limit': 5
-    };
-    this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE,
-        q).addCallbacks(function(server) {
+    var sdf = this.df_server_search_.invoke(token);
+    sdf.addCallbacks(function(server) {
       // make result interlace with client and server side.
       if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
         console.log(client, server);
@@ -165,7 +194,7 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
       if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
         console.log(client, server, arr);
       }
-      matchHandler(token, client);
+      matchHandler(token, arr);
     }, function(e) {
           matchHandler(token, []);
           window.console.error(e);
