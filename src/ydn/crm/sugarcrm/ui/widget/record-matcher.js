@@ -133,18 +133,20 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
     matchHandler(token, out);
     return out;
   }, function(e) {
-    matchHandler(token, []);
-    window.console.error(e);
+    // module may not cache, OK to go server side search.
+    // matchHandler(token, []);
+    // window.console.error(e);
     return [];
   }, this).addBoth(function(client) {
     // continue search in server side
     var q = {
       'modules': [this.module],
-      'term': token,
+      'q': token,
+      'quick': true,
       'limit': 5
     };
     this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH_BY_MODULE,
-        q).addCallback(function(server) {
+        q).addCallbacks(function(server) {
       // make result interlace with client and server side.
       if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
         console.log(client, server);
@@ -164,6 +166,9 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.requestMatchingRows =
         console.log(client, server, arr);
       }
       matchHandler(token, client);
+    }, function(e) {
+          matchHandler(token, []);
+          window.console.error(e);
     }, this);
   }, this);
 };
