@@ -42,13 +42,14 @@ goog.require('ydn.crm.su.model.Sugar');
  * @param {string} gdata_account Google account id, i.e., email address
  * @param {SugarCrm.ServerInfo=} opt_info
  * @param {SugarCrm.LoginRecord=} opt_login_info login user info.
+ * @param {Array<SugarCrm.AvailableModule>=} opt_availableModules available
  * @constructor
  * @extends {ydn.crm.su.model.Sugar}
  * @struct
  */
 ydn.crm.su.model.GDataSugar = function(about, modules_info, gdata_account,
-                                       opt_info, opt_login_info) {
-  goog.base(this, about, modules_info, opt_info, opt_login_info);
+                                       opt_info, opt_login_info, opt_availableModules) {
+  goog.base(this, about, modules_info, opt_info, opt_login_info, opt_availableModules);
   /**
    * Gmail context contact data.
    * @type {ydn.crm.inj.Context}
@@ -525,7 +526,7 @@ ydn.crm.su.model.GDataSugar.get = function() {
 
       var ac = user.getLoginEmail();
       return new ydn.crm.su.model.GDataSugar(details.about,
-          details.modulesInfo, ac, details.serverInfo, details.loginInfo);
+          details.modulesInfo, ac, details.serverInfo, details.loginInfo, details.availableModules);
     });
 
   });

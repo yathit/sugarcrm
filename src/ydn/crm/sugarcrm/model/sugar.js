@@ -59,13 +59,15 @@ goog.require('ydn.time');
  * @param {Array.<SugarCrm.ModuleInfo>|Object.<SugarCrm.ModuleInfo>} arr
  * @param {SugarCrm.ServerInfo=} opt_info server information.
  * @param {SugarCrm.LoginRecord=} opt_login_info login user info.
+ * @param {Array<SugarCrm.AvailableModule>=} opt_availableModules available
+ * module info.
  * @constructor
  * @extends {goog.events.EventTarget}
  * @implements {ydn.crm.su.Meta}
  * @struct
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_login_info) {
+ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_login_info, opt_availableModules) {
   goog.base(this);
   /**
    * @protected
@@ -114,6 +116,12 @@ ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_login_info) {
   if (!opt_login_info) {
     this.initUserInfo_();
   }
+
+  /**
+   * @private
+   * @type {Array.<SugarCrm.AvailableModule>}
+   */
+  this.availableModules_ = opt_availableModules || null;
 
   var pipe = ydn.msg.getMain();
   this.handler.listen(pipe, [ydn.crm.ch.BReq.SUGARCRM, ydn.crm.ch.BReq.HOST_PERMISSION],
@@ -327,6 +335,59 @@ ydn.crm.su.model.Sugar.prototype.getChannel = function() {
  */
 ydn.crm.su.model.Sugar.prototype.getModuleInfo = function(name) {
   return this.module_info[name];
+};
+
+
+/**
+ * Should use `favorite_enabled` attribute for displaying Modules.
+ * @return {boolean}
+ */
+ydn.crm.su.model.Sugar.prototype.shouldUseFavoriteEnabled = function() {
+  var cnt = 0;
+  if (this.availableModules_) {
+    for (var i = 0; i < this.availableModules_.length; i++) {
+      if (this.availableModules_[i]['favorite_enabled'] == true) {
+        cnt++;
+        if (cnt >= 3) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+};
+
+
+/**
+ * @param {ydn.crm.su.ModuleName} name
+ * @return {SugarCrm.AvailableModule}
+ */
+ydn.crm.su.model.Sugar.prototype.getAvailableModule = function(name) {
+  if (!this.availableModules_) {
+    return null;
+  }
+  return goog.array.find(this.availableModules_, function(x) {
+    return x.module_key == name;
+  });
+};
+
+
+/**
+ * Check if a module action is allow.
+ * @param {ydn.crm.su.ModuleName} name module name.
+ * @param {string} action Enum of 'edit', 'delete', 'list', 'view', 'import', 'export'
+ * @return {?boolean} `null` if no information is available.
+ */
+ydn.crm.su.model.Sugar.prototype.isActionAllow = function(name, action) {
+  var av = this.getAvailableModule(name);
+  if (av && av.acls) {
+    for (var i = 0; i < av.acls.length; i++) {
+      if (av.acls[i].action == action) {
+        return av.acls[i].access;
+      }
+    }
+  }
+  return null;
 };
 
 
@@ -1162,7 +1223,7 @@ ydn.crm.su.model.Sugar.get = function() {
   var user = ydn.crm.ui.UserSetting.getInstance();
   return ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallback(function(details) {
     return new ydn.crm.su.model.Sugar(details.about, details.modulesInfo,
-        details.serverInfo, details.loginInfo);
+        details.serverInfo, details.loginInfo, details.availableModules);
   });
 };
 
