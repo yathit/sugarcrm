@@ -97,7 +97,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Cases': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['name', 'description', 'case_number']
+      'content': ['description', 'case_number']
     }, 'indexes': [{
       'name': 'account_id'
     }, {
@@ -108,7 +108,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Calls': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['name', 'description']
+      'content': ['description']
     }, 'indexes': [{
       'name': 'parent',
       'keyPath': ['parent_type', 'parent_id', 'date_modified']
@@ -173,7 +173,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Meetings': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['name', 'description']
+      'content': ['description']
     }, 'indexes': [
       {
         'name': 'date_start'
@@ -188,7 +188,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Notes': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['name', 'description']
+      'content': ['description']
     }, 'indexes': [
       {
         'name': 'parent',
@@ -200,7 +200,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Opportunities': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['name', 'description']
+      'content': ['description']
     }, 'indexes': {
       'name': 'assigned_user_id, date_closed',
       'keyPath': ['assigned_user_id', 'date_closed']
@@ -209,7 +209,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Tasks': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['name', 'description']
+      'content': ['description']
     }, 'indexes': [
       {
         'name': 'parent',
@@ -380,13 +380,20 @@ ydn.crm.su.Schema.prototype.getStoreSchema = function(module_name) {
 
 
 /**
+ * @const
+ * @type {string} full text store prefix.
+ */
+ydn.crm.su.Schema.FT_PRFIX = 'ft-';
+
+
+/**
  * Return full text catalog name.
  * @param {string} module_name
  * @param {string} ft_name
  * @return {string}
  */
 ydn.crm.su.Schema.makeFullTextStoreName = function(module_name, ft_name) {
-  return 'ft-' + module_name + '-' + ft_name;
+  return ydn.crm.su.Schema.FT_PRFIX + module_name + '-' + ft_name;
 };
 
 
@@ -395,6 +402,13 @@ ydn.crm.su.Schema.makeFullTextStoreName = function(module_name, ft_name) {
  * @type {string} relationships store name.
  */
 ydn.crm.su.Schema.STORE_REL = 'relationships';
+
+
+/**
+ * @const
+ * @type {string} store name for module not store seperately.
+ */
+ydn.crm.su.Schema.SN_GENERIC_MODULE = 'ydn-crm-su-record';
 
 
 /**
@@ -413,8 +427,40 @@ ydn.crm.su.Schema.prototype.getSchema = function() {
     }, {
       name: ydn.crm.su.Schema.STORE_REL,
       keyPath: ['from.module_name', 'from.id', 'to.module_name', 'to.id']
+    }, {
+      name: ydn.crm.su.Schema.SN_GENERIC_MODULE,
+      keyPath: ['_module', 'id'],
+      indexes: [
+        {
+          name: 'name'
+        }, {
+          name: 'date_modified'
+        }, {
+          name: 'deleted'
+        }, {
+          name: 'assigned_user_id, name',
+          keyPath: ['assigned_user_id', 'name']
+        }
+      ]
     }]
   };
+  schema.fullTextCatalogs.push(/** @type {FullTextCatalog} */ (/** @type {Object} */ ({
+    name: ydn.crm.su.Schema.makeFullTextStoreName(ydn.crm.su.Schema.SN_GENERIC_MODULE, 'name'),
+    lang: 'en',
+    sources: [{
+      storeName: ydn.crm.su.Schema.SN_GENERIC_MODULE,
+      keyPath: 'name'
+    }]
+  })));
+  schema.fullTextCatalogs.push(/** @type {FullTextCatalog} */ (/** @type {Object} */ ({
+    name: ydn.crm.su.Schema.makeFullTextStoreName(ydn.crm.su.Schema.SN_GENERIC_MODULE, 'content'),
+    lang: 'en',
+    sources: [{
+      storeName: ydn.crm.su.Schema.SN_GENERIC_MODULE,
+      keyPath: 'description'
+    }]
+  })));
+
   var stores = ydn.crm.su.CacheModules;
   for (var i = 0; i < stores.length; i++) {
     var module_name = stores[i];
@@ -442,6 +488,7 @@ ydn.crm.su.Schema.prototype.getSchema = function() {
       }
     }
   }
+
   this.schema = /** @type {DatabaseSchema} */ (/** @type {Object} */ (schema));
 
   return this.schema;

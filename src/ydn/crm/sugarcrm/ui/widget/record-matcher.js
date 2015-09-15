@@ -89,15 +89,26 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.clientSearch_ = function(token) {
 
 
   var dfs = [this.meta.getChannel().send(ydn.crm.ch.SReq.QUERY, q)];
-  if (token.length >= 3) {
+  if (token.length >= 2) {
     var fq = [{
       'store': this.module,
       'index': 'name',
       'fetchFull': true,
       'threshold': 0.2,
+      'limit': 2,
       'q': token
     }];
-    dfs.push(this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH, fq));
+    if (token.length >= 3) {
+      fq.push({
+        'store': this.module,
+        'index': 'content',
+        'fetchFull': true,
+        'threshold': 0.2,
+        'limit': 2,
+        'q': token
+      });
+    }
+      dfs.push(this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH, fq));
   }
   return new goog.async.DeferredList(dfs).addCallbacks(function(x) {
     if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
@@ -126,10 +137,12 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.clientSearch_ = function(token) {
       }
     }
     if (x[1] && x[1][1]) {
-      var frr = /** @type {CrmApp.TextQueryResult} */(x[1][1][0]);
-      var res = frr.fullTextResult;
-      for (var i = 0; i < res.length; i++) {
-        add(res[i].record);
+      for (var k = 0; k < x[1][1].length; k++) {
+        var frr = /** @type {CrmApp.TextQueryResult} */(x[1][1][k]);
+        var res = frr.fullTextResult;
+        for (var i = 0; i < res.length; i++) {
+          add(res[i].record);
+        }
       }
     }
     if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
