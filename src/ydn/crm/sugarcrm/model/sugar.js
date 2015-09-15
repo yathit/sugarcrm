@@ -1192,29 +1192,6 @@ ydn.crm.su.model.Sugar.prototype.saveRecord = function(record) {
 
 
 /**
- * Get list of sugarcrm instance, of which login.
- * @return {!goog.async.Deferred.<Array.<ydn.crm.su.model.Sugar>>}
- * @deprecated use {@link #get} instead.
- */
-ydn.crm.su.model.Sugar.list = function() {
-  var user = ydn.crm.ui.UserSetting.getInstance();
-  return ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(function(abouts) {
-    var models = [];
-    var dfs = [];
-    for (var i = 0; i < abouts.length; i++) {
-      var about = /** @type {SugarCrm.About} */ (abouts[i]);
-      if (about.isLogin) {
-        dfs.push(user.getModuleInfo(about.domain).addCallback(function(info) {
-          return new ydn.crm.su.model.Sugar(this, info);
-        }, about));
-      }
-    }
-    return goog.async.DeferredList.gatherResults(dfs);
-  });
-};
-
-
-/**
  * Get the sugarcrm instance, of which login.
  * @return {!goog.async.Deferred.<ydn.crm.su.model.Sugar>}
  * @see ydn.crm.su.model.GDataSugar#list

@@ -14,8 +14,8 @@ var sugar, panel;
 
 
 user.onReady().addCallbacks(function() {
-  ydn.crm.su.model.Sugar.list().addCallback(function(sugars) {
-    sugar = sugars[0];
+  ydn.crm.su.model.Sugar.get().addCallback(function(x) {
+    sugar = x;
     if (!sugar) {
       throw new Error('no sugar');
     }

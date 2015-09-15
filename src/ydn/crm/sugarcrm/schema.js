@@ -97,7 +97,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Cases': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['description']
+      'content': ['name', 'description', 'case_number']
     }, 'indexes': [{
       'name': 'account_id'
     }, {
@@ -108,7 +108,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Calls': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['description']
+      'content': ['name', 'description']
     }, 'indexes': [{
       'name': 'parent',
       'keyPath': ['parent_type', 'parent_id', 'date_modified']
@@ -173,7 +173,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Meetings': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['description']
+      'content': ['name', 'description']
     }, 'indexes': [
       {
         'name': 'date_start'
@@ -188,7 +188,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Notes': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['description']
+      'content': ['name', 'description']
     }, 'indexes': [
       {
         'name': 'parent',
@@ -200,7 +200,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Opportunities': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['description']
+      'content': ['name', 'description']
     }, 'indexes': {
       'name': 'assigned_user_id, date_closed',
       'keyPath': ['assigned_user_id', 'date_closed']
@@ -209,7 +209,7 @@ ydn.crm.su.Schema.DEFAULT_SETTING = {
   'Tasks': {
     'FullTextIndex': {
       'name': ['name'],
-      'content': ['description']
+      'content': ['name', 'description']
     }, 'indexes': [
       {
         'name': 'parent',
