@@ -65,34 +65,41 @@ ydn.crm.su.ui.widget.RecordMatcher.DEBUG = false;
 ydn.crm.su.ui.widget.RecordMatcher.prototype.clientSearch_ = function(token) {
   var q = [{
     'store': this.module,
-    'index': 'id',
-    'key': token
-  }, {
-    'store': this.module,
-    'index': 'ydn$emails',
-    'limit': 4,
-    'prefix': true,
-    'key': token.toLocaleLowerCase()
-  }, {
-    'store': this.module,
     'index': 'name',
     'limit': 2,
     'prefix': true,
     'key': token
   }];
-  var fq = [{
-    'store': this.module,
-    'index': 'name',
-    'fetchFull': true,
-    'threshold': 0.2,
-    'q': token
-  }];
+  if (token.indexOf('@') > 1) {
+    q.push({
+      'store': this.module,
+      'index': 'ydn$emails',
+      'limit': 4,
+      'prefix': true,
+      'key': token.toLocaleLowerCase()
+    });
+  }
+  if (token.length >= 16) {
+    q.push({
+      'store': this.module,
+      'index': 'id',
+      'key': token
+    });
+  }
 
-  var dfs = new goog.async.DeferredList([
-    this.meta.getChannel().send(ydn.crm.ch.SReq.QUERY, q),
-    this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH, fq)
-  ]);
-  return dfs.addCallbacks(function(x) {
+
+  var dfs = [this.meta.getChannel().send(ydn.crm.ch.SReq.QUERY, q)];
+  if (token.length >= 3) {
+    var fq = [{
+      'store': this.module,
+      'index': 'name',
+      'fetchFull': true,
+      'threshold': 0.2,
+      'q': token
+    }];
+    dfs.push(this.meta.getChannel().send(ydn.crm.ch.SReq.SEARCH, fq));
+  }
+  return new goog.async.DeferredList(dfs).addCallbacks(function(x) {
     if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
       window.console.log(q, fq, x);
     }
@@ -118,10 +125,12 @@ ydn.crm.su.ui.widget.RecordMatcher.prototype.clientSearch_ = function(token) {
         add(arr[i].result[j]);
       }
     }
-    var frr = /** @type {CrmApp.TextQueryResult} */(x[1][1][0]);
-    var res = frr.fullTextResult;
-    for (var i = 0; i < res.length; i++) {
-      add(res[i].record);
+    if (x[1] && x[1][1]) {
+      var frr = /** @type {CrmApp.TextQueryResult} */(x[1][1][0]);
+      var res = frr.fullTextResult;
+      for (var i = 0; i < res.length; i++) {
+        add(res[i].record);
+      }
     }
     if (ydn.crm.su.ui.widget.RecordMatcher.DEBUG) {
       window.console.log(out.map(function(x) {return {id: x.id, name: x.name}}));
