@@ -4,7 +4,9 @@
 
 
 goog.provide('ydn.crm.su.ui.UpdateOptionDialog');
+goog.require('ydn.crm.su.utils');
 goog.require('ydn.crm.templ');
+goog.require('ydn.crm.su.utils');
 goog.require('ydn.ui.MessageDialog');
 
 
@@ -160,39 +162,28 @@ ydn.crm.su.ui.UpdateOptionDialog.prototype.refreshInfo_ = function() {
  * @private
  */
 ydn.crm.su.ui.UpdateOptionDialog.prototype.enterDocument_ = function() {
-  var input_full = this.content.querySelector('input[value=full]');
-  var input_partial = this.content.querySelector('input[value=partial]');
-  var input_none = this.content.querySelector('input[value=none]');
 
-  var key = ydn.crm.base.ChromeSyncKey.SUGAR_CACHING_OPTION;
-  var me = this;
-  chrome.storage.sync.get(key, function(obj) {
-    var option = obj[key] || {};
-    var full = goog.isArray(option['full']) ?
-        option['full'] : ydn.crm.su.SyncModules;
-    var partial = goog.isArray(option['partial']) ?
-        option['partial'] : ydn.crm.su.PartialSyncModules;
-    if (full.indexOf(me.module_) >= 0) {
+  ydn.crm.su.option.getCacheOption(this.module_).addCallback(function(opt) {
+    var input_full = this.content.querySelector('input[value=full]');
+    var input_partial = this.content.querySelector('input[value=partial]');
+    var input_opt = this.content.querySelector('input[value=opportunistic]');
+    var input_none = this.content.querySelector('input[value=none]');
+    if (opt == ydn.crm.su.CacheOption.FULL) {
       input_full.setAttribute('checked', 'checked');
-    } else if (partial.indexOf(me.module_) >= 0) {
+    } else if (opt == ydn.crm.su.CacheOption.PARTIAL) {
       input_partial.setAttribute('checked', 'checked');
-    }else {
+    } else if (opt == ydn.crm.su.CacheOption.OPPORTUNISTIC) {
+      input_opt.setAttribute('checked', 'checked');
+    } else {
       input_none.setAttribute('checked', 'checked');
     }
-  });
+  }, this);
 
   this.refreshInfo_();
 
   this.content.onclick = this.onContentClick_.bind(this);
   this.content.onchange = this.onChanged_.bind(this);
 
-  if (ydn.crm.su.SyncModules.indexOf(this.module_) >= 0) {
-    input_full.parentElement.classList.add(ydn.crm.su.ui.UpdateOptionDialog.CSS_CLASS_DEFAULT);
-  } else if (ydn.crm.su.PartialSyncModules.indexOf(this.module_) >= 0) {
-    input_partial.parentElement.classList.add(ydn.crm.su.ui.UpdateOptionDialog.CSS_CLASS_DEFAULT);
-  } else {
-    input_none.parentElement.classList.add(ydn.crm.su.ui.UpdateOptionDialog.CSS_CLASS_DEFAULT);
-  }
 };
 
 
