@@ -434,9 +434,17 @@ ydn.crm.su.Schema.prototype.getSchema = function() {
         {
           name: 'name'
         }, {
+          name: '_module'
+        }, {
           name: 'date_modified'
         }, {
+          name: '_module, date_modified',
+          keyPath: ['_module', 'date_modified']
+        }, {
           name: 'deleted'
+        }, {
+          name: '_module, deleted',
+          keyPath: ['_module', 'deleted']
         }, {
           name: 'assigned_user_id, name',
           keyPath: ['assigned_user_id', 'name']
