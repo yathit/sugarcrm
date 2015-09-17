@@ -5,8 +5,9 @@
 
 goog.provide('ydn.crm.su.ui.UpdateOptionDialog');
 goog.require('ydn.crm.su.utils');
-goog.require('ydn.crm.templ');
+goog.require('ydn.crm.su.option');
 goog.require('ydn.crm.su.utils');
+goog.require('ydn.crm.templ');
 goog.require('ydn.ui.MessageDialog');
 
 
@@ -45,6 +46,7 @@ goog.inherits(ydn.crm.su.ui.UpdateOptionDialog, ydn.ui.MessageDialog);
  */
 ydn.crm.su.ui.UpdateOptionDialog.prototype.onContentClick_ = function(ev) {
   var btn = ev.target;
+
   if (btn.tagName != 'BUTTON') {
     return;
   }
@@ -82,71 +84,34 @@ ydn.crm.su.ui.UpdateOptionDialog.prototype.onContentClick_ = function(ev) {
  * @param {Event} ev
  * @private
  */
+ydn.crm.su.ui.UpdateOptionDialog.prototype.onDetailClick_ = function(ev) {
+  var is_open = !ev.currentTarget.hasAttribute('open');
+  if (is_open) {
+    this.refreshDetail_();
+  }
+};
+
+
+/**
+ * @param {Event} ev
+ * @private
+ */
 ydn.crm.su.ui.UpdateOptionDialog.prototype.onChanged_ = function(ev) {
   var name = ev.target.getAttribute('name');
   if (name == 'strategy') {
     var value = ev.target.value;
-    var key = ydn.crm.base.ChromeSyncKey.SUGAR_CACHING_OPTION;
-    var me = this;
-    chrome.storage.sync.get(key, function(obj) {
-      var option = obj[key] || {};
-      var full = goog.isArray(option['full']) ?
-          option['full'] : ydn.crm.su.SyncModules;
-      var partial = goog.isArray(option['partial']) ?
-          option['partial'] : ydn.crm.su.PartialSyncModules;
-      var idx_full = full.indexOf(me.module_);
-      var idx_partial = partial.indexOf(me.module_);
-      if (value == 'full') {
-        if (idx_full == -1) {
-          if (idx_partial >= 0) {
-            goog.array.removeAt(partial, idx_partial);
-          }
-          full.push(me.module_);
-        } else {
-          alert(me.module_ + ' module already in ' + value + ' cache strategy?');
-          return;
-        }
-      } else if (value == 'partial') {
-        if (idx_partial == -1) {
-          if (idx_full >= 0) {
-            goog.array.removeAt(full, idx_full);
-          }
-          partial.push(me.module_);
-        } else {
-          alert(me.module_ + ' module already in ' + value + ' cache strategy?');
-          return;
-        }
-      } else {
-        if (idx_full >= 0) {
-          goog.array.removeAt(full, idx_full);
-        }
-        if (idx_partial >= 0) {
-          goog.array.removeAt(partial, idx_partial);
-        }
-        if (idx_full == -1 && idx_partial == -1) {
-          alert(me.module_ + ' module already in ' + value + ' cache strategy?');
-          return;
-        }
+    ydn.crm.su.option.setCacheOption(this.module_, value).addCallback(function(x) {
+      if (x) {
+        ydn.crm.msg.Manager.addStatus(this.module_ + ' set to ' + name + ' cache strategy.');
       }
-      obj[key] = {
-        'full': full,
-        'partial': partial
-      };
-      var status = me.module_ + ' module set to ' + value + ' cache strategy.';
-      chrome.storage.sync.set(obj, function() {
-        ydn.crm.msg.Manager.addStatus(status);
-      });
-    });
+    }, this);
   }
 
 };
 
 
-/**
- * Refresh info.
- * @private
- */
-ydn.crm.su.ui.UpdateOptionDialog.prototype.refreshInfo_ = function() {
+ydn.crm.su.ui.UpdateOptionDialog.prototype.refreshDetail_ = function() {
+
   var ch = ydn.msg.getMain().findChannel(ydn.msg.Group.SUGAR);
   var data = {'module': this.module_};
   var el = this.content.querySelector('.info');
@@ -159,9 +124,10 @@ ydn.crm.su.ui.UpdateOptionDialog.prototype.refreshInfo_ = function() {
 
 
 /**
+ * Refresh info.
  * @private
  */
-ydn.crm.su.ui.UpdateOptionDialog.prototype.enterDocument_ = function() {
+ydn.crm.su.ui.UpdateOptionDialog.prototype.refreshInfo_ = function() {
 
   ydn.crm.su.option.getCacheOption(this.module_).addCallback(function(opt) {
     var input_full = this.content.querySelector('input[value=full]');
@@ -179,11 +145,20 @@ ydn.crm.su.ui.UpdateOptionDialog.prototype.enterDocument_ = function() {
     }
   }, this);
 
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.su.ui.UpdateOptionDialog.prototype.enterDocument_ = function() {
+
   this.refreshInfo_();
 
-  this.content.onclick = this.onContentClick_.bind(this);
-  this.content.onchange = this.onChanged_.bind(this);
-
+  this.handler.listen(this.content, 'click', this.onContentClick_);
+  this.handler.listen(this.content, 'change', this.onChanged_);
+  var details = this.getContentElement().querySelector('details.audit');
+  this.handler.listen(details, 'click', this.onDetailClick_);
 };
 
 
@@ -205,7 +180,6 @@ ydn.crm.su.ui.UpdateOptionDialog.CSS_CLASS_DEFAULT = 'default-option';
  * @override
  */
 ydn.crm.su.ui.UpdateOptionDialog.prototype.dispose = function() {
-  this.content.onclick = null;
   this.content = null;
   ydn.crm.su.ui.UpdateOptionDialog.base(this, 'dispose');
 };
