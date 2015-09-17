@@ -434,6 +434,9 @@ ydn.crm.su.Schema.prototype.getSchema = function() {
         {
           name: 'name'
         }, {
+          name: '_module, name',
+          keyPath: ['_module', 'name']
+        }, {
           name: '_module'
         }, {
           name: 'date_modified'
