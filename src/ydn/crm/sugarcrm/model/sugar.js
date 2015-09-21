@@ -698,7 +698,7 @@ ydn.crm.su.model.Sugar.prototype.listRecords = function(m_name, opt_order,
   }
   query['prefix'] = !!opt_prefix;
   if (opt_limit) {
-    query['limit'] = opt_offset;
+    query['limit'] = opt_limit;
   }
   if (opt_offset) {
     query['offset'] = opt_offset;
