@@ -51,10 +51,6 @@ goog.require('ydn.ui.MessageDialog');
  */
 ydn.crm.su.ui.ArchiveDialog = function(meta, info, opt_user) {
   var title = 'Archive email';
-  /**
-   * @type {boolean|undefined}
-   */
-  this.disable_subject_change = undefined;
 
   /**
    * @type {ydn.crm.IUser}
@@ -108,6 +104,12 @@ ydn.crm.su.ui.ArchiveDialog.ReturnValue;
 
 
 /**
+ * @type {boolean|undefined}
+ */
+ydn.crm.su.ui.ArchiveDialog.disable_subject_change = undefined;
+
+
+/**
  * @param {ydn.gmail.Utils.EmailInfo} info
  * @param {ydn.crm.IUser} user
  * @return {Element}
@@ -119,7 +121,7 @@ ydn.crm.su.ui.ArchiveDialog.renderContent_ = function(info, user) {
   content.appendChild(t.cloneNode(true));
   var name_el = content.querySelector('input[name=name]');
   name_el.value = info.subject;
-  if (this.disable_subject_change) {
+  if (ydn.crm.su.ui.ArchiveDialog.disable_subject_change) {
     name_el.setAttribute('disabled', '');
   }
   var message_id_el = content.querySelector('input[name=message_id]');
@@ -191,7 +193,7 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
   var content = this.getContentElement();
   var att_ul = content.querySelector('[name=attachment] ul');
   var attachments = [];
-  for (var i = 0; i < att_ul.childElementCount; i++) {
+  for (var i = 0; att_ul && i < att_ul.childElementCount; i++) {
     var li = att_ul.children[i];
     var chk = li.querySelector('input[type=checkbox]');
     if (!chk.hasAttribute('disabled') && chk.checked) {

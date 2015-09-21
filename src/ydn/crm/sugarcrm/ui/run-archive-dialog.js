@@ -59,8 +59,12 @@ var info3 = {
 var sugar;
 
 var iuser = {
-  hasFeature: function() {
-    return true;
+  hasFeature: function(fe) {
+    if (fe == ydn.crm.base.Feature.ATTACHMENT) {
+      return false;
+    } else {
+      return true;
+    }
   }
 };
 
