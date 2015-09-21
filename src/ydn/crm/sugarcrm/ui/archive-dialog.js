@@ -51,6 +51,10 @@ goog.require('ydn.ui.MessageDialog');
  */
 ydn.crm.su.ui.ArchiveDialog = function(meta, info, opt_user) {
   var title = 'Archive email';
+  /**
+   * @type {boolean|undefined}
+   */
+  this.disable_subject_change = undefined;
 
   /**
    * @type {ydn.crm.IUser}
@@ -93,6 +97,7 @@ ydn.crm.su.ui.ArchiveDialog.DEBUG = false;
 
 /**
  * @typedef {{
+ *   subject: string,
  *   document_names: Array<string|undefined>,
  *   relationships: Array<SugarCrm.ModuleNameIdPair>
  * }}
@@ -114,7 +119,9 @@ ydn.crm.su.ui.ArchiveDialog.renderContent_ = function(info, user) {
   content.appendChild(t.cloneNode(true));
   var name_el = content.querySelector('input[name=name]');
   name_el.value = info.subject;
-  name_el.setAttribute('disabled', '');
+  if (this.disable_subject_change) {
+    name_el.setAttribute('disabled', '');
+  }
   var message_id_el = content.querySelector('input[name=message_id]');
   message_id_el.value = info.message_id;
   message_id_el.setAttribute('disabled', '');
@@ -194,6 +201,7 @@ ydn.crm.su.ui.ArchiveDialog.prototype.getReturnValue = function() {
   }
 
   return {
+    subject: content.querySelector('input[name=name]').value,
     document_names: attachments,
     relationships: this.rel_panel_.getRelationships()
   };

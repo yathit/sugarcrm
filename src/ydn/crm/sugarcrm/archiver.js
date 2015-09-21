@@ -249,6 +249,9 @@ ydn.crm.su.Archiver.prototype.archive_ = function(widget, info, opt_record) {
         origins.push(info.attachments[i].url);
       }
     }
+    if (result.subject) {
+      info.subject = result.subject;
+    }
     if (has_attachment) {
       if (!this.user_.hasFeature(ydn.crm.base.Feature.ATTACHMENT, true)) {
         return;
@@ -270,7 +273,9 @@ ydn.crm.su.Archiver.prototype.archive_ = function(widget, info, opt_record) {
       return this.processArchive_(widget, info, result, opt_record);
     }
   }, function(e) {
-    window.console.error(e);
+    if (ydn.crm.su.Archiver.DEBUG) {
+      window.console.error(e);
+    }
   }, this);
 
 };
