@@ -89,7 +89,7 @@ ydn.crm.su.UpdateCheckpoint.prototype.resetCheckPoint = function(mn) {
  * Update checkpoint.
  * @param {ydn.crm.su.ModuleName} mn
  * @param {string|undefined} lower
- * @param {string=} upper
+ * @param {string|undefined} upper
  */
 ydn.crm.su.UpdateCheckpoint.prototype.updateCheckpoint = function(mn, lower, upper) {
   var cp = /** @type {SugarCrm.SyncCheckpoint} */({});
