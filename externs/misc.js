@@ -218,7 +218,7 @@ CrmApp.UiUserSetting.prototype.contextPanel.location;
 
 /**
  * Basic user setting used in UI modules.
- * @interface
+ * @constructor
  */
 CrmApp.SugarCrmSettingUnit = function() {};
 
@@ -232,27 +232,27 @@ CrmApp.SugarCrmSettingUnit.prototype.normallyHide;
 
 /**
  * Basic user setting used in UI modules.
- * @interface
+ * @constructor
  */
 CrmApp.SugarCrmModuleSetting = function() {};
 
 
 /**
- * @type {!Object.<CrmApp.SugarCrmSettingUnit>}
+ * @type {Object.<CrmApp.SugarCrmSettingUnit>}
  */
-CrmApp.SugarCrmModuleSetting.prototype.Group;
+CrmApp.SugarCrmModuleSetting.prototype.Group = null;
 
 
 /**
- * @type {!Object.<CrmApp.SugarCrmSettingUnit>}
+ * @type {Object.<CrmApp.SugarCrmSettingUnit>}
  */
-CrmApp.SugarCrmModuleSetting.prototype.Field;
+CrmApp.SugarCrmModuleSetting.prototype.Field = null;
 
 
 
 /**
  * Basic user setting used in UI modules.
- * @interface
+ * @constructor
  */
 CrmApp.SugarCrmSetting = function() {};
 
@@ -266,7 +266,7 @@ CrmApp.SugarCrmSetting.prototype.Module;
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2SocialProfile = function() {};
 
@@ -274,55 +274,55 @@ CrmApp.FullContact2SocialProfile = function() {};
 /**
  * @type {string}
  */
-CrmApp.FullContact2SocialProfile.prototype.typeId;
+CrmApp.FullContact2SocialProfile.prototype.typeId = '';
 
 
 /**
  * @type {string} e.g: Twitter
  */
-CrmApp.FullContact2SocialProfile.prototype.typeName;
+CrmApp.FullContact2SocialProfile.prototype.typeName = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2SocialProfile.prototype.id;
+CrmApp.FullContact2SocialProfile.prototype.id = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2SocialProfile.prototype.username;
+CrmApp.FullContact2SocialProfile.prototype.username = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2SocialProfile.prototype.url;
+CrmApp.FullContact2SocialProfile.prototype.url = '';
 
 
 /**
  * @type {string|undefined}
  */
-CrmApp.FullContact2SocialProfile.prototype.bio;
+CrmApp.FullContact2SocialProfile.prototype.bio = '';
 
 
 /**
  * @type {number|undefined}
  */
-CrmApp.FullContact2SocialProfile.prototype.followers;
+CrmApp.FullContact2SocialProfile.prototype.followers = 0;
 
 
 /**
  * @type {number|undefined}
  */
-CrmApp.FullContact2SocialProfile.prototype.following;
+CrmApp.FullContact2SocialProfile.prototype.following = 0;
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2LocationUnit = function() {};
 
@@ -330,25 +330,25 @@ CrmApp.FullContact2LocationUnit = function() {};
 /**
  * @type {string}
  */
-CrmApp.FullContact2LocationUnit.prototype.name;
+CrmApp.FullContact2LocationUnit.prototype.name = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2LocationUnit.prototype.code;
+CrmApp.FullContact2LocationUnit.prototype.code = '';
 
 
 /**
  * @type {boolean}
  */
-CrmApp.FullContact2LocationUnit.prototype.deduced;
+CrmApp.FullContact2LocationUnit.prototype.deduced = false;
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2DeducedLocation = function() {};
 
@@ -356,55 +356,55 @@ CrmApp.FullContact2DeducedLocation = function() {};
 /**
  * @type {CrmApp.FullContact2LocationUnit}
  */
-CrmApp.FullContact2DeducedLocation.prototype.city;
+CrmApp.FullContact2DeducedLocation.prototype.city = null;
 
 
 /**
  * @type {CrmApp.FullContact2LocationUnit}
  */
-CrmApp.FullContact2DeducedLocation.prototype.state;
+CrmApp.FullContact2DeducedLocation.prototype.state = null;
 
 
 /**
  * @type {CrmApp.FullContact2LocationUnit}
  */
-CrmApp.FullContact2DeducedLocation.prototype.country;
+CrmApp.FullContact2DeducedLocation.prototype.country = null;
 
 
 /**
  * @type {CrmApp.FullContact2LocationUnit}
  */
-CrmApp.FullContact2DeducedLocation.prototype.continent;
+CrmApp.FullContact2DeducedLocation.prototype.continent = null;
 
 
 /**
  * @type {CrmApp.FullContact2LocationUnit}
  */
-CrmApp.FullContact2DeducedLocation.prototype.county;
+CrmApp.FullContact2DeducedLocation.prototype.county = null;
 
 
 /**
  * @type {number}
  */
-CrmApp.FullContact2DeducedLocation.prototype.likelihood;
+CrmApp.FullContact2DeducedLocation.prototype.likelihood = 0;
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2DeducedLocation.prototype.normalizedLocation;
+CrmApp.FullContact2DeducedLocation.prototype.normalizedLocation = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2DeducedLocation.prototype.deducedLocation;
+CrmApp.FullContact2DeducedLocation.prototype.deducedLocation = '';
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2Demographic = function() {};
 
@@ -412,37 +412,37 @@ CrmApp.FullContact2Demographic = function() {};
 /**
  * @type {string}
  */
-CrmApp.FullContact2Demographic.prototype.locationGeneral;
+CrmApp.FullContact2Demographic.prototype.locationGeneral = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2Demographic.prototype.age;
+CrmApp.FullContact2Demographic.prototype.age = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2Demographic.prototype.gender;
+CrmApp.FullContact2Demographic.prototype.gender = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2Demographic.prototype.ageRange;
+CrmApp.FullContact2Demographic.prototype.ageRange = '';
 
 
 /**
  * @type {CrmApp.FullContact2DeducedLocation}
  */
-CrmApp.FullContact2Demographic.prototype.locationDeduced;
+CrmApp.FullContact2Demographic.prototype.locationDeduced = null;
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2Website = function() {};
 
@@ -450,13 +450,13 @@ CrmApp.FullContact2Website = function() {};
 /**
  * @type {string}
  */
-CrmApp.FullContact2Website.prototype.url;
+CrmApp.FullContact2Website.prototype.url = '';
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2Organization = function() {};
 
@@ -464,25 +464,25 @@ CrmApp.FullContact2Organization = function() {};
 /**
  * @type {string}
  */
-CrmApp.FullContact2Organization.prototype.name;
+CrmApp.FullContact2Organization.prototype.name = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2Organization.prototype.title;
+CrmApp.FullContact2Organization.prototype.title = '';
 
 
 /**
  * @type {boolean}
  */
-CrmApp.FullContact2Organization.prototype.isPrimary;
+CrmApp.FullContact2Organization.prototype.isPrimary = false;
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2Chat = function() {};
 
@@ -490,13 +490,13 @@ CrmApp.FullContact2Chat = function() {};
 /**
  * @type {string}
  */
-CrmApp.FullContact2Chat.prototype.handle;
+CrmApp.FullContact2Chat.prototype.handle = '';
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2Photo = function() {};
 
@@ -504,31 +504,31 @@ CrmApp.FullContact2Photo = function() {};
 /**
  * @type {string}
  */
-CrmApp.FullContact2Photo.prototype.url;
+CrmApp.FullContact2Photo.prototype.url = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2Photo.prototype.typeId;
+CrmApp.FullContact2Photo.prototype.typeId = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2Photo.prototype.typeName;
+CrmApp.FullContact2Photo.prototype.typeName = '';
 
 
 /**
  * @type {boolean}
  */
-CrmApp.FullContact2Photo.prototype.isPrimary;
+CrmApp.FullContact2Photo.prototype.isPrimary = false;
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2Contact = function() {};
 
@@ -536,37 +536,37 @@ CrmApp.FullContact2Contact = function() {};
 /**
  * @type {string}
  */
-CrmApp.FullContact2Contact.prototype.familyName;
+CrmApp.FullContact2Contact.prototype.familyName = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2Contact.prototype.givenName;
+CrmApp.FullContact2Contact.prototype.givenName = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.FullContact2Contact.prototype.fullName;
+CrmApp.FullContact2Contact.prototype.fullName = '';
 
 
 /**
- * @type {Array.<CrmApp.FullContact2Website>}
+ * @type {Array<CrmApp.FullContact2Website>}
  */
-CrmApp.FullContact2Contact.prototype.websites;
+CrmApp.FullContact2Contact.prototype.websites = [];
 
 
 /**
- * @type {Object.<Array.<CrmApp.FullContact2Chat>>}
+ * @type {Object<Array<CrmApp.FullContact2Chat>>}
  */
-CrmApp.FullContact2Contact.prototype.chats;
+CrmApp.FullContact2Contact.prototype.chats = null;
 
 
 
 /**
  * FullContact v2 data.
- * @interface
+ * @constructor
  */
 CrmApp.FullContact2 = function() {};
 
@@ -574,43 +574,43 @@ CrmApp.FullContact2 = function() {};
 /**
  * @type {number}
  */
-CrmApp.FullContact2.prototype.likelihood;
+CrmApp.FullContact2.prototype.likelihood = 0;
 
 
 /**
  * @type {Array.<CrmApp.FullContact2Photo>}
  */
-CrmApp.FullContact2.prototype.photos;
+CrmApp.FullContact2.prototype.photos = [];
 
 
 /**
  * @type {CrmApp.FullContact2Contact}
  */
-CrmApp.FullContact2.prototype.contactInfo;
+CrmApp.FullContact2.prototype.contactInfo = null;
 
 
 /**
  * @type {Array.<CrmApp.FullContact2Organization>}
  */
-CrmApp.FullContact2.prototype.organizations;
+CrmApp.FullContact2.prototype.organizations = [];
 
 
 /**
  * @type {CrmApp.FullContact2Demographic}
  */
-CrmApp.FullContact2.prototype.demographics;
+CrmApp.FullContact2.prototype.demographics = null;
 
 
 /**
  * @type {Array<!CrmApp.FullContact2SocialProfile>}
  */
-CrmApp.FullContact2.prototype.socialProfiles;
+CrmApp.FullContact2.prototype.socialProfiles = [];
 
 
 
 /**
  * All available social data.
- * @interface
+ * @constructor
  */
 CrmApp.MetaContact = function() {};
 
@@ -618,13 +618,13 @@ CrmApp.MetaContact = function() {};
 /**
  * @type {?CrmApp.FullContact2} FullContact data
  */
-CrmApp.MetaContact.prototype.fc;
+CrmApp.MetaContact.prototype.fc = null;
 
 
 
 /**
  * ClearBit profile data.
- * @interface
+ * @constructor
  * @link https://clearbit.com/docs#attributes
  */
 CrmApp.ClearBitProfile = function() {};
@@ -633,55 +633,55 @@ CrmApp.ClearBitProfile = function() {};
 /**
  * @type {string}
  */
-CrmApp.ClearBitProfile.prototype.bio;
+CrmApp.ClearBitProfile.prototype.bio = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitProfile.prototype.handle;
+CrmApp.ClearBitProfile.prototype.handle = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitProfile.prototype.id;
+CrmApp.ClearBitProfile.prototype.id = '';
 
 
 /**
  * @type {number|undefined}
  */
-CrmApp.ClearBitProfile.prototype.followers;
+CrmApp.ClearBitProfile.prototype.followers = 0;
 
 
 /**
  * @type {number|undefined}
  */
-CrmApp.ClearBitProfile.prototype.following;
+CrmApp.ClearBitProfile.prototype.following = 0;
 
 
 /**
  * @type {string|undefined}
  */
-CrmApp.ClearBitProfile.prototype.location;
+CrmApp.ClearBitProfile.prototype.location = '';
 
 
 /**
  * @type {string|undefined}
  */
-CrmApp.ClearBitProfile.prototype.site;
+CrmApp.ClearBitProfile.prototype.site = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitProfile.prototype.avatar;
+CrmApp.ClearBitProfile.prototype.avatar = '';
 
 
 
 /**
  * ClearBit data.
- * @interface
+ * @constructor
  * @link https://clearbit.com/docs#person-api
  */
 CrmApp.ClearBit = function() {};
@@ -689,7 +689,7 @@ CrmApp.ClearBit = function() {};
 
 
 /**
- * @interface
+ * @constructor
  */
 CrmApp.ClearBitEmployment = function() {};
 
@@ -697,24 +697,24 @@ CrmApp.ClearBitEmployment = function() {};
 /**
  * @type {string}
  */
-CrmApp.ClearBitEmployment.prototype.domain;
+CrmApp.ClearBitEmployment.prototype.domain = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitEmployment.prototype.name;
+CrmApp.ClearBitEmployment.prototype.name = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitEmployment.prototype.title;
+CrmApp.ClearBitEmployment.prototype.title = '';
 
 
 
 /**
- * @interface
+ * @constructor
  */
 CrmApp.ClearBitCompany = function() {};
 
@@ -722,30 +722,30 @@ CrmApp.ClearBitCompany = function() {};
 /**
  * @type {string}
  */
-CrmApp.ClearBitCompany.prototype.name;
+CrmApp.ClearBitCompany.prototype.name = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitCompany.prototype.description;
+CrmApp.ClearBitCompany.prototype.description = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitCompany.prototype.legal_name;
+CrmApp.ClearBitCompany.prototype.legal_name = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitCompany.prototype.url;
+CrmApp.ClearBitCompany.prototype.url = '';
 
 
 
 /**
- * @interface
+ * @constructor
  */
 CrmApp.ClearBitName = function() {};
 
@@ -753,127 +753,127 @@ CrmApp.ClearBitName = function() {};
 /**
  * @type {string}
  */
-CrmApp.ClearBitName.prototype.givenName;
+CrmApp.ClearBitName.prototype.givenName = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitName.prototype.familyName;
+CrmApp.ClearBitName.prototype.familyName = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBitName.prototype.fullName;
+CrmApp.ClearBitName.prototype.fullName = '';
 
 
 /**
  * @type {CrmApp.ClearBitCompany}
  */
-CrmApp.ClearBit.prototype.company;
+CrmApp.ClearBit.prototype.company = null;
 
 
 /**
  * @type {CrmApp.ClearBitEmployment}
  */
-CrmApp.ClearBit.prototype.employment;
+CrmApp.ClearBit.prototype.employment = null;
 
 
 /**
  * @type {CrmApp.ClearBitName}
  */
-CrmApp.ClearBit.prototype.name;
+CrmApp.ClearBit.prototype.name = null;
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBit.prototype.gender;
+CrmApp.ClearBit.prototype.gender = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBit.prototype.location;
+CrmApp.ClearBit.prototype.location = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.ClearBit.prototype.bio;
+CrmApp.ClearBit.prototype.bio = '';
 
 
 /**
  * @type {string} The best avatar url we have
  */
-CrmApp.ClearBit.prototype.avatar;
+CrmApp.ClearBit.prototype.avatar = '';
 
 
 /**
  * @type {CrmApp.ClearBitProfile}
  */
-CrmApp.ClearBit.prototype.facebook;
+CrmApp.ClearBit.prototype.facebook = null;
 
 
 /**
  * @type {CrmApp.ClearBitProfile}
  */
-CrmApp.ClearBit.prototype.github;
+CrmApp.ClearBit.prototype.github = null;
 
 
 /**
  * @type {CrmApp.ClearBitProfile}
  */
-CrmApp.ClearBit.prototype.twitter;
+CrmApp.ClearBit.prototype.twitter = null;
 
 
 /**
  * @type {CrmApp.ClearBitProfile}
  */
-CrmApp.ClearBit.prototype.linkedin;
+CrmApp.ClearBit.prototype.linkedin = null;
 
 
 /**
  * @type {CrmApp.ClearBitProfile}
  */
-CrmApp.ClearBit.prototype.googleplus;
+CrmApp.ClearBit.prototype.googleplus = null;
 
 
 /**
  * @type {CrmApp.ClearBitProfile}
  */
-CrmApp.ClearBit.prototype.angellist;
+CrmApp.ClearBit.prototype.angellist = null;
 
 
 /**
  * @type {CrmApp.ClearBitProfile}
  */
-CrmApp.ClearBit.prototype.aboutme;
+CrmApp.ClearBit.prototype.aboutme = null;
 
 
 /**
  * @type {CrmApp.ClearBitProfile}
  */
-CrmApp.ClearBit.prototype.gravatar;
+CrmApp.ClearBit.prototype.gravatar = null;
 
 
 /**
  * @type {?CrmApp.ClearBit} ClearBit data.
  */
-CrmApp.MetaContact.prototype.cb;
+CrmApp.MetaContact.prototype.cb = null;
 
 
 /**
  * @type {?CrmApp.PiplRespond} Pipl data, formatted to FullContact.
  */
-CrmApp.MetaContact.prototype.pp;
+CrmApp.MetaContact.prototype.pp = null;
 
 
 
 /**
  * All available social data.
- * @interface
+ * @constructor
  * @extends {CrmApp.FullContact2SocialProfile}
  */
 CrmApp.ProfileDetail = function() {};
@@ -882,14 +882,14 @@ CrmApp.ProfileDetail = function() {};
 /**
  * @type {?Object} raw data from the server.
  */
-CrmApp.ProfileDetail.prototype.raw;
+CrmApp.ProfileDetail.prototype.raw = null;
 
 
 
 /**
  * Pipl respond data.
  * @link http://dev.pipl.com/docs/read/search_api/response
- * @interface
+ * @constructor
  */
 CrmApp.PiplRespond = function() {};
 
@@ -898,7 +898,7 @@ CrmApp.PiplRespond = function() {};
 /**
  * Pipl respond data.
  * @link http://dev.pipl.com/docs/read/search_api/data#source
- * @interface
+ * @constructor
  */
 CrmApp.PiplSource = function() {};
 
@@ -906,19 +906,19 @@ CrmApp.PiplSource = function() {};
 /**
  * @type {string}
  */
-CrmApp.PiplSource.prototype.domain;
+CrmApp.PiplSource.prototype.domain = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplSource.prototype.url;
+CrmApp.PiplSource.prototype.url = '';
 
 
 
 /**
  * Pipl name data.
- * @interface
+ * @constructor
  */
 CrmApp.PiplName = function() {};
 
@@ -926,32 +926,32 @@ CrmApp.PiplName = function() {};
 /**
  * @type {string}
  */
-CrmApp.PiplName.prototype.first;
+CrmApp.PiplName.prototype.first = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplName.prototype.middle;
+CrmApp.PiplName.prototype.middle = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplName.prototype.last;
+CrmApp.PiplName.prototype.last = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplName.prototype.display;
+CrmApp.PiplName.prototype.display = '';
 
 
 
 /**
  * Pipl respond data.
  * @link http://dev.pipl.com/docs/read/search_api/data#address
- * @interface
+ * @constructor
  */
 CrmApp.PiplAddress = function() {};
 
@@ -959,50 +959,50 @@ CrmApp.PiplAddress = function() {};
 /**
  * @type {string} two latter code, eg: US
  */
-CrmApp.PiplAddress.prototype.country;
+CrmApp.PiplAddress.prototype.country = '';
 
 
 /**
  * @type {string} two latter code
  */
-CrmApp.PiplAddress.prototype.state;
+CrmApp.PiplAddress.prototype.state = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplAddress.prototype.city;
+CrmApp.PiplAddress.prototype.city = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplAddress.prototype.po_box;
+CrmApp.PiplAddress.prototype.po_box = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplAddress.prototype.street;
+CrmApp.PiplAddress.prototype.street = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplAddress.prototype.apartment;
+CrmApp.PiplAddress.prototype.apartment = '';
 
 
 /**
  * @type {string}
  */
-CrmApp.PiplAddress.prototype.display;
+CrmApp.PiplAddress.prototype.display = '';
 
 
 
 /**
  * Pipl respond data.
  * @link http://dev.pipl.com/docs/read/search_api/data#phone
- * @interface
+ * @constructor
  */
 CrmApp.PiplPhone = function() {};
 
@@ -1010,7 +1010,7 @@ CrmApp.PiplPhone = function() {};
 
 /**
  * Pipl text content data.
- * @interface
+ * @constructor
  */
 CrmApp.PiplContent = function() {};
 
@@ -1018,13 +1018,13 @@ CrmApp.PiplContent = function() {};
 /**
  * @type {string}
  */
-CrmApp.PiplContent.prototype.content;
+CrmApp.PiplContent.prototype.content = '';
 
 
 
 /**
  * Pipl text content data.
- * @interface
+ * @constructor
  */
 CrmApp.PiplUrl = function() {};
 
@@ -1032,14 +1032,14 @@ CrmApp.PiplUrl = function() {};
 /**
  * @type {string}
  */
-CrmApp.PiplUrl.prototype.url;
+CrmApp.PiplUrl.prototype.url = '';
 
 
 
 /**
  * Pipl people data.
  * @link http://dev.pipl.com/docs/read/search_api/data#person
- * @interface
+ * @constructor
  */
 CrmApp.PiplPerson = function() {};
 
@@ -1047,26 +1047,26 @@ CrmApp.PiplPerson = function() {};
 /**
  * @type {Array<CrmApp.PiplName>}
  */
-CrmApp.PiplPerson.prototype.names;
+CrmApp.PiplPerson.prototype.names = [];
 
 
 /**
  * @type {Array<CrmApp.PiplAddress>}
  */
-CrmApp.PiplPerson.prototype.address;
+CrmApp.PiplPerson.prototype.address = [];
 
 
 /**
  * @type {Array<CrmApp.PiplUrl>}
  */
-CrmApp.PiplPerson.prototype.images;
+CrmApp.PiplPerson.prototype.images = [];
 
 
 
 /**
  * Pipl respond data.
  * @link http://dev.pipl.com/docs/read/search_api/data#record
- * @interface
+ * @constructor
  */
 CrmApp.PiplRecord = function() {};
 
@@ -1074,54 +1074,54 @@ CrmApp.PiplRecord = function() {};
 /**
  * @type {Array<CrmApp.PiplContent>}
  */
-CrmApp.PiplRecord.prototype.usernames;
+CrmApp.PiplRecord.prototype.usernames = [];
 
 
 /**
  * @type {Array<CrmApp.PiplContent>}
  */
-CrmApp.PiplRecord.prototype.user_ids;
+CrmApp.PiplRecord.prototype.user_ids = [];
 
 
 /**
  * @type {Array<CrmApp.PiplUrl>}
  */
-CrmApp.PiplRecord.prototype.images;
+CrmApp.PiplRecord.prototype.images = [];
 
 
 /**
  * @type {Array<string>}
  */
-CrmApp.PiplRecord.prototype.names;
+CrmApp.PiplRecord.prototype.names = [];
 
 
 /**
  * @type {CrmApp.PiplSource}
  */
-CrmApp.PiplRecord.prototype.source;
+CrmApp.PiplRecord.prototype.source = null;
 
 
 /**
  * @type {Array<CrmApp.PiplAddress>}
  */
-CrmApp.PiplRecord.prototype.addresses;
+CrmApp.PiplRecord.prototype.addresses = [];
 
 
 /**
  * @type {Array<CrmApp.PiplPhone>}
  */
-CrmApp.PiplRecord.prototype.phones;
+CrmApp.PiplRecord.prototype.phones = [];
 
 
 /**
  * @type {Array<CrmApp.PiplRecord>}
  */
-CrmApp.PiplRespond.prototype.records;
+CrmApp.PiplRespond.prototype.records = [];
 
 
 /**
  * @type {CrmApp.PiplPerson}
  */
-CrmApp.PiplRespond.prototype.person;
+CrmApp.PiplRespond.prototype.person = null;
 
 
