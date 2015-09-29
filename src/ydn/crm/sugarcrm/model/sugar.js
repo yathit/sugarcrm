@@ -950,6 +950,15 @@ ydn.crm.su.model.Sugar.prototype.getUserRecordName = function() {
 
 
 /**
+ * Get name value of Users module record id of login user.
+ * @return {string}
+ */
+ydn.crm.su.model.Sugar.prototype.getUserRecordEmail = function() {
+  return this.user_ ? this.user_.getStringValue('email1') || '' : '';
+};
+
+
+/**
  * Archive an email to sugarcrm.
  * Attachments are ignored.
  * @param {ydn.gmail.Utils.EmailInfo} info email details.
