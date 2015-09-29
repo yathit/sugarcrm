@@ -970,11 +970,12 @@ ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
     opt_parent_module, opt_parent_id) {
   var types = ['archived', 'campaign', 'draft', 'inbound', 'out'];
   var text = info.text;
-  if (text) {
+  if (!text) {
     var div = document.createElement('div');
     div.innerHTML = info.html;
     text = div.innerText;
   }
+  var type = 'archived';
 
   // ISO: "2014-04-02T03:32:20.522Z"
   // SugarCRM: "2013-09-20 22:10:00"
@@ -994,7 +995,7 @@ ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
     'parent_type': opt_parent_module || '',
     'status': 'read',
     'to_addrs': info.to_addrs,
-    'type': 'archived'
+    'type': type
   };
   if (!this.isVersion7()) {
     var parts = obj['date_sent'].split(' ');
