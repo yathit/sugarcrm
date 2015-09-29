@@ -13,7 +13,7 @@ ydn.msg.initPipe('dev');
 var user = ydn.crm.ui.UserSetting.getInstance();
 var info = {
   'from_addr': 'kid60@example.org',
-  'to_addrs': 'stefano@digita.it, nettie@example.name',
+  'to_addrs': 'robert@1reason.com, nettie@example.name',
   'date_sent': '2014-11-29T01:05:00.000Z',
   'html': '<span class="comment-copy">That is why StackOverflow.com is awesome! If you dont know how to do something, or just want to verify something, just google the problem out and the first link would be StackOveflow.com, in most cases.</span>',
   'mailbox_id': '',
@@ -46,7 +46,7 @@ var info2 = {
 };
 var info3 = {
   'from_addr': 'kyawtun@yathit.com',
-  'to_addrs': 'stefano@digita.it, ica_visa_hq_administrator@ica.gov.sg,' +
+  'to_addrs': 'robert@1reason.com, ica_visa_hq_administrator@ica.gov.sg,' +
   ' planupdate@insightly.com, kyaw@ywathit.org, tun@ywathit.org,' +
   ' okokisan@ywathit.org, saokisan@ywathit.org',
   'date_sent': '2014-11-29T01:05:00.000Z',
