@@ -969,8 +969,13 @@ ydn.crm.su.model.Sugar.prototype.getUserRecordEmail = function() {
 ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
     opt_parent_module, opt_parent_id) {
   var types = ['archived', 'campaign', 'draft', 'inbound', 'out'];
-  var div = document.createElement('div');
-  div.innerHTML = info.html;
+  var text = info.text;
+  if (text) {
+    var div = document.createElement('div');
+    div.innerHTML = info.html;
+    text = div.innerText;
+  }
+
   // ISO: "2014-04-02T03:32:20.522Z"
   // SugarCRM: "2013-09-20 22:10:00"
   var date_str = ydn.crm.su.utils.isValidDate(info.date_sent) ?
@@ -979,7 +984,7 @@ ydn.crm.su.model.Sugar.prototype.archiveEmail = function(info,
     'assigned_user_id': this.getUserRecordId(),
     'assigned_user_name': this.getUserRecordName(),
     'date_sent': date_str,
-    'description': div.textContent,
+    'description': text,
     'description_html': info.html,
     'from_addr': info.from_addr,
     'mailbox_id': info.mailbox_id || '',
