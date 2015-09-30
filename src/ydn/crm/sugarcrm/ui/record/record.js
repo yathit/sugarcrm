@@ -314,11 +314,12 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
   ele_header.classList.add(ydn.crm.ui.CSS_CLASS_FLEX_BAR);
 
   var google_svg = ydn.crm.ui.createSvgIcon('google', 'icons-small');
-  ele_header.innerHTML = `<span class="${ydn.crm.su.ui.record.CSS_HEADER_ICON}"></span>
+  ele_header.innerHTML = `<a class="${ydn.crm.su.ui.record.CSS_HEADER_ICON}"
+      target="_blank" data-tooltip="Open in SugarCRM"></a>
   <a data-tooltip="View in Gmail contact" class="${ydn.crm.ui.CSS_CLASS_BADGE_ICON} google">
     ${google_svg}
   </a>
-  <a class="${ydn.crm.su.ui.record.CSS_HEADER_TITLE} center" data-tooltip="Open in SugarCRM"></a>
+  <a class="${ydn.crm.su.ui.record.CSS_HEADER_TITLE} center"></a>
   <span class="center"></span>`;
 
   this.head_menu.render(ele_header);
@@ -1319,9 +1320,10 @@ ydn.crm.su.ui.record.Record.prototype.resetHeader = function() {
   if (ydn.crm.su.ui.record.Record.DEBUG) {
     window.console.log('resetHeader' + m_name + ':' + record);
   }
-  var badge = ele_header.querySelector('span.' +
+  var badge = ele_header.querySelector('.' +
           ydn.crm.su.ui.record.CSS_HEADER_ICON);
   badge.textContent = ydn.crm.su.toModuleSymbol(m_name);
+  badge.removeAttribute('href');
   var g_contact = ele_header.querySelector('a.google');
   goog.style.setElementShown(g_contact, false);
   g_contact.removeAttribute('href');
@@ -1361,13 +1363,14 @@ ydn.crm.su.ui.record.Record.prototype.refreshHeader = function() {
   if (ydn.crm.su.ui.record.Record.DEBUG) {
     window.console.log('refreshHeader:' + m_name + ':' + record);
   }
-  var ele_title = ele_header.querySelector('a.' + ydn.crm.su.ui.record.CSS_HEADER_TITLE);
+  var ele_title = ele_header.querySelector('.' + ydn.crm.su.ui.record.CSS_HEADER_TITLE);
+  var ele_icon = ele_header.querySelector('a.' + ydn.crm.su.ui.record.CSS_HEADER_ICON);
   var neck = this.getElement().querySelector('.neck');
   goog.style.setElementShown(neck, false);
   if (record.isNew()) {
     ele_title.innerHTML = '';
-    ele_title.href = '';
-    ele_title.target = '';
+    ele_icon.href = '';
+    ele_icon.removeAttribute('data-tooltip');
     this.head_menu.setEnableMenuItem(ydn.crm.su.ui.record.Record.MenuName.DUPLICATE, false);
   } else {
     if (record.isDeleted()) {
@@ -1380,9 +1383,8 @@ ydn.crm.su.ui.record.Record.prototype.refreshHeader = function() {
       neck.textContent = chrome.i18n.getMessage('record_deleted',
           [record.value('modified_by_name'), ago]);
     }
-    ele_title.textContent = record.getLabel();
-    ele_title.href = record.getViewLink();
-    ele_title.target = '_blank';
+    ele_icon.setAttribute('data-tooltip', 'View in CRM');
+    ele_icon.href = record.getViewLink();
     this.head_menu.setEnableMenuItem(ydn.crm.su.ui.record.Record.MenuName.DUPLICATE, true);
   }
 };
