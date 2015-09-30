@@ -54,7 +54,6 @@ goog.require('ydn.ui.MessageDialog');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.record.Record = function(model, opt_dom, opt_parent) {
   goog.base(this, opt_dom);
@@ -793,9 +792,7 @@ ydn.crm.su.ui.record.Record.prototype.setDirty = function(val) {
  */
 ydn.crm.su.ui.record.Record.prototype.getDirty = function() {
   var btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
-  var cancel = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
-  return goog.style.isElementShown(btn);
-  return goog.style.isElementShown(cancel);
+  goog.style.isElementShown(btn);
 };
 
 
