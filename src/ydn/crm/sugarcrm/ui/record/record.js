@@ -792,7 +792,7 @@ ydn.crm.su.ui.record.Record.prototype.setDirty = function(val) {
  */
 ydn.crm.su.ui.record.Record.prototype.getDirty = function() {
   var btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
-  goog.style.isElementShown(btn);
+  return goog.style.isElementShown(btn);
 };
 
 

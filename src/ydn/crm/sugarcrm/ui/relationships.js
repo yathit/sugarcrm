@@ -37,7 +37,6 @@ goog.require('ydn.crm.su.ui.widget.SelectRecord');
  * @param {goog.dom.DomHelper=} opt_dom Optional DOM helper.
  * @constructor
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.Relationships = function(meta, mn, opt_dom) {
   ydn.crm.su.ui.Relationships.base(this, 'constructor', opt_dom);
@@ -448,7 +447,6 @@ ydn.crm.su.ui.Relationships.ItemModel;
  * @param {goog.dom.DomHelper=} opt_dom Optional DOM helper.
  * @constructor
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.Relationships.Item = function(meta, model, opt_dom) {
   ydn.crm.su.ui.Relationships.Item.base(this, 'constructor', opt_dom);

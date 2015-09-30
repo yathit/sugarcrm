@@ -36,7 +36,6 @@ goog.require('ydn.crm.su.model.events');
  * @constructor
  * @extends {goog.events.EventTarget}
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.model.Search = function(sugar) {
   goog.base(this);

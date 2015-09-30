@@ -55,7 +55,6 @@ ydn.crm.su.model.events.TYPES_MODULE = [
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.model.events.Event = function(event_type, opt_event_target) {
   goog.base(this, event_type, opt_event_target);
@@ -302,7 +301,6 @@ goog.inherits(ydn.crm.su.model.events.GDataUpdatedEvent, ydn.crm.su.model.events
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.model.events.SearchEvent = function(event_type, opt_event_target) {
   goog.base(this, event_type, opt_event_target);

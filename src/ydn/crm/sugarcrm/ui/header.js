@@ -38,7 +38,6 @@ goog.require('ydn.ui');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.Header = function(model, dom) {
   goog.base(this, dom);

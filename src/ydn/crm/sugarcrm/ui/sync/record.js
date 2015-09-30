@@ -17,7 +17,6 @@ goog.require('ydn.crm.inj.sugar.RecordRenderer');
  * @constructor
  * @struct
  * @extends {goog.ui.Control}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.Record = function(dom, model) {
   goog.base(this, null, null, dom);

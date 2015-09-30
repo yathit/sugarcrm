@@ -34,7 +34,6 @@ goog.require('ydn.crm.ui.Refreshable');
  * @extends {goog.ui.Component}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @implements {ydn.crm.ui.Refreshable}
  */
 ydn.crm.su.ui.field.Field = function(info, opt_renderer, opt_domHelper) {

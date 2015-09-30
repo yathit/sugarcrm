@@ -15,7 +15,6 @@ goog.require('ydn.crm.su.model.Record');
  * @constructor
  * @extends {ydn.crm.su.model.Record}
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.model.ResultRecord = function(parent, result) {
   goog.asserts.assert(result, 'empty result');

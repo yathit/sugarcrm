@@ -45,7 +45,6 @@ goog.require('ydn.crm.su.utils');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.activity.Panel = function(model, dom) {
   goog.base(this, dom);

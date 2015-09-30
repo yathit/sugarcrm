@@ -16,7 +16,6 @@ goog.require('goog.ui.ControlRenderer');
  * @constructor
  * @struct
  * @extends {goog.ui.ControlRenderer}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.inj.sugar.RecordRenderer = function() {
   goog.base(this);

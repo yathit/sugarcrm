@@ -20,7 +20,6 @@ goog.require('ydn.crm.su');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.ModuleManager = function(dom, model) {
   goog.base(this, dom);

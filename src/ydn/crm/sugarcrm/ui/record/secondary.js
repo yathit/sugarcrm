@@ -37,7 +37,6 @@ goog.require('ydn.crm.ui');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.record.Secondary = function(model, opt_dom) {
   goog.base(this, opt_dom);

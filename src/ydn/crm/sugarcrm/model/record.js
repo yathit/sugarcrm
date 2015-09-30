@@ -48,7 +48,6 @@ goog.require('ydn.msg');
  * @constructor
  * @extends {goog.events.EventTarget}
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.model.Record = function(parent, r) {
   goog.base(this);

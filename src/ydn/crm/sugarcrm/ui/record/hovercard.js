@@ -36,7 +36,6 @@ goog.require('templ.ydn.crm.su');
  * @constructor
  * @struct
  * @extends {goog.ui.HoverCard}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.record.HoverCard = function(sugar, ul, opt_dom) {
   var trigger = /** @type {Document} */(/** @type {*} */(ul));

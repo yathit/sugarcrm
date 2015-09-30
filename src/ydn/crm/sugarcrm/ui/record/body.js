@@ -32,7 +32,6 @@ goog.provide('ydn.crm.su.ui.record.Body');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.record.Body = function(model, dom) {
   goog.base(this, dom);

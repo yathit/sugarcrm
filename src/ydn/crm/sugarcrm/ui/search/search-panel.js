@@ -23,7 +23,6 @@ goog.require('ydn.crm.su.ui.record.Record');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @deprecated use {@link ydn.crm.su.ui.HoverResultList} instead.
  */
 ydn.crm.su.ui.SearchPanel = function(model, opt_dom) {

@@ -21,7 +21,6 @@ goog.require('ydn.social.MetaContact');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.group.AbstractGroup = function(model, opt_dom) {
   goog.base(this, opt_dom);

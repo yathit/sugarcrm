@@ -42,7 +42,6 @@ goog.require('ydn.crm.su.ui.events');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.HomeBar = function(model, opt_dom) {
   ydn.crm.su.ui.HomeBar.base(this, 'constructor', opt_dom);

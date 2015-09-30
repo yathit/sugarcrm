@@ -33,7 +33,6 @@ ydn.crm.su.ui.events.Type = {
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.events.ChangedEvent = function(patches, opt_event_target) {
   goog.base(this, ydn.crm.su.ui.events.Type.CHANGE, opt_event_target);
@@ -54,7 +53,6 @@ goog.inherits(ydn.crm.su.ui.events.ChangedEvent, goog.events.Event);
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.events.FieldMenuActionEvent = function(command, opt_event_target) {
   goog.base(this, ydn.crm.su.ui.events.Type.ACTION, opt_event_target);
@@ -75,7 +73,6 @@ goog.inherits(ydn.crm.su.ui.events.FieldMenuActionEvent, goog.events.Event);
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.events.NewRecord = function(name, opt_event_target) {
   goog.base(this, ydn.crm.su.ui.events.Type.NEW, opt_event_target);
@@ -96,7 +93,6 @@ goog.inherits(ydn.crm.su.ui.events.NewRecord, goog.events.Event);
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.events.Created = function(record, opt_event_target) {
   goog.base(this, ydn.crm.su.ui.events.Type.CREATED, opt_event_target);

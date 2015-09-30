@@ -17,7 +17,6 @@ goog.require('ydn.crm.base');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @deprecated not using
  */
 ydn.crm.ui.SugarSetup = function(opt_dom) {

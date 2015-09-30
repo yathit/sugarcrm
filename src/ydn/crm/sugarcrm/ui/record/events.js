@@ -16,7 +16,6 @@ goog.require('ydn.crm.su.ui.setting.Field');
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.events.SettingChangeEvent = function(setting, key, value, opt_event_target) {
   goog.base(this, ydn.crm.su.ui.events.Type.SETTING_CHANGE, opt_event_target);
@@ -48,7 +47,6 @@ goog.inherits(ydn.crm.su.ui.events.SettingChangeEvent, goog.events.Event);
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.events.EditEvent = function(value, opt_event_target) {
   goog.base(this, ydn.crm.su.ui.events.Type.EDIT, opt_event_target);

@@ -14,7 +14,6 @@ goog.require('ydn.ui.FlyoutMenu');
  * Basic field renderer for string field value.
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.field.FieldRenderer = function() {
 

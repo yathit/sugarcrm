@@ -31,7 +31,6 @@ goog.require('ydn.crm.su.ui.Record');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.ui.SyncPanel = function(dom, model) {
   goog.base(this, dom);

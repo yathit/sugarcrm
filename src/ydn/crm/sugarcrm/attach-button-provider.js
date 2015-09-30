@@ -40,7 +40,6 @@ goog.require('ydn.gmail.Utils');
  * @constructor
  * @extends {goog.events.EventTarget}
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @implements {ydn.crm.su.IAttachButtonProvider}
  */
 ydn.crm.su.AttachButtonProvider = function(user, sugar, gmail_observer) {

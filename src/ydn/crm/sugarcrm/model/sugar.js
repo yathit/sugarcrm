@@ -65,7 +65,6 @@ goog.require('ydn.time');
  * @extends {goog.events.EventTarget}
  * @implements {ydn.crm.su.Meta}
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.model.Sugar = function(about, arr, opt_info, opt_login_info, opt_availableModules) {
   goog.base(this);
