@@ -313,23 +313,14 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
   ele_header.classList.add(ydn.crm.su.ui.record.CSS_HEADER);
   ele_header.classList.add(ydn.crm.ui.CSS_CLASS_FLEX_BAR);
 
-  var title = dom.createDom('a', {
-    'class': ydn.crm.su.ui.record.CSS_HEADER_TITLE + ' center',
-    'title': 'Open in SugarCRM'
-  });
-  var center = dom.createDom('span', 'center');
+  var google_svg = ydn.crm.ui.createSvgIcon('google', 'icons-small');
+  ele_header.innerHTML = `<span class="${ydn.crm.su.ui.record.CSS_HEADER_ICON}"></span>
+  <a data-tooltip="View in Gmail contact" class="${ydn.crm.ui.CSS_CLASS_BADGE_ICON} google">
+    ${google_svg}
+  </a>
+  <a class="${ydn.crm.su.ui.record.CSS_HEADER_TITLE} center" data-tooltip="Open in SugarCRM"></a>
+  <span class="center"></span>`;
 
-  var record_type_badge = dom.createDom('span',
-      ydn.crm.su.ui.record.CSS_HEADER_ICON);
-  var gmail_icon = dom.createDom('a', {
-    'data-tooltip': 'View in Gmail contact',
-    'class': ydn.crm.ui.CSS_CLASS_BADGE_ICON + ' google'
-  }, ydn.crm.ui.createSvgIcon('google', 'icons-small'));
-
-  ele_header.appendChild(record_type_badge);
-  ele_header.appendChild(gmail_icon);
-  ele_header.appendChild(title);
-  ele_header.appendChild(center);
   this.head_menu.render(ele_header);
 
   this.validateSecondaryPanel_();
