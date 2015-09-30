@@ -29,7 +29,8 @@
 }
 
 .maia-button.blue {
-  background-image: linear-gradient(#709ffb, #5583df)
+  background-image: linear-gradient(#709ffb, #5583df);
+  border: 1px solid #dbdbdb;
 }
 
 .maia-button.blue:hover, .maia-button.blue:focus {
@@ -109,4 +110,8 @@ a.maia-button.maia-button-secondary {
   background-image: linear-gradient(top, #fafafa, #f9f9f9);
   border-color: #eee;
   color: #aaa !important
+}
+
+.maia-button.small {
+  padding: 2px 8px;
 }

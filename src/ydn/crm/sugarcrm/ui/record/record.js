@@ -34,11 +34,11 @@ goog.require('ydn.crm.su.ui.events');
 goog.require('ydn.crm.su.ui.field.Field');
 goog.require('ydn.crm.su.ui.record.Body');
 goog.require('ydn.crm.su.ui.record.Default');
-goog.require('ydn.crm.su.ui.record.FooterRenderer');
 goog.require('ydn.crm.su.ui.record.Secondary');
 goog.require('ydn.crm.su.ui.widget.SelectRecord');
 goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.StatusBar');
+goog.require('ydn.crm.templ');
 goog.require('ydn.debug.ILogger');
 goog.require('ydn.ui');
 goog.require('ydn.ui.FlyoutMenu');
@@ -86,13 +86,6 @@ ydn.crm.su.ui.record.Record = function(model, opt_dom, opt_parent) {
    * @type {ydn.crm.su.ui.record.Secondary}
    */
   this.secondary_panel = null;
-  /**
-   * @final
-   * @protected
-   * @type {ydn.crm.su.ui.record.FooterRenderer}
-   */
-  this.footer_panel = ydn.crm.su.ui.record.FooterRenderer.getInstance();
-
 
   this.addChild(this.body_panel, true);
 
@@ -264,10 +257,42 @@ ydn.crm.su.ui.record.Record.prototype.getHeaderElement = function() {
 
 
 /**
+ * @return {Element}
+ */
+ydn.crm.su.ui.record.Record.prototype.getFooterElement = function() {
+  return this.getElement().querySelector('.' + ydn.crm.su.ui.record.Record.CSS_CLASS_FOOTER);
+};
+
+
+/**
+ * @return {Element}
+ */
+ydn.crm.su.ui.record.Record.prototype.getMsgElement = function() {
+  return this.getElement().querySelector(
+      '.' + ydn.crm.su.ui.record.Record.CSS_CLASS_FOOTER + ' div.' +
+      ydn.crm.su.ui.record.Record.CSS_CLASS_MESSAGE + '');
+};
+
+
+/**
  * @const
  * @type {string} error class
  */
 ydn.crm.su.ui.record.Record.CSS_CLASS_NECK = 'neck';
+
+
+/**
+ * @const
+ * @type {string} CSS class name for secondary records panel.
+ */
+ydn.crm.su.ui.record.Record.CSS_CLASS_FOOTER = 'record-footer';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.su.ui.record.Record.CSS_CLASS_MESSAGE = 'message';
 
 
 /**
@@ -301,22 +326,19 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
     'data-tooltip': 'View in Gmail contact',
     'class': ydn.crm.ui.CSS_CLASS_BADGE_ICON + ' google'
   }, ydn.crm.ui.createSvgIcon('google', 'icons-small'));
-  var save_btn = dom.createDom('span', ydn.crm.ui.CSS_CLASS_OK_BUTTON + ' maia-button blue',
-      'Save');
-  save_btn.setAttribute('data-tooltip', 'Save or Show changes (Alt+Click)');
 
   ele_header.appendChild(record_type_badge);
   ele_header.appendChild(gmail_icon);
   ele_header.appendChild(title);
   ele_header.appendChild(center);
-  ele_header.appendChild(save_btn);
   this.head_menu.render(ele_header);
 
   this.validateSecondaryPanel_();
 
-  var footer = dom.createDom('div', ydn.crm.su.ui.record.FooterRenderer.CSS_CLASS);
+  var footer = dom.createDom('div', ydn.crm.su.ui.record.Record.CSS_CLASS_FOOTER);
+  footer.innerHTML = ydn.crm.templ.renderRecordFooter();
+
   root.appendChild(footer);
-  this.footer_panel.createDom(this);
 };
 
 
@@ -331,7 +353,7 @@ ydn.crm.su.ui.record.Record.prototype.enterDocument = function() {
    */
   var model = this.getModel();
 
-  var footer_ele = this.getElement().querySelector('.' + ydn.crm.su.ui.record.FooterRenderer.CSS_CLASS);
+  var footer_ele = this.getElement().querySelector('.' + ydn.crm.su.ui.record.Record.CSS_CLASS_FOOTER);
   var menu_ele = this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_HEAD +
       ' .' + ydn.ui.FlyoutMenu.CSS_CLASS);
   hd.listen(model, ydn.crm.su.model.events.Type.MODULE_CHANGE, this.handleModuleChanged);
@@ -343,8 +365,10 @@ ydn.crm.su.ui.record.Record.prototype.enterDocument = function() {
   hd.listen(this, ydn.crm.su.ui.events.Type.CHANGE, this.handleInputChanged);
   hd.listen(menu_ele, 'click', this.handleHeaderMenuClick);
 
-  var ok_btn = this.getHeaderElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  var ok_btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  var cancel_btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
   hd.listen(ok_btn, 'click', this.onSaveClick);
+  hd.listen(cancel_btn, 'click', this.onCancelClick);
 
   this.reset();
 };
@@ -519,6 +543,17 @@ ydn.crm.su.ui.record.Record.prototype.doSave = function(opt_confirm) {
     return goog.async.Deferred.fail(new Error('Nothing to save.'));
   }
 };
+
+
+/**
+ * @protected
+ * @param {goog.events.BrowserEvent} e
+ */
+ydn.crm.su.ui.record.Record.prototype.onCancelClick = function(e) {
+  e.stopPropagation();
+  this.reset();
+};
+
 
 
 /**
@@ -745,8 +780,10 @@ ydn.crm.su.ui.record.Record.prototype.handleInputChanged = function(e) {
  * @param {boolean} val
  */
 ydn.crm.su.ui.record.Record.prototype.setDirty = function(val) {
-  var btn = this.getHeaderElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  var btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  var cancel = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
   goog.style.setElementShown(btn, !!val);
+  goog.style.setElementShown(cancel, !!val);
 };
 
 
@@ -755,8 +792,10 @@ ydn.crm.su.ui.record.Record.prototype.setDirty = function(val) {
  * @return {boolean} dirty state.
  */
 ydn.crm.su.ui.record.Record.prototype.getDirty = function() {
-  var btn = this.getHeaderElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  var btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  var cancel = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
   return goog.style.isElementShown(btn);
+  return goog.style.isElementShown(cancel);
 };
 
 
@@ -976,7 +1015,7 @@ ydn.crm.su.ui.record.Record.prototype.reset = function() {
   this.fixHeightForScrollbar_();
   this.resetHeader();
   this.refreshHeader();
-  this.footer_panel.reset(this);
+  this.resetFooter();
   this.body_panel.reset(this.getEditMode());
   this.body_panel.refresh();
   if (model.isNew()) {
@@ -1013,7 +1052,7 @@ ydn.crm.su.ui.record.Record.prototype.refresh = function() {
     this.getElement().classList.remove(ydn.crm.ui.CSS_CLASS_EMPTY);
   }
   this.refreshHeader();
-  this.footer_panel.reset(this);
+  this.resetFooter();
   this.body_panel.refresh();
   if (this.secondary_panel) {
     this.secondary_panel.refresh();
@@ -1301,11 +1340,25 @@ ydn.crm.su.ui.record.Record.prototype.resetHeader = function() {
 
   this.head_menu.setItems(this.getMenuItems());
 
-  var ok = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
-  goog.style.setElementShown(ok, false);
-
   var neck = this.getElement().querySelector('.neck');
   neck.textContent = '';
+};
+
+
+/**
+ * Reset UI for new model.
+ */
+ydn.crm.su.ui.record.Record.prototype.resetFooter = function() {
+
+  var footer = this.getFooterElement();
+  var cancel = footer.querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
+  var ok = footer.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  goog.style.setElementShown(cancel, false);
+  goog.style.setElementShown(ok, false);
+
+  var msg = footer.querySelector('.' + ydn.crm.su.ui.record.Record.CSS_CLASS_MESSAGE);
+  msg.textContent = '';
+  msg.classList.remove(ydn.crm.ui.CSS_CLASS_ERROR);
 };
 
 
