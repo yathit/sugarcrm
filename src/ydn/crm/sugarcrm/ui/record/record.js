@@ -313,21 +313,33 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
   ele_header.classList.add(ydn.crm.su.ui.record.CSS_HEADER);
   ele_header.classList.add(ydn.crm.ui.CSS_CLASS_FLEX_BAR);
 
-  var google_svg = ydn.crm.ui.createSvgIcon('google', 'icons-small');
+  var edit_svg = ydn.crm.ui.createSvgIcon('pencil', 'icons-small');
   ele_header.innerHTML = `<a class="${ydn.crm.su.ui.record.CSS_HEADER_ICON}"
-      target="_blank" data-tooltip="Open in SugarCRM"></a>
-  <a data-tooltip="View in Gmail contact" class="${ydn.crm.ui.CSS_CLASS_BADGE_ICON} google">
-    ${google_svg}
-  </a>
+      target="_blank" title="Open in SugarCRM"></a>
+  <a title="View in Gmail contact" class="${ydn.crm.ui.CSS_CLASS_BADGE_ICON} google"></a>
   <a class="${ydn.crm.su.ui.record.CSS_HEADER_TITLE} center"></a>
-  <span class="center"></span>`;
+  <span class="center"></span>
+  <a class="${ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON}" title="Cancel edit"></a>
+  <a class="${ydn.crm.ui.CSS_CLASS_OK_BUTTON}" title="Submit changes"></a>
+  <a class="${ydn.crm.su.ui.record.CSS_HEADER_EDIT}" title="Edit record"></a>
+  `;
+  ele_header.querySelector('.google')
+      .appendChild(ydn.crm.ui.createSvgIcon('google', 'icons-small'));
+  ele_header.querySelector('.' + ydn.crm.su.ui.record.CSS_HEADER_EDIT)
+      .appendChild(ydn.crm.ui.createSvgIcon('pencil', 'icons-small'));
+  ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON)
+      .appendChild(ydn.crm.ui.createSvgIcon('close', 'icons-small'));
+  ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON)
+      .appendChild(ydn.crm.ui.createSvgIcon('done', 'icons-small'));
 
   this.head_menu.render(ele_header);
 
   this.validateSecondaryPanel_();
 
   var footer = dom.createDom('div', ydn.crm.su.ui.record.Record.CSS_CLASS_FOOTER);
-  footer.innerHTML = ydn.crm.templ.renderRecordFooter();
+  footer.innerHTML = `<div class="footer-toolbar">
+    <div class="message"></div>
+  </div>`
 
   root.appendChild(footer);
 };
@@ -356,8 +368,11 @@ ydn.crm.su.ui.record.Record.prototype.enterDocument = function() {
   hd.listen(this, ydn.crm.su.ui.events.Type.CHANGE, this.handleInputChanged);
   hd.listen(menu_ele, 'click', this.handleHeaderMenuClick);
 
-  var ok_btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
-  var cancel_btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
+  var header_ele = this.getHeaderElement();
+  var edit_btn = header_ele.querySelector('.' + ydn.crm.su.ui.record.CSS_HEADER_EDIT);
+  var ok_btn = header_ele.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  var cancel_btn = header_ele.querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
+  hd.listen(edit_btn, 'click', this.onEditClick);
   hd.listen(ok_btn, 'click', this.onSaveClick);
   hd.listen(cancel_btn, 'click', this.onCancelClick);
 
@@ -542,9 +557,19 @@ ydn.crm.su.ui.record.Record.prototype.doSave = function(opt_confirm) {
  */
 ydn.crm.su.ui.record.Record.prototype.onCancelClick = function(e) {
   e.stopPropagation();
+  this.setEditMode(false);
   this.reset();
 };
 
+
+/**
+ * @protected
+ * @param {goog.events.BrowserEvent} e
+ */
+ydn.crm.su.ui.record.Record.prototype.onEditClick = function(e) {
+  e.stopPropagation();
+  this.setEditMode(true);
+};
 
 
 /**
@@ -771,10 +796,11 @@ ydn.crm.su.ui.record.Record.prototype.handleInputChanged = function(e) {
  * @param {boolean} val
  */
 ydn.crm.su.ui.record.Record.prototype.setDirty = function(val) {
-  var btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
-  var cancel = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
-  goog.style.setElementShown(btn, !!val);
-  goog.style.setElementShown(cancel, !!val);
+  if (val) {
+    this.getElement().classList.add(ydn.crm.ui.CSS_CLASS_DIRTY);
+  } else {
+    this.getElement().classList.remove(ydn.crm.ui.CSS_CLASS_DIRTY);
+  }
 };
 
 
@@ -783,8 +809,7 @@ ydn.crm.su.ui.record.Record.prototype.setDirty = function(val) {
  * @return {boolean} dirty state.
  */
 ydn.crm.su.ui.record.Record.prototype.getDirty = function() {
-  var btn = this.getFooterElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
-  return goog.style.isElementShown(btn);
+  return this.getElement().classList.contains(ydn.crm.ui.CSS_CLASS_DIRTY);
 };
 
 
@@ -838,11 +863,18 @@ ydn.crm.su.ui.record.Record.prototype.handleSettingChange = function(e) {
  */
 ydn.crm.su.ui.record.Record.prototype.setEditMode = function(val) {
   var root = this.getElement();
+  var ele_header = this.getHeaderElement();
+  var cancel = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
+  var ok = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  var edit = ele_header.querySelector('.' + ydn.crm.su.ui.record.CSS_HEADER_EDIT);
   if (val) {
     root.classList.add(ydn.crm.ui.CSS_CLASS_EDIT);
   } else {
     root.classList.remove(ydn.crm.ui.CSS_CLASS_EDIT);
   }
+  goog.style.setElementShown(cancel, val);
+  goog.style.setElementShown(ok, val);
+  goog.style.setElementShown(edit, !val);
 
   this.body_panel.setEditMode(val);
 };
@@ -1341,10 +1373,6 @@ ydn.crm.su.ui.record.Record.prototype.resetHeader = function() {
 ydn.crm.su.ui.record.Record.prototype.resetFooter = function() {
 
   var footer = this.getFooterElement();
-  var cancel = footer.querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
-  var ok = footer.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
-  goog.style.setElementShown(cancel, false);
-  goog.style.setElementShown(ok, false);
 
   var msg = footer.querySelector('.' + ydn.crm.su.ui.record.Record.CSS_CLASS_MESSAGE);
   msg.textContent = '';
@@ -1365,6 +1393,13 @@ ydn.crm.su.ui.record.Record.prototype.refreshHeader = function() {
   }
   var ele_title = ele_header.querySelector('.' + ydn.crm.su.ui.record.CSS_HEADER_TITLE);
   var ele_icon = ele_header.querySelector('a.' + ydn.crm.su.ui.record.CSS_HEADER_ICON);
+  var edit = ele_header.querySelector('.' + ydn.crm.su.ui.record.CSS_HEADER_EDIT);
+  var cancel = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
+  var ok = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  goog.style.setElementShown(cancel, false);
+  goog.style.setElementShown(ok, false);
+  goog.style.setElementShown(edit, true);
+
   var neck = this.getElement().querySelector('.neck');
   goog.style.setElementShown(neck, false);
   if (record.isNew()) {
