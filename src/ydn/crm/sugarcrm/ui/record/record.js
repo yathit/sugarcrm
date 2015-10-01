@@ -315,13 +315,13 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
 
   var edit_svg = ydn.crm.ui.createSvgIcon('pencil', 'icons-small');
   ele_header.innerHTML = `<a class="${ydn.crm.su.ui.record.CSS_HEADER_ICON}"
-      target="_blank" title="Open in SugarCRM"></a>
-  <a title="View in Gmail contact" class="${ydn.crm.ui.CSS_CLASS_BADGE_ICON} google"></a>
+      target="_blank" data-tooltip="Open in SugarCRM"></a>
+  <a data-tooltip="View in Gmail contact" class="${ydn.crm.ui.CSS_CLASS_BADGE_ICON} google"></a>
   <a class="${ydn.crm.su.ui.record.CSS_HEADER_TITLE} center"></a>
   <span class="center"></span>
-  <a class="${ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON}" title="Cancel edit"></a>
-  <a class="${ydn.crm.ui.CSS_CLASS_OK_BUTTON}" title="Submit changes"></a>
-  <a class="${ydn.crm.su.ui.record.CSS_HEADER_EDIT}" title="Edit record"></a>
+  <a class="${ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON}" data-tooltip="Cancel edit"></a>
+  <a class="${ydn.crm.ui.CSS_CLASS_OK_BUTTON}" data-tooltip="Submit changes"></a>
+  <a class="${ydn.crm.su.ui.record.CSS_HEADER_EDIT}" data-tooltip="Edit record"></a>
   `;
   ele_header.querySelector('.google')
       .appendChild(ydn.crm.ui.createSvgIcon('google', 'icons-small'));
