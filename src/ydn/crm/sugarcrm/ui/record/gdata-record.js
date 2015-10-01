@@ -36,6 +36,8 @@ goog.require('ydn.crm.su.ui.record.Record');
  * @extends {ydn.crm.su.ui.record.Record}
  */
 ydn.crm.su.ui.GDataRecord = function(model, opt_dom) {
+  goog.asserts.assert(model.getSugar() instanceof ydn.crm.su.model.GDataSugar,
+      'Record parent must be GDataSugar');
   goog.base(this, model, opt_dom);
 };
 goog.inherits(ydn.crm.su.ui.GDataRecord, ydn.crm.su.ui.record.Record);
@@ -104,4 +106,21 @@ ydn.crm.su.ui.GDataRecord.prototype.getNewModuleList = function() {
  */
 ydn.crm.su.ui.GDataRecord.prototype.getDuplicateModuleList = function() {
   return ydn.crm.su.PEOPLE_MODULES;
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.su.ui.GDataRecord.prototype.hasSyncMenuItem = function() {
+  return true;
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.su.ui.GDataRecord.prototype.canSetupSync = function() {
+  var sugar = /** @type {ydn.crm.su.model.GDataSugar} */(this.getModel().getSugar());
+  return false;
 };

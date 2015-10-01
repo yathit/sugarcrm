@@ -1018,6 +1018,13 @@ ydn.crm.su.ui.record.Record.prototype.handleRecordUpdated = function(e) {
  * Do post-processing progressive enhancement after record is reset.
  */
 ydn.crm.su.ui.record.Record.prototype.postReset = function() {
+  if (this.hasSyncMenuItem()) {
+    if (this.canSetupSync()) {
+      this.head_menu.setEnableMenuItem(ydn.crm.su.ui.record.Record.MenuName.SYNC, true);
+      this.head_menu.setEnableMenuItem(ydn.crm.su.ui.record.Record.MenuName.EXPORT_TO_GMAIL, false);
+      return;
+    }
+  }
   if (this.hasExportMenuItem()) {
     var record = this.getModel();
     record.findPairedGData().addCallback(function(gdata) {
@@ -1210,6 +1217,7 @@ ydn.crm.su.ui.record.Record.MenuName = {
   EDIT: 'edit',
   EXPORT_TO_GMAIL: 'export',
   NEW: 'new',
+  SYNC: 'sync',
   UNSYNC: 'unsync',
   FIELDS_OPTION: 'field-option'
 };
@@ -1254,6 +1262,25 @@ ydn.crm.su.ui.record.Record.prototype.hasExportMenuItem = function() {
   if (record && record.getModuleName() == ydn.crm.su.ModuleName.CONTACTS) {
     return true;
   }
+  return false;
+};
+
+
+/**
+ * @return {boolean} return true if SugarCRM record and GData are set.
+ * @protected
+ */
+ydn.crm.su.ui.record.Record.prototype.hasSyncMenuItem = function() {
+  return false;
+};
+
+
+/**
+ * @return {boolean} return true if SugarCRM record and GData availabe and
+ * not being sync.
+ * @protected
+ */
+ydn.crm.su.ui.record.Record.prototype.canSetupSync = function() {
   return false;
 };
 
@@ -1305,15 +1332,23 @@ ydn.crm.su.ui.record.Record.prototype.getMenuItems = function() {
       children: dup_items
     });
   }
+  var has_sync = this.hasSyncMenuItem();
+  if (has_sync) {
+    items.push({
+      name: ydn.crm.su.ui.record.Record.MenuName.SYNC,
+      label: 'Sync',
+      title: 'Sync SugarCRM record and Gmail Contact'
+    });
+  }
   var has_export = this.hasExportMenuItem();
   if (has_export) {
     items.push({
       name: ydn.crm.su.ui.record.Record.MenuName.EXPORT_TO_GMAIL,
       label: 'To Gmail',
-      title: 'Export SugarCRM Contacts record to Gmail Contact and sync'
+      title: 'Export SugarCRM Contacts record to Gmail Contact'
     });
   }
-  if (has_export || new_list.length > 0 || dup_list.length > 0) {
+  if (has_export || new_list.length > 0 || dup_list.length > 0 || has_sync) {
     items.push(null);
   }
 
