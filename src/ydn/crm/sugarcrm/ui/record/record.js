@@ -339,7 +339,7 @@ ydn.crm.su.ui.record.Record.prototype.createDom = function() {
   var footer = dom.createDom('div', ydn.crm.su.ui.record.Record.CSS_CLASS_FOOTER);
   footer.innerHTML = `<div class="footer-toolbar">
     <div class="message"></div>
-  </div>`
+  </div>`;
 
   root.appendChild(footer);
 };
@@ -546,7 +546,7 @@ ydn.crm.su.ui.record.Record.prototype.doSave = function(opt_confirm) {
       return this.doSave_(patches);
     }
   } else {
-    return goog.async.Deferred.fail(new Error('Nothing to save.'));
+    return goog.async.Deferred.fail(false);
   }
 };
 
@@ -574,11 +574,31 @@ ydn.crm.su.ui.record.Record.prototype.onEditClick = function(e) {
 
 /**
  * @protected
- * @param {goog.events.BrowserEvent} e
+ * @param {goog.events.BrowserEvent} ev
  */
-ydn.crm.su.ui.record.Record.prototype.onSaveClick = function(e) {
-  e.stopPropagation();
-  this.doSave(!!e.altKey);
+ydn.crm.su.ui.record.Record.prototype.onSaveClick = function(ev) {
+  ev.stopPropagation();
+  var ele_header = this.getHeaderElement();
+  var cancel = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
+  var ok = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_OK_BUTTON);
+  cancel.setAttribute('disabled', '');
+  ok.setAttribute('disabled', '');
+  this.doSave(!!ev.altKey).addCallbacks(function(e) {
+    cancel.removeAttribute('disabled');
+    ok.removeAttribute('disabled');
+    this.setEditMode(false);
+    this.reset();
+  }, function(e) {
+    if (e === false) {
+      ydn.crm.msg.Manager.addStatus('No change to be saved.');
+      this.setEditMode(false);
+      this.reset();
+    } else {
+      ydn.crm.msg.Manager.addStatus('Error saving: ' + (e.message || e));
+    }
+    cancel.removeAttribute('disabled');
+    ok.removeAttribute('disabled');
+  }, this);
 };
 
 
@@ -862,6 +882,9 @@ ydn.crm.su.ui.record.Record.prototype.handleSettingChange = function(e) {
  * @param {boolean} val <code>true</code> to edit mode, <code>false</code> to view mode.
  */
 ydn.crm.su.ui.record.Record.prototype.setEditMode = function(val) {
+  if (val == this.getEditMode()) {
+    return;
+  }
   var root = this.getElement();
   var ele_header = this.getHeaderElement();
   var cancel = ele_header.querySelector('.' + ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON);
